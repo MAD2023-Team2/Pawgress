@@ -13,7 +13,25 @@
         android:theme="@style/Theme.Pawgress"
         tools:targetApi="31">
         <activity
-            android:name=".MainActivity"
+            android:name=".CreateAccount"
+            android:exported="false" />
+        <activity
+            android:name=".ProfilePage"
+            android:exported="false" />
+        <activity
+            android:name=".HomePage"
+            android:exported="false" />
+        <activity
+            android:name=".tutorials.tutPage1"
+            android:exported="false" />
+        <activity
+            android:name=".tutorials.tutPage2"
+            android:exported="false" />
+        <activity
+            android:name=".tutorials.tutPage3"
+            android:exported="false" />
+        <activity
+            android:name=".LoginPage"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

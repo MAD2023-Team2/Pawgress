@@ -1,3 +1,27 @@
 <resources>
     <string name="app_name">Pawgress</string>
+
+    // Login Page
+    <string name="loginPageTitle">LOGIN</string>
+    <string name="usernameText">Username</string>
+    <string name="passwordText">Password</string>
+    <string name="loginButtonText">LOGIN</string>
+    <string name="newUserText">New User? Click Here!</string>
+
+    //Create Account
+    <string name="createAcctTitle">CREATE ACCOUNT</string>
+    <string name="confirmCreationText">Create</string>
+    <string name="cancelCreationText">Cancel</string>
+
+    // Profile Page
+    <string name="profilePageTitle">My Profile</string>
+    <string name="editProfileText">Edit Profile/Password</string>
+    <string name="findFriendsText">Find Friends</string>
+    <string name="userSettingsText">User Settings</string>
+    <string name="analyticsText">Analytics</string>
+    <string name="logOutText">Log Out</string>
+
+    // Home Page
+    <string name="homePageTitle">Home</string>
+
 </resources>
