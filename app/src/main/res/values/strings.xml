@@ -22,6 +22,6 @@
     <string name="logOutText">Log Out</string>
 
     // Home Page
-    <string name="homePageTitle">Home</string>
+    <string name="greeting">Hello</string>
 
 </resources>

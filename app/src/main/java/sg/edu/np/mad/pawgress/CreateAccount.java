@@ -11,6 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
+import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.tutorials.tutPage1;
 
 public class CreateAccount extends AppCompatActivity {
@@ -54,6 +57,7 @@ public class CreateAccount extends AppCompatActivity {
 
                 UserData dbData = myDBHandler.findUser(etUsername.getText().toString());
                 if (dbData == null){
+                    ArrayList<Task> taskList = new ArrayList<Task>();
                     String dbUsername = etUsername.getText().toString();
                     String dbPassword = etPassword.getText().toString();
                     UserData dbUserData = new UserData(dbUsername,dbPassword);

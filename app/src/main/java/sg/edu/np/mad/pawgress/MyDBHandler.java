@@ -7,6 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.util.ArrayList;
+
+import sg.edu.np.mad.pawgress.Tasks.Task;
+
 public class MyDBHandler extends SQLiteOpenHelper{
 
     String title = "MyDBhandler";
@@ -41,7 +45,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         SQLiteDatabase db = this. getWritableDatabase();
         db.insert(ACCOUNTS, null, values);
-        Log.i(title, " Inserted/Created user" + values.toString());
+        Log.i(title, " Inserted/Created user" + values);
         db.close();
     }
 
