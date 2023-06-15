@@ -4,10 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -15,20 +13,15 @@ import java.util.Locale;
 
 import sg.edu.np.mad.pawgress.R;
 
-public class TaskView extends AppCompatActivity {
+public class TaskCompletion extends AppCompatActivity {
+    private TextView seconds_complete;
 
-    private Button gameButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.task_view);
-
-        Intent receivingEnd = getIntent();
-        Task task = receivingEnd.getParcelableExtra("Task");
+        setContentView(R.layout.activity_task_completion);
 
         ImageButton backButton = findViewById(R.id.backButton);
-        Button gameButton = findViewById(R.id.to_Game);
-
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,12 +29,13 @@ public class TaskView extends AppCompatActivity {
             }
         });
 
-        gameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent activityName = new Intent(TaskView.this, TaskGame.class);
-                startActivity(activityName);
-            }
-        });
+        Intent receivingEnd = getIntent();
+        int seconds = receivingEnd.getIntExtra("seconds",0);
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        int secs = seconds % 60;
+
+        seconds_complete = findViewById(R.id.seconds_complete);
+        seconds_complete.setText(String.format(Locale.getDefault(),"Time Studied:\n%d Hours %02d Mins %02d Secs",hours, minutes, secs));
     }
 }
