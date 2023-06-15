@@ -8,8 +8,6 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import sg.edu.np.mad.pawgress.LoginPage;
-import sg.edu.np.mad.pawgress.ProfilePage;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
 

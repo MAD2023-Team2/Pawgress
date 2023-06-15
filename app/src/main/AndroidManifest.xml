@@ -16,6 +16,9 @@
             android:name=".Tasks.TaskCompletion"
             android:exported="false" />
         <activity
+            android:name=".Profile.editProfilePassword"
+            android:exported="false" />
+        <activity
             android:name=".Tasks.EditTask"
             android:exported="false" />
         <activity
@@ -31,7 +34,7 @@
             android:name=".CreateAccount"
             android:exported="false" />
         <activity
-            android:name=".ProfilePage"
+            android:name=".Profile.ProfilePage"
             android:exported="false" />
         <activity
             android:name=".HomePage"

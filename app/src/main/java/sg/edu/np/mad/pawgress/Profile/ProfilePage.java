@@ -1,13 +1,18 @@
-package sg.edu.np.mad.pawgress;
+package sg.edu.np.mad.pawgress.Profile;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import sg.edu.np.mad.pawgress.LoginPage;
+import sg.edu.np.mad.pawgress.MyDBHandler;
+import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.SaveSharedPreference;
+import sg.edu.np.mad.pawgress.UserData;
 
 public class ProfilePage extends AppCompatActivity {
 
