@@ -24,4 +24,8 @@
     // Home Page
     <string name="greeting">Hello</string>
 
+    // Stopwatch
+    <string name="mainTimer">0:00:00</string>
+    <string name="startTimer">START</string>
+    <string name="resetTimer">RESET</string>
 </resources>
