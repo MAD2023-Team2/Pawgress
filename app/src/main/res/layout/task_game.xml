@@ -69,4 +69,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/start_timer_button" />
 
+=======
+>>>>>>> 34a99e94cb2cb408adf629c2e1a8f5ad283249cb
 </androidx.constraintlayout.widget.ConstraintLayout>
