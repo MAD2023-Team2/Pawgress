@@ -162,6 +162,7 @@ public class TaskGame extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 Intent activityName = new Intent(TaskGame.this, TaskCompletion.class);
+                activityName.putExtra("seconds", seconds);
                 startActivity(activityName);
             }
         });
