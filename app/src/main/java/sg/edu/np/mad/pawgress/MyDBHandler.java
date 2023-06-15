@@ -21,8 +21,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_USERNAME = "UserName";
     public static String COLUMN_PASSWORD = "Password";
 
+
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
+
     }
 
     @Override
@@ -45,6 +47,15 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         SQLiteDatabase db = this. getWritableDatabase();
         db.insert(ACCOUNTS, null, values);
+
+        for (Task task : userData.getTaskList()){
+            ContentValues taskInfo = new ContentValues();
+            taskInfo.put("ID", task.getTaskID());
+            taskInfo.put("Name", task.getTaskName());
+            taskInfo.put("Status", task.getStatus());
+            taskInfo.put("Category", task.getCategory());
+            db.insert("Task", null,taskInfo);
+        }
         Log.i(title, " Inserted/Created user" + values);
         db.close();
     }
@@ -60,7 +71,17 @@ public class MyDBHandler extends SQLiteOpenHelper{
         if (cursor.moveToFirst()){
             queryResult.setUsername(cursor.getString(0));
             queryResult.setPassword(cursor.getString(1));
+            ArrayList<Task> taskList = new ArrayList<>();
+            while (cursor.moveToNext()) {
+                Task task = new Task();
+                task.setTaskID(cursor.getInt(0));
+                task.setTaskName(cursor.getString(1));
+                task.setStatus(cursor.getString(2));
+                task.setCategory(cursor.getString(3));
+                taskList.add(task);
+            }
             cursor.close();
+            queryResult.setTaskList(taskList);
         }
         else{
             queryResult = null;

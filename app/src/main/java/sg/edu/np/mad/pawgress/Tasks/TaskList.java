@@ -46,9 +46,11 @@ public class TaskList extends AppCompatActivity {
             });
         } catch (RuntimeException e) {
             Log.v(TAG, "starting exception");
-            ArrayList<Task> taskList = new ArrayList<Task>();
+            //ArrayList<Task> taskList = new ArrayList<Task>();
+            Intent receivingEnd = getIntent();
+            ArrayList<Task> taskList = receivingEnd.getParcelableArrayListExtra("TaskList");
             //  testing
-            taskList.add(new Task(1, "Week 6 Practical", "In Progress", "MAD"));
+            //taskList.add(new Task(1, "Week 6 Practical", "In Progress", "MAD"));
             Log.v(TAG, "List size = " + taskList.size());
             Log.v(TAG, "Starting recyclerview");
             TaskAdapter mAdapter = new TaskAdapter(taskList, this);
