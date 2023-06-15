@@ -21,6 +21,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_USERNAME = "UserName";
     public static String COLUMN_PASSWORD = "Password";
 
+
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, DATABASE_NAME, factory, DATABASE_VERSION);
     }

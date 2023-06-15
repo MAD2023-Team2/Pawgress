@@ -25,7 +25,7 @@ public class CreateTask extends AppCompatActivity {
         Intent receivingEnd = getIntent();
         ArrayList<Task> taskList = receivingEnd.getParcelableArrayListExtra("Task List");
         Button createButton = findViewById(R.id.button6);
-        Button cancelButton = findViewById(R.id.button5);
+        Button cancelButton = findViewById(R.id.editProfilePassword);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

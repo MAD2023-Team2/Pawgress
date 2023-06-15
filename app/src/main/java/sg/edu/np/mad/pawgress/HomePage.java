@@ -9,8 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.RecyclerView;
 
+import sg.edu.np.mad.pawgress.Profile.ProfilePage;
 import sg.edu.np.mad.pawgress.Tasks.TaskList;
 
 public class HomePage extends AppCompatActivity {
