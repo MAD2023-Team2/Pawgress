@@ -29,14 +29,17 @@ public class DailyLogIn extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.i(null, "Starting Daily LogIn Page");
+        Intent receivingEnd = getIntent();
+        UserData user = receivingEnd.getParcelableExtra("User");
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String newDayDate = formatter.format(new Date());
-        String lastInDate = user.getLastLoginDate();
+        String lastInDate = user.getLastLogInDate();
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         Date date1;
         Date date2;
         int currency = user.getCurrency();
         int streak = user.getStreak();
+        String tempStr = "No";
         try{
             date1 = dateFormat.parse(lastInDate);
             date2 = dateFormat.parse(newDayDate);
@@ -48,21 +51,22 @@ public class DailyLogIn extends AppCompatActivity {
         TextView streakText = findViewById(R.id.streakText);
         TextView rewardText = findViewById(R.id.rewardText);
         Button closeButton = findViewById(R.id.closeDaily);
-        if (lastinDate.equals(newDayDate)){
+        if (lastInDate.equals(newDayDate)){
             System.out.println("Last log in date equal to todays date.");
-
+            System.out.println(user.getLoggedInTdy().equals(tempStr));
             // scenario where user first create their account and their first streak will pop up
-            if (user.getLoggedInTdy() == false){
+            if (user.getLoggedInTdy().equals(tempStr)){
                 // text will change to "streak:1, current rewarded:0[for now], let's start streaking and stay productive!"
 
                 statusText.setText("Let's start streaking and stay productive!");
                 streakText.setText("Streak: " + streak);
                 rewardText.setText("Reward: " + streak*0);
-                user.setLoggedInTdy(true);
+                user.setLoggedInTdy("Yes");
                 closeButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
                         Intent intent = new Intent(DailyLogIn.this,HomePage.class);
+                        intent.putExtra("User", user);
                         startActivity(intent);
                     }
                 });
@@ -70,13 +74,14 @@ public class DailyLogIn extends AppCompatActivity {
             // scenario where user logs in on the same day but alrdy claimed their reward
             else{
                 // text will change to "you've logged in today, let's get productive!"
-                statusText.setText("You've logged in today, keep up with the Pawgress!");
-                streakText.setText(" ");
+                statusText.setText(" ");
+                streakText.setText("You've logged in today, keep up with the Pawgress!");
                 rewardText.setText(" ");
                 closeButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
                         Intent intent = new Intent(DailyLogIn.this,HomePage.class);
+                        intent.putExtra("User", user);
                         startActivity(intent);
                     }
                 });
@@ -84,9 +89,9 @@ public class DailyLogIn extends AppCompatActivity {
         }
         else{
             System.out.println("Last log in date not equal to todays date.");
-            user.setLoggedInTdy(false);
+            user.setLoggedInTdy("No");
 
-            if (user.getLoggedInTdy() == false){
+            if (user.getLoggedInTdy() == "No"){
                 long diffInMilliseconds = date2.getTime() - date1.getTime();
                 long diffInDays = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
 
@@ -96,7 +101,7 @@ public class DailyLogIn extends AppCompatActivity {
 
                 if (diffInDays != 1){
                     //they break streak
-                    user.setLoggedInTdy(true);
+                    user.setLoggedInTdy("Yes");
                     user.setStreak(1);
                     user.setCurrency(currency + 1*0);
                     //set text to streak broken
@@ -107,6 +112,7 @@ public class DailyLogIn extends AppCompatActivity {
                         @Override
                         public void onClick(View v){
                             Intent intent = new Intent(DailyLogIn.this,HomePage.class);
+                            intent.putExtra("User", user);
                             startActivity(intent);
                         }
                     });
@@ -116,7 +122,7 @@ public class DailyLogIn extends AppCompatActivity {
                     //they streak
                     user.setStreak(user.getStreak() + 1);
                     user.setCurrency(currency + 1*0);
-                    user.setLoggedInTdy(true);
+                    user.setLoggedInTdy("Yes");
                     //set text to streaking stuff idk
                     statusText.setText("You're streaking! Keep up the good work!");
                     streakText.setText("Streak: " + user.getStreak());
@@ -125,6 +131,7 @@ public class DailyLogIn extends AppCompatActivity {
                         @Override
                         public void onClick(View v){
                             Intent intent = new Intent(DailyLogIn.this,HomePage.class);
+                            intent.putExtra("User", user);
                             startActivity(intent);
                         }
                     });

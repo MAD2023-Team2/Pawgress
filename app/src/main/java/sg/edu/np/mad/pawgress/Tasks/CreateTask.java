@@ -27,7 +27,7 @@ public class CreateTask extends AppCompatActivity {
         Intent receivingEnd = getIntent();
         ArrayList<Task> taskList = receivingEnd.getParcelableArrayListExtra("Task List");
         Button createButton = findViewById(R.id.button6);
-        Button cancelButton = findViewById(R.id.closeDaily);
+        Button cancelButton = findViewById(R.id.button5);
         MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
