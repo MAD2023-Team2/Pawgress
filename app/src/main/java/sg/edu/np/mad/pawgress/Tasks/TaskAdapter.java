@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -18,6 +19,8 @@ import java.util.ArrayList;
 import sg.edu.np.mad.pawgress.R;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
+    public TextView emptyTasktext;
+
     ArrayList<Task> taskList;
     Context context;
     String THIS = "Adapter";
@@ -28,6 +31,15 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
     @Override
     public int getItemCount() {
         return taskList.size();
+    }
+
+    public void updateEmptyView() {
+        if (taskList.isEmpty()){
+            emptyTasktext.setVisibility(View.VISIBLE);
+        }
+        else{
+            emptyTasktext.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
