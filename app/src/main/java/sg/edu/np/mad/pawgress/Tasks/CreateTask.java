@@ -2,9 +2,7 @@ package sg.edu.np.mad.pawgress.Tasks;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +27,7 @@ public class CreateTask extends AppCompatActivity {
         Intent receivingEnd = getIntent();
         ArrayList<Task> taskList = receivingEnd.getParcelableArrayListExtra("Task List");
         Button createButton = findViewById(R.id.button6);
-        Button cancelButton = findViewById(R.id.button5);
+        Button cancelButton = findViewById(R.id.closeDaily);
         MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
