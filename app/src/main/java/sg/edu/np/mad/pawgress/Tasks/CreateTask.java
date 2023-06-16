@@ -12,10 +12,11 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.UserData;
 
 public class CreateTask extends AppCompatActivity {
 
-
+    MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
     String title = "Create Task";
     // is there a limit to how many tasks users can have at one time?
     @Override
@@ -25,30 +26,21 @@ public class CreateTask extends AppCompatActivity {
         Log.i(title, "Creating task");
 
         Intent receivingEnd = getIntent();
-        ArrayList<Task> taskList = receivingEnd.getParcelableArrayListExtra("Task List");
+        UserData user = receivingEnd.getParcelableExtra("User");
+        ArrayList<Task> taskList = myDBHandler.findTaskList(user);
         Button createButton = findViewById(R.id.button6);
         Button cancelButton = findViewById(R.id.button5);
-        MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int id = taskList.size() + 1;
                 EditText etname = findViewById(R.id.editTitle);
                 String name = etname.getText().toString();
                 EditText etcat = findViewById(R.id.editCat);
                 String cat = etcat.getText().toString();
-                Task task = new Task(id, name, "In Progress", cat);
-                taskList.add(task);
-                /*ContentValues taskInfo = new ContentValues();
-                taskInfo.put("ID", task.getTaskID());
-                taskInfo.put("Name", task.getTaskName());
-                taskInfo.put("Status", task.getStatus());
-                taskInfo.put("Category", task.getCategory());
-                SQLiteDatabase db = myDBHandler.getWritableDatabase();
-                db.insert("Task", null,taskInfo);
-                db.close();*/
+                Task task = new Task(name, "In Progress", cat);
+                myDBHandler.addTask(task, user);
                 Intent newTask = new Intent(CreateTask.this, TaskList.class);
-                newTask.putParcelableArrayListExtra("New Task List", taskList);
+                newTask.putExtra("New Task List", user);
                 startActivity(newTask);
                 Log.i(title, "task added");
                 finish();
