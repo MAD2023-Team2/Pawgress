@@ -8,6 +8,7 @@ import android.widget.TextView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.UserData;
 
 public class tutPage2 extends AppCompatActivity {
 
@@ -22,19 +23,22 @@ public class tutPage2 extends AppCompatActivity {
         super.onStart();
 
         TextView tut2_next = findViewById((R.id.tut2_next));
+        Intent receivingEnd = getIntent();
+        UserData user = receivingEnd.getParcelableExtra("User");
         tut2_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(tutPage2.this, tutPage3.class);
+                intent.putExtra("User", user);
                 startActivity(intent);
+                finish();
             }
         });
         TextView tut2_back = findViewById((R.id.tut2_back));
         tut2_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(tutPage2.this, tutPage1.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

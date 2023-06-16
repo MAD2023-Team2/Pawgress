@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import sg.edu.np.mad.pawgress.HomePage;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.UserData;
 
 public class tutPage3 extends AppCompatActivity {
 
@@ -23,10 +24,13 @@ public class tutPage3 extends AppCompatActivity {
         super.onStart();
 
         TextView tut3_next = findViewById((R.id.tut3_next));
+        Intent receivingEnd = getIntent();
+        UserData user = receivingEnd.getParcelableExtra("User");
         tut3_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(tutPage3.this, HomePage.class);
+                intent.putExtra("User", user);
                 startActivity(intent);
             }
         });
@@ -34,8 +38,7 @@ public class tutPage3 extends AppCompatActivity {
         tut3_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(tutPage3.this, tutPage2.class);
-                startActivity(intent);
+                finish();
             }
         });
     }

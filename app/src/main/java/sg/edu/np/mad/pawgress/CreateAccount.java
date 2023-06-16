@@ -57,14 +57,16 @@ public class CreateAccount extends AppCompatActivity {
 
                 UserData dbData = myDBHandler.findUser(etUsername.getText().toString());
                 if (dbData == null){
-                    ArrayList<Task> taskList = new ArrayList<Task>();
                     String dbUsername = etUsername.getText().toString();
                     String dbPassword = etPassword.getText().toString();
-                    UserData dbUserData = new UserData(dbUsername,dbPassword);
+                    ArrayList<Task> taskList = new ArrayList<Task>();
+                    UserData dbUserData = new UserData(dbUsername,dbPassword,taskList);
                     myDBHandler.addUser(dbUserData);
                     SaveSharedPreference.setUserName(CreateAccount.this ,etUsername.getText().toString());
                     Intent intent = new Intent(CreateAccount.this, tutPage1.class);
+                    intent.putExtra("User", dbUserData);
                     startActivity(intent);
+                    finish();
                 }
                 else{
                     Toast.makeText(CreateAccount.this, "Username Already Exist!", Toast.LENGTH_SHORT).show();

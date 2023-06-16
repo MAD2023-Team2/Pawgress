@@ -59,10 +59,10 @@
         app:layout_constraintTop_toBottomOf="@+id/editTitle" />
 
     <Button
-        android:id="@+id/editProfilePassword"
+        android:id="@+id/button5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
+        android:layout_marginStart="84dp"
         android:layout_marginTop="124dp"
         android:text="Discard"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,9 +72,8 @@
         android:id="@+id/button6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="56dp"
         android:layout_marginTop="124dp"
         android:text="Confirm"
-        app:layout_constraintStart_toEndOf="@+id/editProfilePassword"
+        app:layout_constraintStart_toEndOf="@+id/button5"
         app:layout_constraintTop_toBottomOf="@+id/editCat" />
 </androidx.constraintlayout.widget.ConstraintLayout>

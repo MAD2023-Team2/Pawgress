@@ -13,7 +13,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginPage extends AppCompatActivity {
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,6 +28,7 @@ public class LoginPage extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
+        Log.v(title, "On Login Page");
         if(SaveSharedPreference.getUserName(LoginPage.this).length() == 0) //shared preferences for auto login, if shared preference has no data, brings to login page
         {
             setContentView(R.layout.login_page);
@@ -52,11 +52,14 @@ public class LoginPage extends AppCompatActivity {
                 public void onClick(View v) {
                     EditText etUsername = findViewById(R.id.editTextText);
                     EditText etPassword = findViewById(R.id.editTextText2);
-
+                    String username = etUsername.getText().toString();
+                    UserData user = myDBHandler.findUser(username);
                     if (isValidCredentials(etUsername.getText().toString(), etPassword.getText().toString())){
                         SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
                         Intent intent = new Intent(LoginPage.this, HomePage.class);
+                        intent.putExtra("User", user);
                         startActivity(intent);
+                        finish();
                     }
                     else{
                         Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
@@ -66,7 +69,10 @@ public class LoginPage extends AppCompatActivity {
         }
         else // if shared preference has data, skips log in
         {
+            UserData user = myDBHandler.findUser(SaveSharedPreference.getUserName(LoginPage.this));
+            Log.v(title, "TaskList" + user.getTaskList().size());
             Intent intent = new Intent(LoginPage.this, HomePage.class);
+            intent.putExtra("User", user);
             startActivity(intent);
         }
     }
