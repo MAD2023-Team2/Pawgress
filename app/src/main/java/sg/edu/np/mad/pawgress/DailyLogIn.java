@@ -30,9 +30,10 @@ public class DailyLogIn extends AppCompatActivity {
 
         super.onStart();
         Log.i(null, "Starting Daily LogIn Page");
+
         Intent receivingEnd = getIntent();
         UserData user = receivingEnd.getParcelableExtra("User");
-
+        System.out.println(user.getUsername() + user.getPassword());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         String newDayDate = formatter.format(new Date());
@@ -79,7 +80,7 @@ public class DailyLogIn extends AppCompatActivity {
                 closeButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
-                        Intent intent = new Intent(DailyLogIn.this,HomePage.class);
+                        Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
                         intent.putExtra("User", user);
                         startActivity(intent);
                     }
@@ -94,7 +95,7 @@ public class DailyLogIn extends AppCompatActivity {
                 closeButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
-                        Intent intent = new Intent(DailyLogIn.this,HomePage.class);
+                        Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
                         intent.putExtra("User", user);
                         startActivity(intent);
                     }
@@ -126,7 +127,7 @@ public class DailyLogIn extends AppCompatActivity {
                     closeButton.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v){
-                            Intent intent = new Intent(DailyLogIn.this,HomePage.class);
+                            Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
                             intent.putExtra("User", user);
                             startActivity(intent);
                         }
@@ -147,7 +148,7 @@ public class DailyLogIn extends AppCompatActivity {
                     closeButton.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v){
-                            Intent intent = new Intent(DailyLogIn.this,HomePage.class);
+                            Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
                             intent.putExtra("User", user);
                             startActivity(intent);
                         }

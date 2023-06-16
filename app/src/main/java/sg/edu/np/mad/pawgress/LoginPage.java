@@ -56,7 +56,7 @@ public class LoginPage extends AppCompatActivity {
                     UserData user = myDBHandler.findUser(username);
                     if (isValidCredentials(etUsername.getText().toString(), etPassword.getText().toString())){
                         SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
-                        Intent intent = new Intent(LoginPage.this, MainMainMain.class);
+                        Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
                         intent.putExtra("User", user);
                         startActivity(intent);
                         finish();
@@ -71,7 +71,7 @@ public class LoginPage extends AppCompatActivity {
         {
             UserData user = myDBHandler.findUser(SaveSharedPreference.getUserName(LoginPage.this));
             Log.v(title, "TaskList" + user.getTaskList().size());
-            Intent intent = new Intent(LoginPage.this, MainMainMain.class);
+            Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
             intent.putExtra("User", user);
             startActivity(intent);
         }

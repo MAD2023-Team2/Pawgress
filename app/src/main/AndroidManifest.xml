@@ -37,6 +37,9 @@
             android:name=".CreateAccount"
             android:exported="false" />
         <activity
+            android:name=".DailyLogIn"
+            android:exported="false" />
+        <activity
             android:name=".Fragments.Profile.ProfilePage"
             android:exported="false" />
         <activity
