@@ -25,6 +25,7 @@ import sg.edu.np.mad.pawgress.Tasks.TaskCardViewHolder;
 import sg.edu.np.mad.pawgress.Tasks.TaskList;
 
 public class HomePage extends AppCompatActivity {
+    private TextView emptyspace_home;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -77,5 +78,14 @@ public class HomePage extends AppCompatActivity {
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
         }
+        emptyspace_home = findViewById(R.id.emptyspace_home);
+        emptyspace_home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent createTask = new Intent(HomePage.this, TaskList.class);
+                createTask.putExtra("User", user);
+                startActivity(createTask);
+            }
+        });
     }
 }
