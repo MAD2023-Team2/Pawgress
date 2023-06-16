@@ -48,7 +48,7 @@ public class HomePage extends AppCompatActivity {
             public void onClick(View v) {
                 // add in code to transfer user task list data to task list
                 Intent intent = new Intent(HomePage.this, TaskList.class);
-                intent.putExtra("TaskList", user.getTaskList());
+                intent.putExtra("User", user);
                 startActivity(intent);
             }
         });
