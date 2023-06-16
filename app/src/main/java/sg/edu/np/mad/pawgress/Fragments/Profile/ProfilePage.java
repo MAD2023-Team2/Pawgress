@@ -1,4 +1,4 @@
-package sg.edu.np.mad.pawgress.Profile;
+package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,7 +27,7 @@ public class ProfilePage extends AppCompatActivity {
         super.onStart();
 
         //Log Out button
-        Button logoutButton = findViewById(R.id.logout);
+        Button logoutButton = findViewById(R.id.logoutFrag);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -42,4 +42,5 @@ public class ProfilePage extends AppCompatActivity {
         TextView username = findViewById(R.id.ProfileUsername);
         username.setText(dbData.getUsername());
     }
+
 }
