@@ -13,7 +13,7 @@
         android:theme="@style/Theme.Pawgress"
         tools:targetApi="31">
         <activity
-            android:name=".DailyLogIn"
+            android:name=".MainMainMain"
             android:exported="false" />
         <activity
             android:name=".Tasks.TaskCompletion"
@@ -37,10 +37,13 @@
             android:name=".CreateAccount"
             android:exported="false" />
         <activity
+            android:name=".DailyLogIn"
+            android:exported="false" />
+        <activity
             android:name=".Fragments.Profile.ProfilePage"
             android:exported="false" />
         <activity
-            android:name=".HomePage"
+            android:name=".Fragments.Home.HomePage"
             android:exported="false" />
         <activity
             android:name=".tutorials.tutPage1"
@@ -50,9 +53,6 @@
             android:exported="false" />
         <activity
             android:name=".tutorials.tutPage3"
-            android:exported="false" />
-        <activity
-            android:name=".MainMainMain"
             android:exported="false" />
         <activity
             android:name=".LoginPage"

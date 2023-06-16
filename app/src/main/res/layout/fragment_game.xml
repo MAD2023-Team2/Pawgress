@@ -32,6 +32,25 @@
             app:layout_constraintBottom_toBottomOf="@+id/imageView13"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <TextView
+            android:id="@+id/timerTextView"
+            android:layout_width="205dp"
+            android:layout_height="65dp"
+            android:text="TextView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/imageView13" />
+
+        <Button
+            android:id="@+id/startStop"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="160dp"
+            android:layout_marginTop="76dp"
+            android:text="Button"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </FrameLayout>
