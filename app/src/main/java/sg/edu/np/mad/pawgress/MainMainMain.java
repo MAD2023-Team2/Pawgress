@@ -10,6 +10,7 @@ import android.os.Bundle;
 import sg.edu.np.mad.pawgress.Fragments.Game.GameFragment;
 import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfileFragment;
+import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
 import sg.edu.np.mad.pawgress.databinding.ActivityMainMainMainBinding;
 
 public class MainMainMain extends AppCompatActivity {
@@ -33,7 +34,7 @@ public class MainMainMain extends AppCompatActivity {
                 replaceFragment(new GameFragment());
             }
             if (itemID == R.id.tasks_tab){
-                replaceFragment(new GameFragment());
+                replaceFragment(new TasksFragment());
             }
             if (itemID == R.id.profile_tab){
                 replaceFragment(new ProfileFragment());

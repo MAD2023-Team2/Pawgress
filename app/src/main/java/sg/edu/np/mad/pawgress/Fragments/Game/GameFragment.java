@@ -5,8 +5,13 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import sg.edu.np.mad.pawgress.R;
 
@@ -61,6 +66,43 @@ public class GameFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_game, container, false);
+
+        View view;
+        view = inflater.inflate(R.layout.fragment_game, container, false);
+
+        ImageView corgi_1 = view.findViewById(R.id.corgi_1);
+        corgi_1.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+                        Animation anim = new ScaleAnimation(
+                                1f, 1f, // Start and end values for the X axis scaling
+                                1f, 0.85f, // Start and end values for the Y axis scaling
+                                Animation.RELATIVE_TO_SELF, 0f, // Pivot point of X scaling
+                                Animation.RELATIVE_TO_SELF, 1f); // Pivot point of Y scaling
+                        anim.setFillAfter(true); // Needed to keep the result of the animation
+                        anim.setDuration(100);
+                        v.startAnimation(anim);
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        Animation anim2 = new ScaleAnimation(
+                                1f, 1f, // Start and end values for the X axis scaling
+                                0.85f, 1f, // Start and end values for the Y axis scaling
+                                Animation.RELATIVE_TO_SELF, 0f, // Pivot point of X scaling
+                                Animation.RELATIVE_TO_SELF, 1f); // Pivot point of Y scaling
+                        anim2.setFillAfter(true); // Needed to keep the result of the animation
+                        anim2.setDuration(100);
+                        v.startAnimation(anim2);
+                        break;
+                }
+
+                return true;
+            }
+        });
+
+        return view;
     }
 }
