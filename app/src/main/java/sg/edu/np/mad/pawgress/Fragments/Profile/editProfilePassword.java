@@ -1,4 +1,4 @@
-package sg.edu.np.mad.pawgress.Profile;
+package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 

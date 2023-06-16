@@ -1,4 +1,4 @@
-package sg.edu.np.mad.pawgress;
+package sg.edu.np.mad.pawgress.Fragments.Home;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,8 +10,10 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import sg.edu.np.mad.pawgress.Profile.ProfilePage;
+import sg.edu.np.mad.pawgress.Fragments.Profile.ProfilePage;
+import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.Tasks.TaskList;
+import sg.edu.np.mad.pawgress.UserData;
 
 public class HomePage extends AppCompatActivity {
     @Override
