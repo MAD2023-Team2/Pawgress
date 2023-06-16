@@ -72,7 +72,7 @@ public class LoginPage extends AppCompatActivity {
         {
             UserData user = myDBHandler.findUser(SaveSharedPreference.getUserName(LoginPage.this));
             Log.v(title, "User" + myDBHandler.findTaskList(user));
-            Intent intent = new Intent(LoginPage.this, HomePage.class);
+            Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
             intent.putExtra("User", user);
             startActivity(intent);
         }
