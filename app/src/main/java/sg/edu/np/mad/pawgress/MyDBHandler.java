@@ -21,6 +21,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String ACCOUNTS = "Accounts";
     public static String COLUMN_USERNAME = "UserName";
     public static String COLUMN_PASSWORD = "Password";
+    public static String COLUMN_DATE = "CreateDate";
+    public static String COLUMN_STREAK = "Streak";
+    public static String COLUMN_CURRENCY = "Currency";
+    public static String COLUMN_LOGIN = "LogInStatus";
     public static String TASKS = "Tasks";
     public static String COLUMN_TASK_ID = "TaskID";
     public static String COLUMN_TASK_NAME = "TaskName";
@@ -36,7 +40,11 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db){
         String CREATE_ACCOUNT_TABLE = "Create TABLE " + ACCOUNTS + " (" +
                 COLUMN_USERNAME + " TEXT PRIMARY KEY," +
-                COLUMN_PASSWORD + " TEXT)";
+                COLUMN_PASSWORD + " TEXT," +
+                COLUMN_DATE + " TEXT," +
+                COLUMN_STREAK + " INTEGAR," +
+                COLUMN_CURRENCY + " INTEGAR," +
+                COLUMN_LOGIN + " TEXT)";
         db.execSQL(CREATE_ACCOUNT_TABLE);
         Log.i(title, CREATE_ACCOUNT_TABLE);
 
@@ -61,6 +69,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
         ContentValues values = new ContentValues();
         values.put(COLUMN_USERNAME, userData.getUsername());
         values.put(COLUMN_PASSWORD, userData.getPassword());
+        values.put(COLUMN_DATE, userData.getLastLogInDate());
+        values.put(COLUMN_STREAK, userData.getStreak());
+        values.put(COLUMN_CURRENCY, userData.getCurrency());
+        values.put(COLUMN_LOGIN, userData.getLoggedInTdy());
 
         SQLiteDatabase db = this. getWritableDatabase();
         db.insert(ACCOUNTS, null, values);
@@ -83,6 +95,21 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
+    public void updateData(String username, String logIn, int streak, int currency, String loggedIn){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_DATE, logIn);
+        values.put(COLUMN_STREAK, streak);
+        values.put(COLUMN_CURRENCY, currency);
+        values.put(COLUMN_LOGIN, loggedIn);
+
+        db.update(ACCOUNTS, values,COLUMN_USERNAME + "=?", new String[]{username});
+
+        Log.i(title, "Data updated");
+        db.close();
+    }
+
     public UserData findUser(String username){
         String query = "SELECT * FROM " + ACCOUNTS + " WHERE " + COLUMN_USERNAME + "=\'" + username + "\'";
         Log.i(title, "Query :" + query);
@@ -95,6 +122,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setUsername(cursor.getString(0));
             queryResult.setPassword(cursor.getString(1));
             queryResult.setTaskList(taskList);
+            queryResult.setLastLogInDate(cursor.getString(2));
+            queryResult.setStreak(cursor.getInt(3));
+            queryResult.setCurrency(cursor.getInt(4));
+            queryResult.setLoggedInTdy(cursor.getString(5));
             cursor.close();
         }
         else{

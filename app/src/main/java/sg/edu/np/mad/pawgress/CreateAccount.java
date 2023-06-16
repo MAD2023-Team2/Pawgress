@@ -11,7 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.tutorials.tutPage1;
@@ -60,7 +62,10 @@ public class CreateAccount extends AppCompatActivity {
                     String dbUsername = etUsername.getText().toString();
                     String dbPassword = etPassword.getText().toString();
                     ArrayList<Task> taskList = new ArrayList<Task>();
-                    UserData dbUserData = new UserData(dbUsername,dbPassword,taskList);
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                    String accCreateDate = formatter.format(new Date());
+                    UserData dbUserData = new UserData(dbUsername,dbPassword,taskList, accCreateDate,1,0,"No");
+                    System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
                     myDBHandler.addUser(dbUserData);
                     SaveSharedPreference.setUserName(CreateAccount.this ,etUsername.getText().toString());
                     Intent intent = new Intent(CreateAccount.this, tutPage1.class);
