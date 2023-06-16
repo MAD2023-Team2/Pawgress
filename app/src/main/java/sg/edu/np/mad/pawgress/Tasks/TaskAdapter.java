@@ -41,6 +41,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
     }
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        Log.v(THIS, "View Type " + viewType);
         if (viewType == 1){
             Log.w(THIS, "Tasks present");
             return new TaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task,parent, false));
@@ -73,7 +74,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                     info.putParcelableArrayList("Task List", taskList);
                     info.putInt("Task Index", taskList.indexOf(task)); // send position of task to edit this task only
                     editTask.putExtras(info);
-                    Log.v(THIS, "TaskID = " + task.getTaskID());
                     context.startActivity(editTask);
                 }
             });

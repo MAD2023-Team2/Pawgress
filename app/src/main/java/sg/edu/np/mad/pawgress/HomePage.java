@@ -25,11 +25,12 @@ public class HomePage extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         Log.i(null, "Starting App Home Page");
-
+        Intent receivingEnd = getIntent();
+        UserData user = receivingEnd.getParcelableExtra("User");
         ImageButton profilePhoto = findViewById((R.id.profile));
         TextView greeting = findViewById(R.id.greeting);
         ImageView pet_picture = findViewById(R.id.homeGame);
-        greeting.setText("Hello "); // add username
+        greeting.setText("Hello " + user.getUsername()); // add username
         profilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,6 +48,7 @@ public class HomePage extends AppCompatActivity {
             public void onClick(View v) {
                 // add in code to transfer user task list data to task list
                 Intent intent = new Intent(HomePage.this, TaskList.class);
+                intent.putExtra("User", user);
                 startActivity(intent);
             }
         });
