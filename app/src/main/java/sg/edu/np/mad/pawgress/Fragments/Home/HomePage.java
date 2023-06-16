@@ -16,7 +16,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
-import sg.edu.np.mad.pawgress.Profile.ProfilePage;
+import sg.edu.np.mad.pawgress.Fragments.Profile.ProfilePage;
 import sg.edu.np.mad.pawgress.Tasks.CreateTask;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.Tasks.TaskAdapter;

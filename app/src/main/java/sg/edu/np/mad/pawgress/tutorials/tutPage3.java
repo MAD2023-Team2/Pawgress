@@ -7,7 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import sg.edu.np.mad.pawgress.Fragments.Home.HomePage;
+import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;

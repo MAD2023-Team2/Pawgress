@@ -79,7 +79,7 @@ public class DailyLogIn extends AppCompatActivity {
                 closeButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
-                        Intent intent = new Intent(DailyLogIn.this,HomePage.class);
+                        Intent intent = new Intent(DailyLogIn.this, MainMainMain.class);
                         intent.putExtra("User", user);
                         startActivity(intent);
                     }
@@ -94,7 +94,7 @@ public class DailyLogIn extends AppCompatActivity {
                 closeButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
-                        Intent intent = new Intent(DailyLogIn.this,HomePage.class);
+                        Intent intent = new Intent(DailyLogIn.this, MainMainMain.class);
                         intent.putExtra("User", user);
                         startActivity(intent);
                     }
@@ -126,7 +126,7 @@ public class DailyLogIn extends AppCompatActivity {
                     closeButton.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v){
-                            Intent intent = new Intent(DailyLogIn.this,HomePage.class);
+                            Intent intent = new Intent(DailyLogIn.this, MainMainMain.class);
                             intent.putExtra("User", user);
                             startActivity(intent);
                         }
@@ -147,7 +147,7 @@ public class DailyLogIn extends AppCompatActivity {
                     closeButton.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v){
-                            Intent intent = new Intent(DailyLogIn.this,HomePage.class);
+                            Intent intent = new Intent(DailyLogIn.this, MainMainMain.class);
                             intent.putExtra("User", user);
                             startActivity(intent);
                         }

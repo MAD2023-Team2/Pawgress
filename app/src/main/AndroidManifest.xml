@@ -19,7 +19,7 @@
             android:name=".Tasks.TaskCompletion"
             android:exported="false" />
         <activity
-            android:name=".Profile.editProfilePassword"
+            android:name=".Fragments.Profile.editProfilePassword"
             android:exported="false" />
         <activity
             android:name=".Tasks.EditTask"
@@ -37,7 +37,7 @@
             android:name=".CreateAccount"
             android:exported="false" />
         <activity
-            android:name=".Profile.ProfilePage"
+            android:name=".Fragments.Profile.ProfilePage"
             android:exported="false" />
         <activity
             android:name=".HomePage"
@@ -50,6 +50,9 @@
             android:exported="false" />
         <activity
             android:name=".tutorials.tutPage3"
+            android:exported="false" />
+        <activity
+            android:name=".MainMainMain"
             android:exported="false" />
         <activity
             android:name=".LoginPage"
