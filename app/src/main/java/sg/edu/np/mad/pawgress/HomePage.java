@@ -26,6 +26,8 @@ import sg.edu.np.mad.pawgress.Tasks.TaskList;
 
 public class HomePage extends AppCompatActivity {
     private TextView emptyspace_home;
+    private TextView emptyTaskText;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -56,13 +58,15 @@ public class HomePage extends AppCompatActivity {
         // WALTER - add recycler view code (for now this goes to taskList page)
         MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
         RecyclerView recyclerView = findViewById(R.id.taskcardlist);
-
+        emptyTaskText = findViewById(R.id.emptyTextView);
         try { // after creating new task
             Intent receivingEnd_2 = getIntent();
             UserData user_2 = receivingEnd_2.getParcelableExtra("New Task List");
             ArrayList<Task> taskList = user_2.getTaskList();
             TaskCardAdapter mAdapter = new TaskCardAdapter(taskList, this);
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+            mAdapter.emptyTasktext = emptyTaskText;
+            mAdapter.updateEmptyView();
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
         } catch (RuntimeException e) {
@@ -75,6 +79,8 @@ public class HomePage extends AppCompatActivity {
             //taskList.add(new Task(1, "Week 6 Practical", "In Progress", "MAD"));
             TaskCardAdapter mAdapter = new TaskCardAdapter(taskList, this);
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+            mAdapter.emptyTasktext = emptyTaskText;
+            mAdapter.updateEmptyView();
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
         }
