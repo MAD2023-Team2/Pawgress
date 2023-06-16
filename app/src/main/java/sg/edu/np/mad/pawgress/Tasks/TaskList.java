@@ -12,13 +12,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.UserData;
 
 public class TaskList extends AppCompatActivity {
 
     // make it more compact
     String TAG = "Task List";
-
+    MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +29,8 @@ public class TaskList extends AppCompatActivity {
         try { // after creating new task
             Log.v(TAG, "starting try");
             Intent receivingEnd = getIntent();
-            ArrayList<Task> taskList = receivingEnd.getParcelableArrayListExtra("New Task List");
+            UserData user = receivingEnd.getParcelableExtra("New Task List");
+            ArrayList<Task> taskList = user.getTaskList();
             Log.v(TAG, "List size = " + taskList.size());
             Log.v(TAG, "Starting recyclerview");
             TaskAdapter mAdapter = new TaskAdapter(taskList, this);
@@ -39,16 +42,18 @@ public class TaskList extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent createTask = new Intent(TaskList.this, CreateTask.class);
-                    createTask.putParcelableArrayListExtra("Task List", taskList);
+                    createTask.putExtra("User", user);
                     startActivity(createTask);
                     finish();
                 }
             });
         } catch (RuntimeException e) {
+            // from homepage or tab button
             Log.v(TAG, "starting exception");
             //ArrayList<Task> taskList = new ArrayList<Task>();
             Intent receivingEnd = getIntent();
-            ArrayList<Task> taskList = receivingEnd.getParcelableArrayListExtra("TaskList");
+            UserData user = receivingEnd.getParcelableExtra("User");
+            ArrayList<Task> taskList = myDBHandler.findTaskList(user);
             //  testing
             //taskList.add(new Task(1, "Week 6 Practical", "In Progress", "MAD"));
             Log.v(TAG, "List size = " + taskList.size());
@@ -62,7 +67,7 @@ public class TaskList extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     Intent createTask = new Intent(TaskList.this, CreateTask.class);
-                    createTask.putParcelableArrayListExtra("Task List", taskList);
+                    createTask.putExtra("User", user);
                     startActivity(createTask);
                     finish();
                 }

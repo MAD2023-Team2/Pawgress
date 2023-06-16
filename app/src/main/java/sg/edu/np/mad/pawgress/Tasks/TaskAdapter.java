@@ -74,7 +74,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                     info.putParcelableArrayList("Task List", taskList);
                     info.putInt("Task Index", taskList.indexOf(task)); // send position of task to edit this task only
                     editTask.putExtras(info);
-                    Log.v(THIS, "TaskID = " + task.getTaskID());
                     context.startActivity(editTask);
                 }
             });

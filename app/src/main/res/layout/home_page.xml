@@ -42,19 +42,17 @@
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/corgi" />
 
-    <TextView
-        android:id="@+id/homeTask"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/taskcardlist"
+        android:layout_width="wrap_content"
+        android:layout_height="400dp"
         android:layout_marginStart="30dp"
         android:layout_marginTop="25dp"
         android:layout_marginEnd="30dp"
         android:layout_marginBottom="34dp"
-        android:paddingTop="150dp"
-        android:text="ADD IN RECYCLER VIEW (goes to taskList)"
-        android:textAlignment="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/homeGame" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
