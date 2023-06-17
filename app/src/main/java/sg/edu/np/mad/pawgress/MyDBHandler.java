@@ -31,6 +31,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_TASK_NAME = "TaskName";
     public static String COLUMN_TASK_STATUS = "TaskStatus";
     public static String COLUMN_TASK_CATEGORY = "TaskCategory";
+    public static String COLUMN_PET_TYPE = "PetType";
+    public static String COLUMN_PET_DESIGN = "PetDesign";
+
     public ArrayList<Task> taskList = new ArrayList<>();
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -45,7 +48,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_DATE + " TEXT," +
                 COLUMN_STREAK + " INTEGAR," +
                 COLUMN_CURRENCY + " INTEGAR," +
-                COLUMN_LOGIN + " TEXT)";
+                COLUMN_LOGIN + " TEXT," +
+                COLUMN_PET_TYPE + " TEXT," +
+                COLUMN_PET_DESIGN + " INTEGER)";
         db.execSQL(CREATE_ACCOUNT_TABLE);
         Log.i(title, CREATE_ACCOUNT_TABLE);
 
@@ -123,6 +128,15 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
+    public void savePetDesign(String username, String petType, int petDesign) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PET_TYPE, petType);
+        values.put(COLUMN_PET_DESIGN, petDesign);
+        db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
+        db.close();
+    }
+
     public UserData findUser(String username){
         String query = "SELECT * FROM " + ACCOUNTS + " WHERE " + COLUMN_USERNAME + "=\'" + username + "\'";
         Log.i(title, "Query :" + query);
@@ -139,6 +153,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setStreak(cursor.getInt(3));
             queryResult.setCurrency(cursor.getInt(4));
             queryResult.setLoggedInTdy(cursor.getString(5));
+            queryResult.setPetType(cursor.getString(6));
+            queryResult.setPetDesign(cursor.getInt(7));
             cursor.close();
         }
         else{
@@ -190,4 +206,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.close();
         return userData.getTaskList();
     }
+
+
 }
