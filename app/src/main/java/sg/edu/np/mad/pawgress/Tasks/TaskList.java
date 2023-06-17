@@ -39,9 +39,9 @@ public class TaskList extends AppCompatActivity {
             TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, this );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setAdapter(mAdapter);
             mAdapter.emptyTasktext = emptyTaskText;
             mAdapter.updateEmptyView();
+            recyclerView.setAdapter(mAdapter);
             FloatingActionButton button = findViewById(R.id.addTask);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -63,9 +63,9 @@ public class TaskList extends AppCompatActivity {
             TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, this);
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setAdapter(mAdapter);
             mAdapter.emptyTasktext = emptyTaskText;
             mAdapter.updateEmptyView();
+            recyclerView.setAdapter(mAdapter);
             FloatingActionButton button = findViewById(R.id.addTask);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
