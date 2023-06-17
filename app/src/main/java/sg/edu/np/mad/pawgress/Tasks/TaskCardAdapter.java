@@ -15,15 +15,22 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.UserData;
 
 public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
-    ArrayList<Task> taskList;
+    UserData user;
     Context context;
+    String THIS = "Adapter";
+    MyDBHandler mDataBase;
+    ArrayList<Task> taskList;
 
-    public TaskCardAdapter(ArrayList<Task> taskList, Context context){
-        this.taskList = taskList;
+    public TaskCardAdapter(UserData userData, MyDBHandler mDatabase, Context context){
+        this.user = userData;
+        this.mDataBase = mDatabase;
         this.context = context;
+        this.taskList = mDataBase.findTaskList(user);
     }
 
     @Override
@@ -51,6 +58,7 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
     public void onBindViewHolder(TaskCardViewHolder holder, int position){
         if (holder.getItemViewType() == 1){
             Task task = taskList.get(position);
+            int id = task.getTaskID();
             holder.name.setText(task.getTaskName());
             // view individual task
             holder.card2.setOnClickListener(new View.OnClickListener() {

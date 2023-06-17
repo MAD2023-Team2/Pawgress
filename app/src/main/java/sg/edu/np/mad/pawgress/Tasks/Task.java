@@ -19,13 +19,15 @@ public class Task implements Parcelable {
     }
 
     // add in date of creation and duedate(can accept null)
-    public Task(String taskName, String status, String category) {
+    public Task(int taskID, String taskName, String status, String category) {
+        this.taskID = taskID;
         this.taskName = taskName;
         this.status = status;
         this.category = category;
     }
 
     protected Task(Parcel in) {
+        taskID = in.readInt();
         taskName = in.readString();
         status = in.readString();
         category = in.readString();
@@ -50,10 +52,15 @@ public class Task implements Parcelable {
 
     @Override
     public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(taskID);
         dest.writeString(taskName);
         dest.writeString(status);
         dest.writeString(category);
     }
+    public int getTaskID() {
+        return taskID;
+    }
+    public void setTaskID(int taskID) { this.taskID = taskID; }
 
     public String getTaskName() {
         return taskName;

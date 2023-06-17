@@ -60,20 +60,17 @@ public class HomePage extends AppCompatActivity {
         try { // after creating new task
             Intent receivingEnd_2 = getIntent();
             UserData user_2 = receivingEnd_2.getParcelableExtra("New Task List");
-            ArrayList<Task> taskList = user_2.getTaskList();
-            TaskCardAdapter mAdapter = new TaskCardAdapter(taskList, this);
+            ArrayList<Task> taskList = myDBHandler.findTaskList(user_2);
+            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, this );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
         } catch (RuntimeException e) {
             // from homepage or tab button
-            //ArrayList<Task> taskList = new ArrayList<Task>();
             Intent receivingEnd_2 = getIntent();
             UserData user_2 = receivingEnd_2.getParcelableExtra("User");
             ArrayList<Task> taskList = myDBHandler.findTaskList(user_2);
-            //  testing
-            //taskList.add(new Task(1, "Week 6 Practical", "In Progress", "MAD"));
-            TaskCardAdapter mAdapter = new TaskCardAdapter(taskList, this);
+            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, this );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
