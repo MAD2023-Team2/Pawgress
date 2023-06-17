@@ -64,12 +64,20 @@ public class CreateAccount extends AppCompatActivity {
                     ArrayList<Task> taskList = new ArrayList<Task>();
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                     String accCreateDate = formatter.format(new Date());
-                    UserData dbUserData = new UserData(dbUsername,dbPassword,taskList, accCreateDate,1,0,"No");
+                    UserData dbUserData = new UserData(dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog","corgi");
                     System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
                     myDBHandler.addUser(dbUserData);
                     SaveSharedPreference.setUserName(CreateAccount.this ,etUsername.getText().toString());
                     Intent intent = new Intent(CreateAccount.this, tutPage1.class);
                     intent.putExtra("User", dbUserData);
+
+                    // for CreateAccount to CompanionSelectionActivity
+                    // pass username info over
+                    sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putString(MY_USERNAME, etUsername.getText().toString());
+                    editor.commit();
+
                     startActivity(intent);
                     finish();
                 }

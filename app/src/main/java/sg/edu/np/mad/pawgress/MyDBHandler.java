@@ -30,6 +30,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_TASK_NAME = "TaskName";
     public static String COLUMN_TASK_STATUS = "TaskStatus";
     public static String COLUMN_TASK_CATEGORY = "TaskCategory";
+    public static String COLUMN_PET_TYPE = "PetType";
+    public static String COLUMN_PET_DESIGN = "PetDesign";
+
     public ArrayList<Task> taskList = new ArrayList<>();
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -162,5 +165,15 @@ public class MyDBHandler extends SQLiteOpenHelper{
         }
         db.close();
         return userData.getTaskList();
+    }
+
+    public void savePetDesign(String username, String petType, String petDesign) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, username);
+        values.put(COLUMN_PET_TYPE, petType);
+        values.put(COLUMN_PET_DESIGN, petDesign);
+        db.insert(ACCOUNTS, null, values);
+        db.close();
     }
 }
