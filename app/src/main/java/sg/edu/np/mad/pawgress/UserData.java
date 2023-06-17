@@ -18,9 +18,9 @@ public class UserData implements Parcelable{
     private int currency;
     private String loggedInTdy;
     private String petType;
-    private String petDesign;
+    private int petDesign;
 
-    public UserData(String username, String password, ArrayList<Task> taskList, String lastLogInDate, int streak, int currency, String loggedInTdy, String petType, String petDesign) {
+    public UserData(String username, String password, ArrayList<Task> taskList, String lastLogInDate, int streak, int currency, String loggedInTdy, String petType, int petDesign) {
         this.username = username;
         this.password = password;
         this.taskList = taskList;
@@ -28,10 +28,10 @@ public class UserData implements Parcelable{
         this.streak = streak;
         this.currency = currency;
         this.loggedInTdy = loggedInTdy;
-        // this.petType = petType;
-        this.petType = "dog";
-        // this.petDesign = petDesign;
-        this.petDesign = "corgi";
+        this.petType = petType;
+        //this.petType = "dog";
+        this.petDesign = petDesign;
+        //this.petDesign = "corgi";
 
     }
 
@@ -52,7 +52,7 @@ public class UserData implements Parcelable{
         dest.writeInt(currency);
         dest.writeString(loggedInTdy);
         dest.writeString(petType);
-        dest.writeString(petDesign);
+        dest.writeInt(petDesign);
     }
     public static final Creator<UserData> CREATOR = new Creator<UserData>() {
         @Override
@@ -74,7 +74,7 @@ public class UserData implements Parcelable{
         currency = in.readInt();
         loggedInTdy = in.readString();
         petType = in.readString();
-        petDesign = in.readString();
+        petDesign = in.readInt();
     }
 
     public String getUsername() {
@@ -105,9 +105,11 @@ public class UserData implements Parcelable{
     public void setCurrency(int currency){this.currency = currency;}
     public String getLoggedInTdy(){return loggedInTdy;}
     public void setLoggedInTdy(String loggedInTdy){this.loggedInTdy = loggedInTdy;}
+    public String getPetType(){ return petType; }
     public void setPetType(String petType){
         this.petType = petType;
     }
-    public void setPetDesign(String petDesign){
+    public int getPetDesign(){ return petDesign; }
+    public void setPetDesign(int petDesign){
         this.petDesign = petDesign;}
 }

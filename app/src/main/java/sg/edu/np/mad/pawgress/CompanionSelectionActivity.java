@@ -15,8 +15,6 @@ import java.util.Random;
 public class CompanionSelectionActivity extends AppCompatActivity {
     private String GLOBAL_PREF = "MyPrefs";
     private String MY_USERNAME = "MyUserName";
-    EditText etUsername = findViewById(R.id.editTextText3);
-
     Button catButton;
     Button dogButton;
     //UserData User;
@@ -28,10 +26,12 @@ public class CompanionSelectionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_companion_selection);
+        Intent receivingEnd = getIntent();
+        UserData user = receivingEnd.getParcelableExtra("User");
 
         // Retrieve the username from the shared preference
-        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
-        String username = sharedPreferences.getString(MY_USERNAME, etUsername.getText().toString());
+        // SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        // String username = sharedPreferences.getString(MY_USERNAME, etUsername.getText().toString());
 
         catButton = findViewById(R.id.catButton);
         dogButton = findViewById(R.id.dogButton);
@@ -39,19 +39,20 @@ public class CompanionSelectionActivity extends AppCompatActivity {
         catButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assignCompanionDesign("cat");
+                assignCompanionDesign("cat", user);
             }
         });
 
         dogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assignCompanionDesign("dog");
+                assignCompanionDesign("dog", user);
             }
         });
     }
 
-    private void assignCompanionDesign(String selection){
+    private void assignCompanionDesign(String selection, UserData user){
+        MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
         int[] catDesigns = {R.drawable.grey_cat, R.drawable.orange_cat};
         int[] dogDesigns = {R.drawable.corgi, R.drawable.golden_retriever};
 
@@ -59,20 +60,25 @@ public class CompanionSelectionActivity extends AppCompatActivity {
         if (selection.equals("cat")) {
             int randomIndex = new Random().nextInt(catDesigns.length);
             selectedDesign = catDesigns[randomIndex];
+            dbHandler.savePetDesign(user.getUsername(), "cat", selectedDesign);
+
 
         } else {
             int randomIndex = new Random().nextInt(dogDesigns.length);
             selectedDesign = dogDesigns[randomIndex];
+            dbHandler.savePetDesign(user.getUsername(), "dog", selectedDesign);
         }
 
-        //MyDBHandler dbHandler = new MyDBHandler(username, );
-        //dbHandler.savePetDesign();
+        // MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
+        //dbHandler.savePetDesign(user.getUsername(), "cat", selectedDesign);
 
         // Create an Intent to launch the "MainMainMain" activity
         Intent intent = new Intent(CompanionSelectionActivity.this, DailyLogIn.class);
+        intent.putExtra("User",user);
         startActivity(intent);
 
         // Finish the current activity if needed
         finish();
     }
+
 }
