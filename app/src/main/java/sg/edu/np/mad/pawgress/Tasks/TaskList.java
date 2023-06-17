@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +21,7 @@ import sg.edu.np.mad.pawgress.UserData;
 public class TaskList extends AppCompatActivity {
 
     // make it more compact
+    private TextView emptyTaskText;
     String TAG = "Task List";
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
     @Override
@@ -27,6 +30,7 @@ public class TaskList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_list);
         RecyclerView recyclerView = findViewById(R.id.list);
+        emptyTaskText = findViewById(R.id.emptyTextView);
         try { // after creating new task
             Log.v(TAG, "starting try");
             Intent receivingEnd = getIntent();
@@ -37,6 +41,8 @@ public class TaskList extends AppCompatActivity {
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
+            mAdapter.emptyTasktext = emptyTaskText;
+            mAdapter.updateEmptyView();
             FloatingActionButton button = findViewById(R.id.addTask);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -62,6 +68,8 @@ public class TaskList extends AppCompatActivity {
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
+            mAdapter.emptyTasktext = emptyTaskText;
+            mAdapter.updateEmptyView();
             FloatingActionButton button = findViewById(R.id.addTask);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override

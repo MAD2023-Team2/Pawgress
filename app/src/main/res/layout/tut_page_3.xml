@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".tutorials.tut_page_3">
+    tools:context=".tutorials.tutPage3">
 
     <!-- TODO: Update blank fragment layout -->
 

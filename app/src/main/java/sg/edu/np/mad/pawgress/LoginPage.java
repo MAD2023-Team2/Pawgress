@@ -28,7 +28,6 @@ public class LoginPage extends AppCompatActivity {
     @Override
     protected void onStart(){
         super.onStart();
-
         Log.v(title, "On Login Page");
         if(SaveSharedPreference.getUserName(LoginPage.this).length() == 0) //shared preferences for auto login, if shared preference has no data, brings to login page
         {
@@ -57,7 +56,7 @@ public class LoginPage extends AppCompatActivity {
                     UserData user = myDBHandler.findUser(username);
                     if (isValidCredentials(etUsername.getText().toString(), etPassword.getText().toString())){
                         SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
-                        Intent intent = new Intent(LoginPage.this, HomePage.class);
+                        Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
                         intent.putExtra("User", user);
                         startActivity(intent);
                         finish();
@@ -71,8 +70,8 @@ public class LoginPage extends AppCompatActivity {
         else // if shared preference has data, skips log in
         {
             UserData user = myDBHandler.findUser(SaveSharedPreference.getUserName(LoginPage.this));
-            Log.v(title, "User" + myDBHandler.findTaskList(user));
-            Intent intent = new Intent(LoginPage.this, HomePage.class);
+            Log.v(title, "TaskList" + user.getTaskList().size());
+            Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
             intent.putExtra("User", user);
             startActivity(intent);
         }

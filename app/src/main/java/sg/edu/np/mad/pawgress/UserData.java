@@ -13,11 +13,19 @@ public class UserData implements Parcelable{
     private String username;
     private String password;
     private ArrayList<Task> taskList;
+    private String lastLogInDate;
+    private int streak;
+    private int currency;
+    private String loggedInTdy;
 
-    public UserData(String username, String password, ArrayList<Task> taskList) {
+    public UserData(String username, String password, ArrayList<Task> taskList, String lastLogInDate, int streak, int currency, String loggedInTdy) {
         this.username = username;
         this.password = password;
         this.taskList = taskList;
+        this.lastLogInDate = lastLogInDate;
+        this.streak = streak;
+        this.currency = currency;
+        this.loggedInTdy = loggedInTdy;
     }
 
     public UserData(){
@@ -31,6 +39,10 @@ public class UserData implements Parcelable{
         dest.writeString(username);
         dest.writeString(password);
         dest.writeList(taskList);
+        dest.writeString(lastLogInDate);
+        dest.writeInt(streak);
+        dest.writeInt(currency);
+        dest.writeString(loggedInTdy);
     }
     public static final Creator<UserData> CREATOR = new Creator<UserData>() {
         @Override
@@ -47,6 +59,10 @@ public class UserData implements Parcelable{
         password = in.readString();
         taskList = new ArrayList<>();
         in.readList(taskList, Task.class.getClassLoader());
+        lastLogInDate = in.readString();
+        streak = in.readInt();
+        currency = in.readInt();
+        loggedInTdy = in.readString();
     }
 
     public String getUsername() {
@@ -68,4 +84,13 @@ public class UserData implements Parcelable{
     public ArrayList<Task> getTaskList() { return taskList; }
 
     public void setTaskList(ArrayList<Task> taskList) { this.taskList = taskList; }
+
+    public String getLastLogInDate(){return lastLogInDate;}
+    public void setLastLogInDate(String lastLogInDate){this.lastLogInDate = lastLogInDate;}
+    public int getStreak(){return streak;}
+    public void setStreak(int streak){this.streak = streak;}
+    public int getCurrency(){return currency;}
+    public void setCurrency(int currency){this.currency = currency;}
+    public String getLoggedInTdy(){return loggedInTdy;}
+    public void setLoggedInTdy(String loggedInTdy){this.loggedInTdy = loggedInTdy;}
 }

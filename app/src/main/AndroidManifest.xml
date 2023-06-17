@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
+    xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:allowBackup="true"
@@ -11,12 +11,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Pawgress"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+        <activity
+            android:name=".MainMainMain"
+            android:exported="false" />
         <activity
             android:name=".Tasks.TaskCompletion"
             android:exported="false" />
         <activity
-            android:name=".Profile.editProfilePassword"
+            android:name=".Fragments.Profile.editProfilePassword"
             android:exported="false" />
         <activity
             android:name=".Tasks.EditTask"
@@ -34,10 +37,13 @@
             android:name=".CreateAccount"
             android:exported="false" />
         <activity
-            android:name=".Profile.ProfilePage"
+            android:name=".DailyLogIn"
             android:exported="false" />
         <activity
-            android:name=".HomePage"
+            android:name=".Fragments.Profile.ProfilePage"
+            android:exported="false" />
+        <activity
+            android:name=".Fragments.Home.HomePage"
             android:exported="false" />
         <activity
             android:name=".tutorials.tutPage1"
@@ -50,7 +56,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginPage"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
