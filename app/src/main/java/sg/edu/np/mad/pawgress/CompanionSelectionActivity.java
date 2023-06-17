@@ -50,11 +50,13 @@ public class CompanionSelectionActivity extends AppCompatActivity {
             }
         });
     }
-
+    int[] catDesigns = {R.drawable.grey_cat, R.drawable.orange_cat};
+    int[] dogDesigns = {R.drawable.corgi, R.drawable.golden_retriever};
     private void assignCompanionDesign(String selection, UserData user){
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
-        int[] catDesigns = {R.drawable.grey_cat, R.drawable.orange_cat};
-        int[] dogDesigns = {R.drawable.corgi, R.drawable.golden_retriever};
+
+        //for (int n : catDesigns){System.out.println(n);}
+        //for (int n : dogDesigns){System.out.println(n);}
 
         int selectedDesign;
         if (selection.equals("cat")) {

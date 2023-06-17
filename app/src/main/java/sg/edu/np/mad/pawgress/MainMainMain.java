@@ -1,11 +1,14 @@
 package sg.edu.np.mad.pawgress;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import sg.edu.np.mad.pawgress.Fragments.Game.GameFragment;
 import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
@@ -15,11 +18,27 @@ import sg.edu.np.mad.pawgress.databinding.ActivityMainMainMainBinding;
 
 public class MainMainMain extends AppCompatActivity {
     ActivityMainMainMainBinding binding;
+    @Override
+    public void onBackPressed(){
+        new AlertDialog.Builder(this)
+                .setTitle("Exit App")
+                .setMessage("Are you sure you want to exit?")
+                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // Exit the app
+                        finishAffinity();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_main_main);
+
         binding = ActivityMainMainMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         replaceFragment(new HomeFragment());
