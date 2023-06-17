@@ -3,6 +3,7 @@ package sg.edu.np.mad.pawgress.Tasks;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,31 +15,35 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.UserData;
 
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
     public TextView emptyTasktext;
-
     ArrayList<Task> taskList;
     Context context;
     String THIS = "Adapter";
-    public TaskAdapter(ArrayList<Task> taskList, Context context){
-        this.taskList = taskList;
+    UserData user;
+    MyDBHandler mDataBase;
+    public TaskAdapter(UserData userData, MyDBHandler mDatabase, Context context){
+        this.user = userData;
+        this.mDataBase = mDatabase;
         this.context = context;
+        this.taskList = mDataBase.findTaskList(user);
     }
     @Override
     public int getItemCount() {
         return taskList.size();
     }
 
-    public void updateEmptyView() {
+    public void updateEmptyView(){
         if (taskList.isEmpty()){
-            emptyTasktext.setVisibility(View.VISIBLE);
-        }
-        else{
-            emptyTasktext.setVisibility(View.INVISIBLE);
+
         }
     }
 
@@ -66,6 +71,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
         Log.i(THIS, "onbind");
         if (holder.getItemViewType() == 1){
             Task task = taskList.get(position);
+            int id = task.getTaskID();
             holder.category.setText(task.getCategory());
             holder.name.setText(task.getTaskName());
             // view individual task
@@ -73,7 +79,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                 @Override
                 public void onClick(View v) {
                     Intent viewTask = new Intent(context, TaskView.class);
-                    viewTask.putExtra("Task", task);
+                    Bundle info = new Bundle();
+                    info.putParcelable("User", user);
+                    info.putInt("Task ID", id); // send id of task to view this task only
+                    viewTask.putExtras(info);
                     context.startActivity(viewTask);
                 }
             });
@@ -83,8 +92,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                 public void onClick(View v) {
                     Intent editTask = new Intent(context, EditTask.class);
                     Bundle info = new Bundle();
-                    info.putParcelableArrayList("Task List", taskList);
-                    info.putInt("Task Index", taskList.indexOf(task)); // send position of task to edit this task only
+                    Log.v(THIS, "id " + id);
+                    info.putParcelable("User", user);
+                    info.putInt("Task ID", id); // send id of task to edit this task only
                     editTask.putExtras(info);
                     context.startActivity(editTask);
                 }
@@ -100,7 +110,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                     builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
                         public void onClick(DialogInterface dialog, int id){
                             Log.v(THIS, "Deleting task");
-                            taskList.remove(taskList.get(taskList.indexOf(task)));
+                            task.setStatus("Deleted");
+                            mDataBase.updateTask(task);
                             Log.i(THIS, "Task List new size = " + taskList.size());
                             notifyItemRemoved(taskList.indexOf(task));
                             notifyItemRangeChanged(taskList.indexOf(task), taskList.size());

@@ -26,6 +26,7 @@ public class TaskList extends AppCompatActivity {
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "In Task List");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_list);
         RecyclerView recyclerView = findViewById(R.id.list);
@@ -34,10 +35,8 @@ public class TaskList extends AppCompatActivity {
             Log.v(TAG, "starting try");
             Intent receivingEnd = getIntent();
             UserData user = receivingEnd.getParcelableExtra("New Task List");
-            ArrayList<Task> taskList = user.getTaskList();
-            Log.v(TAG, "List size = " + taskList.size());
             Log.v(TAG, "Starting recyclerview");
-            TaskAdapter mAdapter = new TaskAdapter(taskList, this);
+            TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, this );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
@@ -56,15 +55,12 @@ public class TaskList extends AppCompatActivity {
         } catch (RuntimeException e) {
             // from homepage or tab button
             Log.v(TAG, "starting exception");
-            //ArrayList<Task> taskList = new ArrayList<Task>();
             Intent receivingEnd = getIntent();
             UserData user = receivingEnd.getParcelableExtra("User");
             ArrayList<Task> taskList = myDBHandler.findTaskList(user);
-            //  testing
-            //taskList.add(new Task(1, "Week 6 Practical", "In Progress", "MAD"));
             Log.v(TAG, "List size = " + taskList.size());
             Log.v(TAG, "Starting recyclerview");
-            TaskAdapter mAdapter = new TaskAdapter(taskList, this);
+            TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, this);
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -97,6 +98,18 @@ public class MyDBHandler extends SQLiteOpenHelper{
         Log.i(title, "Inserted Task");
         db.close();
     }
+    public void updateTask(Task task){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_TASK_NAME, task.getTaskName());
+        values.put(COLUMN_TASK_STATUS, task.getStatus());
+        values.put(COLUMN_TASK_CATEGORY, task.getCategory());
+        Log.v(title, "Task ID/NAME" + task.getTaskID() + task.getTaskName());
+        db.update(TASKS, values, COLUMN_TASK_ID + "=?", new String[]{String.valueOf(task.getTaskID())});
+        Log.i(title, "Updated Task");
+        db.close();
+    }
 
     public void updateData(String username, String logIn, int streak, int currency, String loggedIn){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -138,30 +151,43 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.close();
         return queryResult;
     }
+
+    public Task findTask(int id){
+        for (Task task : taskList){
+            if (task.getTaskID() == id){
+                return task;
+            }
+        }
+        return null;
+    }
     public ArrayList<Task> findTaskList(UserData userData){
         String query = "SELECT * FROM " + TASKS + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
         Log.i(title, "Query :" + query);
-
+        ArrayList<Task> NewtaskList = new ArrayList<>();
         Task queryResult = new Task();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
         if (cursor.moveToFirst()){
+            queryResult.setTaskID(cursor.getInt(0));
             queryResult.setTaskName(cursor.getString(1));
             queryResult.setStatus(cursor.getString(2));
             queryResult.setCategory(cursor.getString(3));
-            taskList.add(queryResult);
+            Log.w(title, "TaskID/TaskName " + queryResult.getTaskID() + queryResult.getTaskName());
+            NewtaskList.add(queryResult);
             while (cursor.moveToNext()) {
                 Task task = new Task();
+                task.setTaskID(cursor.getInt(0));
                 task.setTaskName(cursor.getString(1));
                 task.setStatus(cursor.getString(2));
                 task.setCategory(cursor.getString(3));
-                taskList.add(task);
+                Log.w(title, "TaskID/TaskName " + task.getTaskID() + task.getTaskName());
+                NewtaskList.add(task);
             }
             cursor.close();
-            userData.setTaskList(taskList);
+            userData.setTaskList(NewtaskList);
         }
         else{
-            userData.setTaskList(taskList);
+            userData.setTaskList(NewtaskList);
         }
         db.close();
         return userData.getTaskList();
