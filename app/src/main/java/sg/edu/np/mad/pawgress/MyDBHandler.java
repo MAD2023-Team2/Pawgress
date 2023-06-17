@@ -165,9 +165,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return queryResult;
     }
 
-    public Task findTask(int id){
-        for (Task task : taskList){
+    public Task findTask(int id, ArrayList<Task> newTaskList){
+        for (Task task : newTaskList){
             if (task.getTaskID() == id){
+                Log.w(title, "Task: " + task.getTaskName());
                 return task;
             }
         }

@@ -23,6 +23,8 @@ import sg.edu.np.mad.pawgress.Tasks.TaskList;
 import sg.edu.np.mad.pawgress.UserData;
 
 public class HomePage extends AppCompatActivity {
+
+    private TextView emptyTaskText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -39,6 +41,7 @@ public class HomePage extends AppCompatActivity {
         ImageButton profilePhoto = findViewById((R.id.profile));
         TextView greeting = findViewById(R.id.greeting);
         ImageView pet_picture = findViewById(R.id.homeGame);
+
         greeting.setText("Hello " + user.getUsername()); // add username
         profilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,6 +65,8 @@ public class HomePage extends AppCompatActivity {
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
+            mAdapter.emptyTasktext = emptyTaskText;
+            mAdapter.updateEmptyView();
         } catch (RuntimeException e) {
             // from homepage or tab button
             //ArrayList<Task> taskList = new ArrayList<Task>();
@@ -74,6 +79,8 @@ public class HomePage extends AppCompatActivity {
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
+            mAdapter.emptyTasktext = emptyTaskText;
+            mAdapter.updateEmptyView();
         }
     }
 }

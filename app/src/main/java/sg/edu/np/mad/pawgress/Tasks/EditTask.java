@@ -26,10 +26,8 @@ public class EditTask extends AppCompatActivity {
 
         Log.w(Edit, "In edit mode");
         Intent receivingEnd = getIntent();
-        int id = receivingEnd.getIntExtra("Task ID", 0);
         UserData user = receivingEnd.getParcelableExtra("User");
-        Task task = new Task();
-        task.setTaskID(id);
+        Task task = receivingEnd.getParcelableExtra("Task");
         Log.v(Edit, "Task Id = " + task.getTaskID());
         EditText etname = findViewById(R.id.editTextText);
         EditText etcat = findViewById(R.id.editTextText2);
