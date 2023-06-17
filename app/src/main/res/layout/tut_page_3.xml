@@ -19,10 +19,16 @@
 
     <TextView
         android:id="@+id/tut3_next"
-        android:layout_width="161dp"
-        android:layout_height="40dp"
+        style="@style/Widget.AppCompat.TextView"
+        android:layout_width="164dp"
+        android:layout_height="30dp"
         android:layout_marginStart="116dp"
         android:layout_marginBottom="100dp"
+        android:background="#4CAF50"
+        android:gravity="center"
+        android:text="Let's get started"
+        android:textAlignment="center"
+        android:textColor="#000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 

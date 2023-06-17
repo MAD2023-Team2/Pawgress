@@ -75,15 +75,18 @@ public class DailyLogIn extends AppCompatActivity {
 
                 statusText.setText("Let's start streaking and stay productive!");
                 streakText.setText("Streak: " + streak);
-                rewardText.setText("Reward: " + (streak*1));
-                myDBHandler.updateData(user.getUsername(), newDayDate, streak, streak*1, "Yes");
-
+                //rewardText.setText("Reward: " + (streak*1));
+                //myDBHandler.updateData(user.getUsername(), newDayDate, streak, streak*1, "Yes");
+                rewardText.setText("Reward:0");
+                myDBHandler.updateData(user.getUsername(), newDayDate, streak, 0, "Yes");
                 closeButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
                         Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
                         intent.putExtra("User", user);
+                        intent.putExtra("tab", "home_tab");
                         startActivity(intent);
+                        finish();
                     }
                 });
             }
@@ -98,7 +101,9 @@ public class DailyLogIn extends AppCompatActivity {
                     public void onClick(View v){
                         Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
                         intent.putExtra("User", user);
+                        intent.putExtra("tab", "home_tab");
                         startActivity(intent);
+                        finish();
                     }
                 });
             }
@@ -119,18 +124,21 @@ public class DailyLogIn extends AppCompatActivity {
                     //they break streak
                     System.out.println("break streak");
 
-                    myDBHandler.updateData(user.getUsername(), newDayDate, 1, currency+1, "Yes");
-
+                    //myDBHandler.updateData(user.getUsername(), newDayDate, 1, currency+1, "Yes");
+                    myDBHandler.updateData(user.getUsername(), newDayDate, 1, 0, "Yes");
                     //set text to streak broken
                     statusText.setText("You broke your " + streak + " days streak! Let's keep streaking!");
                     streakText.setText("Streak: " + 1);
-                    rewardText.setText("Reward: " + 1);
+                    //rewardText.setText("Reward: " + 1);
+                    rewardText.setText("Reward:0");
                     closeButton.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v){
                             Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
                             intent.putExtra("User", user);
+                            intent.putExtra("tab", "home_tab");
                             startActivity(intent);
+                            finish();
                         }
                     });
                 }
@@ -138,20 +146,24 @@ public class DailyLogIn extends AppCompatActivity {
                 else{
                     //they streak
                     int newStreak = streak+1;
-                    int newCurrency = currency + (newStreak*1);
-                    System.out.println("Newstreak:"+newStreak);
-                    myDBHandler.updateData(user.getUsername(), newDayDate, newStreak, newCurrency, "Yes");
+                    //int newCurrency = currency + (newStreak*1);
 
+                    System.out.println("Newstreak:"+newStreak);
+                    //myDBHandler.updateData(user.getUsername(), newDayDate, newStreak, newCurrency, "Yes");
+                    myDBHandler.updateData(user.getUsername(), newDayDate, newStreak, 0, "Yes");
                     //set text to streaking stuff idk
                     statusText.setText("You're streaking! Keep up the good work!");
                     streakText.setText("Streak: " + newStreak);
-                    rewardText.setText("Reward: " + newStreak*1);
+                    //rewardText.setText("Reward: " + newStreak*1);
+                    rewardText.setText("Reward:0");
                     closeButton.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v){
                             Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
                             intent.putExtra("User", user);
+                            intent.putExtra("tab", "home_tab");
                             startActivity(intent);
+                            finish();
                         }
                     });
                 }

@@ -83,11 +83,17 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         Log.i(null, "Starting App Home Page");
+
         Intent receivingEnd = getActivity().getIntent();
         UserData user = receivingEnd.getParcelableExtra("User");
+        ImageView pet_picture = view.findViewById(R.id.homeGame);
+
+        if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
+        else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
+        else if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
+        else{pet_picture.setImageResource(R.drawable.golden_retriever);}
         ImageButton profilePhoto = view.findViewById((R.id.profile));
         TextView greeting = view.findViewById(R.id.greeting);
-        ImageView pet_picture = view.findViewById(R.id.homeGame);
         greeting.setText("Hello " + user.getUsername()); // add username
         profilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,6 +105,7 @@ public class HomeFragment extends Fragment {
         });
 
         // add change pet picture code after implementing pet object
+
 
 
         // compact task list (to be changed in stage 2)

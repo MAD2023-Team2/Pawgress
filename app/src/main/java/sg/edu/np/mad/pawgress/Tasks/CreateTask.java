@@ -10,6 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
+import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
@@ -39,8 +41,10 @@ public class CreateTask extends AppCompatActivity {
                 String cat = etcat.getText().toString();
                 Task task = new Task(1, name, "In Progress", cat);
                 myDBHandler.addTask(task, user);
-                Intent newTask = new Intent(CreateTask.this, TaskList.class);
+                Intent newTask = new Intent(CreateTask.this, MainMainMain.class);
                 newTask.putExtra("New Task List", user);
+                newTask.putExtra("User", user);
+                newTask.putExtra("tab", "tasks_tab");
                 startActivity(newTask);
                 Log.i(title, "task added");
                 finish();
@@ -51,8 +55,10 @@ public class CreateTask extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i(title, "discarding");
-                Intent back = new Intent(CreateTask.this, TaskList.class);
+                Intent back = new Intent(CreateTask.this, MainMainMain.class);
                 back.putExtra("New Task List", user);
+                back.putExtra("User", user);
+                back.putExtra("tab", "tasks_tab");
                 startActivity(back);
                 finish();
             }
