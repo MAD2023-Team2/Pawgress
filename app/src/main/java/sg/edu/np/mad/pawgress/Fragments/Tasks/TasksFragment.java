@@ -86,10 +86,8 @@ public class TasksFragment extends Fragment {
             Log.v(TAG, "starting try");
             Intent receivingEnd = getActivity().getIntent();
             UserData user = receivingEnd.getParcelableExtra("New Task List");
-            ArrayList<Task> taskList = user.getTaskList();
-            Log.v(TAG, "List size = " + taskList.size());
             Log.v(TAG, "Starting recyclerview");
-            TaskAdapter mAdapter = new TaskAdapter(taskList, getActivity());
+            TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, getActivity() );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
@@ -104,17 +102,13 @@ public class TasksFragment extends Fragment {
                 }
             });
         } catch (RuntimeException e) {
-            // from homepage or tab button
             Log.v(TAG, "starting exception");
-            //ArrayList<Task> taskList = new ArrayList<Task>();
             Intent receivingEnd = getActivity().getIntent();
             UserData user = receivingEnd.getParcelableExtra("User");
             ArrayList<Task> taskList = myDBHandler.findTaskList(user);
-            //  testing
-            //taskList.add(new Task(1, "Week 6 Practical", "In Progress", "MAD"));
             Log.v(TAG, "List size = " + taskList.size());
             Log.v(TAG, "Starting recyclerview");
-            TaskAdapter mAdapter = new TaskAdapter(taskList, getActivity());
+            TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, getActivity() );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(mLayoutManager);
             recyclerView.setAdapter(mAdapter);
