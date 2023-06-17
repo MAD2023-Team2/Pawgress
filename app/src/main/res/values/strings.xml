@@ -74,4 +74,6 @@
     <string name="title_activity_task_completion">TaskCompletion</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    // Companion Selection
 </resources>

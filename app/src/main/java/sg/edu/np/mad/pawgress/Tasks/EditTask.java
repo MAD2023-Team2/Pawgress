@@ -11,11 +11,14 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.UserData;
 
 public class EditTask extends AppCompatActivity {
 
     String Edit = "EditTask";
+    MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,9 +26,9 @@ public class EditTask extends AppCompatActivity {
 
         Log.w(Edit, "In edit mode");
         Intent receivingEnd = getIntent();
-        int index = receivingEnd.getIntExtra("Task Index", 0);
-        ArrayList<Task> taskList = receivingEnd.getParcelableArrayListExtra("Task List");
-        Log.v(Edit, "Task Index = " + index);
+        UserData user = receivingEnd.getParcelableExtra("User");
+        Task task = receivingEnd.getParcelableExtra("Task");
+        Log.v(Edit, "Task Id = " + task.getTaskID());
         EditText etname = findViewById(R.id.editTextText);
         EditText etcat = findViewById(R.id.editTextText2);
 
@@ -36,11 +39,13 @@ public class EditTask extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.v(Edit, "Editing Task");
-                taskList.get(index).setTaskName(etname.getText().toString());
-                taskList.get(index).setCategory(etcat.getText().toString());
-                Intent etTask = new Intent(EditTask.this, TaskList.class);
-                etTask.putParcelableArrayListExtra("New Task List", taskList);
-                startActivity(etTask);
+                task.setTaskName(etname.getText().toString());
+                task.setStatus("In Progress");
+                task.setCategory(etcat.getText().toString());
+                myDBHandler.updateTask(task);
+                Intent editTask = new Intent(EditTask.this, TaskList.class);
+                editTask.putExtra("New Task List", user);
+                startActivity(editTask);
                 finish();
             }
         });
@@ -50,7 +55,7 @@ public class EditTask extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i(Edit, "discarding");
                 Intent back = new Intent(EditTask.this, TaskList.class);
-                back.putParcelableArrayListExtra("New Task List", taskList);
+                back.putExtra("New Task List", user);
                 startActivity(back);
                 finish();
             }

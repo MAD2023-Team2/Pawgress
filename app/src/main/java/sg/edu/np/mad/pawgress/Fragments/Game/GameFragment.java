@@ -1,9 +1,11 @@
 package sg.edu.np.mad.pawgress.Fragments.Game;
 
+import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +14,9 @@ import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.Random;
 
 import sg.edu.np.mad.pawgress.R;
 
@@ -62,6 +67,27 @@ public class GameFragment extends Fragment {
         }
     }
 
+    TextView timerTextView;
+    long startTime = 0;
+
+    //runs without a timer by reposting this handler at the end of the runnable
+    Handler timerHandler = new Handler();
+    Runnable timerRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            long millis = System.currentTimeMillis() - startTime;
+            int seconds = (int) (millis / 1000);
+            int minutes = seconds / 60;
+            seconds = seconds % 60;
+
+            timerTextView.setText(String.format("%d:%02d", minutes, seconds));
+
+            timerHandler.postDelayed(this, 500);
+        }
+    };
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -77,14 +103,35 @@ public class GameFragment extends Fragment {
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
+
+                        int random = new Random().nextInt(3);
+                        MediaPlayer mediaPlayer;
+
+                        if (random == 0){
+                            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi_down_sound);
+                        } else if (random == 1) {
+                            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi_up_sound);
+                        }
+                        else {
+                            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi_3_sound);
+                        }
+
+                        mediaPlayer.start();
+                        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            public void onCompletion(MediaPlayer mp) {
+                                mp.reset();
+                                mp.release();
+                            };
+                        });
                         Animation anim = new ScaleAnimation(
                                 1f, 1f, // Start and end values for the X axis scaling
                                 1f, 0.85f, // Start and end values for the Y axis scaling
                                 Animation.RELATIVE_TO_SELF, 0f, // Pivot point of X scaling
                                 Animation.RELATIVE_TO_SELF, 1f); // Pivot point of Y scaling
                         anim.setFillAfter(true); // Needed to keep the result of the animation
-                        anim.setDuration(100);
+                        anim.setDuration(150);
                         v.startAnimation(anim);
+
                         break;
 
                     case MotionEvent.ACTION_UP:
@@ -94,7 +141,7 @@ public class GameFragment extends Fragment {
                                 Animation.RELATIVE_TO_SELF, 0f, // Pivot point of X scaling
                                 Animation.RELATIVE_TO_SELF, 1f); // Pivot point of Y scaling
                         anim2.setFillAfter(true); // Needed to keep the result of the animation
-                        anim2.setDuration(100);
+                        anim2.setDuration(150);
                         v.startAnimation(anim2);
                         break;
                 }
@@ -103,6 +150,37 @@ public class GameFragment extends Fragment {
             }
         });
 
+        timerTextView = (TextView) view.findViewById(R.id.timerTextView);
+
+        Button b = (Button) view.findViewById(R.id.startStop);
+        b.setText("start");
+        b.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Button b = (Button) v;
+                if (b.getText().equals("stop")) {
+                    timerHandler.removeCallbacks(timerRunnable);
+                    b.setText("start");
+                }
+                else {
+                    startTime = System.currentTimeMillis() ;
+                    timerHandler.postDelayed(timerRunnable, 0);
+
+
+                    b.setText("stop");
+                }
+            }
+        });
+
         return view;
     }
+    /*
+    @Override
+    public void onPause() {
+        super.onPause();
+        timerHandler.removeCallbacks(timerRunnable);
+        Button b = (Button) view.findViewById(R.id.button);
+        b.setText("start");
+    }*/
 }

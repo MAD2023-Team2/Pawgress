@@ -37,7 +37,7 @@ public class CreateTask extends AppCompatActivity {
                 String name = etname.getText().toString();
                 EditText etcat = findViewById(R.id.editCat);
                 String cat = etcat.getText().toString();
-                Task task = new Task(name, "In Progress", cat);
+                Task task = new Task(1, name, "In Progress", cat);
                 myDBHandler.addTask(task, user);
                 Intent newTask = new Intent(CreateTask.this, TaskList.class);
                 newTask.putExtra("New Task List", user);
@@ -52,7 +52,7 @@ public class CreateTask extends AppCompatActivity {
             public void onClick(View v) {
                 Log.i(title, "discarding");
                 Intent back = new Intent(CreateTask.this, TaskList.class);
-                back.putParcelableArrayListExtra("New Task List", taskList);
+                back.putExtra("New Task List", user);
                 startActivity(back);
                 finish();
             }

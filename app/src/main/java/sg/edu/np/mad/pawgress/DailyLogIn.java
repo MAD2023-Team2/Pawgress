@@ -34,6 +34,7 @@ public class DailyLogIn extends AppCompatActivity {
         Intent receivingEnd = getIntent();
         UserData user = receivingEnd.getParcelableExtra("User");
         System.out.println(user.getUsername() + user.getPassword());
+        System.out.println("Updated pet type:  " + user.getPetType() + "\n" + "Updated pet deisgn: " + user.getPetDesign());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         String newDayDate = formatter.format(new Date());

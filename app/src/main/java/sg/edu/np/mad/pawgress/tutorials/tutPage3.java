@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import sg.edu.np.mad.pawgress.CompanionSelectionActivity;
 import sg.edu.np.mad.pawgress.DailyLogIn;
 import sg.edu.np.mad.pawgress.Fragments.Home.HomePage;
 import sg.edu.np.mad.pawgress.R;
@@ -30,7 +31,7 @@ public class tutPage3 extends AppCompatActivity {
         tut3_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(tutPage3.this, DailyLogIn.class);
+                Intent intent = new Intent(tutPage3.this, CompanionSelectionActivity.class);
                 intent.putExtra("User", user);
                 startActivity(intent);
             }

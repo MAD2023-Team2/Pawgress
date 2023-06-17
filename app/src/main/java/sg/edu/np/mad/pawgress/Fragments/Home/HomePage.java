@@ -9,13 +9,22 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import java.util.ArrayList;
 
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfilePage;
+import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.Tasks.Task;
+import sg.edu.np.mad.pawgress.Tasks.TaskCardAdapter;
 import sg.edu.np.mad.pawgress.Tasks.TaskList;
 import sg.edu.np.mad.pawgress.UserData;
 
 public class HomePage extends AppCompatActivity {
+
+    private TextView emptyTaskText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -32,6 +41,7 @@ public class HomePage extends AppCompatActivity {
         ImageButton profilePhoto = findViewById((R.id.profile));
         TextView greeting = findViewById(R.id.greeting);
         ImageView pet_picture = findViewById(R.id.homeGame);
+
         greeting.setText("Hello " + user.getUsername()); // add username
         profilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,15 +54,33 @@ public class HomePage extends AppCompatActivity {
         // add change pet picture code after implementing pet object
 
         // WALTER - add recycler view code (for now this goes to taskList page)
-        TextView homeTask = findViewById(R.id.homeTask);
-        homeTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // add in code to transfer user task list data to task list
-                Intent intent = new Intent(HomePage.this, TaskList.class);
-                intent.putExtra("User", user);
-                startActivity(intent);
-            }
-        });
+        MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
+        RecyclerView recyclerView = findViewById(R.id.taskcardlist);
+
+        try { // after creating new task
+            Intent receivingEnd_2 = getIntent();
+            UserData user_2 = receivingEnd_2.getParcelableExtra("New Task List");
+            ArrayList<Task> taskList = user_2.getTaskList();
+            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, this);
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setAdapter(mAdapter);
+            mAdapter.emptyTasktext = emptyTaskText;
+            mAdapter.updateEmptyView();
+        } catch (RuntimeException e) {
+            // from homepage or tab button
+            //ArrayList<Task> taskList = new ArrayList<Task>();
+            Intent receivingEnd_2 = getIntent();
+            UserData user_2 = receivingEnd_2.getParcelableExtra("User");
+            ArrayList<Task> taskList = myDBHandler.findTaskList(user_2);
+            //  testing
+            //taskList.add(new Task(1, "Week 6 Practical", "In Progress", "MAD"));
+            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, this);
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
+            recyclerView.setLayoutManager(mLayoutManager);
+            recyclerView.setAdapter(mAdapter);
+            mAdapter.emptyTasktext = emptyTaskText;
+            mAdapter.updateEmptyView();
+        }
     }
 }

@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,8 +15,13 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfilePage;
+import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.Tasks.Task;
+import sg.edu.np.mad.pawgress.Tasks.TaskCardAdapter;
 import sg.edu.np.mad.pawgress.Tasks.TaskList;
 import sg.edu.np.mad.pawgress.UserData;
 
@@ -29,6 +36,7 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private TextView emptyTaskText;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -86,22 +94,37 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ProfilePage.class);
                 startActivity(intent);
+
             }
         });
 
         // add change pet picture code after implementing pet object
 
-        // WALTER - add recycler view code (for now this goes to taskList page)
-        TextView homeTask = view.findViewById(R.id.homeTask);
-        homeTask.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // add in code to transfer user task list data to task list
-                Intent intent = new Intent(getActivity(), TaskList.class);
-                intent.putExtra("TaskList", user.getTaskList());
-                startActivity(intent);
-            }
-        });
+
+        // compact task list (to be changed in stage 2)
+        MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
+        RecyclerView recyclerView = view.findViewById(R.id.taskcardlist);
+        emptyTaskText = view.findViewById(R.id.emptyTextView);
+        try { // after creating new task
+            Intent receivingEnd_2 = getActivity().getIntent();
+            UserData user_2 = receivingEnd_2.getParcelableExtra("New Task List");
+            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity());
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(mLayoutManager);
+            mAdapter.emptyTasktext = emptyTaskText;
+            mAdapter.updateEmptyView();
+            recyclerView.setAdapter(mAdapter);
+        } catch (RuntimeException e) {
+            // from homepage or tab button
+            Intent receivingEnd_2 = getActivity().getIntent();
+            UserData user_2 = receivingEnd_2.getParcelableExtra("User");
+            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity());
+            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(mLayoutManager);
+            mAdapter.emptyTasktext = emptyTaskText;
+            mAdapter.updateEmptyView();
+            recyclerView.setAdapter(mAdapter);
+        }
 
         return view;
     }

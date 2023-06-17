@@ -13,9 +13,12 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
+import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.UserData;
 
 public class TaskGame extends AppCompatActivity {
 
@@ -29,6 +32,7 @@ public class TaskGame extends AppCompatActivity {
 
     private TextView timeView;
     private Handler handler;
+    MyDBHandler myDBHandler = new MyDBHandler(this, null, null, 1);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +40,8 @@ public class TaskGame extends AppCompatActivity {
         setContentView(R.layout.task_game);
 
         Intent receivingEnd = getIntent();
-        Task task = receivingEnd.getParcelableExtra("Task");
+        UserData user = receivingEnd.getParcelableExtra("User");
+        ArrayList<Task> taskList = myDBHandler.findTaskList(user);
 
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
