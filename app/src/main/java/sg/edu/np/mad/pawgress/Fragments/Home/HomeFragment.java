@@ -36,6 +36,7 @@ public class HomeFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    private TextView emptyTaskText;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -93,34 +94,35 @@ public class HomeFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), ProfilePage.class);
                 startActivity(intent);
+
             }
         });
 
         // add change pet picture code after implementing pet object
 
-        // WALTER - add recycler view code (for now this goes to taskList page)
+
+        // compact task list (to be changed in stage 2)
         MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
         RecyclerView recyclerView = view.findViewById(R.id.taskcardlist);
-
+        emptyTaskText = view.findViewById(R.id.emptyTextView);
         try { // after creating new task
             Intent receivingEnd_2 = getActivity().getIntent();
             UserData user_2 = receivingEnd_2.getParcelableExtra("New Task List");
-            ArrayList<Task> taskList = user_2.getTaskList();
             TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity());
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(mLayoutManager);
+            mAdapter.emptyTasktext = emptyTaskText;
+            mAdapter.updateEmptyView();
             recyclerView.setAdapter(mAdapter);
         } catch (RuntimeException e) {
             // from homepage or tab button
-            //ArrayList<Task> taskList = new ArrayList<Task>();
             Intent receivingEnd_2 = getActivity().getIntent();
             UserData user_2 = receivingEnd_2.getParcelableExtra("User");
-            ArrayList<Task> taskList = myDBHandler.findTaskList(user_2);
-            //  testing
-            //taskList.add(new Task(1, "Week 6 Practical", "In Progress", "MAD"));
             TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity());
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(mLayoutManager);
+            mAdapter.emptyTasktext = emptyTaskText;
+            mAdapter.updateEmptyView();
             recyclerView.setAdapter(mAdapter);
         }
 

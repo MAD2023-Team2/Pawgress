@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import sg.edu.np.mad.pawgress.R;
 
 public class TaskCardViewHolder extends RecyclerView.ViewHolder{
-    TextView name, none;
+    TextView name;
     ConstraintLayout card2;
     CheckBox complete;
 

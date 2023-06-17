@@ -1,24 +1,19 @@
 package sg.edu.np.mad.pawgress.Tasks;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import androidx.appcompat.app.AlertDialog;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
-
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
-
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
@@ -42,15 +37,25 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
     }
 
     public void updateEmptyView(){
-        if (taskList.isEmpty()){
-
+        int count = 0;
+        if (taskList.size() == 0){
+            count = -1;
         }
+        else{
+            for (Task task : taskList){
+                if(task.getStatus().equals("In Progress")){
+                    count+=1;
+                }
+            }
+        }
+        Log.v(THIS, "Count " + count);
+        if (count > 0){ emptyTasktext.setVisibility(INVISIBLE); }
+        else emptyTasktext.setVisibility(VISIBLE);
     }
 
     @Override
     public int getItemViewType(int position)
     {
-        Log.i(THIS, "Get Item View Type");
         Task task = taskList.get(position);
         if (taskList.size() == 0) { return 0; }
         else if (task.getStatus().equals("In Progress")) return 1;
@@ -59,11 +64,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         Log.v(THIS, "View Type " + viewType);
-        if (viewType == 1){
-            Log.w(THIS, "Tasks present");
-            return new TaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task,parent, false));
-        }
-        else return new TaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task_none,parent, false));
+        return new TaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task,parent, false));
     }
 
     @Override
@@ -72,6 +73,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
         if (holder.getItemViewType() == 1){
             Task task = taskList.get(position);
             int id = task.getTaskID();
+            Task finalTask = mDataBase.findTask(id, mDataBase.findTaskList(user));
             holder.category.setText(task.getCategory());
             holder.name.setText(task.getTaskName());
             // view individual task
@@ -81,7 +83,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                     Intent viewTask = new Intent(context, TaskView.class);
                     Bundle info = new Bundle();
                     info.putParcelable("User", user);
-                    info.putInt("Task ID", id); // send id of task to view this task only
+                    info.putParcelable("Task", finalTask); // send individual task
+                    Log.v(THIS, "ID " + id);
                     viewTask.putExtras(info);
                     context.startActivity(viewTask);
                 }
@@ -94,7 +97,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                     Bundle info = new Bundle();
                     Log.v(THIS, "id " + id);
                     info.putParcelable("User", user);
-                    info.putInt("Task ID", id); // send id of task to edit this task only
+                    info.putParcelable("Task", finalTask); // send id of task to edit this task only
                     editTask.putExtras(info);
                     context.startActivity(editTask);
                 }
@@ -110,9 +113,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                     builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
                         public void onClick(DialogInterface dialog, int id){
                             Log.v(THIS, "Deleting task");
-                            task.setStatus("Deleted");
-                            mDataBase.updateTask(task);
-                            Log.i(THIS, "Task List new size = " + taskList.size());
+                            finalTask.setStatus("Deleted");
+                            mDataBase.updateTask(finalTask);
+                            taskList.remove(task);
+                            user.setTaskList(taskList);
                             notifyItemRemoved(taskList.indexOf(task));
                             notifyItemRangeChanged(taskList.indexOf(task), taskList.size());
                         }
@@ -137,8 +141,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                         public void onClick(DialogInterface dialog, int id){
                             Log.v(THIS, "Completed task");
-                            taskList.remove(taskList.get(taskList.indexOf(task)));
-                            Log.i(THIS, "Task List new size = " + taskList.size());
+                            finalTask.setStatus("Completed");
+                            mDataBase.updateTask(finalTask);
+                            taskList.remove(task);
+                            user.setTaskList(taskList);
                             notifyItemRemoved(taskList.indexOf(task));
                             notifyItemRangeChanged(taskList.indexOf(task), taskList.size());
                         }
@@ -154,6 +160,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                 }
             });
         }
-        else holder.none.setText("No tasks to work on for now :)"); //this shit works only when i don't want it to ;(
+        else {
+            holder.card.setVisibility(INVISIBLE);
+            holder.card.setMaxHeight(0);
+            holder.card.setMaxWidth(0);
+        }
     }
 }

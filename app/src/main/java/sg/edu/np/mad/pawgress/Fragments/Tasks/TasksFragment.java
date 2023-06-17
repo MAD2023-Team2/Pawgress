@@ -40,6 +40,7 @@ public class TasksFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+    private TextView emptyTaskText;
 
     public TasksFragment() {
         // Required empty public constructor
@@ -83,7 +84,7 @@ public class TasksFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_tasks, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.list);
-        TextView emptyTaskText = view.findViewById(R.id.emptyTextView);
+        emptyTaskText = view.findViewById(R.id.emptyTextView);
         try { // after creating new task
             Log.v(TAG, "starting try");
             Intent receivingEnd = getActivity().getIntent();
@@ -92,9 +93,9 @@ public class TasksFragment extends Fragment {
             TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, getActivity() );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setAdapter(mAdapter);
             mAdapter.emptyTasktext = emptyTaskText;
             mAdapter.updateEmptyView();
+            recyclerView.setAdapter(mAdapter);
             FloatingActionButton button = view.findViewById(R.id.addTask);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -106,19 +107,16 @@ public class TasksFragment extends Fragment {
                 }
             });
         } catch (RuntimeException e) {
-            // from homepage or tab button
             Log.v(TAG, "starting exception");
             Intent receivingEnd = getActivity().getIntent();
             UserData user = receivingEnd.getParcelableExtra("User");
-            ArrayList<Task> taskList = myDBHandler.findTaskList(user);
-            Log.v(TAG, "List size = " + taskList.size());
             Log.v(TAG, "Starting recyclerview");
-            TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, getActivity());
+            TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, getActivity() );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(mLayoutManager);
-            recyclerView.setAdapter(mAdapter);
             mAdapter.emptyTasktext = emptyTaskText;
             mAdapter.updateEmptyView();
+            recyclerView.setAdapter(mAdapter);
             FloatingActionButton button = view.findViewById(R.id.addTask);
             button.setOnClickListener(new View.OnClickListener() {
                 @Override
