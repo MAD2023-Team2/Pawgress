@@ -6,12 +6,22 @@
     android:layout_height="match_parent"
     tools:context=".DailyLogIn">
 
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/dailylogin" />
+
     <TextView
         android:id="@+id/logInStatus"
         android:layout_width="168dp"
         android:layout_height="124dp"
-        android:layout_marginStart="120dp"
-        android:layout_marginTop="236dp"
+        android:layout_marginStart="128dp"
+        android:layout_marginTop="300dp"
+        android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,8 +31,8 @@
         android:id="@+id/streakText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="164dp"
-        android:layout_marginTop="76dp"
+        android:layout_marginStart="184dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logInStatus" />
@@ -31,8 +41,8 @@
         android:id="@+id/rewardText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="164dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginStart="184dp"
+        android:layout_marginTop="8dp"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/streakText" />
@@ -40,10 +50,10 @@
     <Button
         android:id="@+id/closeDaily"
         style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="74dp"
-        android:layout_height="72dp"
-        android:layout_marginStart="224dp"
-        android:layout_marginTop="132dp"
+        android:layout_width="72dp"
+        android:layout_height="53dp"
+        android:layout_marginStart="284dp"
+        android:layout_marginTop="280dp"
         android:text="X"
         android:textColor="#000000"
         android:textSize="24sp"
