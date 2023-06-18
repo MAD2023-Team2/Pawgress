@@ -21,7 +21,7 @@ public class TaskCompletion extends AppCompatActivity {
     private TextView seconds_complete;
 
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +32,8 @@ public class TaskCompletion extends AppCompatActivity {
         Task task = receivingEnd.getParcelableExtra("Task");
         UserData user = receivingEnd.getParcelableExtra("User");
         Task finalTask = myDBHandler.findTask(task.getTaskID(), myDBHandler.findTaskList(user));
+        finalTask.setStatus("Completed");
+        myDBHandler.updateTask(finalTask);
 
         ImageButton backButton = findViewById(R.id.backButton);
 
