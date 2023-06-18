@@ -37,7 +37,8 @@ public class TaskGame extends AppCompatActivity {
     private ImageButton buttonStart;
     private ImageButton buttonReset;
     private Button buttonFinish;
-
+    public Task task;
+    public UserData user;
     private TextView timeView;
     private Handler handler;
     MyDBHandler myDBHandler = new MyDBHandler(this, null, null, 1);
@@ -108,9 +109,8 @@ public class TaskGame extends AppCompatActivity {
         });
 
         Intent receivingEnd = getIntent();
-        UserData user = receivingEnd.getParcelableExtra("User");
-        Task task = receivingEnd.getParcelableExtra("Task");
-        ArrayList<Task> taskList = myDBHandler.findTaskList(user);
+        user = receivingEnd.getParcelableExtra("User");
+        task = receivingEnd.getParcelableExtra("Task");
 
         ImageButton backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -169,6 +169,8 @@ public class TaskGame extends AppCompatActivity {
         super.onPause();
         wasRunning = running;
         pauseTimer();
+        task.setTimeSpent(task.getTimeSpent()+seconds);
+        myDBHandler.updateTask(task);
     }
 
     @Override
@@ -177,6 +179,8 @@ public class TaskGame extends AppCompatActivity {
         if (wasRunning) {
             startTimer();
         }
+        int id = task.getTaskID();
+        task = myDBHandler.findTask(id, myDBHandler.findTaskList(user));
     }
 
     @Override

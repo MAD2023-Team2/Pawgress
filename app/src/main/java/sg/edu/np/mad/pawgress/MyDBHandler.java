@@ -31,6 +31,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_TASK_NAME = "TaskName";
     public static String COLUMN_TASK_STATUS = "TaskStatus";
     public static String COLUMN_TASK_CATEGORY = "TaskCategory";
+    public static String COLUMN_TASK_TIMESPENT = "TimeSpent";
     public static String COLUMN_PET_TYPE = "PetType";
     public static String COLUMN_PET_DESIGN = "PetDesign";
 
@@ -59,6 +60,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_TASK_NAME + " TEXT," +
                 COLUMN_TASK_STATUS + " TEXT," +
                 COLUMN_TASK_CATEGORY + " TEXT," +
+                COLUMN_TASK_TIMESPENT + " INTEGER," +
                 COLUMN_USERNAME + " TEXT)";
         db.execSQL(CREATE_TASK_TABLE);
         Log.i(title, CREATE_TASK_TABLE);
@@ -94,6 +96,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_TASK_NAME, task.getTaskName());
         values.put(COLUMN_TASK_STATUS, task.getStatus());
         values.put(COLUMN_TASK_CATEGORY, task.getCategory());
+        values.put(COLUMN_TASK_TIMESPENT, task.getTimeSpent());
         values.put(COLUMN_USERNAME, userData.getUsername());
         db.insert(TASKS, null, values);
         taskList.add(task);
@@ -109,6 +112,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_TASK_NAME, task.getTaskName());
         values.put(COLUMN_TASK_STATUS, task.getStatus());
         values.put(COLUMN_TASK_CATEGORY, task.getCategory());
+        values.put(COLUMN_TASK_TIMESPENT, task.getTimeSpent());
 
         db.update(TASKS, values, COLUMN_TASK_ID + "=?", new String[]{String.valueOf(task.getTaskID())});
         Log.i(title, "Updated Task");
@@ -189,6 +193,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setTaskName(cursor.getString(1));
             queryResult.setStatus(cursor.getString(2));
             queryResult.setCategory(cursor.getString(3));
+            queryResult.setTimeSpent(cursor.getInt(4));
             Log.w(title, "TaskName/TaskStatus " + queryResult.getTaskName() + queryResult.getStatus());
             NewtaskList.add(queryResult);
             while (cursor.moveToNext()) {
@@ -196,7 +201,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 task.setTaskID(cursor.getInt(0));
                 task.setTaskName(cursor.getString(1));
                 task.setStatus(cursor.getString(2));
-                task.setCategory(cursor.getString(3));
+                task.setTimeSpent(cursor.getInt(3));
+                task.setCategory(cursor.getString(4));
                 Log.w(title, "TaskName/TaskStatus " + task.getTaskName() + task.getStatus());
                 NewtaskList.add(task);
             }

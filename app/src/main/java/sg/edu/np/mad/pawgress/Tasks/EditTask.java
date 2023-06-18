@@ -31,8 +31,9 @@ public class EditTask extends AppCompatActivity {
         Task task = receivingEnd.getParcelableExtra("Task");
         Log.v(Edit, "Task Id = " + task.getTaskID());
         EditText etname = findViewById(R.id.editTextText);
+        etname.setText(task.getTaskName());
         EditText etcat = findViewById(R.id.editTextText2);
-
+        etcat.setText(task.getCategory());
         Button confirmButton = findViewById(R.id.button);
         Button cancelButton = findViewById(R.id.button2);
 
