@@ -148,24 +148,6 @@ public class HomeFragment extends Fragment {
             recyclerView.setAdapter(mAdapter);
         }
 
-//        emptyTaskText.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent newTask = new Intent(getActivity(), MainMainMain.class);
-//                newTask.putExtra("User", user);
-//                newTask.putExtra("tab", "tasks_tab");
-//                startActivity(newTask);
-//                    /*
-//                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-//                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-//                    fragmentTransaction.replace(R.id.frame_layout, new TasksFragment());
-//                    fragmentTransaction.addToBackStack(null);
-//                    fragmentTransaction.commit();
-//                     */
-//            }
-//        });
-
         emptyTaskText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

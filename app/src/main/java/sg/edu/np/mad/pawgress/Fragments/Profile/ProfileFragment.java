@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import sg.edu.np.mad.pawgress.LoginPage;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.SaveSharedPreference;
+import sg.edu.np.mad.pawgress.UserData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,8 +23,6 @@ import sg.edu.np.mad.pawgress.SaveSharedPreference;
  * create an instance of this fragment.
  */
 public class ProfileFragment extends Fragment{
-
-    MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -82,6 +82,12 @@ public class ProfileFragment extends Fragment{
                 startActivity(intent);
             }
         });
+        // Setting Username Text
+        MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
+
+        UserData dbData = myDBHandler.findUser(SaveSharedPreference.getUserName(getActivity()));
+        TextView username = view.findViewById(R.id.ProfileUsername);
+        username.setText(dbData.getUsername());
 
         return view;
 
