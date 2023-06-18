@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:background="#EFDFCE"
-        android:fontFamily="@font/balsamiq_sans"
+        android:fontFamily="sans-serif"
         android:gravity="center"
         android:text="@string/taskName"
         android:textSize="24sp"
@@ -48,11 +48,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:fontFamily="@font/balsamiq_sans"
+        android:fontFamily="sans-serif"
         android:text="@string/taskCategory"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="9dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

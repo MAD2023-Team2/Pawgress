@@ -39,6 +39,8 @@ public class TaskView extends AppCompatActivity {
         taskName.setText(task.getTaskName());
         TextView taskCategory = findViewById(R.id.textView10);
         taskCategory.setText(task.getCategory());
+        TextView time = findViewById(R.id.textView15);
+        time.setText("Time spent so far: " + task.getTimeSpent() + " seconds");
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
