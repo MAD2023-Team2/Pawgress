@@ -51,8 +51,8 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                 }
             }
         }
-        if (count > 0){ emptyTasktext.setVisibility(INVISIBLE); }
-        else emptyTasktext.setVisibility(VISIBLE);
+        if (count > 0){ emptyTasktext.setText(""); }
+        else emptyTasktext.setText("No tasks to work on for now :)");
     }
 
     @Override

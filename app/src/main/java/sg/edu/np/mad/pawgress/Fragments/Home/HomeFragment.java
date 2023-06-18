@@ -46,6 +46,8 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private TextView emptyTaskText;
+    private TextView emptySpaceTextView;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -121,6 +123,7 @@ public class HomeFragment extends Fragment {
         MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
         RecyclerView recyclerView = view.findViewById(R.id.taskcardlist);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
+        emptySpaceTextView = view.findViewById(R.id.emptyspace_home);
         try { // after creating new task
             Intent receivingEnd_2 = getActivity().getIntent();
             UserData user_2 = receivingEnd_2.getParcelableExtra("New Task List");
@@ -177,7 +180,15 @@ public class HomeFragment extends Fragment {
             });
 
         }
-
+        recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                int maxHeight = emptySpaceTextView.getHeight();
+                ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
+                layoutParams.height = Math.min(maxHeight, recyclerView.getHeight());
+                recyclerView.setLayoutParams(layoutParams);
+            }
+        });
         return view;
     }
 
