@@ -20,8 +20,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.Fragments.Profile.ProfileFragment;
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfilePage;
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
 import sg.edu.np.mad.pawgress.MainMainMain;
@@ -109,8 +112,23 @@ public class HomeFragment extends Fragment {
         profilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProfilePage.class);
-                startActivity(intent);
+
+                // Create a new instance of the profilefragment
+                ProfileFragment profileFragment = new ProfileFragment();
+
+
+                // Replace the current fragment with the TasksFragment
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout, profileFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+                // Update the bottomNavigationView selection
+                if (getActivity() instanceof MainMainMain) {
+                    BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
+                    bottomNavigationView.setSelectedItemId(R.id.profile_tab);
+                }
 
             }
         });
@@ -133,23 +151,7 @@ public class HomeFragment extends Fragment {
             mAdapter.emptyTasktext = emptyTaskText;
             mAdapter.updateEmptyView();
             recyclerView.setAdapter(mAdapter);
-            emptyTaskText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
 
-                    Intent newTask = new Intent(getActivity(), MainMainMain.class);
-                    newTask.putExtra("User", user);
-                    newTask.putExtra("tab", "tasks_tab");
-                    startActivity(newTask);
-                    /*
-                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame_layout, new TasksFragment());
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                     */
-                }
-            });
         } catch (RuntimeException e) {
             // from homepage or tab button
             Intent receivingEnd_2 = getActivity().getIntent();
@@ -160,26 +162,35 @@ public class HomeFragment extends Fragment {
             mAdapter.emptyTasktext = emptyTaskText;
             mAdapter.updateEmptyView();
             recyclerView.setAdapter(mAdapter);
-            emptyTaskText.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    Intent newTask = new Intent(getActivity(), MainMainMain.class);
-                    newTask.putExtra("User", user);
-                    newTask.putExtra("tab", "tasks_tab");
-                    startActivity(newTask);
-
-                    /*
-                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
-                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.frame_layout, new TasksFragment());
-                    fragmentTransaction.addToBackStack(null);
-                    fragmentTransaction.commit();
-                    */
-                }
-            });
-
         }
+
+        emptyTaskText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Create a new instance of the TasksFragment
+                TasksFragment tasksFragment = new TasksFragment();
+
+                // Pass the user information and tab value to the fragment
+                Bundle args = new Bundle();
+                args.putParcelable("User", user);
+                args.putString("tab", "tasks_tab");
+                tasksFragment.setArguments(args);
+
+                // Replace the current fragment with the TasksFragment
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout, tasksFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+                // Update the bottomNavigationView selection
+                if (getActivity() instanceof MainMainMain) {
+                    BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
+                    bottomNavigationView.setSelectedItemId(R.id.tasks_tab);
+                }
+
+            }
+        });
         recyclerView.post(new Runnable() {
             @Override
             public void run() {
