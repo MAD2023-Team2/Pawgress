@@ -90,6 +90,7 @@ public class TaskGame extends AppCompatActivity {
         buttonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (running) { pauseTimer(); }
                 showFinishConfirmationDialog();
             }
         });
@@ -176,7 +177,7 @@ public class TaskGame extends AppCompatActivity {
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Do nothing, return back
+                if (!running) { startTimer(); }
             }
         });
 
