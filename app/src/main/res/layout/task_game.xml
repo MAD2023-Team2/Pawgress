@@ -6,33 +6,34 @@
     android:layout_height="match_parent"
     tools:context=".Tasks.TaskView">
 
-    <Button
-        android:id="@+id/start_timer_button"
-        style="@style/Widget.AppCompat.Button"
+    <ImageView
+        android:id="@+id/imageView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="75dp"
-        android:layout_marginTop="30dp"
-        android:text="@string/startTimer"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown" />
-
-    <Button
-        android:id="@+id/reset_timer_button"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="75dp"
-        android:text="@string/resetTimer"
+        android:scaleType="fitXY"
+        android:src="@drawable/pawgress_room_final_draft_pet_not_studying"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <ImageView
+        android:id="@+id/corgi_1"
+        android:layout_width="109dp"
+        android:layout_height="136dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginBottom="192dp"
+        android:src="@drawable/corgi"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView13"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/text_view_Countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="270dp"
+        android:layout_marginTop="16dp"
         android:text="@string/mainTimer"
         android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -44,7 +45,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="164dp"
-        android:layout_marginTop="72dp"
         android:text="TaskGame"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -62,13 +62,56 @@
     <Button
         android:id="@+id/finish_timer"
         style="@style/Widget.AppCompat.Button"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:layout_marginTop="135dp"
+        android:layout_width="100dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="100dp"
         android:text="Finish Task?"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/start_timer_button" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown" />
 
-=======
+    <ImageButton
+        android:id="@+id/reset_timer_imagebutton"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        app:layout_constraintEnd_toStartOf="@+id/finish_timer"
+        app:layout_constraintStart_toEndOf="@+id/start_timer_imagebutton"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown"
+        app:srcCompat="@drawable/baseline_replay_24" />
+
+    <ImageButton
+        android:id="@+id/start_timer_imagebutton"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginStart="104dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown"
+        app:srcCompat="@drawable/baseline_play_arrow_24" /><![CDATA[
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    =======
 >>>>>>> 34a99e94cb2cb408adf629c2e1a8f5ad283249cb
+
+
+
+
+
+
+
+
+]]>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package sg.edu.np.mad.pawgress.Tasks;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -26,8 +27,8 @@ public class TaskGame extends AppCompatActivity {
     private boolean running;
     private boolean wasRunning;
 
-    private Button buttonStart;
-    private Button buttonReset;
+    private ImageButton buttonStart;
+    private ImageButton buttonReset;
     private Button buttonFinish;
 
     private TextView timeView;
@@ -50,8 +51,8 @@ public class TaskGame extends AppCompatActivity {
                 finish();
             }
         });
-        buttonStart = findViewById(R.id.start_timer_button);
-        buttonReset = findViewById(R.id.reset_timer_button);
+        buttonStart = findViewById(R.id.start_timer_imagebutton);
+        buttonReset = findViewById(R.id.reset_timer_imagebutton);
         buttonFinish = findViewById(R.id.finish_timer);
         timeView = findViewById(R.id.text_view_Countdown);
 
@@ -76,7 +77,6 @@ public class TaskGame extends AppCompatActivity {
             }
         });
 
-
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -90,6 +90,7 @@ public class TaskGame extends AppCompatActivity {
         buttonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (running) { pauseTimer(); }
                 showFinishConfirmationDialog();
             }
         });
@@ -176,7 +177,7 @@ public class TaskGame extends AppCompatActivity {
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                // Do nothing, return back
+                if (!running) { startTimer(); }
             }
         });
 
@@ -208,11 +209,11 @@ public class TaskGame extends AppCompatActivity {
 
     private void updateButtonUI() {
         if (running) {
-            buttonStart.setText("PAUSE");
+            buttonStart.setImageResource(R.drawable.baseline_pause_24);
             buttonReset.setAlpha(0.5F);
         }
         else {
-            buttonStart.setText("START");
+            buttonStart.setImageResource(R.drawable.baseline_play_arrow_24);
             buttonReset.setAlpha(1);
         }
     }

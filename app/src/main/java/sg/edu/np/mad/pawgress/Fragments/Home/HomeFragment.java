@@ -24,6 +24,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.Fragments.Profile.ProfileFragment;
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfilePage;
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
 import sg.edu.np.mad.pawgress.MainMainMain;
@@ -111,8 +112,23 @@ public class HomeFragment extends Fragment {
         profilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProfilePage.class);
-                startActivity(intent);
+
+                // Create a new instance of the profilefragment
+                ProfileFragment profileFragment = new ProfileFragment();
+
+
+                // Replace the current fragment with the TasksFragment
+                FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.frame_layout, profileFragment);
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+
+                // Update the bottomNavigationView selection
+                if (getActivity() instanceof MainMainMain) {
+                    BottomNavigationView bottomNavigationView = getActivity().findViewById(R.id.bottomNavigationView);
+                    bottomNavigationView.setSelectedItemId(R.id.profile_tab);
+                }
 
             }
         });
