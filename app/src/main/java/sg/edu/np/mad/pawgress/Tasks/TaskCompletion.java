@@ -11,25 +11,42 @@ import android.widget.TextView;
 
 import java.util.Locale;
 
+import sg.edu.np.mad.pawgress.DailyLogIn;
+import sg.edu.np.mad.pawgress.MainMainMain;
+import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.UserData;
 
 public class TaskCompletion extends AppCompatActivity {
     private TextView seconds_complete;
+
+    MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task_completion);
 
+        Intent receivingEnd = getIntent();
+        Task task = receivingEnd.getParcelableExtra("Task");
+        UserData user = receivingEnd.getParcelableExtra("User");
+        Task finalTask = myDBHandler.findTask(task.getTaskID(), myDBHandler.findTaskList(user));
+
         ImageButton backButton = findViewById(R.id.backButton);
+
+
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent intent = new Intent(TaskCompletion.this,MainMainMain.class);
+                intent.putExtra("User", user);
+                intent.putExtra("tab", "home_tab");
+                startActivity(intent);
                 finish();
             }
         });
 
-        Intent receivingEnd = getIntent();
         int seconds = receivingEnd.getIntExtra("seconds",0);
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
