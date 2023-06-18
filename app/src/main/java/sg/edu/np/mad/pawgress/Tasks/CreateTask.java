@@ -29,7 +29,6 @@ public class CreateTask extends AppCompatActivity {
 
         Intent receivingEnd = getIntent();
         UserData user = receivingEnd.getParcelableExtra("User");
-        ArrayList<Task> taskList = myDBHandler.findTaskList(user);
         Button createButton = findViewById(R.id.button6);
         Button cancelButton = findViewById(R.id.button5);
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -39,7 +38,7 @@ public class CreateTask extends AppCompatActivity {
                 String name = etname.getText().toString();
                 EditText etcat = findViewById(R.id.editCat);
                 String cat = etcat.getText().toString();
-                Task task = new Task(1, name, "In Progress", cat);
+                Task task = new Task(1, name, "In Progress", cat ,0);
                 myDBHandler.addTask(task, user);
                 Intent newTask = new Intent(CreateTask.this, MainMainMain.class);
                 newTask.putExtra("New Task List", user);

@@ -35,8 +35,10 @@ public class TaskView extends AppCompatActivity {
         Log.v(View, "TaskName Id = " + task.getTaskID());
         ImageButton backButton = findViewById(R.id.backButton);
         Button gameButton = findViewById(R.id.to_Game);
-        TextView taskName = findViewById(R.id.textView7);
+        TextView taskName = findViewById(R.id.textView11);
         taskName.setText(task.getTaskName());
+        TextView taskCategory = findViewById(R.id.textView10);
+        taskCategory.setText(task.getCategory());
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
