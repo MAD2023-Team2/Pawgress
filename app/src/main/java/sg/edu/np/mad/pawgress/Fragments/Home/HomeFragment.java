@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfilePage;
+import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.Tasks.Task;
@@ -121,6 +124,16 @@ public class HomeFragment extends Fragment {
             mAdapter.emptyTasktext = emptyTaskText;
             mAdapter.updateEmptyView();
             recyclerView.setAdapter(mAdapter);
+            emptyTaskText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_layout, new TasksFragment());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            });
         } catch (RuntimeException e) {
             // from homepage or tab button
             Intent receivingEnd_2 = getActivity().getIntent();
@@ -131,6 +144,17 @@ public class HomeFragment extends Fragment {
             mAdapter.emptyTasktext = emptyTaskText;
             mAdapter.updateEmptyView();
             recyclerView.setAdapter(mAdapter);
+            emptyTaskText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_layout, new TasksFragment());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                }
+            });
+
         }
 
         return view;
