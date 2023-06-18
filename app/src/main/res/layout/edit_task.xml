@@ -23,11 +23,12 @@
         android:id="@+id/editTextText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="49dp"
-        android:layout_marginTop="45dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginTop="40dp"
         android:background="@drawable/field_background"
         android:ems="10"
         android:inputType="text"
+        android:text="@string/taskName"
         app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
@@ -62,6 +63,7 @@
         android:background="@drawable/field_background"
         android:ems="10"
         android:inputType="text"
+        android:text="@string/taskCategory"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
