@@ -46,9 +46,6 @@
             android:name=".Fragments.Profile.ProfilePage"
             android:exported="false" />
         <activity
-            android:name=".Fragments.Home.HomePage"
-            android:exported="false" />
-        <activity
             android:name=".tutorials.tutPage1"
             android:exported="false" />
         <activity
