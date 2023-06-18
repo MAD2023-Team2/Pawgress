@@ -284,7 +284,7 @@ public class TaskGame extends AppCompatActivity {
         }
         else {
             buttonStart.setImageResource(R.drawable.baseline_play_arrow_24);
-            buttonReset.setAlpha(1);
+            buttonReset.setAlpha(1.0F);
         }
     }
 }

@@ -97,7 +97,6 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                         recyclerTaskList.remove(task);
                         notifyItemRemoved(recyclerTaskList.indexOf(task));
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
-                        if (recyclerTaskList.size() == 0) emptyTasktext.setVisibility(VISIBLE);
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
@@ -110,6 +109,5 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                 alert.show();
             }
         });
-        if (recyclerTaskList.size() == 0) emptyTasktext.setVisibility(VISIBLE);
     }
 }
