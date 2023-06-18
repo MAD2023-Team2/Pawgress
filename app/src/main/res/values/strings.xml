@@ -66,6 +66,9 @@
         libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
+    // Task
+    <string name="taskName">Task Name</string>
+    <string name="taskCategory">Task Category</string>
 
     // Stopwatch
     <string name="mainTimer">0:00:00</string>
