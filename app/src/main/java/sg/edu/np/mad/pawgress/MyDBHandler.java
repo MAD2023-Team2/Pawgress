@@ -210,5 +210,52 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return userData.getTaskList();
     }
 
+    public void updateUser(String username, String newPassword) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        // Update the password if a new password is provided
+        if (newPassword != null && !newPassword.isEmpty()) {
+            values.put(COLUMN_PASSWORD, newPassword);
+        }
+
+        // Update the username if it is different from the existing username
+        if (username != null && !username.equals(findUsername(username))) {
+            values.put(COLUMN_USERNAME, username);
+        }
+
+        // Only perform the update if there are changes to be made
+        if (values.size() > 0) {
+            db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{findUsername(username)});
+            Log.i(title, "User updated: " + username);
+        } else {
+            Log.i(title, "No changes to update for user: " + username);
+        }
+
+        db.close();
+    }
+
+    public String findUsername(String newUsername) {
+        String currentUsername = null;
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        String[] projection = {COLUMN_USERNAME}; // Specify the column you want to retrieve
+
+        Cursor cursor = db.query(ACCOUNTS, projection, null, null, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            int columnIndex = cursor.getColumnIndex(COLUMN_USERNAME);
+
+            if (columnIndex != -1) {
+                currentUsername = cursor.getString(columnIndex);
+            }
+
+            cursor.close();
+        }
+
+        db.close();
+
+        return currentUsername;
+    }
 
 }

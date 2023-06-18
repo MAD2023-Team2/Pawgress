@@ -84,6 +84,8 @@ public class UserData implements Parcelable{
     public void setUsername(String username) {
         this.username = username;
     }
+    public void updateUsername(String newUsername){ this.username = newUsername; }
+    public void updatePassword(String newPassword){ this.password = newPassword;}
 
     public String getPassword() {
         return password;
