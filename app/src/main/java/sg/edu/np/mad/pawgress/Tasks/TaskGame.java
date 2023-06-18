@@ -3,12 +3,17 @@ package sg.edu.np.mad.pawgress.Tasks;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
@@ -16,9 +21,11 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.Random;
 
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.SaveSharedPreference;
 import sg.edu.np.mad.pawgress.UserData;
 
 public class TaskGame extends AppCompatActivity {
@@ -39,6 +46,66 @@ public class TaskGame extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.task_game);
+
+        MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
+        UserData user1 = myDBHandler.findUser(SaveSharedPreference.getUserName(this));
+        ImageView pet_picture = findViewById(R.id.corgi_1);
+        if (user1.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
+        else if (user1.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
+        else if (user1.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
+        else{pet_picture.setImageResource(R.drawable.golden_retriever);}
+        pet_picture.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+
+                    case MotionEvent.ACTION_DOWN:
+
+                        int random = new Random().nextInt(3);
+                        MediaPlayer mediaPlayer;
+
+                        if (random == 0){
+                            mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi_down_sound);
+                        } else if (random == 1) {
+                            mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi_up_sound);
+                        }
+                        else {
+                            mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi_3_sound);
+                        }
+
+                        mediaPlayer.start();
+                        mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+                            public void onCompletion(MediaPlayer mp) {
+                                mp.reset();
+                                mp.release();
+                            };
+                        });
+                        Animation anim = new ScaleAnimation(
+                                1f, 1f, // Start and end values for the X axis scaling
+                                1f, 0.85f, // Start and end values for the Y axis scaling
+                                Animation.RELATIVE_TO_SELF, 0f, // Pivot point of X scaling
+                                Animation.RELATIVE_TO_SELF, 1f); // Pivot point of Y scaling
+                        anim.setFillAfter(true); // Needed to keep the result of the animation
+                        anim.setDuration(150);
+                        v.startAnimation(anim);
+
+                        break;
+
+                    case MotionEvent.ACTION_UP:
+                        Animation anim2 = new ScaleAnimation(
+                                1f, 1f, // Start and end values for the X axis scaling
+                                0.85f, 1f, // Start and end values for the Y axis scaling
+                                Animation.RELATIVE_TO_SELF, 0f, // Pivot point of X scaling
+                                Animation.RELATIVE_TO_SELF, 1f); // Pivot point of Y scaling
+                        anim2.setFillAfter(true); // Needed to keep the result of the animation
+                        anim2.setDuration(150);
+                        v.startAnimation(anim2);
+                        break;
+                }
+
+                return true;
+            }
+        });
 
         Intent receivingEnd = getIntent();
         UserData user = receivingEnd.getParcelableExtra("User");
@@ -217,7 +284,7 @@ public class TaskGame extends AppCompatActivity {
         }
         else {
             buttonStart.setImageResource(R.drawable.baseline_play_arrow_24);
-            buttonReset.setAlpha(1);
+            buttonReset.setAlpha(1.0F);
         }
     }
 }

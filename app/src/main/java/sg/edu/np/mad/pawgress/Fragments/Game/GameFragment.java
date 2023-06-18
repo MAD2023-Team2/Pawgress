@@ -18,7 +18,10 @@ import android.widget.TextView;
 
 import java.util.Random;
 
+import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.SaveSharedPreference;
+import sg.edu.np.mad.pawgress.UserData;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -96,8 +99,14 @@ public class GameFragment extends Fragment {
         View view;
         view = inflater.inflate(R.layout.fragment_game, container, false);
 
-        ImageView corgi_1 = view.findViewById(R.id.corgi_1);
-        corgi_1.setOnTouchListener(new View.OnTouchListener() {
+        MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
+        UserData user = myDBHandler.findUser(SaveSharedPreference.getUserName(getActivity()));
+        ImageView pet_picture = view.findViewById(R.id.corgi_1);
+        if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
+        else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
+        else if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
+        else{pet_picture.setImageResource(R.drawable.golden_retriever);}
+        pet_picture.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
