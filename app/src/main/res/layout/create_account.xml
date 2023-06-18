@@ -13,6 +13,7 @@
         android:layout_width="203dp"
         android:layout_height="92dp"
         android:layout_marginTop="60dp"
+        android:fontFamily="sans-serif"
         android:text="@string/createAcctTitle"
         android:textSize="34sp"
         android:textStyle="bold"

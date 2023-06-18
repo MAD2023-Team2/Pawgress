@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
-        android:src="@drawable/pawgress_room_final_draft_pet_not_studying"
+        android:src="@drawable/room_not_studying"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -23,8 +23,8 @@
         android:id="@+id/corgi_1"
         android:layout_width="109dp"
         android:layout_height="136dp"
-        android:layout_marginStart="88dp"
-        android:layout_marginBottom="192dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginBottom="184dp"
         android:src="@drawable/corgi"
         app:layout_constraintBottom_toBottomOf="@+id/imageView13"
         app:layout_constraintStart_toStartOf="parent" />
@@ -85,33 +85,5 @@
         android:layout_marginStart="104dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown"
-        app:srcCompat="@drawable/baseline_play_arrow_24" /><![CDATA[
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    =======
->>>>>>> 34a99e94cb2cb408adf629c2e1a8f5ad283249cb
-
-
-
-
-
-
-
-
-]]>
+        app:srcCompat="@drawable/baseline_play_arrow_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>
