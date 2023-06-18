@@ -9,11 +9,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import sg.edu.np.mad.pawgress.LoginPage;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.SaveSharedPreference;
+import sg.edu.np.mad.pawgress.UserData;
 
 /**
  * A simple {@link Fragment} subclass.
