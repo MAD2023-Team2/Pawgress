@@ -136,9 +136,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_PET_TYPE, petType);
         values.put(COLUMN_PET_DESIGN, petDesign);
         db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
-        UserData user = findUser(username);
-        user.setPetType(petType);
-        user.setPetDesign(petDesign);
         Log.i(title, "User pet updated" + petType);
         db.close();
     }
