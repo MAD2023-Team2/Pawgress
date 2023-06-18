@@ -186,7 +186,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setTaskName(cursor.getString(1));
             queryResult.setStatus(cursor.getString(2));
             queryResult.setCategory(cursor.getString(3));
-            Log.w(title, "TaskID/TaskName " + queryResult.getTaskID() + queryResult.getTaskName());
+            Log.w(title, "TaskName/TaskStatus " + queryResult.getTaskName() + queryResult.getStatus());
             NewtaskList.add(queryResult);
             while (cursor.moveToNext()) {
                 Task task = new Task();
@@ -194,7 +194,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 task.setTaskName(cursor.getString(1));
                 task.setStatus(cursor.getString(2));
                 task.setCategory(cursor.getString(3));
-                Log.w(title, "TaskID/TaskName " + task.getTaskID() + task.getTaskName());
+                Log.w(title, "TaskName/TaskStatus " + task.getTaskName() + task.getStatus());
                 NewtaskList.add(task);
             }
             cursor.close();

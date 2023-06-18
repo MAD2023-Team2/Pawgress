@@ -14,7 +14,7 @@ import sg.edu.np.mad.pawgress.R;
 public class TaskViewHolder extends RecyclerView.ViewHolder {
 
     String title = "ViewHolder!";
-    TextView name, category, none;
+    TextView name, category;
     ConstraintLayout card;
     ImageButton edit,delete;
     CheckBox complete;
@@ -23,7 +23,6 @@ public class TaskViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         category = itemView.findViewById(R.id.textView3);
         name = itemView.findViewById(R.id.textView4);
-        none = itemView.findViewById(R.id.textView2);
         card = itemView.findViewById(R.id.taskCard); // individual task
         edit = itemView.findViewById(R.id.button3);
         delete = itemView.findViewById(R.id.button4);

@@ -21,6 +21,7 @@ import sg.edu.np.mad.pawgress.UserData;
 public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
     public TextView emptyTasktext;
     ArrayList<Task> taskList;
+    ArrayList<Task> recyclerTaskList;
     Context context;
     String THIS = "Adapter";
     UserData user;
@@ -33,10 +34,11 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
     }
     @Override
     public int getItemCount() {
-        return taskList.size();
+        return recyclerTaskList.size();
     }
 
     public void updateEmptyView(){
+        recyclerTaskList = new ArrayList<>();
         int count = 0;
         if (taskList.size() == 0){
             count = -1;
@@ -45,22 +47,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
             for (Task task : taskList){
                 if(task.getStatus().equals("In Progress")){
                     count+=1;
+                    recyclerTaskList.add(task);
                 }
             }
         }
-        Log.v(THIS, "Count " + count);
         if (count > 0){ emptyTasktext.setVisibility(INVISIBLE); }
         else emptyTasktext.setVisibility(VISIBLE);
     }
 
-    @Override
-    public int getItemViewType(int position)
-    {
-        Task task = taskList.get(position);
-        if (taskList.size() == 0) { return 0; }
-        else if (task.getStatus().equals("In Progress")) return 1;
-        else return 2; // completed tasks (saved in list/database but wont be shown)
-    }
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         Log.v(THIS, "View Type " + viewType);
@@ -70,100 +64,91 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position){
         Log.i(THIS, "onbind");
-        if (holder.getItemViewType() == 1){
-            Task task = taskList.get(position);
-            int id = task.getTaskID();
-            Task finalTask = mDataBase.findTask(id, mDataBase.findTaskList(user));
-            holder.category.setText(task.getCategory());
-            holder.name.setText(task.getTaskName());
-            // view individual task
-            holder.card.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent viewTask = new Intent(context, TaskView.class);
-                    Bundle info = new Bundle();
-                    info.putParcelable("User", user);
-                    info.putParcelable("Task", finalTask); // send individual task
-                    Log.v(THIS, "ID " + id);
-                    viewTask.putExtras(info);
-                    context.startActivity(viewTask);
-                }
-            });
-            // edit individual task
-            holder.edit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent editTask = new Intent(context, EditTask.class);
-                    Bundle info = new Bundle();
-                    Log.v(THIS, "id " + id);
-                    info.putParcelable("User", user);
-                    info.putParcelable("Task", finalTask); // send id of task to edit this task only
-                    editTask.putExtras(info);
-                    context.startActivity(editTask);
-                }
-            });
-            // delete individual task
-            // same problem as complete task, use "Deleted" Status
-            holder.delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Deleting Task: " + task.getTaskName());
-                    builder.setMessage("Are you sure?");
-                    builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
-                        public void onClick(DialogInterface dialog, int id){
-                            Log.v(THIS, "Deleting task");
-                            finalTask.setStatus("Deleted");
-                            mDataBase.updateTask(finalTask);
-                            taskList.remove(task);
-                            user.setTaskList(taskList);
-                            notifyItemRemoved(taskList.indexOf(task));
-                            notifyItemRangeChanged(taskList.indexOf(task), taskList.size());
-                        }
-                    });
-                    builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
-                        public void onClick(DialogInterface dialog, int id){
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
-            });
-            // complete task
-            // problem: deletes task from list, if its saved into db before then its ok(remove taskStatus and conditions), if not then use "Completed" Status
-            holder.complete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                    builder.setTitle("Complete: " + task.getTaskName());
-                    builder.setMessage("Is it really completed?");
-                    builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
-                        public void onClick(DialogInterface dialog, int id){
-                            Log.v(THIS, "Completed task");
-                            finalTask.setStatus("Completed");
-                            mDataBase.updateTask(finalTask);
-                            taskList.remove(task);
-                            user.setTaskList(taskList);
-                            notifyItemRemoved(taskList.indexOf(task));
-                            notifyItemRangeChanged(taskList.indexOf(task), taskList.size());
-                        }
-                    });
-                    builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
-                        public void onClick(DialogInterface dialog, int id){
-                            holder.complete.setChecked(false);
-                            dialog.dismiss();
-                        }
-                    });
-                    AlertDialog alert = builder.create();
-                    alert.show();
-                }
-            });
-        }
-        else {
-            holder.card.setVisibility(INVISIBLE);
-            holder.card.setMaxHeight(0);
-            holder.card.setMaxWidth(0);
-        }
+        Task task = recyclerTaskList.get(position);
+        int id = task.getTaskID();
+        Task finalTask = mDataBase.findTask(id, mDataBase.findTaskList(user));
+        holder.category.setText(task.getCategory());
+        holder.name.setText(task.getTaskName());;
+        // view individual task
+        holder.card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent viewTask = new Intent(context, TaskView.class);
+                Bundle info = new Bundle();
+                info.putParcelable("User", user);
+                info.putParcelable("Task", finalTask); // send individual task
+                Log.v(THIS, "ID " + id);
+                viewTask.putExtras(info);
+                context.startActivity(viewTask);
+            }
+        });
+        // edit individual task
+        holder.edit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent editTask = new Intent(context, EditTask.class);
+                Bundle info = new Bundle();
+                Log.v(THIS, "id " + id);
+                info.putParcelable("User", user);
+                info.putParcelable("Task", finalTask); // send individual task
+                editTask.putExtras(info);
+                context.startActivity(editTask);
+            }
+        });
+        // delete individual task
+        holder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Deleting Task: " + task.getTaskName());
+                builder.setMessage("Are you sure?");
+                builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        Log.v(THIS, "Deleting task " + task.getTaskName());
+                        finalTask.setStatus("Deleted");
+                        mDataBase.updateTask(finalTask);
+                        recyclerTaskList.remove(task);
+                        notifyItemRemoved(recyclerTaskList.indexOf(task));
+                        notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
+                        if (recyclerTaskList.size() == 0) emptyTasktext.setVisibility(VISIBLE);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
+        // complete task
+        holder.complete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Complete: " + task.getTaskName());
+                builder.setMessage("Is it really completed?");
+                builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        Log.v(THIS, "Completed task " + task.getTaskName());
+                        finalTask.setStatus("Completed");
+                        mDataBase.updateTask(finalTask);
+                        recyclerTaskList.remove(task);
+                        notifyItemRemoved(recyclerTaskList.indexOf(task));
+                        notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
+                        if (recyclerTaskList.size() == 0) emptyTasktext.setVisibility(VISIBLE);
+                    }
+                });
+                builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
+                    public void onClick(DialogInterface dialog, int id){
+                        holder.complete.setChecked(false);
+                        dialog.dismiss();
+                    }
+                });
+                AlertDialog alert = builder.create();
+                alert.show();
+            }
+        });
     }
 }
