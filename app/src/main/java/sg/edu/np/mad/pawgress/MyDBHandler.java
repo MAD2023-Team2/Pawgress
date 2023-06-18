@@ -79,6 +79,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_STREAK, userData.getStreak());
         values.put(COLUMN_CURRENCY, userData.getCurrency());
         values.put(COLUMN_LOGIN, userData.getLoggedInTdy());
+        values.put(COLUMN_PET_TYPE, userData.getPetType());
+        values.put(COLUMN_PET_DESIGN, userData.getPetDesign());
 
         SQLiteDatabase db = this. getWritableDatabase();
         db.insert(ACCOUNTS, null, values);
@@ -107,7 +109,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_TASK_NAME, task.getTaskName());
         values.put(COLUMN_TASK_STATUS, task.getStatus());
         values.put(COLUMN_TASK_CATEGORY, task.getCategory());
-        Log.v(title, "Task ID/NAME" + task.getTaskID() + task.getTaskName());
+
         db.update(TASKS, values, COLUMN_TASK_ID + "=?", new String[]{String.valueOf(task.getTaskID())});
         Log.i(title, "Updated Task");
         db.close();
@@ -134,6 +136,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_PET_TYPE, petType);
         values.put(COLUMN_PET_DESIGN, petDesign);
         db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
+        Log.i(title, "User pet updated" + petType);
         db.close();
     }
 
