@@ -11,6 +11,7 @@ import android.widget.EditText;
 
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
@@ -43,8 +44,10 @@ public class EditTask extends AppCompatActivity {
                 task.setStatus("In Progress");
                 task.setCategory(etcat.getText().toString());
                 myDBHandler.updateTask(task);
-                Intent editTask = new Intent(EditTask.this, TaskList.class);
+                Intent editTask = new Intent(EditTask.this, MainMainMain.class);
                 editTask.putExtra("New Task List", user);
+                editTask.putExtra("User", user);
+                editTask.putExtra("tab", "tasks_tab");
                 startActivity(editTask);
                 finish();
             }
@@ -54,8 +57,10 @@ public class EditTask extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.i(Edit, "discarding");
-                Intent back = new Intent(EditTask.this, TaskList.class);
+                Intent back = new Intent(EditTask.this, MainMainMain.class);
                 back.putExtra("New Task List", user);
+                back.putExtra("User", user);
+                back.putExtra("tab", "tasks_tab");
                 startActivity(back);
                 finish();
             }

@@ -4,11 +4,16 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -18,12 +23,16 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfilePage;
+import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
+import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.Tasks.CreateTask;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.Tasks.TaskCardAdapter;
 import sg.edu.np.mad.pawgress.Tasks.TaskList;
 import sg.edu.np.mad.pawgress.UserData;
+import sg.edu.np.mad.pawgress.databinding.ActivityMainMainMainBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -121,6 +130,23 @@ public class HomeFragment extends Fragment {
             mAdapter.emptyTasktext = emptyTaskText;
             mAdapter.updateEmptyView();
             recyclerView.setAdapter(mAdapter);
+            emptyTaskText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent newTask = new Intent(getActivity(), MainMainMain.class);
+                    newTask.putExtra("User", user);
+                    newTask.putExtra("tab", "tasks_tab");
+                    startActivity(newTask);
+                    /*
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_layout, new TasksFragment());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                     */
+                }
+            });
         } catch (RuntimeException e) {
             // from homepage or tab button
             Intent receivingEnd_2 = getActivity().getIntent();
@@ -131,8 +157,28 @@ public class HomeFragment extends Fragment {
             mAdapter.emptyTasktext = emptyTaskText;
             mAdapter.updateEmptyView();
             recyclerView.setAdapter(mAdapter);
+            emptyTaskText.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent newTask = new Intent(getActivity(), MainMainMain.class);
+                    newTask.putExtra("User", user);
+                    newTask.putExtra("tab", "tasks_tab");
+                    startActivity(newTask);
+
+                    /*
+                    FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
+                    FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                    fragmentTransaction.replace(R.id.frame_layout, new TasksFragment());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    */
+                }
+            });
+
         }
 
         return view;
     }
+
 }
