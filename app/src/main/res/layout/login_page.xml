@@ -15,6 +15,7 @@
         android:layout_marginTop="60dp"
         android:text="@string/app_name"
         android:textSize="34sp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,6 +26,7 @@
         android:layout_marginStart="65dp"
         android:layout_marginTop="95dp"
         android:text="@string/usernameText"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
@@ -35,6 +37,7 @@
         android:layout_marginStart="65dp"
         android:layout_marginTop="195dp"
         android:text="@string/passwordText"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView4" />
 
@@ -64,9 +67,10 @@
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="144dp"
-        android:layout_marginTop="52dp"
+        android:layout_marginStart="140dp"
+        android:layout_marginTop="35dp"
         android:text="@string/createAcctTitle"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button" />
 
@@ -80,6 +84,8 @@
         android:layout_marginEnd="150dp"
         android:backgroundTint="#88E473"
         android:text="@string/loginButtonText"
+        android:textSize="20sp"
+        android:textStyle= "bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextText2" />

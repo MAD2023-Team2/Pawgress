@@ -9,7 +9,7 @@
     <string name="newUserText">New User? Click Here!</string>
 
     //Create Account
-    <string name="createAcctTitle">CREATE ACCOUNT</string>
+    <string name="createAcctTitle">Create New Account</string>
     <string name="confirmCreationText">Create</string>
     <string name="cancelCreationText">Cancel</string>
 
