@@ -46,16 +46,18 @@
         android:layout_marginEnd="8dp"
         android:text="Pawgress"
         android:textSize="34sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/imageView9"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView14"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginTop="80dp"
+        android:layout_width="284dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginTop="68dp"
         android:text="Choose Your Study Companion (Cat or Dog)?"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 
