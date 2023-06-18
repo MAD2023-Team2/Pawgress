@@ -6,11 +6,14 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -21,12 +24,15 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfilePage;
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
+import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.Tasks.CreateTask;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.Tasks.TaskCardAdapter;
 import sg.edu.np.mad.pawgress.Tasks.TaskList;
 import sg.edu.np.mad.pawgress.UserData;
+import sg.edu.np.mad.pawgress.databinding.ActivityMainMainMainBinding;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -40,6 +46,8 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     private TextView emptyTaskText;
+    private TextView emptySpaceTextView;
+
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -115,6 +123,7 @@ public class HomeFragment extends Fragment {
         MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
         RecyclerView recyclerView = view.findViewById(R.id.taskcardlist);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
+        emptySpaceTextView = view.findViewById(R.id.emptyspace_home);
         try { // after creating new task
             Intent receivingEnd_2 = getActivity().getIntent();
             UserData user_2 = receivingEnd_2.getParcelableExtra("New Task List");
@@ -127,11 +136,18 @@ public class HomeFragment extends Fragment {
             emptyTaskText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    Intent newTask = new Intent(getActivity(), MainMainMain.class);
+                    newTask.putExtra("User", user);
+                    newTask.putExtra("tab", "tasks_tab");
+                    startActivity(newTask);
+                    /*
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frame_layout, new TasksFragment());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
+                     */
                 }
             });
         } catch (RuntimeException e) {
@@ -147,16 +163,33 @@ public class HomeFragment extends Fragment {
             emptyTaskText.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+
+                    Intent newTask = new Intent(getActivity(), MainMainMain.class);
+                    newTask.putExtra("User", user);
+                    newTask.putExtra("tab", "tasks_tab");
+                    startActivity(newTask);
+
+                    /*
                     FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.frame_layout, new TasksFragment());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
+                    */
                 }
             });
 
         }
-
+        recyclerView.post(new Runnable() {
+            @Override
+            public void run() {
+                int maxHeight = emptySpaceTextView.getHeight();
+                ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
+                layoutParams.height = Math.min(maxHeight, recyclerView.getHeight());
+                recyclerView.setLayoutParams(layoutParams);
+            }
+        });
         return view;
     }
+
 }

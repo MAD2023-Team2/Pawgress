@@ -59,12 +59,16 @@ public class CompanionSelectionActivity extends AppCompatActivity {
             int randomIndex = new Random().nextInt(catDesigns.length);
             selectedDesign = catDesigns[randomIndex];
             dbHandler.savePetDesign(user.getUsername(), CAT, selectedDesign);
+            user.setPetDesign(selectedDesign);
+            user.setPetType(CAT);
 
 
         } else {
             int randomIndex = new Random().nextInt(dogDesigns.length);
             selectedDesign = dogDesigns[randomIndex];
             dbHandler.savePetDesign(user.getUsername(), DOG, selectedDesign);
+            user.setPetDesign(selectedDesign);
+            user.setPetType(DOG);
         }
 
         // Create an Intent to launch the "MainMainMain" activity
