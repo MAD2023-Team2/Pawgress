@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,6 +16,7 @@ import java.util.Random;
 public class CompanionSelectionActivity extends AppCompatActivity {
     private String GLOBAL_PREF = "MyPrefs";
     private String MY_USERNAME = "MyUserName";
+    String Pet = "Pet companion activity";
     Button catButton;
     Button dogButton;
     //UserData User;
@@ -28,6 +30,7 @@ public class CompanionSelectionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_companion_selection);
         Intent receivingEnd = getIntent();
         UserData user = receivingEnd.getParcelableExtra("User");
+        Log.v(Pet, "Choosing Pet");
 
         // Retrieve the username from the shared preference
         // SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -60,15 +63,19 @@ public class CompanionSelectionActivity extends AppCompatActivity {
 
         int selectedDesign;
         if (selection.equals("cat")) {
+            user.setPetType("Cat");
             int randomIndex = new Random().nextInt(catDesigns.length);
             selectedDesign = catDesigns[randomIndex];
+            user.setPetDesign(selectedDesign);
             dbHandler.savePetDesign(user.getUsername(), "cat", selectedDesign);
+            System.out.println("User pet: " + user.getPetType());
 
 
         } else {
             int randomIndex = new Random().nextInt(dogDesigns.length);
             selectedDesign = dogDesigns[randomIndex];
             dbHandler.savePetDesign(user.getUsername(), "dog", selectedDesign);
+            System.out.println("User pet: " + user.getPetType());
         }
 
         // MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
