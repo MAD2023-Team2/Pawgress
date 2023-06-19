@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import sg.edu.np.mad.pawgress.EditProfileActivity;
 import sg.edu.np.mad.pawgress.LoginPage;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -82,6 +83,17 @@ public class ProfileFragment extends Fragment{
                 startActivity(intent);
             }
         });
+
+        Button editProfilePasswordButton = (Button) view.findViewById(R.id.editProfilePassword);
+        editProfilePasswordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), EditProfileActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
         // Setting Username Text
         MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
 

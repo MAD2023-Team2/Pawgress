@@ -102,6 +102,7 @@ public class HomeFragment extends Fragment {
         UserData user = receivingEnd.getParcelableExtra("User");
         ImageView pet_picture = view.findViewById(R.id.homeGame);
 
+
         if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
         else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
         else if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}

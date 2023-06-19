@@ -17,7 +17,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
         android:id="@+id/corgi_1"
@@ -61,29 +61,31 @@
 
     <Button
         android:id="@+id/finish_timer"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="100dp"
-        android:layout_height="55dp"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
+        android:layout_width="80dp"
+        android:layout_height="45dp"
         android:layout_marginEnd="100dp"
+        android:backgroundTint="#4169E1"
         android:text="Finish Task?"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown" />
 
-    <ImageButton
-        android:id="@+id/reset_timer_imagebutton"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
-        app:layout_constraintEnd_toStartOf="@+id/finish_timer"
-        app:layout_constraintStart_toEndOf="@+id/start_timer_imagebutton"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown"
-        app:srcCompat="@drawable/baseline_replay_24" />
-
-    <ImageButton
+    <ImageView
         android:id="@+id/start_timer_imagebutton"
-        android:layout_width="55dp"
-        android:layout_height="55dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginStart="104dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown"
-        app:srcCompat="@drawable/baseline_play_arrow_24" />
+        app:srcCompat="@mipmap/timer_play_round" />
+
+    <ImageView
+        android:id="@+id/reset_timer_imagebutton"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        app:layout_constraintEnd_toStartOf="@+id/finish_timer"
+        app:layout_constraintStart_toEndOf="@+id/start_timer_imagebutton"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown"
+        app:srcCompat="@mipmap/timer_restart_round" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

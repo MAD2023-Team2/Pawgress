@@ -39,7 +39,7 @@ public class CreateTask extends AppCompatActivity {
                 String name = etname.getText().toString();
                 EditText etcat = findViewById(R.id.editCat);
                 String cat = etcat.getText().toString();
-                Task task = new Task(1, name, "In Progress", cat, 0);
+                Task task = new Task(1, name, "In Progress", cat,0);
                 myDBHandler.addTask(task, user);
                 Intent newTask = new Intent(CreateTask.this, MainMainMain.class);
                 newTask.putExtra("New Task List", user);
