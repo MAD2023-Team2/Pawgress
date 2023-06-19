@@ -8,8 +8,11 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.CreateAccount;
 import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
@@ -38,16 +41,53 @@ public class CreateTask extends AppCompatActivity {
                 EditText etname = findViewById(R.id.editTitle);
                 String name = etname.getText().toString();
                 EditText etcat = findViewById(R.id.editCat);
-                String cat = etcat.getText().toString();
-                Task task = new Task(1, name, "In Progress", cat ,0);
-                myDBHandler.addTask(task, user);
-                Intent newTask = new Intent(CreateTask.this, MainMainMain.class);
-                newTask.putExtra("New Task List", user);
-                newTask.putExtra("User", user);
-                newTask.putExtra("tab", "tasks_tab");
-                startActivity(newTask);
-                Log.i(title, "task added");
-                finish();
+                if (etname.length() > 0 && etcat.length() > 0) {
+                    String cat = etcat.getText().toString();
+
+                    EditText ethr = findViewById(R.id.editHrs);
+                    int hr = 0;
+
+                    try {
+                        hr = Integer.parseInt(ethr.getText().toString());
+                    } catch (NumberFormatException e) {
+                        // do nth
+                    }
+
+                    EditText etmin = findViewById(R.id.editMins);
+                    int min = 0;
+
+                    try {
+                        min = Integer.parseInt(etmin.getText().toString());
+                    } catch (NumberFormatException e) {
+                        // do nth
+                    }
+
+                    EditText etsec = findViewById(R.id.editSec);
+                    int sec = 0;
+
+                    try {
+                        sec = Integer.parseInt(etsec.getText().toString());
+                    } catch (NumberFormatException e) {
+                        // do nth
+                    }
+
+                    int totalSeconds = (hr * 3600) + (min * 60) + sec;
+
+                    Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds);
+                    myDBHandler.addTask(task, user);
+                    Intent newTask = new Intent(CreateTask.this, MainMainMain.class);
+                    newTask.putExtra("New Task List", user);
+                    newTask.putExtra("User", user);
+                    newTask.putExtra("tab", "tasks_tab");
+                    startActivity(newTask);
+                    Log.i(title, "task added");
+                    Log.i(title, String.valueOf(totalSeconds));
+                    finish();
+                }
+                else{
+                    Toast.makeText(CreateTask.this, "Invalid Title & Category", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 

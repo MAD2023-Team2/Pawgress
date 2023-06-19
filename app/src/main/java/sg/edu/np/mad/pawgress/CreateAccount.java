@@ -47,43 +47,37 @@ public class CreateAccount extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putString(MY_USERNAME, etUsername.getText().toString());
-                editor.putString(MY_PASSWORD, etPassword.getText().toString());
-                editor.commit();
-                Intent intent = new Intent(MainActivity2.this, MainActivity.class);
-                startActivity(intent);
-                */
+                if (etUsername.length() > 0 && etPassword.length() > 0) {
+                    UserData dbData = myDBHandler.findUser(etUsername.getText().toString());
+                    if (dbData == null){
+                        String dbUsername = etUsername.getText().toString();
+                        String dbPassword = etPassword.getText().toString();
+                        ArrayList<Task> taskList = new ArrayList<Task>();
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        String accCreateDate = formatter.format(new Date());
+                        UserData dbUserData = new UserData(dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354);
+                        System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
+                        myDBHandler.addUser(dbUserData);
+                        SaveSharedPreference.setUserName(CreateAccount.this ,etUsername.getText().toString());
+                        Intent intent = new Intent(CreateAccount.this, tutPage1.class);
+                        intent.putExtra("User", dbUserData);
 
-                UserData dbData = myDBHandler.findUser(etUsername.getText().toString());
-                if (dbData == null){
-                    String dbUsername = etUsername.getText().toString();
-                    String dbPassword = etPassword.getText().toString();
-                    ArrayList<Task> taskList = new ArrayList<Task>();
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    String accCreateDate = formatter.format(new Date());
-                    UserData dbUserData = new UserData(dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354);
-                    System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
-                    myDBHandler.addUser(dbUserData);
-                    SaveSharedPreference.setUserName(CreateAccount.this ,etUsername.getText().toString());
-                    Intent intent = new Intent(CreateAccount.this, tutPage1.class);
-                    intent.putExtra("User", dbUserData);
+                        // for CreateAccount to CompanionSelectionActivity
+                        // pass username info over
+                        // sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
+                        // SharedPreferences.Editor editor = sharedPreferences.edit();
+                        // editor.putString(MY_USERNAME, etUsername.getText().toString());
+                        // editor.commit();
 
-                    // for CreateAccount to CompanionSelectionActivity
-                    // pass username info over
-                    // sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
-                    // SharedPreferences.Editor editor = sharedPreferences.edit();
-                    // editor.putString(MY_USERNAME, etUsername.getText().toString());
-                    // editor.commit();
-
-                    startActivity(intent);
-                    finish();
+                        startActivity(intent);
+                        finish();
+                    }
+                    else{
+                        Toast.makeText(CreateAccount.this, "Username Already Exist!", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 else{
-                    Toast.makeText(CreateAccount.this, "Username Already Exist!", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(CreateAccount.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
                 }
             }
         });

@@ -55,6 +55,8 @@ public class LoginPage extends AppCompatActivity {
             TextView newUser = findViewById(R.id.textView4);
             Button loginButton = findViewById(R.id.button);
 
+
+
             newUser.setOnTouchListener(new View.OnTouchListener() {
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
@@ -71,13 +73,18 @@ public class LoginPage extends AppCompatActivity {
                     EditText etUsername = findViewById(R.id.editTextText);
                     EditText etPassword = findViewById(R.id.editTextText2);
                     String username = etUsername.getText().toString();
-                    UserData user = myDBHandler.findUser(username);
-                    if (isValidCredentials(etUsername.getText().toString(), etPassword.getText().toString())){
-                        SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
-                        Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
-                        intent.putExtra("User", user);
-                        startActivity(intent);
-                        finish();
+                    if (etUsername.length() > 0 && etPassword.length() > 0) {
+                        UserData user = myDBHandler.findUser(username);
+                        if (isValidCredentials(etUsername.getText().toString(), etPassword.getText().toString())){
+                            SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
+                            Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
+                            intent.putExtra("User", user);
+                            startActivity(intent);
+                            finish();
+                        }
+                        else{
+                            Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
+                        }
                     }
                     else{
                         Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
