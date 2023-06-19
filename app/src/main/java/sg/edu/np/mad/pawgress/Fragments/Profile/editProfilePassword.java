@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import sg.edu.np.mad.pawgress.MyDBHandler;
@@ -18,6 +19,7 @@ public class editProfilePassword extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
     private Button btnSave;
+    private ImageButton back;
     private MyDBHandler dbHandler;
     UserData user;
 
@@ -31,7 +33,7 @@ public class editProfilePassword extends AppCompatActivity {
         etUsername = findViewById(R.id.editTextText5);
         etPassword = findViewById(R.id.editTextText6);
         btnSave = findViewById(R.id.button7);
-
+        back = findViewById(R.id.imageButton);
         dbHandler = new MyDBHandler(this, null, null, 1);
 
 
@@ -58,6 +60,12 @@ public class editProfilePassword extends AppCompatActivity {
                 SaveSharedPreference.setUserName(editProfilePassword.this, updatedUsername);
 
                 }
+                finish();
+            }
+        });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
             }
         });

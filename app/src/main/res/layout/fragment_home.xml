@@ -21,7 +21,6 @@
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="35dp"
             android:background="@drawable/recycler_view_border"
-            android:backgroundTint="#FFF3EB"
             android:text=""
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -46,7 +45,7 @@
             android:layout_height="60dp"
             android:layout_marginTop="30dp"
             android:layout_marginEnd="30dp"
-            android:backgroundTint="#B7B7A4"
+            android:backgroundTint="#B9C498"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/baseline_person_24" />
@@ -74,7 +73,6 @@
             android:layout_marginStart="30dp"
             android:layout_marginTop="40dp"
             android:layout_marginEnd="30dp"
-            android:background="#FFF3EB"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.473"
             app:layout_constraintStart_toStartOf="parent"
@@ -90,6 +88,7 @@
             android:clickable="true"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
+
             android:text="No tasks to work on for now :)"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"

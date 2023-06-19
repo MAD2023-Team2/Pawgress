@@ -51,13 +51,13 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="65dp"
         android:layout_marginTop="50dp"
 
+        android:layout_marginEnd="3dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Category: "
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/editCat"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <EditText

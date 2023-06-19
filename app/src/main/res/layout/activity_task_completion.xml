@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
         android:layout_marginTop="29dp"
-        android:backgroundTint="#B7B7A4"
+        android:backgroundTint="#B9C498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/actionModeCloseDrawable" />
