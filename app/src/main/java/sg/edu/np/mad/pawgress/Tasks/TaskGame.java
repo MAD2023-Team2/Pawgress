@@ -2,7 +2,6 @@ package sg.edu.np.mad.pawgress.Tasks;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
-import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 
@@ -34,8 +32,8 @@ public class TaskGame extends AppCompatActivity {
     private boolean running;
     private boolean wasRunning;
 
-    private ImageButton buttonStart;
-    private ImageButton buttonReset;
+    private ImageView buttonStart;
+    private ImageView buttonReset;
     private Button buttonFinish;
     public Task task;
     public UserData user;
@@ -283,11 +281,11 @@ public class TaskGame extends AppCompatActivity {
 
     private void updateButtonUI() {
         if (running) {
-            buttonStart.setImageResource(R.drawable.baseline_pause_24);
+            buttonStart.setImageResource(R.mipmap.timer_play_square_round);
             buttonReset.setAlpha(0.5F);
         }
         else {
-            buttonStart.setImageResource(R.drawable.baseline_play_arrow_24);
+            buttonStart.setImageResource(R.mipmap.timer_play_round);
             buttonReset.setAlpha(1.0F);
         }
     }

@@ -51,13 +51,13 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                 }
             }
         }
+        Log.v("12345", String.valueOf(count));
         if (count > 0){ emptyTasktext.setVisibility(INVISIBLE); }
         else emptyTasktext.setVisibility(VISIBLE);
     }
 
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        Log.v(THIS, "View Type " + viewType);
         return new TaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task,parent, false));
     }
 
@@ -65,8 +65,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
     public void onBindViewHolder(TaskViewHolder holder, int position){
         Log.i(THIS, "onbind");
         Task task = recyclerTaskList.get(position);
-        int id = task.getTaskID();
-        Task finalTask = mDataBase.findTask(id, mDataBase.findTaskList(user));
         holder.category.setText(task.getCategory());
         holder.name.setText(task.getTaskName());;
         // view individual task
@@ -76,8 +74,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                 Intent viewTask = new Intent(context, TaskView.class);
                 Bundle info = new Bundle();
                 info.putParcelable("User", user);
-                info.putParcelable("Task", finalTask); // send individual task
-                Log.v(THIS, "ID " + id);
+                info.putParcelable("Task", task); // send individual task
                 viewTask.putExtras(info);
                 context.startActivity(viewTask);
             }
@@ -88,9 +85,8 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
             public void onClick(View v) {
                 Intent editTask = new Intent(context, EditTask.class);
                 Bundle info = new Bundle();
-                Log.v(THIS, "id " + id);
                 info.putParcelable("User", user);
-                info.putParcelable("Task", finalTask); // send individual task
+                info.putParcelable("Task", task); // send individual task
                 editTask.putExtras(info);
                 context.startActivity(editTask);
             }
@@ -105,11 +101,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                 builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         Log.v(THIS, "Deleting task " + task.getTaskName());
-                        finalTask.setStatus("Deleted");
-                        mDataBase.updateTask(finalTask);
+                        task.setStatus("Deleted");
+                        mDataBase.updateTask(task);
                         recyclerTaskList.remove(task);
-                        notifyItemRemoved(recyclerTaskList.indexOf(task));
+                        notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
+                        notifyDataSetChanged();
                         if (recyclerTaskList.size() == 0) emptyTasktext.setVisibility(VISIBLE);
                     }
                 });
@@ -132,11 +129,12 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         Log.v(THIS, "Completed task " + task.getTaskName());
-                        finalTask.setStatus("Completed");
-                        mDataBase.updateTask(finalTask);
+                        task.setStatus("Completed");
+                        mDataBase.updateTask(task);
                         recyclerTaskList.remove(task);
-                        notifyItemRemoved(recyclerTaskList.indexOf(task));
+                        notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
+                        notifyDataSetChanged();
                         if (recyclerTaskList.size() == 0) emptyTasktext.setVisibility(VISIBLE);
                     }
                 });

@@ -22,6 +22,9 @@ public class TaskView extends AppCompatActivity {
 
     private Button gameButton;
     String View = "Task View";
+    Task task;
+    TextView time;
+    UserData user;
     MyDBHandler myDBHandler = new MyDBHandler(this, null,null,1);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +33,15 @@ public class TaskView extends AppCompatActivity {
 
         Log.v(View, "In Task View");
         Intent receivingEnd = getIntent();
-        UserData user = receivingEnd.getParcelableExtra("User");
-        Task task = receivingEnd.getParcelableExtra("Task");
-        Log.v(View, "TaskName Id = " + task.getTaskID());
+        user = receivingEnd.getParcelableExtra("User");
+        task = receivingEnd.getParcelableExtra("Task");
         ImageButton backButton = findViewById(R.id.backButton);
         Button gameButton = findViewById(R.id.to_Game);
         TextView taskName = findViewById(R.id.textView11);
         taskName.setText(task.getTaskName());
         TextView taskCategory = findViewById(R.id.textView10);
         taskCategory.setText(task.getCategory());
-        TextView time = findViewById(R.id.textView15);
+        time = findViewById(R.id.textView15);
         time.setText("Time spent so far: " + task.getTimeSpent() + " seconds");
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -60,5 +62,13 @@ public class TaskView extends AppCompatActivity {
                 startActivity(Timer);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int id = task.getTaskID();
+        task = myDBHandler.findTask(id, myDBHandler.findTaskList(user));
+        time.setText("Time spent so far: " + task.getTimeSpent() + " seconds");
     }
 }

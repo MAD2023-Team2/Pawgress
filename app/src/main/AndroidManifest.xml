@@ -55,6 +55,9 @@
             android:name=".tutorials.tutPage3"
             android:exported="false" />
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginPage"
             android:exported="true" >
             <intent-filter>

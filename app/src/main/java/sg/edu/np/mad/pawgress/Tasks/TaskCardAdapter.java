@@ -57,7 +57,6 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
 
     @Override
     public TaskCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        Log.v(THIS, "View Type " + viewType);
         return new TaskCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.taskcard,parent, false));
     }
 
@@ -65,8 +64,6 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
     public void onBindViewHolder(TaskCardViewHolder holder, int position){
         Log.i(THIS, "onbind");
         Task task = recyclerTaskList.get(position);
-        int id = task.getTaskID();
-        Task finalTask = mDataBase.findTask(id, mDataBase.findTaskList(user));
         holder.name.setText(task.getTaskName());;
         // view individual task
         holder.card2.setOnClickListener(new View.OnClickListener() {
@@ -75,8 +72,7 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                 Intent viewTask = new Intent(context, TaskView.class);
                 Bundle info = new Bundle();
                 info.putParcelable("User", user);
-                info.putParcelable("Task", finalTask); // send individual task
-                Log.v(THIS, "ID " + id);
+                info.putParcelable("Task", task); // send individual task
                 viewTask.putExtras(info);
                 context.startActivity(viewTask);
             }
@@ -92,11 +88,12 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         Log.v(THIS, "Completed task " + task.getTaskName());
-                        finalTask.setStatus("Completed");
-                        mDataBase.updateTask(finalTask);
+                        task.setStatus("Completed");
+                        mDataBase.updateTask(task);
                         recyclerTaskList.remove(task);
-                        notifyItemRemoved(recyclerTaskList.indexOf(task));
+                        notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
+                        if (recyclerTaskList.size() == 0) emptyTasktext.setVisibility(VISIBLE);
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
