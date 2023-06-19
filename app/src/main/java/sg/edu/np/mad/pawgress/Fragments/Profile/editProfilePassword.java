@@ -19,7 +19,9 @@ public class editProfilePassword extends AppCompatActivity {
     private EditText etPassword;
     private Button btnSave;
     private MyDBHandler dbHandler;
-    UserData user, oldUser;
+    UserData user;
+
+    String oldusername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,25 +34,30 @@ public class editProfilePassword extends AppCompatActivity {
 
         dbHandler = new MyDBHandler(this, null, null, 1);
 
-        oldUser = getIntent().getParcelableExtra("User");
 
-        etUsername.setText(oldUser.getUsername());
+        user = getIntent().getParcelableExtra("User");
+        //oldusername = user.getUsername();
+
+        etUsername.setText(user.getUsername());
         String oldName = etUsername.getText().toString();
-        etPassword.setText(oldUser.getPassword());
+        etPassword.setText(user.getPassword());
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String updatedUsername = etUsername.getText().toString();
                 String updatedPassword = etPassword.getText().toString();
+                for (Task task: dbHandler.findTaskList(user)){
+                    dbHandler.updateTask(task, updatedUsername);
+
+                user.setUsername(updatedUsername);
+                user.setPassword(updatedPassword);
                 dbHandler.updateUser(updatedUsername, updatedPassword, oldName);
-                for (Task task : dbHandler.findTaskList(oldUser)){
-                    user.setUsername(updatedUsername);
-                    user.setPassword(updatedPassword);
-                    dbHandler.updateTask(task,user);
-                }
                 Toast.makeText(editProfilePassword.this, "User information updated", Toast.LENGTH_SHORT).show();
+
                 SaveSharedPreference.setUserName(editProfilePassword.this, updatedUsername);
+
+                }
                 finish();
             }
         });

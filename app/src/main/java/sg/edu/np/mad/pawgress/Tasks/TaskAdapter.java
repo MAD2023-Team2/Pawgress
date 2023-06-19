@@ -101,7 +101,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                     public void onClick(DialogInterface dialog, int id){
                         Log.v(THIS, "Deleting task " + task.getTaskName());
                         task.setStatus("Deleted");
-                        mDataBase.updateTask(task ,user);
+                        mDataBase.updateTask(task, user.getUsername());
                         recyclerTaskList.remove(task);
                         notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
@@ -129,7 +129,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                     public void onClick(DialogInterface dialog, int id){
                         Log.v(THIS, "Completed task " + task.getTaskName());
                         task.setStatus("Completed");
-                        mDataBase.updateTask(task, user);
+                        mDataBase.updateTask(task, user.getUsername());
                         recyclerTaskList.remove(task);
                         notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());

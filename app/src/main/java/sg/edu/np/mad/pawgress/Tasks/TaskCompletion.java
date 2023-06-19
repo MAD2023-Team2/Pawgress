@@ -33,7 +33,7 @@ public class TaskCompletion extends AppCompatActivity {
         UserData user = receivingEnd.getParcelableExtra("User");
         Task finalTask = myDBHandler.findTask(task.getTaskID(), myDBHandler.findTaskList(user));
         finalTask.setStatus("Completed");
-        myDBHandler.updateTask(finalTask, user);
+        myDBHandler.updateTask(finalTask, user.getUsername());
 
         ImageButton backButton = findViewById(R.id.backButton);
 
