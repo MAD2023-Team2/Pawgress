@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +11,6 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.Locale;
-import java.util.Map;
 
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -24,6 +22,7 @@ public class TaskView extends AppCompatActivity {
     String View = "Task View";
     Task task;
     TextView time;
+    TextView targettime;
     UserData user;
     MyDBHandler myDBHandler = new MyDBHandler(this, null,null,1);
     @Override
@@ -41,12 +40,20 @@ public class TaskView extends AppCompatActivity {
         taskName.setText(task.getTaskName());
         TextView taskCategory = findViewById(R.id.textView10);
         taskCategory.setText(task.getCategory());
+        targettime = findViewById(R.id.targettime);
+        int tseconds = task.getTargetSec();
+        int thours = tseconds / 3600;
+        int tminutes = (tseconds % 3600) / 60;
+        int tsecs = tseconds % 60;
+        targettime.setText("Targeted Time Spent: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",thours, tminutes, tsecs));
+
+
         time = findViewById(R.id.textView15);
         int seconds = task.getTimeSpent();
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
         int secs = seconds % 60;
-        time.setText("Time spent so far: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
+        time.setText("Current Time Spent: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
         if (task.getTimeSpent() > 0) { gameButton.setText("RESUME TIMER");}
 
 

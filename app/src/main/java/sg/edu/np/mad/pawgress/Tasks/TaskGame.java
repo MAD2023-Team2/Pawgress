@@ -273,7 +273,11 @@ public class TaskGame extends AppCompatActivity {
         builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (!running) { startTimer(); }
+                if (!running) {
+                    startTimer();
+                    buttonStart.setImageResource(R.mipmap.timer_play_square_round);
+                    buttonReset.setAlpha(0.5F);
+                }
             }
         });
 
