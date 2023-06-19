@@ -134,6 +134,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                         recyclerTaskList.remove(task);
                         notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
+                        notifyDataSetChanged();
                         if (recyclerTaskList.size() == 0) emptyTasktext.setVisibility(VISIBLE);
                     }
                 });
