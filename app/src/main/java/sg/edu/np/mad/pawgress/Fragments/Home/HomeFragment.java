@@ -146,7 +146,7 @@ public class HomeFragment extends Fragment {
         try { // after creating new task
             Intent receivingEnd_2 = getActivity().getIntent();
             UserData user_2 = receivingEnd_2.getParcelableExtra("New Task List");
-            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity());
+            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity(),recyclerView);
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(mLayoutManager);
             mAdapter.emptyTasktext = emptyTaskText;
@@ -157,7 +157,7 @@ public class HomeFragment extends Fragment {
             // from homepage or tab button
             Intent receivingEnd_2 = getActivity().getIntent();
             UserData user_2 = receivingEnd_2.getParcelableExtra("User");
-            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity());
+            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity(),recyclerView);
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(mLayoutManager);
             mAdapter.emptyTasktext = emptyTaskText;
