@@ -82,6 +82,18 @@ public class ProfileFragment extends Fragment{
                 startActivity(intent);
             }
         });
+
+        //Edit Profile button
+        Button editProfileButton = (Button) view.findViewById(R.id.editProfilePassword);
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SaveSharedPreference.clearUserName(getActivity()); //clears shared preference so no auto login
+                Intent intent = new Intent(getActivity(), editProfilePassword.class);
+                startActivity(intent);
+            }
+        });
+
         // Setting Username Text
         MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
 

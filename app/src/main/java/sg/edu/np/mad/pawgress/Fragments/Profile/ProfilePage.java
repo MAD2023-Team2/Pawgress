@@ -37,6 +37,17 @@ public class ProfilePage extends AppCompatActivity {
             }
         });
 
+        // Edit Profile Button
+        Button editProfileButton = findViewById(R.id.editProfilePassword);
+        editProfileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SaveSharedPreference.clearUserName(ProfilePage.this); //clears shared preference so no auto login
+                Intent intent = new Intent(ProfilePage.this, editProfilePassword.class);
+                startActivity(intent);
+            }
+        });
+
         // Setting Username Text
         UserData dbData = myDBHandler.findUser(SaveSharedPreference.getUserName(ProfilePage.this));
         TextView username = findViewById(R.id.ProfileUsername);
