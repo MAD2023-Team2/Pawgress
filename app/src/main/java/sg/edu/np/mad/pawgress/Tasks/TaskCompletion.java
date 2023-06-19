@@ -49,7 +49,7 @@ public class TaskCompletion extends AppCompatActivity {
             }
         });
 
-        int seconds = receivingEnd.getIntExtra("seconds",0);
+        int seconds = finalTask.getTimeSpent();
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
         int secs = seconds % 60;
