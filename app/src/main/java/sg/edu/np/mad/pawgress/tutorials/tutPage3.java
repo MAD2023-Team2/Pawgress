@@ -3,6 +3,7 @@ package sg.edu.np.mad.pawgress.tutorials;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +24,7 @@ public class tutPage3 extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        TextView tut3_next = findViewById((R.id.tut3_next));
+        Button tut3_next = findViewById((R.id.tut3_next));
         Intent receivingEnd = getIntent();
         UserData user = receivingEnd.getParcelableExtra("User");
         tut3_next.setOnClickListener(new View.OnClickListener() {

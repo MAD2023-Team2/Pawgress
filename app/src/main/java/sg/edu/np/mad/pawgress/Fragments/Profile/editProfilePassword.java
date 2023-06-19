@@ -2,6 +2,7 @@ package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -11,9 +12,11 @@ import android.widget.Toast;
 
 import sg.edu.np.mad.pawgress.CreateAccount;
 import sg.edu.np.mad.pawgress.LoginPage;
+import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.SaveSharedPreference;
+import sg.edu.np.mad.pawgress.Tasks.CreateTask;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.UserData;
 
@@ -62,6 +65,11 @@ public class editProfilePassword extends AppCompatActivity {
                         Toast.makeText(editProfilePassword.this, "User information updated", Toast.LENGTH_SHORT).show();
 
                         SaveSharedPreference.setUserName(editProfilePassword.this, updatedUsername);
+                        Intent newTask = new Intent(editProfilePassword.this, MainMainMain.class);
+                        newTask.putExtra("New Task List", user);
+                        newTask.putExtra("User", user);
+                        newTask.putExtra("tab", "profile_tab");
+                        startActivity(newTask);
                         finish();
                     }
                     else{
