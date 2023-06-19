@@ -57,8 +57,6 @@ public class TaskList extends AppCompatActivity {
             Log.v(TAG, "starting exception");
             Intent receivingEnd = getIntent();
             UserData user = receivingEnd.getParcelableExtra("User");
-            ArrayList<Task> taskList = myDBHandler.findTaskList(user);
-            Log.v(TAG, "List size = " + taskList.size());
             Log.v(TAG, "Starting recyclerview");
             TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, this);
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);

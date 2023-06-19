@@ -100,7 +100,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_USERNAME, userData.getUsername());
         db.insert(TASKS, null, values);
         taskList.add(task);
-        Log.v(title, "taskList size " + taskList.size());
         userData.setTaskList(taskList);
         Log.i(title, "Inserted Task");
         db.close();
@@ -175,7 +174,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public Task findTask(int id, ArrayList<Task> newTaskList){
         for (Task task : newTaskList){
             if (task.getTaskID() == id){
-                Log.w(title, "Task: " + task.getTaskName());
                 return task;
             }
         }
@@ -194,16 +192,14 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setStatus(cursor.getString(2));
             queryResult.setCategory(cursor.getString(3));
             queryResult.setTimeSpent(cursor.getInt(4));
-            Log.w(title, "TaskName/TaskStatus " + queryResult.getTaskName() + queryResult.getStatus());
             NewtaskList.add(queryResult);
             while (cursor.moveToNext()) {
                 Task task = new Task();
                 task.setTaskID(cursor.getInt(0));
                 task.setTaskName(cursor.getString(1));
                 task.setStatus(cursor.getString(2));
-                task.setTimeSpent(cursor.getInt(3));
-                task.setCategory(cursor.getString(4));
-                Log.w(title, "TaskName/TaskStatus " + task.getTaskName() + task.getStatus());
+                task.setCategory(cursor.getString(3));
+                task.setTimeSpent(cursor.getInt(4));
                 NewtaskList.add(task);
             }
             cursor.close();
