@@ -13,19 +13,23 @@
         android:layout_width="109dp"
         android:layout_height="99dp"
         android:layout_marginStart="88dp"
-        android:layout_marginTop="316dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginBottom="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/dogButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView14"
         app:srcCompat="@drawable/corgi" />
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="87dp"
-        android:layout_height="130dp"
-        android:layout_marginTop="300dp"
-        android:layout_marginEnd="92dp"
+        android:layout_width="82dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/catButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textView14"
         app:srcCompat="@drawable/grey_cat" />
 
     <ImageView
@@ -42,8 +46,9 @@
         android:id="@+id/textView13"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="72dp"
         android:layout_marginEnd="8dp"
+        android:fontFamily="@font/balsamiq_sans"
         android:text="Pawgress"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -52,12 +57,16 @@
 
     <TextView
         android:id="@+id/textView14"
-        android:layout_width="284dp"
+        android:layout_width="0dp"
         android:layout_height="49dp"
-        android:layout_marginStart="88dp"
+        android:layout_marginStart="64dp"
         android:layout_marginTop="68dp"
+        android:layout_marginEnd="64dp"
+        android:fontFamily="@font/balsamiq_sans"
         android:text="Choose Your Study Companion (Cat or Dog)?"
+        android:textAlignment="center"
         android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView9" />
 
@@ -66,21 +75,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="100dp"
-        android:layout_marginTop="18dp"
+        android:layout_marginBottom="250dp"
         android:backgroundTint="#E7CFB9"
+        android:fontFamily="@font/balsamiq_sans"
         android:text="Dog"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView6" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/catButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:layout_marginEnd="90dp"
+        android:layout_marginEnd="100dp"
+        android:layout_marginBottom="250dp"
         android:backgroundTint="#E7CFB9"
+        android:fontFamily="@font/balsamiq_sans"
         android:text="Cat"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -23,7 +23,7 @@ public class editProfilePassword extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_profile_password);
-
+        System.out.println("IN EDIT PROFILE");
         etUsername = findViewById(R.id.editTextText5);
         etPassword = findViewById(R.id.editTextText6);
         btnSave = findViewById(R.id.button7);
@@ -32,24 +32,19 @@ public class editProfilePassword extends AppCompatActivity {
 
         user = getIntent().getParcelableExtra("User");
 
-        if(user!=null) {
-            etUsername.setText(user.getUsername());
-            etPassword.setText(user.getPassword());
-        }
+        etUsername.setText(user.getUsername());
+        String oldName = etUsername.getText().toString();
+        etPassword.setText(user.getPassword());
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String updatedUsername = etUsername.getText().toString();
                 String updatedPassword = etPassword.getText().toString();
-
-                if (user!= null){
-                    user.updateUsername(updatedUsername);
-                    user.updatePassword(updatedPassword);
-                    dbHandler.updateUser(updatedUsername, updatedPassword);
-                    Toast.makeText(editProfilePassword.this, "User information updated", Toast.LENGTH_SHORT).show();
-                }
-
+                user.setUsername(updatedUsername);
+                user.setPassword(updatedPassword);
+                dbHandler.updateUser(updatedUsername, updatedPassword, oldName);
+                Toast.makeText(editProfilePassword.this, "User information updated", Toast.LENGTH_SHORT).show();
                 finish();
             }
         });

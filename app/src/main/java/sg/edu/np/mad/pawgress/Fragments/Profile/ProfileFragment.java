@@ -71,6 +71,11 @@ public class ProfileFragment extends Fragment{
         View view;
 
         view = inflater.inflate(R.layout.fragment_profile, container, false);
+        MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
+
+        UserData dbData = myDBHandler.findUser(SaveSharedPreference.getUserName(getActivity()));
+        TextView username = view.findViewById(R.id.ProfileUsername);
+        username.setText(dbData.getUsername());
 
         //Log Out button
         Button logoutButton = (Button) view.findViewById(R.id.logoutFrag);
@@ -89,16 +94,13 @@ public class ProfileFragment extends Fragment{
             public void onClick(View v) {
                 SaveSharedPreference.clearUserName(getActivity()); //clears shared preference so no auto login
                 Intent intent = new Intent(getActivity(), editProfilePassword.class);
+                intent.putExtra("User", dbData);
                 startActivity(intent);
             }
         });
 
         // Setting Username Text
-        MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
 
-        UserData dbData = myDBHandler.findUser(SaveSharedPreference.getUserName(getActivity()));
-        TextView username = view.findViewById(R.id.ProfileUsername);
-        username.setText(dbData.getUsername());
 
         return view;
 

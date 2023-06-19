@@ -48,6 +48,7 @@ public class MainMainMain extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         Intent receivingEnd = getIntent();
+        UserData user = receivingEnd.getParcelableExtra("User");
         String tab = receivingEnd.getExtras().getString("tab");
         Log.i(null, "------------------------------------" + tab);
         if (tab.equals("tasks_tab")){

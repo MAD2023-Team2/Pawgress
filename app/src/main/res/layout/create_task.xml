@@ -11,8 +11,9 @@
         android:id="@+id/textView17"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="100dp"
+        android:layout_marginStart="101dp"
         android:layout_marginTop="36dp"
+        android:fontFamily="@font/balsamiq_sans"
         android:text="Create New Task"
         android:textSize="27sp"
         android:textStyle="bold"
@@ -25,6 +26,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
         android:layout_marginTop="132dp"
+        android:fontFamily="@font/balsamiq_sans"
         android:text="Title: "
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,10 +36,11 @@
         android:id="@+id/editTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="56dp"
         android:background="@drawable/field_background"
         android:ems="10"
+        android:fontFamily="@font/balsamiq_sans"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@+id/textView17" />
@@ -48,9 +51,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="50dp"
+        android:fontFamily="@font/balsamiq_sans"
         android:text="Category: "
-        android:textSize="18sp"
 
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -62,6 +66,7 @@
         android:layout_marginTop="56dp"
         android:background="@drawable/field_background"
         android:ems="10"
+        android:fontFamily="@font/balsamiq_sans"
         android:inputType="text"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@+id/editTitle" />

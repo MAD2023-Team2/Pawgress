@@ -214,11 +214,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     // updates user data accordingly for edit profile (usename and password)
     // doesnt seem to work though
-    public void updateUser(String username, String newPassword) {
+    public void updateUser(String username, String newPassword, String oldUserName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-
-        // Update the password if a new password is provided
         if (newPassword != null && !newPassword.isEmpty()) {
             values.put(COLUMN_PASSWORD, newPassword);
         }
@@ -227,10 +225,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
         if (username != null && !username.equals(findUsername(username))) {
             values.put(COLUMN_USERNAME, username);
         }
-
         // Only perform the update if there are changes to be made
         if (values.size() > 0) {
-            db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{findUsername(username)});
+            System.out.println("Here");
+            db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{oldUserName});
             Log.i(title, "User updated: " + username);
         } else {
             Log.i(title, "No changes to update for user: " + username);
