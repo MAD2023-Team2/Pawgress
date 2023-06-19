@@ -158,38 +158,6 @@ public class GameFragment extends Fragment {
                 return true;
             }
         });
-
-        timerTextView = (TextView) view.findViewById(R.id.timerTextView);
-
-        Button b = (Button) view.findViewById(R.id.startStop);
-        b.setText("start");
-        b.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Button b = (Button) v;
-                if (b.getText().equals("stop")) {
-                    timerHandler.removeCallbacks(timerRunnable);
-                    b.setText("start");
-                }
-                else {
-                    startTime = System.currentTimeMillis() ;
-                    timerHandler.postDelayed(timerRunnable, 0);
-
-
-                    b.setText("stop");
-                }
-            }
-        });
-
         return view;
     }
-    /*
-    @Override
-    public void onPause() {
-        super.onPause();
-        timerHandler.removeCallbacks(timerRunnable);
-        Button b = (Button) view.findViewById(R.id.button);
-        b.setText("start");
-    }*/
 }

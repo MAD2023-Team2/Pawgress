@@ -41,6 +41,7 @@ public class LoginPage extends AppCompatActivity {
         private String MY_USERNAME = "MyUSerName";
         private String MY_PASSWORD = "MyPassword";
         SharedPreferences sharedPreferences;
+
     */
     @Override
     protected void onStart(){

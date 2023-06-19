@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:scaleType="fitXY"
-            android:src="@drawable/pawgress_room_final_draft_pet_not_studying"
+            android:src="@drawable/room_not_studying"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -26,30 +26,11 @@
             android:id="@+id/corgi_1"
             android:layout_width="109dp"
             android:layout_height="136dp"
-            android:layout_marginStart="88dp"
-            android:layout_marginBottom="192dp"
+            android:layout_marginStart="68dp"
+            android:layout_marginBottom="152dp"
             android:src="@drawable/corgi"
             app:layout_constraintBottom_toBottomOf="@+id/imageView13"
             app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/timerTextView"
-            android:layout_width="205dp"
-            android:layout_height="65dp"
-            android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/imageView13" />
-
-        <Button
-            android:id="@+id/startStop"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="160dp"
-            android:layout_marginTop="76dp"
-            android:text="Button"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

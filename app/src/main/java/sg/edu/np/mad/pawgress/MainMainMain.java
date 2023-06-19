@@ -52,10 +52,11 @@ public class MainMainMain extends AppCompatActivity {
         Log.i(null, "------------------------------------" + tab);
         if (tab.equals("tasks_tab")){
             replaceFragment(new TasksFragment());
-            Log.i(null, "------------------------------------");
             binding.bottomNavigationView.setSelectedItemId(R.id.tasks_tab);
-        }
-        else{
+        } else if (tab.equals("profile_tab")) {
+            replaceFragment(new ProfileFragment());
+            binding.bottomNavigationView.setSelectedItemId(R.id.profile_tab);
+        } else{
             replaceFragment(new HomeFragment());
         }
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {

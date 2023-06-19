@@ -43,7 +43,7 @@ public class TaskCompletion extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(TaskCompletion.this,MainMainMain.class);
                 intent.putExtra("User", user);
-                intent.putExtra("tab", "home_tab");
+                intent.putExtra("tab", "tasks_tab");
                 startActivity(intent);
                 finish();
             }

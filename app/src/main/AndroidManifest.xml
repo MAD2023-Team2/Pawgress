@@ -55,6 +55,9 @@
             android:name=".tutorials.tutPage3"
             android:exported="false" />
         <activity
+            android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".LoginPage"
             android:exported="true" >
             <intent-filter>
@@ -66,6 +69,10 @@
         <activity
             android:name=".Tasks.TaskGame"
             android:exported="false" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>
