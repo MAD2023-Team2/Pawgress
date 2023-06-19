@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF5F0"
+    android:background="#FFF3EB"
     tools:context=".DailyLogIn">
 
     <ImageView
@@ -22,7 +22,7 @@
         android:layout_height="124dp"
         android:layout_marginStart="128dp"
         android:layout_marginTop="300dp"
-        android:fontFamily="@font/balsamiq_sans"
+        android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="184dp"
         android:layout_marginTop="16dp"
-        android:fontFamily="@font/balsamiq_sans"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logInStatus" />
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="184dp"
         android:layout_marginTop="8dp"
-        android:fontFamily="@font/balsamiq_sans"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="TextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/streakText" />

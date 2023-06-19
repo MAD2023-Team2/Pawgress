@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.SaveSharedPreference;
+import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.UserData;
 
 public class editProfilePassword extends AppCompatActivity {
@@ -17,7 +19,7 @@ public class editProfilePassword extends AppCompatActivity {
     private EditText etPassword;
     private Button btnSave;
     private MyDBHandler dbHandler;
-    UserData user;
+    UserData user, oldUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,21 +32,25 @@ public class editProfilePassword extends AppCompatActivity {
 
         dbHandler = new MyDBHandler(this, null, null, 1);
 
-        user = getIntent().getParcelableExtra("User");
+        oldUser = getIntent().getParcelableExtra("User");
 
-        etUsername.setText(user.getUsername());
+        etUsername.setText(oldUser.getUsername());
         String oldName = etUsername.getText().toString();
-        etPassword.setText(user.getPassword());
+        etPassword.setText(oldUser.getPassword());
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String updatedUsername = etUsername.getText().toString();
                 String updatedPassword = etPassword.getText().toString();
-                user.setUsername(updatedUsername);
-                user.setPassword(updatedPassword);
                 dbHandler.updateUser(updatedUsername, updatedPassword, oldName);
+                for (Task task : dbHandler.findTaskList(oldUser)){
+                    user.setUsername(updatedUsername);
+                    user.setPassword(updatedPassword);
+                    dbHandler.updateTask(task,user);
+                }
                 Toast.makeText(editProfilePassword.this, "User information updated", Toast.LENGTH_SHORT).show();
+                SaveSharedPreference.setUserName(editProfilePassword.this, updatedUsername);
                 finish();
             }
         });

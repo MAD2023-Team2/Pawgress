@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF5F0"
+    android:background="#FFF3EB"
     tools:context=".Tasks.TaskCompletion">
 
     <ImageButton
@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
         android:layout_marginTop="29dp"
+        android:backgroundTint="#B7B7A4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/actionModeCloseDrawable" />
@@ -24,7 +25,7 @@
         android:layout_marginStart="177dp"
         android:layout_marginTop="350dp"
         android:layout_marginEnd="177dp"
-        android:fontFamily="@font/balsamiq_sans"
+        android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="TextView"
         android:textStyle="bold"

@@ -89,7 +89,7 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                     public void onClick(DialogInterface dialog, int id){
                         Log.v(THIS, "Completed task " + task.getTaskName());
                         task.setStatus("Completed");
-                        mDataBase.updateTask(task);
+                        mDataBase.updateTask(task, user);
                         recyclerTaskList.remove(task);
                         notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());

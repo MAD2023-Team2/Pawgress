@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF5F0"
+    android:background="#FFF3EB"
     tools:context=".Tasks.TaskView">
 
     <TextView
@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
         android:background="#EFDFCE"
-        android:fontFamily="sans-serif"
+        android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="@string/taskName"
         android:textSize="24sp"
@@ -29,26 +29,17 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
         android:layout_marginTop="29dp"
+        android:backgroundTint="#B7B7A4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/actionModeCloseDrawable" />
-
-    <Button
-        android:id="@+id/to_Game"
-        style="@style/Widget.AppCompat.Button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:text="Start Timer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="0dp" />
 
     <TextView
         android:id="@+id/textView10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:fontFamily="sans-serif"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="@string/taskCategory"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
@@ -60,10 +51,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="9dp"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="TextView"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+    <Button
+        android:id="@+id/to_Game"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:background="#88E473"
+        android:backgroundTint="#88E473"
+        android:backgroundTintMode="src_over"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:foregroundTint="#88E473"
+        android:text="Start Timer"
+        app:iconTint="#88E473"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

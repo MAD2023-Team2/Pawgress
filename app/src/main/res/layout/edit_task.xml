@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF5F0"
+    android:background="#FFF3EB"
     tools:context=".Tasks.EditTask">
 
     <TextView
@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="148dp"
         android:layout_marginTop="36dp"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="EDIT TASK"
         android:textSize="27sp"
         android:textStyle="bold"
@@ -23,66 +24,76 @@
         android:id="@+id/editTextText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="48dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="65dp"
         android:background="@drawable/field_background"
         android:ems="10"
+        android:fontFamily="sans-serif-condensed-medium"
         android:inputType="text"
         android:text="@string/taskName"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="115dp"
+        android:layout_marginTop="60dp"
+        android:layout_marginEnd="3dp"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="Title: "
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintEnd_toStartOf="@+id/editTextText"
+        app:layout_constraintTop_toBottomOf="@id/textView6" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="3dp"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="Category: "
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/editTextText2"
         app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <EditText
         android:id="@+id/editTextText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="65dp"
         android:background="@drawable/field_background"
         android:ems="10"
+        android:fontFamily="sans-serif-condensed-medium"
         android:inputType="text"
         android:text="@string/taskCategory"
-        app:layout_constraintStart_toEndOf="@+id/textView9"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
     <Button
         android:id="@+id/button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="44dp"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+        android:layout_width="100dp"
+        android:layout_height="43dp"
         android:layout_marginTop="90dp"
+        android:layout_marginEnd="88dp"
+        android:backgroundTint="#88E473"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="Confirm"
-        app:layout_constraintStart_toEndOf="@+id/button2"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
 
     <Button
         android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+        android:layout_width="100dp"
+        android:layout_height="43dp"
         android:layout_marginStart="88dp"
         android:layout_marginTop="90dp"
+        android:backgroundTint="#88E473"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="Cancel"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextText2" />

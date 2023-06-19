@@ -117,7 +117,7 @@ public class TaskGame extends AppCompatActivity {
                 wasRunning = running;
                 pauseTimer();
                 task.setTimeSpent(seconds);
-                myDBHandler.updateTask(task);
+                myDBHandler.updateTask(task, user);
                 finish();
             }
         });
@@ -178,7 +178,7 @@ public class TaskGame extends AppCompatActivity {
         wasRunning = running;
         pauseTimer();
         task.setTimeSpent(seconds);
-        myDBHandler.updateTask(task);
+        myDBHandler.updateTask(task, user);
     }
 
     @Override
@@ -215,7 +215,7 @@ public class TaskGame extends AppCompatActivity {
         running = false;
         seconds = 0;
         task.setTimeSpent(0);
-        myDBHandler.updateTask(task);
+        myDBHandler.updateTask(task, user);
         updateTimerText();
     }
     private void updateTimerText(){

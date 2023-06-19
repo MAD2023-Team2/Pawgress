@@ -44,7 +44,7 @@ public class EditTask extends AppCompatActivity {
                 task.setTaskName(etname.getText().toString());
                 task.setStatus("In Progress");
                 task.setCategory(etcat.getText().toString());
-                myDBHandler.updateTask(task);
+                myDBHandler.updateTask(task ,user);
                 Intent editTask = new Intent(EditTask.this, MainMainMain.class);
                 editTask.putExtra("New Task List", user);
                 editTask.putExtra("User", user);

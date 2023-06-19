@@ -104,7 +104,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         Log.i(title, "Inserted Task");
         db.close();
     }
-    public void updateTask(Task task){
+    public void updateTask(Task task, UserData userData){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -112,6 +112,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_TASK_STATUS, task.getStatus());
         values.put(COLUMN_TASK_CATEGORY, task.getCategory());
         values.put(COLUMN_TASK_TIMESPENT, task.getTimeSpent());
+        values.put(COLUMN_USERNAME, userData.getUsername());
 
         db.update(TASKS, values, COLUMN_TASK_ID + "=?", new String[]{String.valueOf(task.getTaskID())});
         Log.i(title, "Updated Task");
