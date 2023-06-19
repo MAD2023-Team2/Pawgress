@@ -114,6 +114,10 @@ public class TaskGame extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                wasRunning = running;
+                pauseTimer();
+                task.setTimeSpent(seconds);
+                myDBHandler.updateTask(task);
                 finish();
             }
         });
@@ -121,7 +125,8 @@ public class TaskGame extends AppCompatActivity {
         buttonReset = findViewById(R.id.reset_timer_imagebutton);
         buttonFinish = findViewById(R.id.finish_timer);
         timeView = findViewById(R.id.text_view_Countdown);
-
+        seconds = task.getTimeSpent();
+        updateTimerText();
         if (savedInstanceState != null) {
             seconds = savedInstanceState.getInt("seconds");
             running = savedInstanceState.getBoolean("running");
@@ -160,6 +165,11 @@ public class TaskGame extends AppCompatActivity {
                 showFinishConfirmationDialog(user, task);
             }
         });
+
+        if (!running) {
+            startTimer();
+            updateButtonUI();
+        }
     }
 
     @Override
@@ -167,13 +177,16 @@ public class TaskGame extends AppCompatActivity {
         super.onPause();
         wasRunning = running;
         pauseTimer();
-        task.setTimeSpent(task.getTimeSpent()+seconds);
+        task.setTimeSpent(seconds);
         myDBHandler.updateTask(task);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        seconds = task.getTimeSpent();
+        updateTimerText();
+
         if (wasRunning) {
             startTimer();
         }
@@ -201,6 +214,17 @@ public class TaskGame extends AppCompatActivity {
     private void resetTimer() {
         running = false;
         seconds = 0;
+        task.setTimeSpent(0);
+        myDBHandler.updateTask(task);
+        updateTimerText();
+    }
+    private void updateTimerText(){
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        int secs = seconds % 60;
+
+        String time = String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, secs);
+        timeView.setText(time);
     }
     private void showResetConfirmationDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -263,15 +287,10 @@ public class TaskGame extends AppCompatActivity {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                int hours = seconds / 3600;
-                int minutes = (seconds % 3600) / 60;
-                int secs = seconds % 60;
-
-                String time = String.format(Locale.getDefault(), "%d:%02d:%02d", hours, minutes, secs);
-                timeView.setText(time);
 
                 if (running) {
                     seconds++;
+                    updateTimerText();
                 }
 
                 handler.postDelayed(this, 1000);
