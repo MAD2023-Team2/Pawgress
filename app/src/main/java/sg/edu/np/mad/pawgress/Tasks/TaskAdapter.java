@@ -51,7 +51,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                 }
             }
         }
-        Log.v("12345", String.valueOf(count));
         if (count > 0){ emptyTasktext.setVisibility(INVISIBLE); }
         else emptyTasktext.setVisibility(VISIBLE);
     }

@@ -160,6 +160,11 @@ public class TaskGame extends AppCompatActivity {
                 showFinishConfirmationDialog(user, task);
             }
         });
+
+        if (!running) {
+            startTimer();
+            updateButtonUI();
+        }
     }
 
     @Override

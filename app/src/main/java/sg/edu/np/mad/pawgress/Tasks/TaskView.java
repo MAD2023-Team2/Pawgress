@@ -36,13 +36,19 @@ public class TaskView extends AppCompatActivity {
         user = receivingEnd.getParcelableExtra("User");
         task = receivingEnd.getParcelableExtra("Task");
         ImageButton backButton = findViewById(R.id.backButton);
-        Button gameButton = findViewById(R.id.to_Game);
+        gameButton = findViewById(R.id.to_Game);
         TextView taskName = findViewById(R.id.textView11);
         taskName.setText(task.getTaskName());
         TextView taskCategory = findViewById(R.id.textView10);
         taskCategory.setText(task.getCategory());
         time = findViewById(R.id.textView15);
-        time.setText("Time spent so far: " + task.getTimeSpent() + " seconds");
+        int seconds = task.getTimeSpent();
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        int secs = seconds % 60;
+        time.setText("Time spent so far: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
+        if (task.getTimeSpent() > 0) { gameButton.setText("RESUME TIMER");}
+
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,6 +75,12 @@ public class TaskView extends AppCompatActivity {
         super.onResume();
         int id = task.getTaskID();
         task = myDBHandler.findTask(id, myDBHandler.findTaskList(user));
-        time.setText("Time spent so far: " + task.getTimeSpent() + " seconds");
+        int seconds = task.getTimeSpent();
+        int hours = seconds / 3600;
+        int minutes = (seconds % 3600) / 60;
+        int secs = seconds % 60;
+        time.setText("Time spent so far: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
+        if (task.getTimeSpent() > 0) { gameButton.setText("RESUME TIMER");}
+
     }
 }
