@@ -63,16 +63,12 @@
         style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="30dp"
-        android:background="#88E473"
+        android:layout_marginBottom="16dp"
         android:backgroundTint="#88E473"
-        android:backgroundTintMode="src_over"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:foregroundTint="#88E473"
         android:text="Start Timer"
-        app:iconTint="#88E473"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
