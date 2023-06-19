@@ -217,14 +217,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public void updateUser(String username, String newPassword, String oldUserName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        if (newPassword != null && !newPassword.isEmpty()) {
-            values.put(COLUMN_PASSWORD, newPassword);
-        }
-
-        // Update the username if it is different from the existing username
-        if (username != null && !username.equals(findUsername(username))) {
-            values.put(COLUMN_USERNAME, username);
-        }
+        values.put(COLUMN_PASSWORD, newPassword);
+        values.put(COLUMN_USERNAME, username);
         // Only perform the update if there are changes to be made
         if (values.size() > 0) {
             System.out.println("Here");
