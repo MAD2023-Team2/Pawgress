@@ -9,6 +9,8 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import sg.edu.np.mad.pawgress.CreateAccount;
+import sg.edu.np.mad.pawgress.LoginPage;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.SaveSharedPreference;
@@ -37,8 +39,7 @@ public class editProfilePassword extends AppCompatActivity {
         dbHandler = new MyDBHandler(this, null, null, 1);
 
 
-        user = getIntent().getParcelableExtra("User");
-        //oldusername = user.getUsername();
+        UserData user = dbHandler.findUser(SaveSharedPreference.getUserName(editProfilePassword.this));
 
         etUsername.setText(user.getUsername());
         String oldName = etUsername.getText().toString();
@@ -49,18 +50,27 @@ public class editProfilePassword extends AppCompatActivity {
             public void onClick(View view) {
                 String updatedUsername = etUsername.getText().toString();
                 String updatedPassword = etPassword.getText().toString();
-                for (Task task: dbHandler.findTaskList(user)){
-                    dbHandler.updateTask(task, updatedUsername);
+                if (etUsername.length() > 0 && etPassword.length() > 0) {
+                    UserData dbData = dbHandler.findUser(etUsername.getText().toString());
+                    if (dbData == null){
+                        for (Task task: dbHandler.findTaskList(user)) {
+                            dbHandler.updateTask(task, updatedUsername);
+                        }
+                        user.setUsername(updatedUsername);
+                        user.setPassword(updatedPassword);
+                        dbHandler.updateUser(updatedUsername, updatedPassword, oldName);
+                        Toast.makeText(editProfilePassword.this, "User information updated", Toast.LENGTH_SHORT).show();
 
-                user.setUsername(updatedUsername);
-                user.setPassword(updatedPassword);
-                dbHandler.updateUser(updatedUsername, updatedPassword, oldName);
-                Toast.makeText(editProfilePassword.this, "User information updated", Toast.LENGTH_SHORT).show();
-
-                SaveSharedPreference.setUserName(editProfilePassword.this, updatedUsername);
-
+                        SaveSharedPreference.setUserName(editProfilePassword.this, updatedUsername);
+                        finish();
+                    }
+                    else{
+                        Toast.makeText(editProfilePassword.this, "Username Already Exist!", Toast.LENGTH_SHORT).show();
+                    }
                 }
-                finish();
+                else{
+                    Toast.makeText(editProfilePassword.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         back.setOnClickListener(new View.OnClickListener() {

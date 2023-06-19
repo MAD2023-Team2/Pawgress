@@ -15,17 +15,20 @@ public class Task implements Parcelable {
     private String status;
     private String category;
     private int timeSpent;
+    private int targetSec;
+
 
     public Task() {
     }
 
     // add in date of creation and duedate(can accept null)
-    public Task(int taskID, String taskName, String status, String category, int timeSpent) {
+    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec) {
         this.taskID = taskID;
         this.taskName = taskName;
         this.status = status;
         this.category = category;
         this.timeSpent = timeSpent;
+        this.targetSec = targetSec;
     }
 
     protected Task(Parcel in) {
@@ -34,6 +37,7 @@ public class Task implements Parcelable {
         status = in.readString();
         category = in.readString();
         timeSpent = in.readInt();
+        targetSec = in.readInt();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -60,6 +64,7 @@ public class Task implements Parcelable {
         dest.writeString(status);
         dest.writeString(category);
         dest.writeInt(timeSpent);
+        dest.writeInt(targetSec);
     }
     public int getTaskID() {
         return taskID;
@@ -85,4 +90,7 @@ public class Task implements Parcelable {
     }
     public int getTimeSpent() { return timeSpent; }
     public void setTimeSpent(int timeSpent) { this.timeSpent = timeSpent; }
+    public int getTargetSec() { return targetSec; }
+    public void setTargetSec(int targetSec) { this.targetSec = targetSec; }
+
 }
