@@ -25,12 +25,14 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
     Context context;
     String THIS = "Adapter";
     MyDBHandler mDataBase;
+    RecyclerView recyclerView;
     ArrayList<Task> taskList;
-    public TaskCardAdapter(UserData userData, MyDBHandler mDatabase, Context context){
+    public TaskCardAdapter(UserData userData, MyDBHandler mDatabase, Context context, RecyclerView recyclerView){
         this.user = userData;
         this.mDataBase = mDatabase;
         this.context = context;
         this.taskList = mDataBase.findTaskList(user);
+        this.recyclerView = recyclerView;
     }
     @Override
     public int getItemCount() {
@@ -93,7 +95,12 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                         recyclerTaskList.remove(task);
                         notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
-                        if (recyclerTaskList.size() == 0) emptyTasktext.setVisibility(VISIBLE);
+                        if (recyclerTaskList.size() == 0) {
+                            ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
+                            layoutParams.height = Math.min(0, recyclerView.getHeight());
+                            recyclerView.setLayoutParams(layoutParams);
+                            emptyTasktext.setText("No tasks to work on for now :)");
+                        }
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
