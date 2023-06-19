@@ -35,6 +35,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_PET_TYPE = "PetType";
     public static String COLUMN_PET_DESIGN = "PetDesign";
 
+    //public static String COLUMN_ACTUAL_USERNAME = "ActualUserName";
+
     public ArrayList<Task> taskList = new ArrayList<>();
 
     public MyDBHandler(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -45,10 +47,11 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db){
         String CREATE_ACCOUNT_TABLE = "Create TABLE " + ACCOUNTS + " (" +
                 COLUMN_USERNAME + " TEXT PRIMARY KEY," +
+                //COLUMN_ACTUAL_USERNAME + " TEXT," +
                 COLUMN_PASSWORD + " TEXT," +
                 COLUMN_DATE + " TEXT," +
-                COLUMN_STREAK + " INTEGAR," +
-                COLUMN_CURRENCY + " INTEGAR," +
+                COLUMN_STREAK + " INTEGER," +
+                COLUMN_CURRENCY + " INTEGER," +
                 COLUMN_LOGIN + " TEXT," +
                 COLUMN_PET_TYPE + " TEXT," +
                 COLUMN_PET_DESIGN + " INTEGER)";
@@ -83,6 +86,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_LOGIN, userData.getLoggedInTdy());
         values.put(COLUMN_PET_TYPE, userData.getPetType());
         values.put(COLUMN_PET_DESIGN, userData.getPetDesign());
+        //values.put(COLUMN_ACTUAL_USERNAME, userData.getActualUserName());
 
         SQLiteDatabase db = this. getWritableDatabase();
         db.insert(ACCOUNTS, null, values);
@@ -104,7 +108,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         Log.i(title, "Inserted Task");
         db.close();
     }
-    public void updateTask(Task task){
+    public void updateTask(Task task, String username){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -112,6 +116,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_TASK_STATUS, task.getStatus());
         values.put(COLUMN_TASK_CATEGORY, task.getCategory());
         values.put(COLUMN_TASK_TIMESPENT, task.getTimeSpent());
+        values.put(COLUMN_USERNAME, username);
 
         db.update(TASKS, values, COLUMN_TASK_ID + "=?", new String[]{String.valueOf(task.getTaskID())});
         Log.i(title, "Updated Task");
@@ -217,14 +222,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public void updateUser(String username, String newPassword, String oldUserName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
-        if (newPassword != null && !newPassword.isEmpty()) {
-            values.put(COLUMN_PASSWORD, newPassword);
-        }
-
-        // Update the username if it is different from the existing username
-        if (username != null && !username.equals(findUsername(username))) {
-            values.put(COLUMN_USERNAME, username);
-        }
+        values.put(COLUMN_PASSWORD, newPassword);
+        values.put(COLUMN_USERNAME, username);
         // Only perform the update if there are changes to be made
         if (values.size() > 0) {
             System.out.println("Here");

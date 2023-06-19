@@ -92,7 +92,7 @@ public class ProfileFragment extends Fragment{
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SaveSharedPreference.clearUserName(getActivity()); //clears shared preference so no auto login
+                //SaveSharedPreference.clearUserName(getActivity()); //clears shared preference so no auto login
                 Intent intent = new Intent(getActivity(), editProfilePassword.class);
                 intent.putExtra("User", dbData);
                 startActivity(intent);

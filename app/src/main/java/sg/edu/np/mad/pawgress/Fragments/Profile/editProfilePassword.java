@@ -10,6 +10,8 @@ import android.widget.Toast;
 
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.SaveSharedPreference;
+import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.UserData;
 
 public class editProfilePassword extends AppCompatActivity {
@@ -18,6 +20,8 @@ public class editProfilePassword extends AppCompatActivity {
     private Button btnSave;
     private MyDBHandler dbHandler;
     UserData user;
+
+    String oldusername;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +34,9 @@ public class editProfilePassword extends AppCompatActivity {
 
         dbHandler = new MyDBHandler(this, null, null, 1);
 
+
         user = getIntent().getParcelableExtra("User");
+        //oldusername = user.getUsername();
 
         etUsername.setText(user.getUsername());
         String oldName = etUsername.getText().toString();
@@ -41,10 +47,17 @@ public class editProfilePassword extends AppCompatActivity {
             public void onClick(View view) {
                 String updatedUsername = etUsername.getText().toString();
                 String updatedPassword = etPassword.getText().toString();
+                for (Task task: dbHandler.findTaskList(user)){
+                    dbHandler.updateTask(task, updatedUsername);
+
                 user.setUsername(updatedUsername);
                 user.setPassword(updatedPassword);
                 dbHandler.updateUser(updatedUsername, updatedPassword, oldName);
                 Toast.makeText(editProfilePassword.this, "User information updated", Toast.LENGTH_SHORT).show();
+
+                SaveSharedPreference.setUserName(editProfilePassword.this, updatedUsername);
+
+                }
                 finish();
             }
         });
