@@ -12,7 +12,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="101dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginTop="35dp"
         android:fontFamily="@font/balsamiq_sans"
         android:text="Create New Task"
         android:textSize="27sp"
@@ -24,8 +24,8 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="132dp"
+        android:layout_marginStart="58dp"
+        android:layout_marginTop="140dp"
         android:fontFamily="@font/balsamiq_sans"
         android:text="Title: "
         android:textSize="18sp"
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="68dp"
         android:background="@drawable/field_background"
         android:ems="10"
         android:fontFamily="@font/balsamiq_sans"
@@ -49,21 +49,34 @@
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="44dp"
+
         android:fontFamily="@font/balsamiq_sans"
         android:text="Category: "
-
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
+
+        android:layout_marginTop="45dp"
+        android:fontFamily="@font/balsamiq_sans"
+        android:text="Target Hours:"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <EditText
         android:id="@+id/editCat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="45dp"
         android:background="@drawable/field_background"
         android:ems="10"
         android:fontFamily="@font/balsamiq_sans"
@@ -90,4 +103,86 @@
         android:text="Confirm"
         app:layout_constraintStart_toEndOf="@+id/button5"
         app:layout_constraintTop_toBottomOf="@+id/editCat" />
+
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/balsamiq_sans"
+        android:text="h"
+        app:layout_constraintStart_toEndOf="@+id/editHrs"
+        app:layout_constraintTop_toBottomOf="@+id/editCat" />
+
+    <EditText
+        android:id="@+id/editHrs"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="11dp"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/field_background"
+        android:ems="10"
+        android:fontFamily="@font/balsamiq_sans"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="2"
+        android:text="00"
+        app:layout_constraintStart_toEndOf="@+id/textView18"
+        app:layout_constraintTop_toBottomOf="@+id/editCat" />
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/balsamiq_sans"
+        android:text="m"
+        app:layout_constraintStart_toEndOf="@+id/editMins"
+        app:layout_constraintTop_toBottomOf="@+id/editCat" />
+
+    <EditText
+        android:id="@+id/editMins"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="71dp"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/field_background"
+        android:ems="10"
+        android:fontFamily="@font/balsamiq_sans"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="2"
+        android:text="00"
+        app:layout_constraintStart_toEndOf="@+id/textView18"
+        app:layout_constraintTop_toBottomOf="@+id/editCat" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="48dp"
+        android:fontFamily="@font/balsamiq_sans"
+        android:text="s"
+        app:layout_constraintStart_toEndOf="@+id/editSec"
+        app:layout_constraintTop_toBottomOf="@+id/editCat" />
+
+    <EditText
+        android:id="@+id/editSec"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="141dp"
+        android:layout_marginTop="45dp"
+        android:background="@drawable/field_background"
+        android:ems="10"
+        android:fontFamily="@font/balsamiq_sans"
+        android:gravity="center"
+        android:inputType="number"
+        android:maxLength="2"
+        android:text="00"
+        app:layout_constraintStart_toEndOf="@+id/textView18"
+        app:layout_constraintTop_toBottomOf="@+id/editCat" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

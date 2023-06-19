@@ -43,7 +43,37 @@ public class CreateTask extends AppCompatActivity {
                 EditText etcat = findViewById(R.id.editCat);
                 if (etname.length() > 0 && etcat.length() > 0) {
                     String cat = etcat.getText().toString();
-                    Task task = new Task(1, name, "In Progress", cat ,0);
+
+                    EditText ethr = findViewById(R.id.editHrs);
+                    int hr = 0;
+
+                    try {
+                        hr = Integer.parseInt(ethr.getText().toString());
+                    } catch (NumberFormatException e) {
+                        // do nth
+                    }
+
+                    EditText etmin = findViewById(R.id.editMins);
+                    int min = 0;
+
+                    try {
+                        min = Integer.parseInt(etmin.getText().toString());
+                    } catch (NumberFormatException e) {
+                        // do nth
+                    }
+
+                    EditText etsec = findViewById(R.id.editSec);
+                    int sec = 0;
+
+                    try {
+                        sec = Integer.parseInt(etsec.getText().toString());
+                    } catch (NumberFormatException e) {
+                        // do nth
+                    }
+
+                    int totalSeconds = (hr * 3600) + (min * 60) + sec;
+
+                    Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds);
                     myDBHandler.addTask(task, user);
                     Intent newTask = new Intent(CreateTask.this, MainMainMain.class);
                     newTask.putExtra("New Task List", user);
@@ -51,6 +81,7 @@ public class CreateTask extends AppCompatActivity {
                     newTask.putExtra("tab", "tasks_tab");
                     startActivity(newTask);
                     Log.i(title, "task added");
+                    Log.i(title, String.valueOf(totalSeconds));
                     finish();
                 }
                 else{
