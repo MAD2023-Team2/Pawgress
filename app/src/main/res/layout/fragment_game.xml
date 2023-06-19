@@ -19,15 +19,17 @@
             android:src="@drawable/room_not_studying"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
 
         <ImageView
             android:id="@+id/corgi_1"
-            android:layout_width="109dp"
-            android:layout_height="136dp"
-            android:layout_marginStart="68dp"
-            android:layout_marginBottom="152dp"
+            android:layout_width="98dp"
+            android:layout_height="116dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginBottom="160dp"
             android:src="@drawable/corgi"
             app:layout_constraintBottom_toBottomOf="@+id/imageView13"
             app:layout_constraintStart_toStartOf="parent" />
