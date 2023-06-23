@@ -14,6 +14,12 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+
+import sg.edu.np.mad.pawgress.Tasks.Task;
+
 public class LoginPage extends AppCompatActivity {
     @Override
     public void onBackPressed(){
@@ -33,6 +39,21 @@ public class LoginPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!isValidCredentials("admin", "admin123")) {
+            Log.v(title,"Admin Account Not Found");
+            String dbUsername = "admin";
+            String dbPassword = "admin123";
+            ArrayList<Task> taskList = new ArrayList<Task>();
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String accCreateDate = formatter.format(new Date());
+            UserData dbUserData = new UserData(dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354);
+            System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
+            myDBHandler.addUser(dbUserData);
+        }
+        else {
+            Log.v(title,"Admin account found");
+        }
 
     }
     String title = "Main Activity";
