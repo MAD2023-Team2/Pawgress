@@ -10,7 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFF3EB"
+        android:background="#FCFBFC"
         tools:context=".Fragments.Profile.ProfilePage">
 
         <TextView
@@ -85,7 +85,6 @@
             android:layout_marginStart="29dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="29dp"
-            android:autoText="false"
             android:backgroundTint="#EFDFCE"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="fill_vertical"

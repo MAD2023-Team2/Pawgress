@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF5F0"
+    android:background="#FCFBFC"
     tools:context=".Fragments.Profile.ProfilePage">
 
     <TextView
@@ -26,6 +26,7 @@
         android:layout_marginTop="40dp"
         android:layout_marginEnd="29dp"
         android:backgroundTint="#EFDFCE"
+        android:fontFamily="sans-serif-condensed-medium"
         android:gravity="fill_vertical"
         android:text="@string/editProfileText"
         app:icon="@android:drawable/ic_menu_edit"
