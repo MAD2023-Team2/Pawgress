@@ -294,5 +294,21 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         return currentPassword;
     }
+    public int getTaskTargetSec(int taskId){
+        String query = "SELECT " + COLUMN_TARGET_SEC + " FROM " + TASKS + " WHERE " + COLUMN_TASK_ID + " = " + taskId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        int targetSec = -1; // Default value if the task is not found
+        if (cursor != null && cursor.moveToFirst()) {
+            int targetSecIndex = cursor.getColumnIndex(COLUMN_TARGET_SEC);
+            targetSec = cursor.getInt(targetSecIndex);
+
+            cursor.close();
+        }
+        db.close();
+
+        return targetSec;
+    }
 
 }

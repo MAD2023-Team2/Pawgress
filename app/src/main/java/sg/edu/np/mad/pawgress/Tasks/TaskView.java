@@ -41,13 +41,11 @@ public class TaskView extends AppCompatActivity {
         TextView taskCategory = findViewById(R.id.textView10);
         taskCategory.setText(task.getCategory());
         targettime = findViewById(R.id.targettime);
-        int tseconds = task.getTargetSec();
+        int tseconds = myDBHandler.getTaskTargetSec(task.getTaskID());
         int thours = tseconds / 3600;
         int tminutes = (tseconds % 3600) / 60;
         int tsecs = tseconds % 60;
         targettime.setText("Targeted Time Spent: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",thours, tminutes, tsecs));
-
-
         time = findViewById(R.id.textView15);
         int seconds = task.getTimeSpent();
         int hours = seconds / 3600;
