@@ -55,6 +55,6 @@ public class TaskCompletion extends AppCompatActivity {
         int secs = seconds % 60;
 
         seconds_complete = findViewById(R.id.seconds_complete);
-        seconds_complete.setText(String.format(Locale.getDefault(),"Time Studied:\n%d Hours %02d Mins %02d Secs",hours, minutes, secs));
+        seconds_complete.setText(String.format(Locale.getDefault(),"Time Spent on [ %s ]:\n%d Hours %02d Mins %02d Secs",task.getTaskName(),hours, minutes, secs));
     }
 }
