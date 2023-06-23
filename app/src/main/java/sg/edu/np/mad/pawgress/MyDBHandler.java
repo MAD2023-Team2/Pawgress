@@ -212,7 +212,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 task.setStatus(cursor.getString(2));
                 task.setCategory(cursor.getString(3));
                 task.setTimeSpent(cursor.getInt(4));
-                task.setTargetSec(cursor.getInt(5));
+                task.setTargetSec(cursor.getInt(6));
                 NewtaskList.add(task);
             }
             cursor.close();
@@ -224,6 +224,29 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.close();
         return userData.getTaskList();
     }
+//    public ArrayList<Task> findTaskList(UserData userData) {
+//        String query = "SELECT * FROM " + TASKS + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
+//        Log.i(title, "Query :" + query);
+//        ArrayList<Task> newTaskList = new ArrayList<>();
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        Cursor cursor = db.rawQuery(query, null);
+//        if (cursor.moveToFirst()) {
+//            do {
+//                Task task = new Task();
+//                task.setTaskID(cursor.getInt(cursor.getColumnIndex(COLUMN_TASK_ID)));
+//                task.setTaskName(cursor.getString(cursor.getColumnIndex(COLUMN_TASK_NAME)));
+//                task.setStatus(cursor.getString(cursor.getColumnIndex(COLUMN_TASK_STATUS)));
+//                task.setCategory(cursor.getString(cursor.getColumnIndex(COLUMN_TASK_CATEGORY)));
+//                task.setTimeSpent(cursor.getInt(cursor.getColumnIndex(COLUMN_TASK_TIMESPENT)));
+//                task.setTargetSec(cursor.getInt(cursor.getColumnIndex(COLUMN_TARGET_SEC)));
+//                newTaskList.add(task);
+//            } while (cursor.moveToNext());
+//        }
+//        cursor.close();
+//        db.close();
+//        userData.setTaskList(newTaskList);
+//        return newTaskList;
+//    }
 
     // updates user data accordingly for edit profile (usename and password)
     // doesnt seem to work though
