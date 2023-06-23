@@ -11,7 +11,7 @@
         android:id="@+id/imageView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/dailylogin" />
@@ -20,35 +20,35 @@
         android:id="@+id/logInStatus"
         android:layout_width="168dp"
         android:layout_height="124dp"
-        android:layout_marginStart="128dp"
+        android:layout_marginStart="112dp"
         android:layout_marginTop="300dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="TextView"
         android:textAlignment="center"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/imageView8"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/streakText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="184dp"
+        android:layout_marginStart="170dp"
         android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/imageView8"
         app:layout_constraintTop_toBottomOf="@+id/logInStatus" />
 
     <TextView
         android:id="@+id/rewardText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="184dp"
+        android:layout_marginStart="170dp"
         android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="TextView"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/imageView8"
         app:layout_constraintTop_toBottomOf="@+id/streakText" />
 
     <Button
@@ -56,12 +56,12 @@
         style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="72dp"
         android:layout_height="53dp"
-        android:layout_marginStart="284dp"
+        android:layout_marginStart="260dp"
         android:layout_marginTop="280dp"
         android:text="X"
         android:textColor="#000000"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toStartOf="@id/imageView8"
         app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
