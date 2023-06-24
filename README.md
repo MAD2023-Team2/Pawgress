@@ -7,6 +7,7 @@ Pawgress is a productivity app that aims to help users stay motivated and on tra
 3. Timer [Walter]
 4. Virtual Pet System [Together]
 5. User/Profile [Zac]
+6. App Designing (UI/Game Design) [Hannah]
 
 ## Planned Stage 2 Features
 1. Task Analytics [Chun Fai]
