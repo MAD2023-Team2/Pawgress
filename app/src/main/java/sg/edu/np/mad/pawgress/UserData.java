@@ -31,10 +31,7 @@ public class UserData implements Parcelable{
         this.currency = currency;
         this.loggedInTdy = loggedInTdy;
         this.petType = petType;
-        //this.petType = "dog";
         this.petDesign = petDesign;
-        //this.actualUserName = actualUserName;
-        //this.petDesign = "corgi";
 
     }
 
