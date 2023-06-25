@@ -85,11 +85,10 @@ public class TasksFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.list);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
-        try { // after creating new task
+        try { // only after creating new task
             Log.v(TAG, "starting try");
             Intent receivingEnd = getActivity().getIntent();
             UserData user = receivingEnd.getParcelableExtra("New Task List");
-            Log.v(TAG, "Starting recyclerview");
             TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, getActivity() );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(mLayoutManager);
@@ -107,10 +106,10 @@ public class TasksFragment extends Fragment {
                 }
             });
         } catch (RuntimeException e) {
+            // from homepage or tab button
             Log.v(TAG, "starting exception");
             Intent receivingEnd = getActivity().getIntent();
             UserData user = receivingEnd.getParcelableExtra("User");
-            Log.v(TAG, "Starting recyclerview");
             TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, getActivity() );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(mLayoutManager);

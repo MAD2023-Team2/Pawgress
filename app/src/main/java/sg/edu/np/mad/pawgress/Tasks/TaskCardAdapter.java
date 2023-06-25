@@ -1,7 +1,5 @@
 package sg.edu.np.mad.pawgress.Tasks;
 
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,7 +15,7 @@ import java.util.ArrayList;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
-
+// compact task list in home page
 public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
     public TextView emptyTasktext;
     ArrayList<Task> recyclerTaskList;
@@ -93,6 +91,7 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                         task.setStatus("Completed");
                         mDataBase.updateTask(task, user.getUsername());
                         recyclerTaskList.remove(task);
+                        // notify adapter about changes to list
                         notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
                         notifyDataSetChanged();

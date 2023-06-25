@@ -37,6 +37,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
         return recyclerTaskList.size();
     }
 
+    // shows that there are currently no tasks to work on if there are no tasks in progress found in the database for this user
     public void updateEmptyView(){
         recyclerTaskList = new ArrayList<>();
         int count = 0;
@@ -103,6 +104,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                         task.setStatus("Deleted");
                         mDataBase.updateTask(task, user.getUsername());
                         recyclerTaskList.remove(task);
+                        // notify adapter about changes to list
                         notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
                         notifyDataSetChanged();
@@ -131,6 +133,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                         task.setStatus("Completed");
                         mDataBase.updateTask(task, user.getUsername());
                         recyclerTaskList.remove(task);
+                        // notify adapter about changes to list
                         notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
                         notifyDataSetChanged();
@@ -147,6 +150,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                 alert.show();
             }
         });
-        holder.complete.setChecked(false);
+        holder.complete.setChecked(false); // ensures all checkboxes are not checked before clicking it
     }
 }
