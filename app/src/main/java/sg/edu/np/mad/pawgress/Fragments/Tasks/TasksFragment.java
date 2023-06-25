@@ -85,7 +85,7 @@ public class TasksFragment extends Fragment {
 
         RecyclerView recyclerView = view.findViewById(R.id.list);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
-        try { // only after creating new task
+        try { // runs if there was a new task created
             Log.v(TAG, "starting try");
             Intent receivingEnd = getActivity().getIntent();
             UserData user = receivingEnd.getParcelableExtra("New Task List");
@@ -106,7 +106,7 @@ public class TasksFragment extends Fragment {
                 }
             });
         } catch (RuntimeException e) {
-            // from homepage or tab button
+            // else catches runtime error and runs this code
             Log.v(TAG, "starting exception");
             Intent receivingEnd = getActivity().getIntent();
             UserData user = receivingEnd.getParcelableExtra("User");

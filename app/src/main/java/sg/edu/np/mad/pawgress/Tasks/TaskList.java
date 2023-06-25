@@ -31,7 +31,7 @@ public class TaskList extends AppCompatActivity {
         setContentView(R.layout.task_list);
         RecyclerView recyclerView = findViewById(R.id.list);
         emptyTaskText = findViewById(R.id.emptyTextView);
-        try { // only after creating new task
+        try { // runs if there was a new task created
             Log.v(TAG, "starting try");
             Intent receivingEnd = getIntent();
             UserData user = receivingEnd.getParcelableExtra("New Task List");
@@ -52,7 +52,7 @@ public class TaskList extends AppCompatActivity {
                 }
             });
         } catch (RuntimeException e) {
-            // from homepage or tab button
+            // else catches runtime error and runs this code
             Log.v(TAG, "starting exception");
             Intent receivingEnd = getIntent();
             UserData user = receivingEnd.getParcelableExtra("User");
