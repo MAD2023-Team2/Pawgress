@@ -114,5 +114,6 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                 alert.show();
             }
         });
+        holder.complete.setChecked(false);
     }
 }
