@@ -10,8 +10,6 @@ import java.time.LocalDateTime;
 public class Task implements Parcelable {
     private int taskID;
     private String taskName;
-    private LocalDateTime creationDate;
-    private LocalDateTime dueDate;
     private String status;
     private String category;
     private int timeSpent;
