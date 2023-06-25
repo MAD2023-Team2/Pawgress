@@ -225,14 +225,14 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return userData.getTaskList();
     }
 
-    // updates user data accordingly for edit profile (usename and password)
-    // doesnt seem to work though
+    // updates user data accordingly for edit profile (username and password)
     public void updateUser(String username, String newPassword, String oldUserName) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        // new username and password are added to the ContentValues object
         values.put(COLUMN_PASSWORD, newPassword);
         values.put(COLUMN_USERNAME, username);
-        // Only perform the update if there are changes to be made
+        // Only perform the update if there are changes to be made (values size > 0)
         if (values.size() > 0) {
             System.out.println("Here");
             db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{oldUserName});
@@ -244,14 +244,14 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.close();
     }
 
-    // finds existing username of users and i intend to display it when they open edit profile
-    // but if cannot its fine too
+
     public String findUsername(String newUsername) {
         String currentUsername = null;
 
         SQLiteDatabase db = this.getReadableDatabase();
         String[] projection = {COLUMN_USERNAME}; // Specify the column you want to retrieve
 
+        //queries the database and retrieves the username from the cursor if it exists
         Cursor cursor = db.query(ACCOUNTS, projection, null, null, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
@@ -266,10 +266,12 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         db.close();
 
+        // closes the cursor and database before returning the retrieved username
         return currentUsername;
     }
 
     //likewise, finds existing password of users and i intend to display it when they open edit profile
+    // retrieves a password from the database given a username
     public String findPassword(String username) {
         String currentPassword = null;
 
@@ -278,8 +280,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
         String selection = COLUMN_USERNAME + "=?";
         String[] selectionArgs = {username};
 
+        // queries the database with a selection argument to retrieve the password associated with the given username
         Cursor cursor = db.query(ACCOUNTS, projection, selection, selectionArgs, null, null, null);
 
+        //  retrieves the password from the cursor if it exists
         if (cursor != null && cursor.moveToFirst()) {
             int columnIndex = cursor.getColumnIndex(COLUMN_PASSWORD);
 
@@ -292,6 +296,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         db.close();
 
+        // closes the cursor and database before returning the retrieved password
         return currentPassword;
     }
     public int getTaskTargetSec(int taskId){
