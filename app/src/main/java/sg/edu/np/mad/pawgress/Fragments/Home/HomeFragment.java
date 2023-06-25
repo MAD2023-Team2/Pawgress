@@ -90,8 +90,8 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
+        // Inflate the layout for this fragment
         View view;
 
         view = inflater.inflate(R.layout.fragment_home, container, false);
@@ -102,13 +102,16 @@ public class HomeFragment extends Fragment {
         UserData user = receivingEnd.getParcelableExtra("User");
         ImageView pet_picture = view.findViewById(R.id.homeGame);
 
-
+        // Getting pet picture for user based on selection
         if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
         else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
         else if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
+
         ImageButton profilePhoto = view.findViewById((R.id.profile));
         TextView greeting = view.findViewById(R.id.greeting);
+
+        // Setting greeting text
         greeting.setText("Hello " + user.getUsername()); // add username
         profilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,7 +119,6 @@ public class HomeFragment extends Fragment {
 
                 // Create a new instance of the profilefragment
                 ProfileFragment profileFragment = new ProfileFragment();
-
 
                 // Replace the current fragment with the TasksFragment
                 FragmentManager fragmentManager = requireActivity().getSupportFragmentManager();

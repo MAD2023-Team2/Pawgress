@@ -70,52 +70,38 @@ public class GameFragment extends Fragment {
         }
     }
 
-    TextView timerTextView;
-    long startTime = 0;
-
-    //runs without a timer by reposting this handler at the end of the runnable
-    Handler timerHandler = new Handler();
-    Runnable timerRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            long millis = System.currentTimeMillis() - startTime;
-            int seconds = (int) (millis / 1000);
-            int minutes = seconds / 60;
-            seconds = seconds % 60;
-
-            timerTextView.setText(String.format("%d:%02d", minutes, seconds));
-
-            timerHandler.postDelayed(this, 500);
-        }
-    };
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
 
+        // Inflate the layout for this fragment
         View view;
         view = inflater.inflate(R.layout.fragment_game, container, false);
 
         MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
+
+        // Getting pet picture for user based on selection
         UserData user = myDBHandler.findUser(SaveSharedPreference.getUserName(getActivity()));
         ImageView pet_picture = view.findViewById(R.id.corgi_1);
         if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
         else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
         else if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
+
+        // THIS PART LETS THE PET GO SQUEAK SQUEAK
+        // Listener for when pet picture is pressed, plays an animation and audio
         pet_picture.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
 
+                    // When pressing down on pet
                     case MotionEvent.ACTION_DOWN:
 
                         int random = new Random().nextInt(3);
                         MediaPlayer mediaPlayer;
 
+                        // Randomly plays 1 out of 3 sounds
                         if (random == 0){
                             mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi_down_sound);
                         } else if (random == 1) {
@@ -124,14 +110,17 @@ public class GameFragment extends Fragment {
                         else {
                             mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi_3_sound);
                         }
-
                         mediaPlayer.start();
+
+                        // Listener for when audio finishing playing, releases and resets media player to prevent overuse of resources
                         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                             public void onCompletion(MediaPlayer mp) {
                                 mp.reset();
                                 mp.release();
                             };
                         });
+
+                        // Animated the pet so it squishes when pressed
                         Animation anim = new ScaleAnimation(
                                 1f, 1f, // Start and end values for the X axis scaling
                                 1f, 0.85f, // Start and end values for the Y axis scaling
@@ -143,7 +132,10 @@ public class GameFragment extends Fragment {
 
                         break;
 
+                    // When pet is no longer being pressed
                     case MotionEvent.ACTION_UP:
+
+                        // Animated the pet to un-squish
                         Animation anim2 = new ScaleAnimation(
                                 1f, 1f, // Start and end values for the X axis scaling
                                 0.85f, 1f, // Start and end values for the Y axis scaling

@@ -76,10 +76,11 @@ public class TasksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         String TAG = "Task List";
         MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
 
+        // Inflate the layout for this fragment
         View view;
         view = inflater.inflate(R.layout.fragment_tasks, container, false);
 
