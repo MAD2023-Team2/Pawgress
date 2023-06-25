@@ -95,6 +95,7 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                         recyclerTaskList.remove(task);
                         notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
+                        notifyDataSetChanged();
                         if (recyclerTaskList.size() == 0) {
                             ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
                             layoutParams.height = Math.min(0, recyclerView.getHeight());

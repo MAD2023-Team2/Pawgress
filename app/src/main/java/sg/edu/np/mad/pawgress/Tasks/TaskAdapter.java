@@ -147,5 +147,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                 alert.show();
             }
         });
+        holder.complete.setChecked(false);
     }
 }
