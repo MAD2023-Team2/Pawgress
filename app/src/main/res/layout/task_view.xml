@@ -66,6 +66,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:backgroundTint="#88E473"
+        android:fontFamily="sans-serif-condensed-medium"
         android:text="Start Timer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
