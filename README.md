@@ -33,6 +33,12 @@ Choosing to start the timer button will bring the user to the game page where th
 ### 8. Editing User credentials [Hannah]
 Username and password can be changed in this page
 
+### Additional Contributions
+Designs - Game Design (Room, Pet Design etc) [hannah]
+        - App UI Marvel Prototype (https://marvelapp.com/prototype/89ji25g) [hannah]
+        - Final App UI [everyone]
+
+
  
 ## Planned Stage 2 Features
 1. Task Analytics [Chun Fai]
