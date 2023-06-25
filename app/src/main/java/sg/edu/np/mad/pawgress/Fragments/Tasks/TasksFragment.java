@@ -76,20 +76,20 @@ public class TasksFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         String TAG = "Task List";
         MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
 
+        // Inflate the layout for this fragment
         View view;
         view = inflater.inflate(R.layout.fragment_tasks, container, false);
 
         RecyclerView recyclerView = view.findViewById(R.id.list);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
-        try { // after creating new task
+        try { // runs if there was a new task created
             Log.v(TAG, "starting try");
             Intent receivingEnd = getActivity().getIntent();
             UserData user = receivingEnd.getParcelableExtra("New Task List");
-            Log.v(TAG, "Starting recyclerview");
             TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, getActivity() );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(mLayoutManager);
@@ -107,10 +107,10 @@ public class TasksFragment extends Fragment {
                 }
             });
         } catch (RuntimeException e) {
+            // else catches runtime error and runs this code
             Log.v(TAG, "starting exception");
             Intent receivingEnd = getActivity().getIntent();
             UserData user = receivingEnd.getParcelableExtra("User");
-            Log.v(TAG, "Starting recyclerview");
             TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, getActivity() );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
             recyclerView.setLayoutManager(mLayoutManager);

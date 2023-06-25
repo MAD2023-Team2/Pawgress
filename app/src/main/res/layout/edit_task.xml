@@ -16,7 +16,7 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:text="h"
         app:layout_constraintStart_toEndOf="@+id/editHrs2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
     <TextView
         android:id="@+id/textView22"
@@ -27,7 +27,7 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:text="s"
         app:layout_constraintStart_toEndOf="@+id/editSec2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
     <TextView
         android:id="@+id/textView23"
@@ -38,7 +38,7 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:text="m"
         app:layout_constraintStart_toEndOf="@+id/editMins2"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
     <EditText
         android:id="@+id/editMins2"
@@ -54,13 +54,13 @@
         android:maxLength="2"
         android:text="00"
         app:layout_constraintStart_toEndOf="@+id/textView16"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
     <EditText
         android:id="@+id/editSec2"
         android:layout_width="30dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="11dp"
+        android:layout_marginStart="12dp"
         android:layout_marginTop="45dp"
         android:background="@drawable/field_background"
         android:ems="10"
@@ -70,22 +70,22 @@
         android:maxLength="2"
         android:text="00"
         app:layout_constraintStart_toEndOf="@+id/textView23"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
     <TextView
         android:id="@+id/textView24"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="58dp"
+        android:layout_marginStart="51dp"
 
         android:layout_marginTop="45dp"
         android:layout_marginEnd="24dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="Target Hours:"
+        android:text="Target Time:"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/editHrs2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
     <EditText
         android:id="@+id/editHrs2"
@@ -101,7 +101,7 @@
         android:maxLength="2"
         android:text="00"
         app:layout_constraintStart_toEndOf="@+id/textView24"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
     <TextView
         android:id="@+id/textView6"
@@ -120,7 +120,7 @@
         android:id="@+id/editTextText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="65dp"
         android:background="@drawable/field_background"
         android:ems="10"
@@ -128,37 +128,37 @@
         android:inputType="text"
         android:text="@string/taskName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@id/editTextText2" />
 
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="3dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Title: "
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/editTextText"
-        app:layout_constraintTop_toBottomOf="@id/textView6" />
+        app:layout_constraintTop_toBottomOf="@id/textView9" />
 
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="3dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Category: "
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/editTextText2"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@id/textView6" />
 
     <EditText
         android:id="@+id/editTextText2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="60dp"
         android:layout_marginEnd="65dp"
         android:background="@drawable/field_background"
         android:ems="10"
@@ -166,7 +166,7 @@
         android:inputType="text"
         android:text="@string/taskCategory"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
+        app:layout_constraintTop_toBottomOf="@id/textView6" />
 
     <Button
         android:id="@+id/button"
@@ -179,7 +179,7 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Confirm"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@id/editTextText" />
 
     <Button
         android:id="@+id/button2"
@@ -192,5 +192,5 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Cancel"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText2" />
+        app:layout_constraintTop_toBottomOf="@id/editTextText" />
 </androidx.constraintlayout.widget.ConstraintLayout>

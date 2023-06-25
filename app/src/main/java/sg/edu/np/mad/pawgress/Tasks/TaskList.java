@@ -31,11 +31,10 @@ public class TaskList extends AppCompatActivity {
         setContentView(R.layout.task_list);
         RecyclerView recyclerView = findViewById(R.id.list);
         emptyTaskText = findViewById(R.id.emptyTextView);
-        try { // after creating new task
+        try { // runs if there was a new task created
             Log.v(TAG, "starting try");
             Intent receivingEnd = getIntent();
             UserData user = receivingEnd.getParcelableExtra("New Task List");
-            Log.v(TAG, "Starting recyclerview");
             TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, this );
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);
@@ -53,11 +52,10 @@ public class TaskList extends AppCompatActivity {
                 }
             });
         } catch (RuntimeException e) {
-            // from homepage or tab button
+            // else catches runtime error and runs this code
             Log.v(TAG, "starting exception");
             Intent receivingEnd = getIntent();
             UserData user = receivingEnd.getParcelableExtra("User");
-            Log.v(TAG, "Starting recyclerview");
             TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, this);
             LinearLayoutManager mLayoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(mLayoutManager);

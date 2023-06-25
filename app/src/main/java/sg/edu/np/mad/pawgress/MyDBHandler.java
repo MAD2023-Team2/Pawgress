@@ -47,9 +47,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase db){
+        // One table for accounts (users)
         String CREATE_ACCOUNT_TABLE = "Create TABLE " + ACCOUNTS + " (" +
                 COLUMN_USERNAME + " TEXT PRIMARY KEY," +
-                //COLUMN_ACTUAL_USERNAME + " TEXT," +
                 COLUMN_PASSWORD + " TEXT," +
                 COLUMN_DATE + " TEXT," +
                 COLUMN_STREAK + " INTEGER," +
@@ -60,6 +60,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.execSQL(CREATE_ACCOUNT_TABLE);
         Log.i(title, CREATE_ACCOUNT_TABLE);
 
+        // One table for tasks, with username from user table as foreign key
         String CREATE_TASK_TABLE = "Create TABLE " + TASKS + "(" +
                 COLUMN_TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                 COLUMN_TASK_NAME + " TEXT," +
@@ -90,14 +91,13 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_LOGIN, userData.getLoggedInTdy());
         values.put(COLUMN_PET_TYPE, userData.getPetType());
         values.put(COLUMN_PET_DESIGN, userData.getPetDesign());
-        //values.put(COLUMN_ACTUAL_USERNAME, userData.getActualUserName());
 
         SQLiteDatabase db = this. getWritableDatabase();
         db.insert(ACCOUNTS, null, values);
         Log.i(title, " Inserted/Created user" + values);
         db.close();
     }
-    public void addTask(Task task, UserData userData){
+    public void addTask(Task task, UserData userData){ // used for creating task
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -108,12 +108,12 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_USERNAME, userData.getUsername());
         values.put(COLUMN_TARGET_SEC, task.getTargetSec());
         db.insert(TASKS, null, values);
-        taskList.add(task);
-        userData.setTaskList(taskList);
+        taskList.add(task); // adds new task into task list
+        userData.setTaskList(taskList); // new task list assigned to user that was passed in
         Log.i(title, "Inserted Task");
         db.close();
     }
-    public void updateTask(Task task, String username){
+    public void updateTask(Task task, String username){ // used for editing/completing/deleting task
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
@@ -182,7 +182,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return queryResult;
     }
 
-    public Task findTask(int id, ArrayList<Task> newTaskList){
+    public Task findTask(int id, ArrayList<Task> newTaskList){ // uses task id to find
         for (Task task : newTaskList){
             if (task.getTaskID() == id){
                 return task;
@@ -197,22 +197,22 @@ public class MyDBHandler extends SQLiteOpenHelper{
         Task queryResult = new Task();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()){
+        if (cursor.moveToFirst()){ // goes to first row if not null
             queryResult.setTaskID(cursor.getInt(0));
             queryResult.setTaskName(cursor.getString(1));
             queryResult.setStatus(cursor.getString(2));
             queryResult.setCategory(cursor.getString(3));
             queryResult.setTimeSpent(cursor.getInt(4));
-            queryResult.setTargetSec(cursor.getInt(5));
+            queryResult.setTargetSec(cursor.getInt(6));
             NewtaskList.add(queryResult);
-            while (cursor.moveToNext()) {
+            while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
                 Task task = new Task();
                 task.setTaskID(cursor.getInt(0));
                 task.setTaskName(cursor.getString(1));
                 task.setStatus(cursor.getString(2));
                 task.setCategory(cursor.getString(3));
                 task.setTimeSpent(cursor.getInt(4));
-                task.setTargetSec(cursor.getInt(5));
+                task.setTargetSec(cursor.getInt(6));
                 NewtaskList.add(task);
             }
             cursor.close();
@@ -293,6 +293,22 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.close();
 
         return currentPassword;
+    }
+    public int getTaskTargetSec(int taskId){
+        String query = "SELECT " + COLUMN_TARGET_SEC + " FROM " + TASKS + " WHERE " + COLUMN_TASK_ID + " = " + taskId;
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+
+        int targetSec = -1; // Default value if the task is not found
+        if (cursor != null && cursor.moveToFirst()) {
+            int targetSecIndex = cursor.getColumnIndex(COLUMN_TARGET_SEC);
+            targetSec = cursor.getInt(targetSecIndex);
+
+            cursor.close();
+        }
+        db.close();
+
+        return targetSec;
     }
 
 }

@@ -23,7 +23,7 @@ public class CreateTask extends AppCompatActivity {
     UserData user;
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
     String title = "Create Task";
-    // is there a limit to how many tasks users can have at one time?
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -32,7 +32,6 @@ public class CreateTask extends AppCompatActivity {
 
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
-        ArrayList<Task> taskList = myDBHandler.findTaskList(user);
         Button createButton = findViewById(R.id.button6);
         Button cancelButton = findViewById(R.id.button5);
         createButton.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +40,7 @@ public class CreateTask extends AppCompatActivity {
                 EditText etname = findViewById(R.id.editTitle);
                 String name = etname.getText().toString();
                 EditText etcat = findViewById(R.id.editCat);
+                // do not accept blank task title or category
                 if (etname.length() > 0 && etcat.length() > 0) {
                     String cat = etcat.getText().toString();
 

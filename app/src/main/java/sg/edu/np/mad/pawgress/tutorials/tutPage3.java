@@ -25,17 +25,25 @@ public class tutPage3 extends AppCompatActivity {
         super.onStart();
 
         Button tut3_next = findViewById((R.id.tut3_next));
+
+        // Receive user data through intent
         Intent receivingEnd = getIntent();
         UserData user = receivingEnd.getParcelableExtra("User");
+
+        // Button brings user to pet selection page, completing tutorial
         tut3_next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(tutPage3.this, CompanionSelectionActivity.class);
+
+                // Send user data
                 intent.putExtra("User", user);
                 startActivity(intent);
             }
         });
         TextView tut3_back = findViewById((R.id.tut3_back));
+
+        // Left side of screen goes to previous page
         tut3_back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

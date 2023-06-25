@@ -41,37 +41,52 @@ public class MainMainMain extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        // Setting content view
         setContentView(R.layout.activity_main_main_main);
 
+        // Binding of navigation bar and fragments
         binding = ActivityMainMainMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+
+        // Update the bottomNavigationView selection based of page of origin
         Intent receivingEnd = getIntent();
         String tab = receivingEnd.getExtras().getString("tab");
         Log.i(null, "------------------------------------" + tab);
         if (tab.equals("tasks_tab")){
             replaceFragment(new TasksFragment());
+
+            // Sets navigation bar item to tasks
             binding.bottomNavigationView.setSelectedItemId(R.id.tasks_tab);
+
         } else if (tab.equals("profile_tab")) {
             replaceFragment(new ProfileFragment());
+
+            // Sets navigation bar item to profile
             binding.bottomNavigationView.setSelectedItemId(R.id.profile_tab);
+
         } else{
             replaceFragment(new HomeFragment());
         }
+
+        // Switching of navigation bar tabs
         binding.bottomNavigationView.setOnItemSelectedListener(item -> {
             int itemID = item.getItemId();
 
             if (itemID == R.id.home_tab){
+                //Replace fragment with HomeFragment
                 replaceFragment(new HomeFragment());
             }
             if (itemID == R.id.game_tab){
+                //Replace fragment with GameFragment
                 replaceFragment(new GameFragment());
             }
             if (itemID == R.id.tasks_tab){
+                //Replace fragment with TaskFragment
                 replaceFragment(new TasksFragment());
             }
             if (itemID == R.id.profile_tab){
+                //Replace fragment with ProfileFragment
                 replaceFragment(new ProfileFragment());
             }
 
@@ -79,6 +94,7 @@ public class MainMainMain extends AppCompatActivity {
         });
     }
 
+    // Replaces current fragment with new fragment
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
