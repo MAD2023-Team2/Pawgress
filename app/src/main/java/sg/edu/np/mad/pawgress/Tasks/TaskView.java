@@ -55,7 +55,7 @@ public class TaskView extends AppCompatActivity {
         int minutes = (seconds % 3600) / 60;
         int secs = seconds % 60;
         time.setText("Current Time Spent: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
-        if (task.getTimeSpent() > 0) { gameButton.setText("RESUME TIMER");}
+        if (task.getTimeSpent() > 0) { gameButton.setText("Resume Timer");}
 
 
         backButton.setOnClickListener(new View.OnClickListener() {
@@ -88,7 +88,7 @@ public class TaskView extends AppCompatActivity {
         int minutes = (seconds % 3600) / 60;
         int secs = seconds % 60;
         time.setText("Time spent so far: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
-        if (task.getTimeSpent() > 0) { gameButton.setText("RESUME TIMER");}
+        if (task.getTimeSpent() > 0) { gameButton.setText("Resume Timer");}
 
     }
 }
