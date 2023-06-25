@@ -98,15 +98,17 @@ public class HomeFragment extends Fragment {
 
         Log.i(null, "Starting App Home Page");
 
+        // Get user data from the intent
         Intent receivingEnd = getActivity().getIntent();
         UserData user = receivingEnd.getParcelableExtra("User");
+
+        // Set pet picture based on user's pet design
         ImageView pet_picture = view.findViewById(R.id.homeGame);
-
-
         if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
         else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
         else if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
+
         ImageButton profilePhoto = view.findViewById((R.id.profile));
         TextView greeting = view.findViewById(R.id.greeting);
         greeting.setText("Hello " + user.getUsername()); // add username
@@ -134,16 +136,14 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // add change pet picture code after implementing pet object
-
-
-
-        // compact task list (to be changed in stage 2)
+        // Set up the task list RecyclerView
         MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
         RecyclerView recyclerView = view.findViewById(R.id.taskcardlist);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
         emptySpaceTextView = view.findViewById(R.id.emptyspace_home);
-        try { // after creating new task
+
+        try {
+            // Try retrieving the user from the intent with new task list
             Intent receivingEnd_2 = getActivity().getIntent();
             UserData user_2 = receivingEnd_2.getParcelableExtra("New Task List");
             TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity(),recyclerView);
@@ -154,7 +154,7 @@ public class HomeFragment extends Fragment {
             recyclerView.setAdapter(mAdapter);
 
         } catch (RuntimeException e) {
-            // from homepage or tab button
+            // if there is no new task list, get intent from user
             Intent receivingEnd_2 = getActivity().getIntent();
             UserData user_2 = receivingEnd_2.getParcelableExtra("User");
             TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity(),recyclerView);
@@ -195,7 +195,9 @@ public class HomeFragment extends Fragment {
         recyclerView.post(new Runnable() {
             @Override
             public void run() {
-                int maxHeight = emptySpaceTextView.getHeight();
+                // Adjust the height of the RecyclerView to fit within the border box.
+                // Run this code after all the code get executed
+                int maxHeight = emptySpaceTextView.getHeight() - 25;
                 ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
                 layoutParams.height = Math.min(maxHeight, recyclerView.getHeight());
                 recyclerView.setLayoutParams(layoutParams);

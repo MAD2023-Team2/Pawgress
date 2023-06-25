@@ -1,5 +1,7 @@
 package sg.edu.np.mad.pawgress.Tasks;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +17,7 @@ import java.util.ArrayList;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
-// compact task list in home page
+
 public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
     public TextView emptyTasktext;
     ArrayList<Task> recyclerTaskList;
@@ -38,6 +40,9 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
     }
 
     public void updateEmptyView(){
+        // calculate how many task are in arraylist
+        // if there are no task left, set text to no task
+        // if there are task left, set text to empty
         recyclerTaskList = new ArrayList<>();
         int count = 0;
         if (taskList.size() == 0){
@@ -67,18 +72,22 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
         holder.name.setText(task.getTaskName());;
         // view individual task
         holder.card2.setOnClickListener(new View.OnClickListener() {
+            // if user clicks on task card, send user and task info to taskview
             @Override
             public void onClick(View v) {
                 Intent viewTask = new Intent(context, TaskView.class);
                 Bundle info = new Bundle();
                 info.putParcelable("User", user);
-                info.putParcelable("Task", task); // send individual task
+                info.putParcelable("Task", task);
                 viewTask.putExtras(info);
                 context.startActivity(viewTask);
             }
         });
 
         // complete task
+        // if user clicks yes for complete, update database task status as complete
+        // update amount of task in tasklist
+        // if user click no, set checkbox back to false and do nothing
         holder.complete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,6 +105,8 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
                         notifyDataSetChanged();
                         if (recyclerTaskList.size() == 0) {
+                            // if there is no task in tasklist, set recyclerview height as 0
+                            // empty task text will fill up the space of recycler view
                             ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
                             layoutParams.height = Math.min(0, recyclerView.getHeight());
                             recyclerView.setLayoutParams(layoutParams);
