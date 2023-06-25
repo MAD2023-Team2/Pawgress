@@ -13,10 +13,12 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="115dp"
         android:layout_marginTop="36dp"
+        android:layout_marginEnd="115dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Create New Task"
         android:textSize="27sp"
         android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,25 +26,27 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="93dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="3dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Title: "
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/editTitle"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView5" />
 
     <EditText
         android:id="@+id/editTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:layout_marginTop="50dp"
-        android:layout_marginEnd="65dp"
         android:background="@drawable/field_background"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView"
         app:layout_constraintTop_toBottomOf="@id/editCat" />
 
     <TextView
@@ -50,12 +54,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
 
+        android:layout_marginStart="65dp"
         android:layout_marginTop="60dp"
         android:layout_marginEnd="3dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Category: "
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/editCat"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView17" />
 
     <TextView
@@ -75,13 +81,13 @@
         android:id="@+id/editCat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="2dp"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="65dp"
         android:background="@drawable/field_background"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
         android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@id/textView17" />
 
     <Button
@@ -91,9 +97,11 @@
         android:layout_height="43dp"
         android:layout_marginStart="88dp"
         android:layout_marginTop="90dp"
+        android:layout_marginEnd="35dp"
         android:backgroundTint="#88E473"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Cancel"
+        app:layout_constraintEnd_toStartOf="@+id/button6"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/editTitle" />
 
@@ -102,12 +110,14 @@
         style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
         android:layout_width="100dp"
         android:layout_height="43dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="90dp"
         android:layout_marginEnd="88dp"
         android:backgroundTint="#88E473"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Confirm"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/button5"
         app:layout_constraintTop_toBottomOf="@id/editTitle" />
 
     <TextView
