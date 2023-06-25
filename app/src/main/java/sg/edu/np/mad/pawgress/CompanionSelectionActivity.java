@@ -51,9 +51,6 @@ public class CompanionSelectionActivity extends AppCompatActivity {
     private void assignCompanionDesign(String selection, UserData user){
         MyDBHandler dbHandler = new MyDBHandler(this, null, null, 1);
 
-        //for (int n : catDesigns){System.out.println(n);}
-        //for (int n : dogDesigns){System.out.println(n);}
-
         int selectedDesign;
         if (selection.equals(CAT)) {
             int randomIndex = new Random().nextInt(catDesigns.length);
