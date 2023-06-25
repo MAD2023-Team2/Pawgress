@@ -41,30 +41,47 @@ public class editProfilePassword extends AppCompatActivity {
         back = findViewById(R.id.imageButton);
         dbHandler = new MyDBHandler(this, null, null, 1);
 
-
+        // Getting user data
         UserData user = dbHandler.findUser(SaveSharedPreference.getUserName(editProfilePassword.this));
 
+        // Setting texts for current username and password
         etUsername.setText(user.getUsername());
         String oldName = etUsername.getText().toString();
         etPassword.setText(user.getPassword());
 
+        // Save button
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String updatedUsername = etUsername.getText().toString();
                 String updatedPassword = etPassword.getText().toString();
+
+                // Input validation, checks that username and password are not empty
                 if (etUsername.length() > 0 && etPassword.length() > 0) {
+
+                    // Getting user data
                     UserData dbData = dbHandler.findUser(etUsername.getText().toString());
+
+                    // Checks that user does not already exists
                     if (dbData == null){
+
+                        // Updates username associated with tasks
                         for (Task task: dbHandler.findTaskList(user)) {
                             dbHandler.updateTask(task, updatedUsername);
                         }
+
+                        // Update username and password
                         user.setUsername(updatedUsername);
                         user.setPassword(updatedPassword);
+
+                        // Updating user data in database
                         dbHandler.updateUser(updatedUsername, updatedPassword, oldName);
                         Toast.makeText(editProfilePassword.this, "User information updated", Toast.LENGTH_SHORT).show();
 
+                        // Updates shared preference for auto login
                         SaveSharedPreference.setUserName(editProfilePassword.this, updatedUsername);
+
+                        // Goes back to Profile page
                         Intent newTask = new Intent(editProfilePassword.this, MainMainMain.class);
                         newTask.putExtra("New Task List", user);
                         newTask.putExtra("User", user);

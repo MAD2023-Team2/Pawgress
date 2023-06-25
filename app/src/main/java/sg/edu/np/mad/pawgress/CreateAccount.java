@@ -44,11 +44,14 @@ public class CreateAccount extends AppCompatActivity {
         Button cancelButton = findViewById(R.id.button3);
 
 
-        createButton.setOnClickListener(new View.OnClickListener() {
+        createButton.setOnClickListener(new View.OnClickListener() { //create button in create account page
             @Override
             public void onClick(View v) {
+                //input validation, no empty inputs
                 if (etUsername.length() > 0 && etPassword.length() > 0) {
                     UserData dbData = myDBHandler.findUser(etUsername.getText().toString());
+
+                    // Checking that account does not already exists
                     if (dbData == null){
                         String dbUsername = etUsername.getText().toString();
                         String dbPassword = etPassword.getText().toString();
@@ -57,7 +60,11 @@ public class CreateAccount extends AppCompatActivity {
                         String accCreateDate = formatter.format(new Date());
                         UserData dbUserData = new UserData(dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354);
                         System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
+
+                        // Adding user to database
                         myDBHandler.addUser(dbUserData);
+
+                        // Setting shared preference for auto login
                         SaveSharedPreference.setUserName(CreateAccount.this ,etUsername.getText().toString());
                         Intent intent = new Intent(CreateAccount.this, tutPage1.class);
                         intent.putExtra("User", dbUserData);
@@ -82,7 +89,7 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
 
-        cancelButton.setOnClickListener(new View.OnClickListener() {
+        cancelButton.setOnClickListener(new View.OnClickListener() { // Cancel button for create account page, goes back to login page
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(CreateAccount.this, LoginPage.class);

@@ -22,7 +22,7 @@ import sg.edu.np.mad.pawgress.Tasks.Task;
 
 public class LoginPage extends AppCompatActivity {
     @Override
-    public void onBackPressed(){
+    public void onBackPressed(){ //exit app when pressing back button
         new AlertDialog.Builder(this)
                 .setTitle("Exit App")
                 .setMessage("Are you sure you want to exit?")
@@ -40,6 +40,7 @@ public class LoginPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        // Admin account credentials verification
         if (!isValidCredentials("admin", "admin123")) {
             Log.v(title,"Admin Account Not Found");
             String dbUsername = "admin";
@@ -62,13 +63,14 @@ public class LoginPage extends AppCompatActivity {
         private String MY_USERNAME = "MyUSerName";
         private String MY_PASSWORD = "MyPassword";
         SharedPreferences sharedPreferences;
-
     */
     @Override
     protected void onStart(){
         super.onStart();
         Log.v(title, "On Login Page");
-        if(SaveSharedPreference.getUserName(LoginPage.this).length() == 0) //shared preferences for auto login, if shared preference has no data, brings to login page
+
+        // Checking shared preferences for auto login, if shared preference has no data, brings to login page
+        if(SaveSharedPreference.getUserName(LoginPage.this).length() == 0)
         {
             setContentView(R.layout.login_page);
             Log.i(title, "Starting App Login Page");
@@ -76,9 +78,7 @@ public class LoginPage extends AppCompatActivity {
             TextView newUser = findViewById(R.id.textView4);
             Button loginButton = findViewById(R.id.button);
 
-
-
-            newUser.setOnTouchListener(new View.OnTouchListener() {
+            newUser.setOnTouchListener(new View.OnTouchListener() { //create account button
                 @Override
                 public boolean onTouch(View v, MotionEvent event) {
                     Intent intent = new Intent(LoginPage.this, CreateAccount.class);
@@ -88,6 +88,7 @@ public class LoginPage extends AppCompatActivity {
                 }
             });
 
+            // Login button
             loginButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -113,7 +114,8 @@ public class LoginPage extends AppCompatActivity {
                 }
             });
         }
-        else // if shared preference has data, skips log in
+        // If shared preference has data, skips log in
+        else
         {
             UserData user = myDBHandler.findUser(SaveSharedPreference.getUserName(LoginPage.this));
             Log.v(title, "TaskList" + user.getTaskList().size());
@@ -125,8 +127,8 @@ public class LoginPage extends AppCompatActivity {
 
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
 
+    // Verifies username and password
     private boolean isValidCredentials(String username, String password){
-
         /*
         sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
         String sharedUsername = sharedPreferences.getString(MY_USERNAME, "");
@@ -136,7 +138,6 @@ public class LoginPage extends AppCompatActivity {
             return true;
         }
         return false;
-
          */
         UserData dbData = myDBHandler.findUser(username);
         try {
