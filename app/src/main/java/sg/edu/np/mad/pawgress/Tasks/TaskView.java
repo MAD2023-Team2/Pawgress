@@ -48,7 +48,7 @@ public class TaskView extends AppCompatActivity {
         int tminutes = (tseconds % 3600) / 60;
         int tsecs = tseconds % 60;
 
-        targettime.setText("Targeted Time Spent: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",thours, tminutes, tsecs));
+        targettime.setText("Target Time: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",thours, tminutes, tsecs));
         time = findViewById(R.id.textView15);
         int seconds = task.getTimeSpent();
         int hours = seconds / 3600;
@@ -87,7 +87,7 @@ public class TaskView extends AppCompatActivity {
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
         int secs = seconds % 60;
-        time.setText("Time spent so far: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
+        time.setText("Current Time Spent: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
         if (task.getTimeSpent() > 0) { gameButton.setText("Resume Timer");}
 
     }
