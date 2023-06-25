@@ -35,7 +35,9 @@ Username and password can be changed in this page
 
 ### Additional Contributions
 Designs - Game Design (Room, Pet Design etc) [hannah]
+
         - App UI Marvel Prototype (https://marvelapp.com/prototype/89ji25g) [hannah]
+        
         - Final App UI [everyone]
 
 
