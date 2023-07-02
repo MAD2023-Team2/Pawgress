@@ -1,5 +1,6 @@
 package sg.edu.np.mad.pawgress;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +14,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -68,6 +76,8 @@ public class LoginPage extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         Log.v(title, "On Login Page");
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("Users");
 
         // Checking shared preferences for auto login, if shared preference has no data, brings to login page
         if(SaveSharedPreference.getUserName(LoginPage.this).length() == 0)
@@ -96,17 +106,39 @@ public class LoginPage extends AppCompatActivity {
                     EditText etPassword = findViewById(R.id.editTextText2);
                     String username = etUsername.getText().toString();
                     if (etUsername.length() > 0 && etPassword.length() > 0) {
-                        UserData user = myDBHandler.findUser(username);
-                        if (isValidCredentials(etUsername.getText().toString(), etPassword.getText().toString())){
-                            SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
-                            Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
-                            intent.putExtra("User", user);
-                            startActivity(intent);
-                            finish();
-                        }
-                        else{
-                            Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
-                        }
+                        // Read from the database
+                        Query query = myRef.orderByChild("username").equalTo(username);
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        String userId = snapshot.getKey();
+                                        final String getPass = dataSnapshot.child(userId).child("password").getValue(String.class);
+                                        String password = etPassword.getText().toString().trim();
+
+                                        if (getPass.equals(password)){
+                                            Intent intent = new Intent(LoginPage.this,DailyLogIn.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                // do nth
+                            }
+                        });
+//                        UserData user = myDBHandler.findUser(username);
+//                        if (isValidCredentials(etUsername.getText().toString(), etPassword.getText().toString())){
+//                            SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
+//                            Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
+//                            intent.putExtra("User", user);
+//                            startActivity(intent);
+//                            finish();
+//                        }
+                        Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
