@@ -41,6 +41,7 @@ public class DailyLogIn extends AppCompatActivity {
 
 
         String lastInDate = user.getLastLogInDate();
+        System.out.println("Last In Date = "+ lastInDate);
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         Date date1;

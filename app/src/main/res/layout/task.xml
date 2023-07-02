@@ -19,9 +19,9 @@
 
     <TextView
         android:id="@+id/textView3"
-        android:layout_width="0dp"
-        android:layout_height="21dp"
-        android:layout_marginStart="4dp"
+        android:layout_width="231dp"
+        android:layout_height="18dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="9dp"
         android:background="@drawable/rounded_corners"
@@ -29,20 +29,17 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Category"
         app:layout_constraintEnd_toStartOf="@+id/button3"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="6dp"
-        android:layout_marginEnd="9dp"
+        android:layout_width="224dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Task Title"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
@@ -50,8 +47,8 @@
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="12dp"
         android:checked="false"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Complete"
@@ -77,6 +74,20 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_delete_24" />
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="177dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="DueDate"
+        app:layout_constraintEnd_toStartOf="@+id/checkBox"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

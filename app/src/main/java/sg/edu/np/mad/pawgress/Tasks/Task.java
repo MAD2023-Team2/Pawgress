@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Task implements Parcelable {
     private int taskID;
@@ -14,19 +15,21 @@ public class Task implements Parcelable {
     private String category;
     private int timeSpent;
     private int targetSec;
+    private String dueDate;
 
 
     public Task() {
     }
 
     // add in date of creation and duedate(can accept null)
-    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec) {
+    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec, String dueDate) {
         this.taskID = taskID;
         this.taskName = taskName;
         this.status = status;
         this.category = category;
         this.timeSpent = timeSpent;
         this.targetSec = targetSec;
+        this.dueDate = dueDate;
     }
 
     protected Task(Parcel in) {
@@ -36,6 +39,7 @@ public class Task implements Parcelable {
         category = in.readString();
         timeSpent = in.readInt();
         targetSec = in.readInt();
+        dueDate = in.readString();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -63,6 +67,7 @@ public class Task implements Parcelable {
         dest.writeString(category);
         dest.writeInt(timeSpent);
         dest.writeInt(targetSec);
+        dest.writeString(dueDate);
     }
     public int getTaskID() {
         return taskID;
@@ -90,5 +95,6 @@ public class Task implements Parcelable {
     public void setTimeSpent(int timeSpent) { this.timeSpent = timeSpent; }
     public int getTargetSec() { return targetSec; }
     public void setTargetSec(int targetSec) { this.targetSec = targetSec; }
-
+    public String getDueDate() { return dueDate; }
+    public void setDueDate(String dueDate) { this.dueDate = dueDate; }
 }

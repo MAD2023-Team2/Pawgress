@@ -10,10 +10,22 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.text.DateFormat;
+import java.text.Format;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.DayOfWeek;
+import java.time.LocalDate;
+import java.time.Year;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
@@ -66,7 +78,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
         Log.i(THIS, "onbind");
         Task task = recyclerTaskList.get(position);
         holder.category.setText(task.getCategory());
-        holder.name.setText(task.getTaskName());;
+        holder.name.setText(task.getTaskName());
+        if (task.getDueDate() != null){
+            String day = task.getDueDate().substring(0,2);
+            String month = task.getDueDate().substring(2,4);
+            String year = task.getDueDate().substring(4);
+            int thisYear = Calendar.getInstance().get(Calendar.YEAR);
+            // if due date year is not this year, it will show the inputted year
+            if (thisYear != Integer.parseInt(task.getDueDate().substring(4))){
+                holder.duedate.setText(day + "/" + month + "/" + year);
+            }
+            else holder.duedate.setText(day + "/" + month);
+        }
+        else holder.duedate.setVisibility(INVISIBLE);
         // view individual task
         holder.card.setOnClickListener(new View.OnClickListener() {
             @Override
