@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "520988204193",
+    "project_id": "pawgress-c1839",
+    "storage_bucket": "pawgress-c1839.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:520988204193:android:2c3df07ab4199e80ba64e0",
+        "android_client_info": {
+          "package_name": "sg.edu.np.mad.pawgress"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "520988204193-mcfa51mtog3e5gubcg6i0ajmg9dsgpuj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD2A7I341mcWPRuAUGkw862z1OgLGbgASA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "520988204193-mcfa51mtog3e5gubcg6i0ajmg9dsgpuj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

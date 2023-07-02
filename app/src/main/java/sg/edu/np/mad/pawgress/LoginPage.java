@@ -1,5 +1,6 @@
 package sg.edu.np.mad.pawgress;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -13,6 +14,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -36,9 +43,15 @@ public class LoginPage extends AppCompatActivity {
                 .setNegativeButton("No", null)
                 .show();
     }
+
+    FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app/");
+    DatabaseReference users = database.getReference("Users/");
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         // Admin account credentials verification
         if (!isValidCredentials("admin", "admin123")) {
@@ -128,6 +141,7 @@ public class LoginPage extends AppCompatActivity {
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
 
     // Verifies username and password
+    boolean valid;
     private boolean isValidCredentials(String username, String password){
         /*
         sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
@@ -139,6 +153,7 @@ public class LoginPage extends AppCompatActivity {
         }
         return false;
          */
+        /*
         UserData dbData = myDBHandler.findUser(username);
         try {
             if(dbData.getUsername().equals(username) && dbData.getPassword().equals(password)){
@@ -149,5 +164,34 @@ public class LoginPage extends AppCompatActivity {
         catch(NullPointerException e) {
             return false;
         }
+
+         */
+
+        // Read from the database
+        users.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                if (dataSnapshot.hasChild(username)){
+                    String getPass = dataSnapshot.child(username).child("Password").getValue(String.class);
+                    if (getPass.equals(password)){
+                         valid = true;
+                    }
+                }
+                else{
+                    valid = false;
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Failed to read value
+                Log.w(null, "Failed to read value.", error.toException());
+            }
+        });
+        return valid;
     }
 }
