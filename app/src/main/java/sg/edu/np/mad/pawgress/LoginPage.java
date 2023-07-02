@@ -19,6 +19,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
@@ -43,15 +44,9 @@ public class LoginPage extends AppCompatActivity {
                 .setNegativeButton("No", null)
                 .show();
     }
-
-    FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app/");
-    DatabaseReference users = database.getReference("Users/");
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
 
         // Admin account credentials verification
         if (!isValidCredentials("admin", "admin123")) {
@@ -81,6 +76,8 @@ public class LoginPage extends AppCompatActivity {
     protected void onStart(){
         super.onStart();
         Log.v(title, "On Login Page");
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("Users");
 
         // Checking shared preferences for auto login, if shared preference has no data, brings to login page
         if(SaveSharedPreference.getUserName(LoginPage.this).length() == 0)
@@ -109,17 +106,39 @@ public class LoginPage extends AppCompatActivity {
                     EditText etPassword = findViewById(R.id.editTextText2);
                     String username = etUsername.getText().toString();
                     if (etUsername.length() > 0 && etPassword.length() > 0) {
-                        UserData user = myDBHandler.findUser(username);
-                        if (isValidCredentials(etUsername.getText().toString(), etPassword.getText().toString())){
-                            SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
-                            Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
-                            intent.putExtra("User", user);
-                            startActivity(intent);
-                            finish();
-                        }
-                        else{
-                            Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
-                        }
+                        // Read from the database
+                        Query query = myRef.orderByChild("username").equalTo(username);
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists()) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        String userId = snapshot.getKey();
+                                        final String getPass = dataSnapshot.child(userId).child("password").getValue(String.class);
+                                        String password = etPassword.getText().toString().trim();
+
+                                        if (getPass.equals(password)){
+                                            Intent intent = new Intent(LoginPage.this,DailyLogIn.class);
+                                            startActivity(intent);
+                                            finish();
+                                        }
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                // do nth
+                            }
+                        });
+//                        UserData user = myDBHandler.findUser(username);
+//                        if (isValidCredentials(etUsername.getText().toString(), etPassword.getText().toString())){
+//                            SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
+//                            Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
+//                            intent.putExtra("User", user);
+//                            startActivity(intent);
+//                            finish();
+//                        }
+                        Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
                     }
                     else{
                         Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
@@ -141,7 +160,6 @@ public class LoginPage extends AppCompatActivity {
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
 
     // Verifies username and password
-    boolean valid;
     private boolean isValidCredentials(String username, String password){
         /*
         sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
@@ -153,7 +171,6 @@ public class LoginPage extends AppCompatActivity {
         }
         return false;
          */
-        /*
         UserData dbData = myDBHandler.findUser(username);
         try {
             if(dbData.getUsername().equals(username) && dbData.getPassword().equals(password)){
@@ -164,34 +181,5 @@ public class LoginPage extends AppCompatActivity {
         catch(NullPointerException e) {
             return false;
         }
-
-         */
-
-        // Read from the database
-        users.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                if (dataSnapshot.hasChild(username)){
-                    String getPass = dataSnapshot.child(username).child("Password").getValue(String.class);
-                    if (getPass.equals(password)){
-                         valid = true;
-                    }
-                }
-                else{
-                    valid = false;
-                }
-
-
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-                // Failed to read value
-                Log.w(null, "Failed to read value.", error.toException());
-            }
-        });
-        return valid;
     }
 }
