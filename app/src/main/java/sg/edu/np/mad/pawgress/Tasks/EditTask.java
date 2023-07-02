@@ -102,11 +102,13 @@ public class EditTask extends AppCompatActivity {
                 if (totalSeconds == 0){
                     Toast.makeText(EditTask.this, "Invalid Seconds", Toast.LENGTH_SHORT).show();
                 }
-                else if (etname.length() > 0 && etcat.length() > 0){
+                else if (etname.length() > 0 &&  etname.getText().charAt(0) != ' '){
                     finalTask.setTaskName(etname.getText().toString());
                     finalTask.setStatus("In Progress");
                     finalTask.setCategory(etcat.getText().toString());
-
+                    if (etcat.length()==0 || etcat.getText().charAt(0) == ' '){
+                        finalTask.setCategory("Uncategorised");
+                    }
                     finalTask.setTargetSec(totalSeconds);
 
                     myDBHandler.updateTask(finalTask, user.getUsername());
