@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ public class CreateTask extends AppCompatActivity {
     UserData user;
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
     String title = "Create Task";
+    int hr,min,sec;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +36,45 @@ public class CreateTask extends AppCompatActivity {
         user = receivingEnd.getParcelableExtra("User");
         Button createButton = findViewById(R.id.button6);
         Button cancelButton = findViewById(R.id.button5);
+
+        NumberPicker ethr = (NumberPicker) findViewById(R.id.hourPicker);
+        ethr.setMaxValue(999);
+        ethr.setMinValue(0);
+        ethr.setValue(0);
+        ethr.setWrapSelectorWheel(true);
+
+        NumberPicker etmin = (NumberPicker) findViewById(R.id.minPicker);
+        etmin.setMaxValue(999);
+        etmin.setMinValue(0);
+        etmin.setValue(0);
+        etmin.setWrapSelectorWheel(true);
+
+        NumberPicker etsec = (NumberPicker) findViewById(R.id.secPicker);
+        etsec.setMaxValue(999);
+        etsec.setMinValue(0);
+        etsec.setValue(0);
+        etsec.setWrapSelectorWheel(true);
+        ethr.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                hr = i1;
+            }
+        });
+
+        etmin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                min = i1;
+            }
+        });
+
+        etsec.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                sec = i1;
+            }
+        });
+
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -41,37 +82,13 @@ public class CreateTask extends AppCompatActivity {
                 String name = etname.getText().toString();
                 EditText etcat = findViewById(R.id.editCat);
                 // do not accept blank task title or category
-                if (etname.length() > 0 && etcat.length() > 0) {
+                int totalSeconds = (hr * 3600) + (min * 60) + sec;
+                if (totalSeconds == 0){
+                    Toast.makeText(CreateTask.this, "Invalid Seconds", Toast.LENGTH_SHORT).show();
+                }
+                else if (etname.length() > 0 && etcat.length() > 0) {
                     String cat = etcat.getText().toString();
 
-                    EditText ethr = findViewById(R.id.editHrs);
-                    int hr = 0;
-
-                    try {
-                        hr = Integer.parseInt(ethr.getText().toString());
-                    } catch (NumberFormatException e) {
-                        // do nth
-                    }
-
-                    EditText etmin = findViewById(R.id.editMins);
-                    int min = 0;
-
-                    try {
-                        min = Integer.parseInt(etmin.getText().toString());
-                    } catch (NumberFormatException e) {
-                        // do nth
-                    }
-
-                    EditText etsec = findViewById(R.id.editSec);
-                    int sec = 0;
-
-                    try {
-                        sec = Integer.parseInt(etsec.getText().toString());
-                    } catch (NumberFormatException e) {
-                        // do nth
-                    }
-
-                    int totalSeconds = (hr * 3600) + (min * 60) + sec;
 
                     Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds);
                     myDBHandler.addTask(task, user);
