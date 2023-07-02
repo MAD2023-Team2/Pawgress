@@ -13,14 +13,14 @@
         android:layout_width="100dp"
         android:layout_height="43dp"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="304dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="88dp"
         android:backgroundTint="#88E473"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Confirm"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button13"
-        app:layout_constraintTop_toBottomOf="@id/editTextText" />
+        app:layout_constraintTop_toBottomOf="@id/minPicker3" />
 
     <Button
         android:id="@+id/button13"
@@ -28,50 +28,44 @@
         android:layout_width="100dp"
         android:layout_height="43dp"
         android:layout_marginStart="88dp"
-        android:layout_marginTop="304dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="35dp"
         android:backgroundTint="#88E473"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Cancel"
         app:layout_constraintEnd_toStartOf="@+id/button12"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTextText" />
+        app:layout_constraintTop_toBottomOf="@id/minPicker3" />
 
     <NumberPicker
         android:id="@+id/minPicker3"
-        android:layout_width="wrap_content"
+        android:layout_width="65dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
+        android:layout_marginStart="15dp"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="36dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginEnd="15dp"
         android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@+id/button12"
         app:layout_constraintEnd_toStartOf="@+id/secPicker3"
         app:layout_constraintStart_toEndOf="@+id/hourPicker3"
         app:layout_constraintTop_toBottomOf="@+id/textView30" />
 
     <NumberPicker
         android:id="@+id/secPicker3"
-        android:layout_width="wrap_content"
+        android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:layout_marginEnd="72dp"
-        android:layout_marginBottom="35dp"
+        android:layout_marginEnd="150dp"
         android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@+id/button13"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView31" />
 
     <NumberPicker
         android:id="@+id/hourPicker3"
-        android:layout_width="wrap_content"
+        android:layout_width="65dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
+        android:layout_marginStart="150dp"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="35dp"
         android:layout_weight="1"
-        app:layout_constraintBottom_toTopOf="@+id/button12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView29" />
 
@@ -94,7 +88,7 @@
         android:id="@+id/textView29"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
+        android:layout_marginStart="150dp"
         android:layout_marginTop="68dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
@@ -121,7 +115,7 @@
         android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="68dp"
-        android:layout_marginEnd="72dp"
+        android:layout_marginEnd="150dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="Seconds"
@@ -145,23 +139,25 @@
 
     <EditText
         android:id="@+id/editTextText"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="50dp"
+        android:layout_marginEnd="60dp"
         android:background="@drawable/field_background"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
         android:inputType="text"
         android:text="@string/taskName"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView8"
         app:layout_constraintTop_toBottomOf="@id/editTextText2" />
 
     <TextView
         android:id="@+id/textView8"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="93dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="50dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Title: "
@@ -171,29 +167,29 @@
 
     <TextView
         android:id="@+id/textView9"
-        android:layout_width="wrap_content"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="61dp"
+        android:layout_marginStart="60dp"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="3dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Category: "
         android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/editTextText2"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textView6" />
 
     <EditText
         android:id="@+id/editTextText2"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="60dp"
+        android:layout_marginEnd="60dp"
         android:background="@drawable/field_background"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
         android:inputType="text"
         android:text="@string/taskCategory"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView9"
         app:layout_constraintTop_toBottomOf="@id/textView6" />
 
