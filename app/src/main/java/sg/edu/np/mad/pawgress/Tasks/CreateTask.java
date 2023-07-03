@@ -135,10 +135,7 @@ public class CreateTask extends AppCompatActivity {
                 EditText etcat = findViewById(R.id.editCat);
                 // do not accept blank task title or category
                 int totalSeconds = (hr * 3600) + (min * 60) + sec;
-                if (totalSeconds == 0){
-                    Toast.makeText(CreateTask.this, "Invalid Seconds", Toast.LENGTH_SHORT).show();
-                }
-                else if (etname.length() > 0 && etname.getText().charAt(0) != ' ') {
+                if (etname.length() > 0 && etname.getText().charAt(0) != ' ') {
                     String cat = etcat.getText().toString();
                     if (cat.length()==0 || etcat.getText().charAt(0) == ' '){
                         cat = "Uncategorised";
