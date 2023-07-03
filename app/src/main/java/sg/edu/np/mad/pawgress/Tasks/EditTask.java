@@ -99,10 +99,7 @@ public class EditTask extends AppCompatActivity {
                 Log.v(Edit, "Editing Task");
                 int totalSeconds = (hr * 3600) + (min * 60) + sec;
                 // do not accept blank task name and category
-                if (totalSeconds == 0){
-                    Toast.makeText(EditTask.this, "Invalid Seconds", Toast.LENGTH_SHORT).show();
-                }
-                else if (etname.length() > 0 &&  etname.getText().charAt(0) != ' '){
+                if (etname.length() > 0 &&  etname.getText().charAt(0) != ' '){
                     finalTask.setTaskName(etname.getText().toString());
                     finalTask.setStatus("In Progress");
                     finalTask.setCategory(etcat.getText().toString());
