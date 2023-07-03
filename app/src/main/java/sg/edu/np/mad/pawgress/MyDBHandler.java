@@ -209,7 +209,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setTimeSpent(cursor.getInt(4));
             queryResult.setTargetSec(cursor.getInt(6));
             queryResult.setDueDate(cursor.getString(7));
-            Log.v(title, "Due Date null? " + cursor.getString(7));
             NewtaskList.add(queryResult);
             while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
                 Task task = new Task();

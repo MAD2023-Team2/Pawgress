@@ -8,35 +8,22 @@
     tools:context=".Tasks.EditTask">
 
     <Button
-        android:id="@+id/btnPickDate2"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="137dp"
-        android:backgroundTint="#88E473"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Pick Due Date"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView24" />
-
-    <Button
         android:id="@+id/button12"
         style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
         android:layout_width="100dp"
         android:layout_height="43dp"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="88dp"
+        android:layout_marginBottom="36dp"
         android:backgroundTint="#88E473"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button13"
-        app:layout_constraintTop_toBottomOf="@id/minPicker3" />
+        app:layout_constraintTop_toBottomOf="@id/minPicker3"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button13"
@@ -44,14 +31,17 @@
         android:layout_width="100dp"
         android:layout_height="43dp"
         android:layout_marginStart="88dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="35dp"
+        android:layout_marginBottom="36dp"
         android:backgroundTint="#88E473"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button12"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/minPicker3" />
+        app:layout_constraintTop_toBottomOf="@id/minPicker3"
+        app:layout_constraintVertical_bias="0.0" />
 
     <NumberPicker
         android:id="@+id/minPicker3"
@@ -92,51 +82,51 @@
         android:layout_marginStart="160dp"
 
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="162dp"
+        android:layout_marginEnd="160dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Target Time"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView8" />
+        app:layout_constraintTop_toBottomOf="@id/textView24" />
 
     <TextView
         android:id="@+id/textView29"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="72dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="Hours"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@id/textView28" />
 
     <TextView
         android:id="@+id/textView30"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="50dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="Minutes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@id/textView28" />
 
     <TextView
         android:id="@+id/textView31"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="72dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="Seconds"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@id/textView28" />
 
     <TextView
         android:id="@+id/textView6"
@@ -146,7 +136,7 @@
         android:layout_marginTop="36dp"
         android:layout_marginEnd="148dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="EDIT TASK"
+        android:text="Edit Task"
         android:textSize="27sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -158,12 +148,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="60dp"
         android:background="@drawable/field_background"
         android:ems="10"
-        android:fontFamily="sans-serif-condensed-medium"
+        android:fontFamily="sans-serif-condensed"
         android:inputType="text"
+        android:paddingStart="5dp"
         android:text="@string/taskName"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView8"
@@ -174,7 +165,7 @@
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Title: "
         android:textSize="18sp"
@@ -186,7 +177,7 @@
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Category: "
         android:textSize="18sp"
@@ -198,12 +189,13 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="60dp"
         android:background="@drawable/field_background"
         android:ems="10"
-        android:fontFamily="sans-serif-condensed-medium"
+        android:fontFamily="sans-serif-condensed"
         android:inputType="text"
+        android:paddingStart="5dp"
         android:text="@string/taskCategory"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView9"
@@ -213,28 +205,29 @@
         android:id="@+id/textView16"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginEnd="160dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="Due Date"
+        android:text="Due Date:"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/minPicker3" />
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
     <TextView
         android:id="@+id/textView24"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="151dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="151dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="No Due Date Set"
-        android:textAlignment="center"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="60dp"
+        android:background="@drawable/field_background"
+        android:fontFamily="sans-serif-condensed"
+        android:paddingStart="5dp"
+        android:text="no due date set"
+        android:textSize="18sp"
         app:flow_horizontalAlign="center"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+        app:layout_constraintStart_toEndOf="@+id/textView16"
+        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
