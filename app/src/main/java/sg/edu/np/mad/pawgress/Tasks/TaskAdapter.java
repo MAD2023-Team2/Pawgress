@@ -119,7 +119,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                 Button edit_Task = editTask.findViewById(R.id.button12);
                 Button discard = editTask.findViewById(R.id.button13);
                 TextView date = editTask.findViewById(R.id.textView24);
-                date.setText(task.getDueDate());
+                if (task.getDueDate() != null){
+                    date.setText(task.getDueDate());
+                }
+                else date.setText("no due date set");
 
                 EditText etname = editTask.findViewById(R.id.editTextText);
                 etname.setText(task.getTaskName());
