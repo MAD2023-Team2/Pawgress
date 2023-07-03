@@ -27,7 +27,7 @@
         android:layout_width="70dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Title: "
         android:textSize="18sp"
@@ -39,11 +39,11 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="61dp"
         android:background="@drawable/field_background"
         android:ems="10"
-        android:fontFamily="sans-serif-condensed-medium"
+        android:fontFamily="sans-serif-condensed"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView"
@@ -55,7 +55,7 @@
         android:layout_height="wrap_content"
 
         android:layout_marginStart="60dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Category: "
         android:textSize="18sp"
@@ -68,28 +68,28 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="160dp"
 
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="160dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Target Time"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/editTitle" />
+        app:layout_constraintTop_toBottomOf="@id/btnPickDate" />
 
     <TextView
         android:id="@+id/textView22"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="50dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="Minutes"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@id/textView18" />
 
     <Button
         android:id="@+id/button5"
@@ -97,14 +97,17 @@
         android:layout_width="100dp"
         android:layout_height="43dp"
         android:layout_marginStart="88dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="35dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="#88E473"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Cancel"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button6"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/minPicker" />
+        app:layout_constraintTop_toBottomOf="@id/minPicker"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/button6"
@@ -112,67 +115,41 @@
         android:layout_width="100dp"
         android:layout_height="43dp"
         android:layout_marginStart="35dp"
-        android:layout_marginTop="124dp"
+        android:layout_marginTop="4dp"
         android:layout_marginEnd="88dp"
+        android:layout_marginBottom="10dp"
         android:backgroundTint="#88E473"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Confirm"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/button5"
-        app:layout_constraintTop_toBottomOf="@id/minPicker" />
-
-    <Button
-        android:id="@+id/btnPickDate"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_marginStart="136dp"
-        android:layout_marginTop="16dp"
-        android:backgroundTint="#88E473"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Pick Due Date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selectedDate" />
-
-    <TextView
-        android:id="@+id/selectedDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="151dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="151dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="No Due Date Set"
-        android:textAlignment="center"
-        app:flow_horizontalAlign="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19" />
+        app:layout_constraintTop_toBottomOf="@id/minPicker"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView19"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-        android:layout_marginEnd="160dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginTop="30dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="Due Date"
+        android:text="Due Date:"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/minPicker" />
+        app:layout_constraintTop_toBottomOf="@id/editTitle" />
 
     <TextView
         android:id="@+id/textView20"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="72dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="Hours"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@id/textView18" />
 
     <NumberPicker
         android:id="@+id/hourPicker"
@@ -198,13 +175,13 @@
         android:id="@+id/textView23"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="72dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="Seconds"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@id/textView18" />
 
     <NumberPicker
         android:id="@+id/minPicker"
@@ -223,14 +200,31 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="40dp"
         android:layout_marginEnd="61dp"
         android:background="@drawable/field_background"
         android:ems="10"
-        android:fontFamily="sans-serif-condensed-medium"
+        android:fontFamily="sans-serif-condensed"
         android:inputType="text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/textView5"
         app:layout_constraintTop_toBottomOf="@id/textView17" />
+
+    <TextView
+        android:id="@+id/btnPickDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="61dp"
+        android:background="@drawable/field_background"
+        android:ems="10"
+        android:fontFamily="sans-serif-condensed"
+        android:paddingLeft="10dp"
+        android:text="no due date set"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/textView19"
+        app:layout_constraintTop_toBottomOf="@+id/editTitle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -80,15 +80,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
         holder.category.setText(task.getCategory());
         holder.name.setText(task.getTaskName());
         if (task.getDueDate() != null){
-            String day = task.getDueDate().substring(0,2);
-            String month = task.getDueDate().substring(2,4);
-            String year = task.getDueDate().substring(4);
-            int thisYear = Calendar.getInstance().get(Calendar.YEAR);
-            // if due date year is not this year, it will show the inputted year
-            if (thisYear != Integer.parseInt(task.getDueDate().substring(4))){
-                holder.duedate.setText(day + "/" + month + "/" + year);
-            }
-            else holder.duedate.setText(day + "/" + month);
+            holder.duedate.setText(task.getDueDate());
         }
         else holder.duedate.setVisibility(INVISIBLE);
         // view individual task

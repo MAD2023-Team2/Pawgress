@@ -27,6 +27,7 @@
         android:background="@drawable/rounded_corners"
         android:backgroundTint="#B7B7A4"
         android:fontFamily="sans-serif-condensed-medium"
+        android:paddingStart="5dp"
         android:text="Category"
         app:layout_constraintEnd_toStartOf="@+id/button3"
         app:layout_constraintStart_toStartOf="parent"

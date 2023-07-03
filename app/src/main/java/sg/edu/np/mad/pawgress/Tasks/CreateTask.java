@@ -65,17 +65,6 @@ public class CreateTask extends AppCompatActivity {
         etsec.setValue(0);
         etsec.setWrapSelectorWheel(true);
 
-        /*DatePicker datePicker = findViewById(R.id.datePicker1);
-        String day = String.valueOf(datePicker.getDayOfMonth());
-        String month = String.valueOf(datePicker.getMonth());
-        if (day.length() != 2){
-            day = "0" + day;
-        }
-        if (month.length()!=2){
-            month = "0" + month;
-        }
-        dueDate = day+month+datePicker.getYear();*/
-
         ethr.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
@@ -96,8 +85,7 @@ public class CreateTask extends AppCompatActivity {
                 sec = i1;
             }
         });
-        Button pickDateBtn = findViewById(R.id.btnPickDate);
-        TextView selectedDate = findViewById(R.id.selectedDate);
+        TextView pickDateBtn = findViewById(R.id.btnPickDate);
 
         pickDateBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,7 +106,6 @@ public class CreateTask extends AppCompatActivity {
                                 if (month1.length() != 2){
                                     month1 = "0" + month1;
                                 }
-                                selectedDate.setText(day1 + "/" + month1 + "/" + year);
                                 dueDate = day1+month1+year;
                             }
                         },
