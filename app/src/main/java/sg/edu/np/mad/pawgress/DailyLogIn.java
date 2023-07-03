@@ -17,12 +17,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import sg.edu.np.mad.pawgress.Tasks.Task;
+
 public class DailyLogIn extends AppCompatActivity {
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
+    UserData user;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily_log_in);
+    }
+
+    public void createChallenge(String newDayDate){
+        Task task = new Task(1, "Drink Water", "In Progress", "Daily Challenge" ,0, 60, newDayDate,1);
+        Log.v("dailylogin", String.valueOf(task.getDailyChallenge()));
+        myDBHandler.addTask(task, user);
     }
 
     @Override
@@ -32,7 +41,7 @@ public class DailyLogIn extends AppCompatActivity {
         Log.i(null, "Starting Daily LogIn Page");
 
         Intent receivingEnd = getIntent();
-        UserData user = receivingEnd.getParcelableExtra("User");
+        user = receivingEnd.getParcelableExtra("User");
         System.out.println(user.getUsername() + user.getPassword());
         System.out.println("Updated pet type:  " + user.getPetType() + "\n" + "Updated pet deisgn: " + user.getPetDesign());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -72,6 +81,7 @@ public class DailyLogIn extends AppCompatActivity {
 
             // scenario where user first create their account and their first streak will pop up
             if (user.getLoggedInTdy().equals(tempStr)){
+                createChallenge(newDayDate);
                 // text will change to "streak:1, current rewarded:0[for now], let's start streaking and stay productive!"
 
                 statusText.setText("Let's start streaking and stay productive!");
@@ -113,6 +123,9 @@ public class DailyLogIn extends AppCompatActivity {
             System.out.println("Last log in date not equal to todays date.");
             user.setLoggedInTdy("No");
             System.out.println(user.getLoggedInTdy());
+            if (!lastInDate.equals(newDayDate)) {
+                createChallenge(newDayDate);
+            }
             if (user.getLoggedInTdy().equals(tempStr)){
                 long diffInMilliseconds = date2.getTime() - date1.getTime();
                 long diffInDays = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);

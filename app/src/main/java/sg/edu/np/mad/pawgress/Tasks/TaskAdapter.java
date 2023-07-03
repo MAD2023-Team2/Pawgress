@@ -21,6 +21,7 @@ import android.widget.SimpleExpandableListAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +57,14 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
         this.context = context;
         this.taskList = mDataBase.findTaskList(user);
     }
+    @NonNull
+    @Override
+    public int getItemViewType(int position){
+        Task task = recyclerTaskList.get(position);
+        int dailyChallenge = task.getDailyChallenge();
+        if (dailyChallenge == 1) { return 1; }
+        else { return 0;}
+    }
     @Override
     public int getItemCount() {
         return recyclerTaskList.size();
@@ -82,13 +91,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
 
     @Override
     public TaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        return new TaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task,parent, false));
+        if (viewType == 1){
+            return new TaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.challenge,parent, false));
+        }
+        else{
+            return new TaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task,parent, false));
+        }
     }
 
     @Override
     public void onBindViewHolder(TaskViewHolder holder, int position){
         Log.i(THIS, "onbind");
         Task task = recyclerTaskList.get(position);
+        Log.v("taskadapter", String.valueOf(task.getDailyChallenge()));
         holder.category.setText(task.getCategory());
         holder.name.setText(task.getTaskName());
         if (task.getDueDate() != null){
@@ -96,17 +111,19 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
         }
         else holder.duedate.setVisibility(INVISIBLE);
         // view individual task
-        holder.card.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent viewTask = new Intent(context, TaskView.class);
-                Bundle info = new Bundle();
-                info.putParcelable("User", user);
-                info.putParcelable("Task", task); // send individual task
-                viewTask.putExtras(info);
-                context.startActivity(viewTask);
-            }
-        });
+        if (task.getDailyChallenge() == 0){
+            holder.card.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent viewTask = new Intent(context, TaskView.class);
+                    Bundle info = new Bundle();
+                    info.putParcelable("User", user);
+                    info.putParcelable("Task", task); // send individual task
+                    viewTask.putExtras(info);
+                    context.startActivity(viewTask);
+                }
+            });
+        }
         // edit individual task
         Dialog editTask = new Dialog(context);
         holder.edit.setOnClickListener(new View.OnClickListener() {

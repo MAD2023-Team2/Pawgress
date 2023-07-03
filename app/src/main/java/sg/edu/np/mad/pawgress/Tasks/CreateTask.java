@@ -128,7 +128,7 @@ public class CreateTask extends AppCompatActivity {
                         cat = "Uncategorised";
                     }
 
-                    Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds, dueDate);
+                    Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds, dueDate, 0);
                     Log.v(title,"dueDate "  + dueDate);
                     myDBHandler.addTask(task, user);
                     Intent newTask = new Intent(CreateTask.this, MainMainMain.class);

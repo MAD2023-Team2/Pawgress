@@ -36,6 +36,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_PET_TYPE = "PetType";
     public static String COLUMN_PET_DESIGN = "PetDesign";
     public static String COLUMN_TARGET_SEC = "TargetSec";
+    public static String COLUMN_DAILY_CHALLENGE = "DailyChallenge";
+
 
 
     //public static String COLUMN_ACTUAL_USERNAME = "ActualUserName";
@@ -70,7 +72,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_TASK_TIMESPENT + " INTEGER," +
                 COLUMN_USERNAME + " TEXT," +
                 COLUMN_TARGET_SEC + " INTERGER," +
-                COLUMN_TASK_DUEDATE + " TEXT)";
+                COLUMN_TASK_DUEDATE + " TEXT," +
+                COLUMN_DAILY_CHALLENGE + " INTEGER)";
 
         db.execSQL(CREATE_TASK_TABLE);
         Log.i(title, CREATE_TASK_TABLE);
@@ -110,6 +113,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_USERNAME, userData.getUsername());
         values.put(COLUMN_TARGET_SEC, task.getTargetSec());
         values.put(COLUMN_TASK_DUEDATE, task.getDueDate());
+        values.put(COLUMN_DAILY_CHALLENGE, task.getDailyChallenge());
         db.insert(TASKS, null, values);
         taskList.add(task); // adds new task into task list
         userData.setTaskList(taskList); // new task list assigned to user that was passed in
@@ -127,6 +131,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_USERNAME, username);
         values.put(COLUMN_TARGET_SEC, task.getTargetSec());
         values.put(COLUMN_TASK_DUEDATE, task.getDueDate());
+        values.put(COLUMN_DAILY_CHALLENGE, task.getDailyChallenge());
 
         db.update(TASKS, values, COLUMN_TASK_ID + "=?", new String[]{String.valueOf(task.getTaskID())});
         Log.i(title, "Updated Task");
@@ -209,6 +214,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setTimeSpent(cursor.getInt(4));
             queryResult.setTargetSec(cursor.getInt(6));
             queryResult.setDueDate(cursor.getString(7));
+            queryResult.setDailyChallenge(cursor.getInt(8));
             NewtaskList.add(queryResult);
             while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
                 Task task = new Task();
@@ -219,6 +225,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 task.setTimeSpent(cursor.getInt(4));
                 task.setTargetSec(cursor.getInt(6));
                 task.setDueDate(cursor.getString(7));
+                task.setDailyChallenge(cursor.getInt(8));
                 NewtaskList.add(task);
             }
             cursor.close();

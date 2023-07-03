@@ -196,7 +196,7 @@ public class TasksFragment extends Fragment {
                                 cat = "Uncategorised";
                             }
 
-                            Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds, dueDate);
+                            Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds, dueDate, 0);
                             myDBHandler.addTask(task, user);
                             createTask.dismiss();
                             refreshRecyclerView();
