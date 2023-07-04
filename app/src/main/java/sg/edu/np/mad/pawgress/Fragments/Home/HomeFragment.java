@@ -22,8 +22,11 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
+import sg.edu.np.mad.pawgress.DailyLogIn;
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfileFragment;
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfilePage;
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
@@ -204,6 +207,19 @@ public class HomeFragment extends Fragment {
                 ViewGroup.LayoutParams layoutParams = recyclerView.getLayoutParams();
                 layoutParams.height = Math.min(maxHeight, recyclerView.getHeight());
                 recyclerView.setLayoutParams(layoutParams);
+
+                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                String newDayDate = formatter.format(new Date());
+                String lastInDate = user.getLastLogInDate();
+
+                if (!lastInDate.equals(newDayDate)){
+                    Log.v("HomeFragment","not same day");
+                    Intent intent = new Intent(getContext(), DailyLogIn.class);
+                    intent.putExtra("User", user);
+                    intent.putExtra("tab", "home_tab");
+                    intent.putExtra("new_day",true);
+                    startActivity(intent);
+                }
             }
         });
         return view;

@@ -36,6 +36,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import sg.edu.np.mad.pawgress.DailyLogIn;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -325,5 +326,27 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
             }
         });
         holder.complete.setChecked(false); // ensures all checkboxes are not checked before clicking it
+
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String newDayDate = formatter.format(new Date());
+        String lastInDate = user.getLastLogInDate();
+        if (!lastInDate.equals(newDayDate)) {
+            if (task.getDailyChallenge() == 1){
+                Log.i("TaskCardAdapter","new day, previous daily challenge removed");
+                task.setStatus("Completed");
+                mDataBase.updateTask(task, user.getUsername());
+                recyclerTaskList.remove(task);
+            }
+            else{
+                Log.i("TaskCardAdapter","new day, no previous daily challenge removed");
+            }
+            Log.i("TaskCardAdapter","new day, add new challenge");
+            Intent intent = new Intent(context, DailyLogIn.class);
+            intent.putExtra("User", user);
+            intent.putExtra("tab", "home_tab");
+            intent.putExtra("new_day",true);
+            context.startActivity(intent);
+        }
     }
 }

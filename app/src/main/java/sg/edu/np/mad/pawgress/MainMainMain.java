@@ -13,6 +13,9 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import sg.edu.np.mad.pawgress.Fragments.Game.GameFragment;
 import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfileFragment;
@@ -22,6 +25,7 @@ import sg.edu.np.mad.pawgress.databinding.ActivityMainMainMainBinding;
 
 public class MainMainMain extends AppCompatActivity {
     ActivityMainMainMainBinding binding;
+    UserData user;
     @Override
     public void onBackPressed(){
         new AlertDialog.Builder(this)
@@ -52,6 +56,7 @@ public class MainMainMain extends AppCompatActivity {
         // Update the bottomNavigationView selection based of page of origin
         Intent receivingEnd = getIntent();
         String tab = receivingEnd.getExtras().getString("tab");
+        user = receivingEnd.getParcelableExtra("User");
         Log.i(null, "------------------------------------" + tab);
         if (tab.equals("tasks_tab")){
             replaceFragment(new TasksFragment());
@@ -100,5 +105,17 @@ public class MainMainMain extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frame_layout, fragment);
         fragmentTransaction.commit();
+    }
+
+    MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("Users");
+        UserData fbUser = myDBHandler.findUser(user.getUsername());
+        fbUser.setTaskList(myDBHandler.findTaskList(user));
+
+        myRef.child(user.getUsername()).setValue(fbUser);
     }
 }

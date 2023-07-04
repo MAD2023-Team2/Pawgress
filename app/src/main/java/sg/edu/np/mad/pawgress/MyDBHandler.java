@@ -328,5 +328,11 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         return targetSec;
     }
+    public void clearDatabase(String TABLE_NAME) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String clearDBQuery = "DELETE FROM "+TABLE_NAME;
+        db.execSQL(clearDBQuery);
+    }
+
 
 }

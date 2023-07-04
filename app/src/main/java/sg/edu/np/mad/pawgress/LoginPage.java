@@ -66,7 +66,7 @@ public class LoginPage extends AppCompatActivity {
             System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
             myDBHandler.addUser(dbUserData);
 
-            myRef.child("mad").setValue(dbUserData);
+            myRef.child("admin").setValue(dbUserData);
         }
         else {
             Log.v(title,"Admin account found");
@@ -135,10 +135,16 @@ public class LoginPage extends AppCompatActivity {
                                             user.setTaskList(taskList);
                                                */
                                             SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
+                                            myDBHandler.clearDatabase("ACCOUNTS");
+                                            myDBHandler.clearDatabase("TASKS");
+                                            myDBHandler.addUser(user);
+                                            for (Task task: user.getTaskList()){
+                                                myDBHandler.addTask(task, user);
+                                            }
                                             Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
                                             intent.putExtra("User", user);
 
-                                            Log.i(title, "" + user.getTaskList().get(1).getTaskName());
+                                            Log.i(title, "" + user.getTaskList().get(0).getTaskName());
                                             startActivity(intent);
                                             finish();
                                         }
@@ -159,7 +165,10 @@ public class LoginPage extends AppCompatActivity {
 //                            startActivity(intent);
 //                            finish();
 //                        }
-                        Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
+                        else{
+                            Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
+                        }
+
                     }
                     else{
                         Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
