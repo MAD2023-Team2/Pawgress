@@ -23,9 +23,12 @@ import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
+import sg.edu.np.mad.pawgress.DailyLogIn;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.Tasks.CreateTask;
@@ -228,6 +231,19 @@ public class TasksFragment extends Fragment {
                 //getActivity().finish();
             }
         });
+
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String newDayDate = formatter.format(new Date());
+        String lastInDate = user.getLastLogInDate();
+
+        if (!lastInDate.equals(newDayDate)){
+            Log.v("TaskFragment","not same day");
+            Intent intent = new Intent(getContext(), DailyLogIn.class);
+            intent.putExtra("User", user);
+            intent.putExtra("tab", "tasks_tab");
+            intent.putExtra("new_day",true);
+            startActivity(intent);
+        }
         return view;
     }
 

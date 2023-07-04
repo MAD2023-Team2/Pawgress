@@ -15,6 +15,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import sg.edu.np.mad.pawgress.Tasks.Task;
@@ -22,15 +23,19 @@ import sg.edu.np.mad.pawgress.Tasks.Task;
 public class DailyLogIn extends AppCompatActivity {
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
     UserData user;
+    Boolean new_day = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_daily_log_in);
     }
 
-    public void createChallenge(String newDayDate){
-        Task task = new Task(1, "Drink Water", "In Progress", "Daily Challenge" ,0, 60, newDayDate,1);
-        Log.v("dailylogin", String.valueOf(task.getDailyChallenge()));
+    public void createChallenge(){
+        Random random = new Random();
+        String wat = String.valueOf(random.nextInt(1000));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        String newDayDate = formatter.format(new Date());
+        Task task = new Task(1, wat, "In Progress", "Daily Challenge" ,0, 60, newDayDate,1);
         myDBHandler.addTask(task, user);
     }
 
@@ -42,6 +47,9 @@ public class DailyLogIn extends AppCompatActivity {
 
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
+        try{
+            new_day = receivingEnd.getExtras().getBoolean("new_day");
+        } catch (Exception exception){ Log.v("DailyLogIn","not from inside app"); }
         System.out.println(user.getUsername() + user.getPassword());
         System.out.println("Updated pet type:  " + user.getPetType() + "\n" + "Updated pet deisgn: " + user.getPetDesign());
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
@@ -81,7 +89,7 @@ public class DailyLogIn extends AppCompatActivity {
 
             // scenario where user first create their account and their first streak will pop up
             if (user.getLoggedInTdy().equals(tempStr)){
-                createChallenge(newDayDate);
+                createChallenge();
                 // text will change to "streak:1, current rewarded:0[for now], let's start streaking and stay productive!"
 
                 statusText.setText("Let's start streaking and stay productive!");
@@ -94,6 +102,7 @@ public class DailyLogIn extends AppCompatActivity {
                     @Override
                     public void onClick(View v){
                         Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
+                        user.setLastLogInDate(newDayDate);
                         intent.putExtra("User", user);
                         intent.putExtra("tab", "home_tab");
                         startActivity(intent);
@@ -111,6 +120,7 @@ public class DailyLogIn extends AppCompatActivity {
                     @Override
                     public void onClick(View v){
                         Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
+                        user.setLastLogInDate(newDayDate);
                         intent.putExtra("User", user);
                         intent.putExtra("tab", "home_tab");
                         startActivity(intent);
@@ -123,9 +133,7 @@ public class DailyLogIn extends AppCompatActivity {
             System.out.println("Last log in date not equal to todays date.");
             user.setLoggedInTdy("No");
             System.out.println(user.getLoggedInTdy());
-            if (!lastInDate.equals(newDayDate)) {
-                createChallenge(newDayDate);
-            }
+            createChallenge();
             if (user.getLoggedInTdy().equals(tempStr)){
                 long diffInMilliseconds = date2.getTime() - date1.getTime();
                 long diffInDays = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
@@ -149,6 +157,7 @@ public class DailyLogIn extends AppCompatActivity {
                         @Override
                         public void onClick(View v){
                             Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
+                            user.setLastLogInDate(newDayDate);
                             intent.putExtra("User", user);
                             intent.putExtra("tab", "home_tab");
                             startActivity(intent);
@@ -173,7 +182,12 @@ public class DailyLogIn extends AppCompatActivity {
                     closeButton.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v){
+                            Log.v("Daily Login","not same day");
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+                            String newDayDate = formatter.format(new Date());
                             Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
+                            user.setLastLogInDate(newDayDate);
                             intent.putExtra("User", user);
                             intent.putExtra("tab", "home_tab");
                             startActivity(intent);
