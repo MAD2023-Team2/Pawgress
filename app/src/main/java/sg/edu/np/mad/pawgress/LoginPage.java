@@ -47,6 +47,8 @@ public class LoginPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("Users");
 
         // Admin account credentials verification
         if (!isValidCredentials("admin", "admin123")) {
@@ -54,11 +56,17 @@ public class LoginPage extends AppCompatActivity {
             String dbUsername = "admin";
             String dbPassword = "admin123";
             ArrayList<Task> taskList = new ArrayList<Task>();
+            Task task = new Task(1, "name", "In Progress", "cat" ,0, 1, "1", 0);
+            Task task2 = new Task(2, "name2", "In Progress", "cat" ,0, 1, "1", 0);
+            taskList.add(task);
+            taskList.add(task2);
             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             String accCreateDate = formatter.format(new Date());
             UserData dbUserData = new UserData(dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354);
             System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
             myDBHandler.addUser(dbUserData);
+
+            myRef.child("mad").setValue(dbUserData);
         }
         else {
             Log.v(title,"Admin account found");
@@ -105,31 +113,44 @@ public class LoginPage extends AppCompatActivity {
                     EditText etUsername = findViewById(R.id.editTextText);
                     EditText etPassword = findViewById(R.id.editTextText2);
                     String username = etUsername.getText().toString();
+                    String password = etPassword.getText().toString();
                     if (etUsername.length() > 0 && etPassword.length() > 0) {
                         // Read from the database
-                        Query query = myRef.orderByChild("username").equalTo(username);
-                        query.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                if (dataSnapshot.exists()) {
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        String userId = snapshot.getKey();
-                                        final String getPass = dataSnapshot.child(userId).child("password").getValue(String.class);
-                                        String password = etPassword.getText().toString().trim();
 
-                                        if (getPass.equals(password)){
-                                            Intent intent = new Intent(LoginPage.this,DailyLogIn.class);
+                        if (isValidCredentials(username, password)){
+                            Query query = myRef.orderByChild("username").equalTo(username);
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.exists()) {
+                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                            UserData user = snapshot.getValue(UserData.class);
+                                            ArrayList<Task> taskList = new ArrayList<Task>();
+                                            /*
+                                            DataSnapshot ds=snapshot.child("taskList");
+                                            for (DataSnapshot dsTaskList: ds.getChildren()){
+                                                Task task = dsTaskList.getValue((Task.class));
+                                                taskList.add(task);
+                                            }
+                                            user.setTaskList(taskList);
+                                               */
+                                            SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
+                                            Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
+                                            intent.putExtra("User", user);
+
+                                            Log.i(title, "" + user.getTaskList().get(1).getTaskName());
                                             startActivity(intent);
                                             finish();
                                         }
                                     }
                                 }
-                            }
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                                // do nth
-                            }
-                        });
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    valid = false;
+                                }
+                            });
+
+                        }
 //                        UserData user = myDBHandler.findUser(username);
 //                        if (isValidCredentials(etUsername.getText().toString(), etPassword.getText().toString())){
 //                            SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
@@ -160,6 +181,8 @@ public class LoginPage extends AppCompatActivity {
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
 
     // Verifies username and password
+
+    boolean valid = false;
     private boolean isValidCredentials(String username, String password){
         /*
         sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
@@ -171,6 +194,7 @@ public class LoginPage extends AppCompatActivity {
         }
         return false;
          */
+        /*
         UserData dbData = myDBHandler.findUser(username);
         try {
             if(dbData.getUsername().equals(username) && dbData.getPassword().equals(password)){
@@ -180,6 +204,34 @@ public class LoginPage extends AppCompatActivity {
         }
         catch(NullPointerException e) {
             return false;
-        }
+        }*/
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("Users");
+
+        Query query = myRef.orderByChild("username").equalTo(username);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String userId = snapshot.getKey();
+                        final String getPass = dataSnapshot.child(userId).child("password").getValue(String.class);
+
+                        if (getPass.equals(password)){
+                            valid = true;
+                        }
+                        else{
+                            valid = false;
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                valid = false;
+            }
+        });
+        return valid;
     }
 }

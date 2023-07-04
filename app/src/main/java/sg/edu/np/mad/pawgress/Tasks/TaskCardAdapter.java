@@ -5,6 +5,7 @@ import static android.view.View.VISIBLE;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,18 +72,23 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
         Task task = recyclerTaskList.get(position);
         holder.name.setText(task.getTaskName());;
         // view individual task
-        holder.card2.setOnClickListener(new View.OnClickListener() {
-            // if user clicks on task card, send user and task info to taskview
-            @Override
-            public void onClick(View v) {
-                Intent viewTask = new Intent(context, TaskView.class);
-                Bundle info = new Bundle();
-                info.putParcelable("User", user);
-                info.putParcelable("Task", task);
-                viewTask.putExtras(info);
-                context.startActivity(viewTask);
-            }
-        });
+        if (task.getDailyChallenge() == 0){
+            holder.card2.setOnClickListener(new View.OnClickListener() {
+                // if user clicks on task card, send user and task info to taskview
+                @Override
+                public void onClick(View v) {
+                    Intent viewTask = new Intent(context, TaskView.class);
+                    Bundle info = new Bundle();
+                    info.putParcelable("User", user);
+                    info.putParcelable("Task", task);
+                    viewTask.putExtras(info);
+                    context.startActivity(viewTask);
+                }
+            });
+        }
+        else if (task.getDailyChallenge() == 1) {
+            holder.card2.setBackgroundColor(Color.parseColor("#682196F3"));
+        }
 
         // complete task
         // if user clicks yes for complete, update database task status as complete

@@ -2,31 +2,37 @@ package sg.edu.np.mad.pawgress.Tasks;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class Task implements Parcelable {
+    private int dailyChallenge;
     private int taskID;
     private String taskName;
     private String status;
     private String category;
     private int timeSpent;
     private int targetSec;
+    private String dueDate;
 
 
     public Task() {
     }
 
     // add in date of creation and duedate(can accept null)
-    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec) {
+    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec, String dueDate, int dailyChallenge) {
         this.taskID = taskID;
         this.taskName = taskName;
         this.status = status;
         this.category = category;
         this.timeSpent = timeSpent;
         this.targetSec = targetSec;
+        this.dueDate = dueDate;
+        this.dailyChallenge = dailyChallenge;
     }
 
     protected Task(Parcel in) {
@@ -36,6 +42,8 @@ public class Task implements Parcelable {
         category = in.readString();
         timeSpent = in.readInt();
         targetSec = in.readInt();
+        dueDate = in.readString();
+        dailyChallenge = in.readInt();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -63,6 +71,8 @@ public class Task implements Parcelable {
         dest.writeString(category);
         dest.writeInt(timeSpent);
         dest.writeInt(targetSec);
+        dest.writeString(dueDate);
+        dest.writeInt(dailyChallenge);
     }
     public int getTaskID() {
         return taskID;
@@ -90,5 +100,8 @@ public class Task implements Parcelable {
     public void setTimeSpent(int timeSpent) { this.timeSpent = timeSpent; }
     public int getTargetSec() { return targetSec; }
     public void setTargetSec(int targetSec) { this.targetSec = targetSec; }
-
+    public String getDueDate() { return dueDate; }
+    public void setDueDate(String dueDate) { this.dueDate = dueDate; }
+    public int getDailyChallenge() { return dailyChallenge; }
+    public void setDailyChallenge(int dailyChallenge) { this.dailyChallenge = dailyChallenge;}
 }

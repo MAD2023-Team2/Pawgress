@@ -2,16 +2,24 @@ package sg.edu.np.mad.pawgress.Tasks;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.NumberPicker;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import sg.edu.np.mad.pawgress.CreateAccount;
 import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
@@ -25,6 +33,8 @@ public class CreateTask extends AppCompatActivity {
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
     String title = "Create Task";
     int hr,min,sec;
+    DatePicker datePicker;
+    String dueDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +64,7 @@ public class CreateTask extends AppCompatActivity {
         etsec.setMinValue(0);
         etsec.setValue(0);
         etsec.setWrapSelectorWheel(true);
+
         ethr.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
             @Override
             public void onValueChange(NumberPicker numberPicker, int i, int i1) {
@@ -74,6 +85,34 @@ public class CreateTask extends AppCompatActivity {
                 sec = i1;
             }
         });
+        TextView pickDateBtn = findViewById(R.id.btnPickDate);
+
+        pickDateBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final Calendar c = Calendar.getInstance();
+                int year = c.get(Calendar.YEAR);
+                int month = c.get(Calendar.MONTH);
+                int day = c.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog datePickerDialog = new DatePickerDialog(CreateTask.this, new DatePickerDialog.OnDateSetListener() {
+                            @Override
+                            public void onDateSet(DatePicker view, int year,
+                                                  int monthOfYear, int dayOfMonth) {
+                                String day1 = String.valueOf(dayOfMonth);
+                                String month1 =String.valueOf(monthOfYear + 1);
+                                if (day1.length() != 2){
+                                    day1 = "0" +day1;
+                                }
+                                if (month1.length() != 2){
+                                    month1 = "0" + month1;
+                                }
+                                dueDate = day1+month1+year;
+                            }
+                        },
+                        year, month, day);
+                datePickerDialog.show();
+            }
+        });
 
         createButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,16 +122,14 @@ public class CreateTask extends AppCompatActivity {
                 EditText etcat = findViewById(R.id.editCat);
                 // do not accept blank task title or category
                 int totalSeconds = (hr * 3600) + (min * 60) + sec;
-                if (totalSeconds == 0){
-                    Toast.makeText(CreateTask.this, "Invalid Seconds", Toast.LENGTH_SHORT).show();
-                }
-                else if (etname.length() > 0 && etname.getText().charAt(0) != ' ') {
+                if (etname.length() > 0 && etname.getText().charAt(0) != ' ') {
                     String cat = etcat.getText().toString();
                     if (cat.length()==0 || etcat.getText().charAt(0) == ' '){
                         cat = "Uncategorised";
                     }
 
-                    Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds);
+                    Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds, dueDate, 0);
+                    Log.v(title,"dueDate "  + dueDate);
                     myDBHandler.addTask(task, user);
                     Intent newTask = new Intent(CreateTask.this, MainMainMain.class);
                     newTask.putExtra("New Task List", user);
@@ -131,4 +168,5 @@ public class CreateTask extends AppCompatActivity {
     public void onBackPressed(){
         cancelTask(user);
     }
+
 }
