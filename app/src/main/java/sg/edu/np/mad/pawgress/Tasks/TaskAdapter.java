@@ -305,7 +305,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskViewHolder>{
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         Log.v(THIS, "Completed task " + task.getTaskName());
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        String newDayDate = formatter.format(new Date());
                         task.setStatus("Completed");
+                        task.setDateComplete(newDayDate);
                         mDataBase.updateTask(task, user.getUsername());
                         recyclerTaskList.remove(task);
                         // notify adapter about changes to list

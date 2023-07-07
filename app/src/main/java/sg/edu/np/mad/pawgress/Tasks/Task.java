@@ -18,13 +18,15 @@ public class Task implements Parcelable {
     private int timeSpent;
     private int targetSec;
     private String dueDate;
+    private String dateCreated;
+    private String dateComplete;
 
 
     public Task() {
     }
 
     // add in date of creation and duedate(can accept null)
-    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec, String dueDate, int dailyChallenge) {
+    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec, String dueDate, String dateCreated, String dateComplete, int dailyChallenge) {
         this.taskID = taskID;
         this.taskName = taskName;
         this.status = status;
@@ -32,6 +34,8 @@ public class Task implements Parcelable {
         this.timeSpent = timeSpent;
         this.targetSec = targetSec;
         this.dueDate = dueDate;
+        this.dateCreated = dateCreated;
+        this.dateComplete = dateComplete;
         this.dailyChallenge = dailyChallenge;
     }
 
@@ -43,6 +47,8 @@ public class Task implements Parcelable {
         timeSpent = in.readInt();
         targetSec = in.readInt();
         dueDate = in.readString();
+        dateCreated = in.readString();
+        dateComplete = in.readString();
         dailyChallenge = in.readInt();
     }
 
@@ -72,6 +78,8 @@ public class Task implements Parcelable {
         dest.writeInt(timeSpent);
         dest.writeInt(targetSec);
         dest.writeString(dueDate);
+        dest.writeString(dateCreated);
+        dest.writeString(dateComplete);
         dest.writeInt(dailyChallenge);
     }
     public int getTaskID() {
@@ -102,6 +110,10 @@ public class Task implements Parcelable {
     public void setTargetSec(int targetSec) { this.targetSec = targetSec; }
     public String getDueDate() { return dueDate; }
     public void setDueDate(String dueDate) { this.dueDate = dueDate; }
+    public String getDateCreated() { return dateCreated; }
+    public void setDateCreated(String dateCreated) { this.dateCreated = dateCreated; }
+    public String getDateComplete() { return dateComplete; }
+    public void setDateComplete(String dateComplete) { this.dateComplete = dateComplete; }
     public int getDailyChallenge() { return dailyChallenge; }
     public void setDailyChallenge(int dailyChallenge) { this.dailyChallenge = dailyChallenge;}
 }

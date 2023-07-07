@@ -198,8 +198,10 @@ public class TasksFragment extends Fragment {
                             if (cat.length()==0 || etcat.getText().charAt(0) == ' '){
                                 cat = "Uncategorised";
                             }
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                            String newDayDate = formatter.format(new Date());
 
-                            Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds, dueDate, 0);
+                            Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds, dueDate, newDayDate, null, 0);
                             myDBHandler.addTask(task, user);
                             createTask.dismiss();
                             refreshRecyclerView();

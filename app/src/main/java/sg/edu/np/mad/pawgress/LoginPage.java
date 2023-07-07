@@ -56,11 +56,12 @@ public class LoginPage extends AppCompatActivity {
             String dbUsername = "admin";
             String dbPassword = "admin123";
             ArrayList<Task> taskList = new ArrayList<Task>();
-            Task task = new Task(1, "name", "In Progress", "cat" ,0, 1, "1", 0);
-            Task task2 = new Task(2, "name2", "In Progress", "cat" ,0, 1, "1", 0);
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+            String newDayDate = formatter.format(new Date());
+            Task task = new Task(1, "name", "In Progress", "cat" ,0, 1, "1", newDayDate, null, 0);
+            Task task2 = new Task(2, "name2", "In Progress", "cat" ,0, 1, "1", newDayDate,null, 0);
             taskList.add(task);
             taskList.add(task2);
-            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
             String accCreateDate = formatter.format(new Date());
             UserData dbUserData = new UserData(dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354);
             System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());

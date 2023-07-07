@@ -33,6 +33,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_TASK_CATEGORY = "TaskCategory";
     public static String COLUMN_TASK_TIMESPENT = "TimeSpent";
     public static String COLUMN_TASK_DUEDATE = "DueDate";
+    public static String COLUMN_TASK_DATECREATED = "DateCreated";
+    public static String COLUMN_TASK_DATECOMPLETED = "DateCompleted";
     public static String COLUMN_PET_TYPE = "PetType";
     public static String COLUMN_PET_DESIGN = "PetDesign";
     public static String COLUMN_TARGET_SEC = "TargetSec";
@@ -73,6 +75,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_USERNAME + " TEXT," +
                 COLUMN_TARGET_SEC + " INTERGER," +
                 COLUMN_TASK_DUEDATE + " TEXT," +
+                COLUMN_TASK_DATECREATED + " TEXT," +
+                COLUMN_TASK_DATECOMPLETED + " TEXT," +
                 COLUMN_DAILY_CHALLENGE + " INTEGER)";
 
         db.execSQL(CREATE_TASK_TABLE);
@@ -113,6 +117,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_USERNAME, userData.getUsername());
         values.put(COLUMN_TARGET_SEC, task.getTargetSec());
         values.put(COLUMN_TASK_DUEDATE, task.getDueDate());
+        values.put(COLUMN_TASK_DATECREATED, task.getDateCreated());
+        values.put(COLUMN_TASK_DATECOMPLETED, task.getDateComplete());
         values.put(COLUMN_DAILY_CHALLENGE, task.getDailyChallenge());
         db.insert(TASKS, null, values);
         taskList.add(task); // adds new task into task list
@@ -131,6 +137,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_USERNAME, username);
         values.put(COLUMN_TARGET_SEC, task.getTargetSec());
         values.put(COLUMN_TASK_DUEDATE, task.getDueDate());
+        values.put(COLUMN_TASK_DATECREATED, task.getDateCreated());
+        values.put(COLUMN_TASK_DATECOMPLETED, task.getDateComplete());
         values.put(COLUMN_DAILY_CHALLENGE, task.getDailyChallenge());
 
         db.update(TASKS, values, COLUMN_TASK_ID + "=?", new String[]{String.valueOf(task.getTaskID())});
@@ -214,7 +222,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setTimeSpent(cursor.getInt(4));
             queryResult.setTargetSec(cursor.getInt(6));
             queryResult.setDueDate(cursor.getString(7));
-            queryResult.setDailyChallenge(cursor.getInt(8));
+            queryResult.setDateCreated(cursor.getString(8));
+            queryResult.setDateComplete(cursor.getString(9));
+            queryResult.setDailyChallenge(cursor.getInt(10));
             NewtaskList.add(queryResult);
             while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
                 Task task = new Task();
@@ -225,7 +235,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 task.setTimeSpent(cursor.getInt(4));
                 task.setTargetSec(cursor.getInt(6));
                 task.setDueDate(cursor.getString(7));
-                task.setDailyChallenge(cursor.getInt(8));
+                task.setDateCreated(cursor.getString(8));
+                task.setDateComplete(cursor.getString(9));
+                task.setDailyChallenge(cursor.getInt(10));
                 NewtaskList.add(task);
             }
             cursor.close();

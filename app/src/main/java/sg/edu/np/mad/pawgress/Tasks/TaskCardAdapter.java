@@ -116,6 +116,9 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                     public void onClick(DialogInterface dialog, int id){
                         Log.v(THIS, "Completed task " + task.getTaskName());
                         task.setStatus("Completed");
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                        String newDayDate = formatter.format(new Date());
+                        task.setDateComplete(newDayDate);
                         mDataBase.updateTask(task, user.getUsername());
                         recyclerTaskList.remove(task);
                         // notify adapter about changes to list
