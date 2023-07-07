@@ -21,8 +21,10 @@ public class UserData implements Parcelable{
     private int petDesign;
 
     private String actualUserName;
+    private int userId;
 
-    public UserData(String username, String password, ArrayList<Task> taskList, String lastLogInDate, int streak, int currency, String loggedInTdy, String petType, int petDesign){// String actualUserName) {
+    public UserData(int userId, String username, String password, ArrayList<Task> taskList, String lastLogInDate, int streak, int currency, String loggedInTdy, String petType, int petDesign){// String actualUserName) {
+        this.userId = userId;
         this.username = username;
         this.password = password;
         this.taskList = taskList;
@@ -44,6 +46,7 @@ public class UserData implements Parcelable{
     }
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(userId);
         dest.writeString(username);
         dest.writeString(password);
         dest.writeList(taskList);
@@ -65,6 +68,7 @@ public class UserData implements Parcelable{
         }
     };
     private UserData(Parcel in) {
+        userId = in.readInt();
         username = in.readString();
         password = in.readString();
         taskList = new ArrayList<>();
@@ -77,28 +81,16 @@ public class UserData implements Parcelable{
         petDesign = in.readInt();
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public int getUserId() { return userId; }
+    public void setUserId(int userId) { this.userId = userId; }
+    public String getUsername() { return username; }
+    public void setUsername(String username) { this.username = username; }
     public void updateUsername(String newUsername){ this.username = newUsername; }
     public void updatePassword(String newPassword){ this.password = newPassword;}
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
     public ArrayList<Task> getTaskList() { return taskList; }
-
     public void setTaskList(ArrayList<Task> taskList) { this.taskList = taskList; }
-
     public String getLastLogInDate(){return lastLogInDate;}
     public void setLastLogInDate(String lastLogInDate){this.lastLogInDate = lastLogInDate;}
     public int getStreak(){return streak;}
@@ -108,11 +100,7 @@ public class UserData implements Parcelable{
     public String getLoggedInTdy(){return loggedInTdy;}
     public void setLoggedInTdy(String loggedInTdy){this.loggedInTdy = loggedInTdy;}
     public String getPetType(){ return petType; }
-    public void setPetType(String petType){
-        this.petType = petType;
-    }
+    public void setPetType(String petType){ this.petType = petType; }
     public int getPetDesign(){ return petDesign; }
-    public void setPetDesign(int petDesign){
-        this.petDesign = petDesign;}
-    //public String getActualUserName(){return actualUserName;}
+    public void setPetDesign(int petDesign) { this.petDesign = petDesign; }
 }

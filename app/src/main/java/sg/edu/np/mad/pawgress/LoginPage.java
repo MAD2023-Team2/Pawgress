@@ -63,7 +63,7 @@ public class LoginPage extends AppCompatActivity {
             taskList.add(task);
             taskList.add(task2);
             String accCreateDate = formatter.format(new Date());
-            UserData dbUserData = new UserData(dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354);
+            UserData dbUserData = new UserData(1,dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354);
             System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
             myDBHandler.addUser(dbUserData);
 

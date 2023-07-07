@@ -20,6 +20,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static int DATABASE_VERSION = 1;
     public static String DATABASE_NAME = "accountDB.db";
     public static String ACCOUNTS = "Accounts";
+    public static String COLUMN_USERID = "UserId";
     public static String COLUMN_USERNAME = "UserName";
     public static String COLUMN_PASSWORD = "Password";
     public static String COLUMN_DATE = "CreateDate";
@@ -54,7 +55,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db){
         // One table for accounts (users)
         String CREATE_ACCOUNT_TABLE = "Create TABLE " + ACCOUNTS + " (" +
-                COLUMN_USERNAME + " TEXT PRIMARY KEY," +
+                COLUMN_USERID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                COLUMN_USERNAME + " TEXT," +
                 COLUMN_PASSWORD + " TEXT," +
                 COLUMN_DATE + " TEXT," +
                 COLUMN_STREAK + " INTEGER," +
@@ -92,6 +94,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     public void addUser(UserData userData){
         ContentValues values = new ContentValues();
+
         values.put(COLUMN_USERNAME, userData.getUsername());
         values.put(COLUMN_PASSWORD, userData.getPassword());
         values.put(COLUMN_DATE, userData.getLastLogInDate());
@@ -180,15 +183,16 @@ public class MyDBHandler extends SQLiteOpenHelper{
         Cursor cursor = db.rawQuery(query, null);
         Log.i(title, "Cursor");
         if (cursor.moveToFirst()){
-            queryResult.setUsername(cursor.getString(0));
-            queryResult.setPassword(cursor.getString(1));
+            queryResult.setUserId(cursor.getInt(0));
+            queryResult.setUsername(cursor.getString(1));
+            queryResult.setPassword(cursor.getString(2));
             queryResult.setTaskList(taskList);
-            queryResult.setLastLogInDate(cursor.getString(2));
-            queryResult.setStreak(cursor.getInt(3));
-            queryResult.setCurrency(cursor.getInt(4));
-            queryResult.setLoggedInTdy(cursor.getString(5));
-            queryResult.setPetType(cursor.getString(6));
-            queryResult.setPetDesign(cursor.getInt(7));
+            queryResult.setLastLogInDate(cursor.getString(3));
+            queryResult.setStreak(cursor.getInt(4));
+            queryResult.setCurrency(cursor.getInt(5));
+            queryResult.setLoggedInTdy(cursor.getString(6));
+            queryResult.setPetType(cursor.getString(7));
+            queryResult.setPetDesign(cursor.getInt(8));
             cursor.close();
         }
         else{
