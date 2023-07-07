@@ -38,7 +38,6 @@ import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.Tasks.TaskCardAdapter;
 import sg.edu.np.mad.pawgress.Tasks.TaskList;
 import sg.edu.np.mad.pawgress.UserData;
-import sg.edu.np.mad.pawgress.databinding.ActivityMainMainMainBinding;
 
 /**
  * A simple {@link Fragment} subclass.
