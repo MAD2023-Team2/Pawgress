@@ -104,7 +104,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this. getWritableDatabase();
         db.insert(ACCOUNTS, null, values);
         Log.i(title, " Inserted/Created user" + values);
-        db.close();
+//        db.close();
     }
     public void addTask(Task task, UserData userData){ // used for creating task
 
@@ -124,7 +124,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         taskList.add(task); // adds new task into task list
         userData.setTaskList(taskList); // new task list assigned to user that was passed in
         Log.i(title, "Inserted Task");
-        db.close();
+//        db.close();
     }
     public void updateTask(Task task, String username){ // used for editing/completing/deleting task
         SQLiteDatabase db = this.getWritableDatabase();
@@ -143,7 +143,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         db.update(TASKS, values, COLUMN_TASK_ID + "=?", new String[]{String.valueOf(task.getTaskID())});
         Log.i(title, "Updated Task");
-        db.close();
+//        db.close();
     }
 
     public void updateData(String username, String logIn, int streak, int currency, String loggedIn){
@@ -158,7 +158,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.update(ACCOUNTS, values,COLUMN_USERNAME + "=?", new String[]{username});
 
         Log.i(title, "Data updated");
-        db.close();
+//        db.close();
     }
 
     public void savePetDesign(String username, String petType, int petDesign) {
@@ -168,7 +168,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_PET_DESIGN, petDesign);
         db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
         Log.i(title, "User pet updated" + petType);
-        db.close();
+//        db.close();
     }
 
     public UserData findUser(String username){
@@ -195,7 +195,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
             Log.i(title, "Null");
             queryResult = null;
         }
-        db.close();
+//        db.close();
         return queryResult;
     }
 
@@ -246,7 +246,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         else{
             userData.setTaskList(NewtaskList);
         }
-        db.close();
+//        db.close();
         return userData.getTaskList();
     }
 
@@ -266,7 +266,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
             Log.i(title, "No changes to update for user: " + username);
         }
 
-        db.close();
+//        db.close();
     }
 
 
@@ -289,7 +289,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
             cursor.close();
         }
 
-        db.close();
+//        db.close();
 
         // closes the cursor and database before returning the retrieved username
         return currentUsername;
@@ -319,7 +319,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
             cursor.close();
         }
 
-        db.close();
+//        db.close();
 
         // closes the cursor and database before returning the retrieved password
         return currentPassword;
@@ -336,7 +336,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
             cursor.close();
         }
-        db.close();
+//        db.close();
 
         return targetSec;
     }

@@ -49,12 +49,13 @@
         android:id="@+id/checkBox"
         android:layout_width="100dp"
         android:layout_height="25dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="10dp"
         android:checked="false"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Complete"
+        app:layout_constraintBottom_toBottomOf="@+id/taskCard"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button3" />
+        app:layout_constraintTop_toTopOf="@+id/taskCard" />
 
     <ImageButton
         android:id="@+id/button3"

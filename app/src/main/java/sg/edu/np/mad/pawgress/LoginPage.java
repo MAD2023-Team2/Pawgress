@@ -68,6 +68,8 @@ public class LoginPage extends AppCompatActivity {
             myDBHandler.addUser(dbUserData);
 
             myRef.child("admin").setValue(dbUserData);
+            Log.v(title,"Admin Account Added");
+
         }
         else {
             Log.v(title,"Admin account found");
@@ -194,17 +196,14 @@ public class LoginPage extends AppCompatActivity {
 
     boolean valid = false;
     private boolean isValidCredentials(String username, String password){
-        /*
-        sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
-        String sharedUsername = sharedPreferences.getString(MY_USERNAME, "");
-        String sharedPassword = sharedPreferences.getString(MY_PASSWORD, "");
-
-        if (sharedUsername.equals(username) && sharedPassword.equals(password)){
-            return true;
-        }
-        return false;
-         */
-        /*
+//        sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
+//        String sharedUsername = sharedPreferences.getString(MY_USERNAME, "");
+//        String sharedPassword = sharedPreferences.getString(MY_PASSWORD, "");
+//
+//        if (sharedUsername.equals(username) && sharedPassword.equals(password)){
+//            return true;
+//        }
+//        return false;
         UserData dbData = myDBHandler.findUser(username);
         try {
             if(dbData.getUsername().equals(username) && dbData.getPassword().equals(password)){
@@ -214,34 +213,34 @@ public class LoginPage extends AppCompatActivity {
         }
         catch(NullPointerException e) {
             return false;
-        }*/
+        }
 
-        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
-        DatabaseReference myRef = database.getReference("Users");
-
-        Query query = myRef.orderByChild("username").equalTo(username);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        String userId = snapshot.getKey();
-                        final String getPass = dataSnapshot.child(userId).child("password").getValue(String.class);
-
-                        if (getPass.equals(password)){
-                            valid = true;
-                        }
-                        else{
-                            valid = false;
-                        }
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                valid = false;
-            }
-        });
-        return valid;
+//        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+//        DatabaseReference myRef = database.getReference("Users");
+//
+//        Query query = myRef.orderByChild("username").equalTo(username);
+//        query.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                if (dataSnapshot.exists()) {
+//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                        String userId = snapshot.getKey();
+//                        final String getPass = dataSnapshot.child(userId).child("password").getValue(String.class);
+//
+//                        if (getPass.equals(password)){
+//                            valid = true;
+//                        }
+//                        else{
+//                            valid = false;
+//                        }
+//                    }
+//                }
+//            }
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                valid = false;
+//            }
+//        });
+//        return valid;
     }
 }
