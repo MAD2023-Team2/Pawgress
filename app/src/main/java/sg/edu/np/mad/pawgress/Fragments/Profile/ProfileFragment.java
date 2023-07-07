@@ -107,6 +107,17 @@ public class ProfileFragment extends Fragment{
             }
         });
 
+        Button friendsButton = (Button) view.findViewById(R.id.friendsButton);
+        friendsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), friends.class);
+                intent.putExtra("User", dbData);
+                startActivity(intent);
+            }
+        });
+
+
         return view;
 
     }

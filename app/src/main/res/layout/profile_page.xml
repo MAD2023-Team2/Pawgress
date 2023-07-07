@@ -65,7 +65,7 @@
         app:icon="@android:drawable/ic_menu_preferences"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button6" />
+        app:layout_constraintTop_toBottomOf="@+id/friendsButton" />
 
     <Button
         android:id="@+id/logoutFrag"
@@ -85,7 +85,7 @@
         app:layout_constraintTop_toBottomOf="@+id/button9" />
 
     <Button
-        android:id="@+id/button6"
+        android:id="@+id/friendsButton"
         style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -94,7 +94,7 @@
         android:layout_marginEnd="29dp"
         android:backgroundTint="#EFDFCE"
         android:gravity="fill_vertical"
-        android:text="@string/findFriendsText"
+        android:text="@string/friendsText"
         app:icon="@android:drawable/ic_menu_myplaces"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

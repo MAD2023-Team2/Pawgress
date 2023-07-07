@@ -24,17 +24,14 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import sg.edu.np.mad.pawgress.DailyLogIn;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
-import sg.edu.np.mad.pawgress.Tasks.CreateTask;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.Tasks.TaskAdapter;
-import sg.edu.np.mad.pawgress.Tasks.TaskList;
 import sg.edu.np.mad.pawgress.UserData;
 
 /**
@@ -115,7 +112,7 @@ public class TasksFragment extends Fragment {
                 createTask.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 createTask.setCancelable(false);
                 createTask.getWindow().getAttributes().windowAnimations = R.style.animation;
-                Button create_task = createTask.findViewById(R.id.button6);
+                Button create_task = createTask.findViewById(R.id.friendsButton);
                 Button discard = createTask.findViewById(R.id.button5);
                 TextView date = createTask.findViewById(R.id.btnPickDate);
 

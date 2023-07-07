@@ -40,6 +40,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_PET_DESIGN = "PetDesign";
     public static String COLUMN_TARGET_SEC = "TargetSec";
     public static String COLUMN_DAILY_CHALLENGE = "DailyChallenge";
+    public static String FRIENDS = "Friends";
+    public static String COLUMN_FRIENDNAME = "FriendName";
 
 
 
@@ -83,6 +85,13 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         db.execSQL(CREATE_TASK_TABLE);
         Log.i(title, CREATE_TASK_TABLE);
+
+        String CREATE_FRIENDS_TABLE = "Create TABLE " + FRIENDS + "(" +
+                COLUMN_FRIENDNAME + " TEXT," +
+                COLUMN_USERNAME + " TEXT)";
+
+        db.execSQL(CREATE_FRIENDS_TABLE);
+        Log.i(title, CREATE_FRIENDS_TABLE);
     }
 
     @Override
@@ -350,5 +359,38 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.execSQL(clearDBQuery);
     }
 
+    public ArrayList<String> findFriendList(UserData userData){
+        String query = "SELECT * FROM " + FRIENDS + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
+        Log.i(title, "Query :" + query);
+        ArrayList<String> friendList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        if (cursor.moveToFirst()){ // goes to first row if not null
+            friendList.add(cursor.getString(0));
+            while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
+                friendList.add(cursor.getString(0));
+            }
+            cursor.close();
+            userData.setFriendList(friendList);
+        }
+        else{
+            userData.setFriendList(friendList);
+        }
+//        db.close();
+        return userData.getFriendList();
+    }
+
+    public void addFriend(String friendName, UserData userData){ // used for creating task
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_FRIENDNAME, friendName);
+        values.put(COLUMN_USERNAME, userData.getUsername());
+
+        db.insert(FRIENDS, null, values);
+
+        Log.i(title, "Inserted Friend");
+//        db.close();
+    }
 
 }

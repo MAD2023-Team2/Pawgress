@@ -18,7 +18,7 @@
     // Profile Page
     <string name="profilePageTitle">My Profile</string>
     <string name="editProfileText">Edit Profile/Password</string>
-    <string name="findFriendsText">Find Friends</string>
+    <string name="friendsText">Friends</string>
     <string name="userSettingsText">User Settings</string>
     <string name="analyticsText">Analytics</string>
     <string name="logOutText">Log Out</string>

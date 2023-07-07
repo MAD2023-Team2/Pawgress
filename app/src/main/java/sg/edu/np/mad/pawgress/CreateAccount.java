@@ -58,7 +58,8 @@ public class CreateAccount extends AppCompatActivity {
                         ArrayList<Task> taskList = new ArrayList<Task>();
                         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                         String accCreateDate = formatter.format(new Date());
-                        UserData dbUserData = new UserData(1,dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354);
+                        ArrayList<String> friendList = new ArrayList<>();
+                        UserData dbUserData = new UserData(1,dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354, friendList);
                         System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
 
                         // Adding user to database

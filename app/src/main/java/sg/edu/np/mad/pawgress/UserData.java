@@ -23,7 +23,9 @@ public class UserData implements Parcelable{
     private String actualUserName;
     private int userId;
 
-    public UserData(int userId, String username, String password, ArrayList<Task> taskList, String lastLogInDate, int streak, int currency, String loggedInTdy, String petType, int petDesign){// String actualUserName) {
+    private ArrayList<String> friendList;
+
+    public UserData(int userId, String username, String password, ArrayList<Task> taskList, String lastLogInDate, int streak, int currency, String loggedInTdy, String petType, int petDesign, ArrayList<String> friendList){
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -34,6 +36,7 @@ public class UserData implements Parcelable{
         this.loggedInTdy = loggedInTdy;
         this.petType = petType;
         this.petDesign = petDesign;
+        this.friendList = friendList;
 
     }
 
@@ -103,4 +106,6 @@ public class UserData implements Parcelable{
     public void setPetType(String petType){ this.petType = petType; }
     public int getPetDesign(){ return petDesign; }
     public void setPetDesign(int petDesign) { this.petDesign = petDesign; }
+    public ArrayList<String> getFriendList() {return this.friendList; }
+    public void setFriendList(ArrayList<String> friendList) { this.friendList = friendList; }
 }

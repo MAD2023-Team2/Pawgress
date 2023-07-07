@@ -63,7 +63,11 @@ public class LoginPage extends AppCompatActivity {
             taskList.add(task);
             taskList.add(task2);
             String accCreateDate = formatter.format(new Date());
-            UserData dbUserData = new UserData(1,dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354);
+
+            ArrayList<String> friendList = new ArrayList<>();
+            friendList.add("abc");
+
+            UserData dbUserData = new UserData(1,dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354, friendList);
             System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
             myDBHandler.addUser(dbUserData);
 
@@ -144,6 +148,9 @@ public class LoginPage extends AppCompatActivity {
                                             for (Task task: user.getTaskList()){
                                                 myDBHandler.addTask(task, user);
                                             }
+                                            for (String friend: user.getFriendList()){
+                                                myDBHandler.addFriend(friend, user);
+                                            }
                                             Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
                                             intent.putExtra("User", user);
 
@@ -204,6 +211,7 @@ public class LoginPage extends AppCompatActivity {
 //            return true;
 //        }
 //        return false;
+        /*
         UserData dbData = myDBHandler.findUser(username);
         try {
             if(dbData.getUsername().equals(username) && dbData.getPassword().equals(password)){
@@ -215,32 +223,34 @@ public class LoginPage extends AppCompatActivity {
             return false;
         }
 
-//        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
-//        DatabaseReference myRef = database.getReference("Users");
-//
-//        Query query = myRef.orderByChild("username").equalTo(username);
-//        query.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot dataSnapshot) {
-//                if (dataSnapshot.exists()) {
-//                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-//                        String userId = snapshot.getKey();
-//                        final String getPass = dataSnapshot.child(userId).child("password").getValue(String.class);
-//
-//                        if (getPass.equals(password)){
-//                            valid = true;
-//                        }
-//                        else{
-//                            valid = false;
-//                        }
-//                    }
-//                }
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError databaseError) {
-//                valid = false;
-//            }
-//        });
-//        return valid;
+         */
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("Users");
+
+        Query query = myRef.orderByChild("username").equalTo(username);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        String userId = snapshot.getKey();
+                        final String getPass = dataSnapshot.child(userId).child("password").getValue(String.class);
+
+                        if (getPass.equals(password)){
+                            valid = true;
+                        }
+                        else{
+                            valid = false;
+                        }
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                valid = false;
+            }
+        });
+        return valid;
     }
 }
