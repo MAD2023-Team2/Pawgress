@@ -115,6 +115,8 @@ public class MainMainMain extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("Users");
         UserData fbUser = myDBHandler.findUser(user.getUsername());
         fbUser.setTaskList(myDBHandler.findTaskList(user));
+        fbUser.setFriendList(myDBHandler.findFriendList(user));
+        fbUser.setFriendReqList(myDBHandler.findFriendReqList(user));
 
         myRef.child(user.getUsername()).setValue(fbUser);
     }

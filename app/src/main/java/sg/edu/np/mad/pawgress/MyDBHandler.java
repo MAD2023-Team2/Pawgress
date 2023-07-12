@@ -7,9 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import sg.edu.np.mad.pawgress.Tasks.Task;
 
@@ -42,6 +40,11 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_DAILY_CHALLENGE = "DailyChallenge";
     public static String FRIENDS = "Friends";
     public static String COLUMN_FRIENDNAME = "FriendName";
+    public static String COLUMN_FRIEND_STATUS = "FriendStatus";
+    public static String FRIENDREQUEST = "FriendRequest";
+    public static String COLUMN_FRIENDREQ_NAME = "FriendReqName";
+    public static String COLUMN_FRIENDREQ_STATUS = "FriendReqStatus";
+
 
 
 
@@ -88,10 +91,19 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         String CREATE_FRIENDS_TABLE = "Create TABLE " + FRIENDS + "(" +
                 COLUMN_FRIENDNAME + " TEXT," +
+                COLUMN_FRIEND_STATUS + " TEXT," +
                 COLUMN_USERNAME + " TEXT)";
 
         db.execSQL(CREATE_FRIENDS_TABLE);
         Log.i(title, CREATE_FRIENDS_TABLE);
+
+        String CREATE_FRIENDREQUEST_TABLE = "Create TABLE " + FRIENDREQUEST + "(" +
+                COLUMN_FRIENDREQ_NAME + " TEXT," +
+                COLUMN_FRIENDREQ_STATUS + " TEXT," +
+                COLUMN_USERNAME + " TEXT)";
+
+        db.execSQL(CREATE_FRIENDREQUEST_TABLE);
+        Log.i(title, CREATE_FRIENDREQUEST_TABLE);
     }
 
     @Override
@@ -359,16 +371,22 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.execSQL(clearDBQuery);
     }
 
-    public ArrayList<String> findFriendList(UserData userData){
+    public ArrayList<FriendData> findFriendList(UserData userData){
         String query = "SELECT * FROM " + FRIENDS + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
         Log.i(title, "Query :" + query);
-        ArrayList<String> friendList = new ArrayList<>();
+        ArrayList<FriendData> friendList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
+        FriendData queryResult = new FriendData();
         if (cursor.moveToFirst()){ // goes to first row if not null
-            friendList.add(cursor.getString(0));
+            queryResult.setFriendName(cursor.getString(0));
+            queryResult.setStatus(cursor.getString(1));
+            friendList.add(queryResult);
             while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
-                friendList.add(cursor.getString(0));
+                FriendData friend = new FriendData();
+                friend.setFriendName(cursor.getString(0));
+                friend.setStatus(cursor.getString(1));
+                friendList.add(friend);
             }
             cursor.close();
             userData.setFriendList(friendList);
@@ -380,11 +398,12 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return userData.getFriendList();
     }
 
-    public void addFriend(String friendName, UserData userData){ // used for creating task
+    public void addFriend(String friendName, UserData userData, String status){
 
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(COLUMN_FRIENDNAME, friendName);
+        values.put(COLUMN_FRIEND_STATUS, status);
         values.put(COLUMN_USERNAME, userData.getUsername());
 
         db.insert(FRIENDS, null, values);
@@ -393,4 +412,78 @@ public class MyDBHandler extends SQLiteOpenHelper{
 //        db.close();
     }
 
+    public void removeFriend(String friendName, UserData userData){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_FRIENDNAME, friendName);
+        values.put(COLUMN_FRIEND_STATUS, "Unfriended");
+        values.put(COLUMN_USERNAME, userData.getUsername());
+
+
+        db.update(FRIENDS, values,COLUMN_FRIENDNAME + "='" + friendName + "' AND " + COLUMN_USERNAME + "='" + userData.getUsername() + "'", null);
+
+        Log.i(title, "Friend Status updated");
+
+
+//        db.close();
+    }
+
+
+
+    public ArrayList<FriendRequest> findFriendReqList(UserData userData){
+        String query = "SELECT * FROM " + FRIENDREQUEST + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
+        Log.i(title, "Query :" + query);
+        ArrayList<FriendRequest> friendReqList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        FriendRequest queryResult = new FriendRequest();
+        if (cursor.moveToFirst()){ // goes to first row if not null
+            queryResult.setFriendReqName(cursor.getString(0));
+            queryResult.setReqStatus(cursor.getString(1));
+            friendReqList.add(queryResult);
+            while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
+                FriendRequest friend = new FriendRequest();
+                friend.setFriendReqName(cursor.getString(0));
+                friend.setReqStatus(cursor.getString(1));
+                friendReqList.add(friend);
+            }
+            cursor.close();
+            userData.setFriendReqList(friendReqList);
+        }
+        else{
+            userData.setFriendReqList(friendReqList);
+        }
+//        db.close();
+        return userData.getFriendReqList();
+    }
+
+    public void addFriendReq(String friendReqName, UserData userData, String reqStatus){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_FRIENDREQ_NAME, friendReqName);
+        values.put(COLUMN_FRIENDREQ_STATUS, reqStatus);
+        values.put(COLUMN_USERNAME, userData.getUsername());
+
+        db.insert(FRIENDREQUEST, null, values);
+
+        Log.i(title, "Inserted Friend Request");
+//        db.close();
+    }
+
+    public void removeFriendReq(String friendReqName, UserData userData){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        /*
+        values.put(COLUMN_FRIENDREQ_NAME, friendReqName);
+        values.put(COLUMN_FRIENDREQ_STATUS, "Rejected");
+        values.put(COLUMN_USERNAME, userData.getUsername());
+        */
+        db.delete(FRIENDREQUEST, COLUMN_FRIENDREQ_NAME + "='" + friendReqName + "' AND " + COLUMN_USERNAME + "='" + userData.getUsername() + "'", null);
+        //db.update(FRIENDREQUEST, values,COLUMN_FRIENDREQ_NAME + "='" + friendReqName + "' AND " + COLUMN_USERNAME + "='" + userData.getUsername() + "'", null);
+
+        Log.i(title, "Friend Request removed");
+//        db.close();
+    }
 }

@@ -58,10 +58,31 @@ public class CreateAccount extends AppCompatActivity {
                         ArrayList<Task> taskList = new ArrayList<Task>();
                         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                         String accCreateDate = formatter.format(new Date());
-                        ArrayList<String> friendList = new ArrayList<>();
-                        UserData dbUserData = new UserData(1,dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354, friendList);
+
+                        ArrayList<FriendData> friendList = new ArrayList<>();
+                        FriendData friendData = new FriendData("abc", "Unfriended");
+                        friendList.add(friendData);
+
+                        ArrayList<FriendRequest> friendRequests = new ArrayList<>();
+                        FriendRequest friendReq = new FriendRequest("admin", "Rejected");
+                        friendRequests.add(friendReq);
+
+                        UserData dbUserData = new UserData(1,dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354, friendList, friendRequests);
                         System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
 
+                        myDBHandler.clearDatabase("ACCOUNTS");
+                        myDBHandler.clearDatabase("TASKS");
+                        myDBHandler.clearDatabase("FRIENDS");
+                        myDBHandler.clearDatabase("FRIENDREQUEST");
+                        for (Task task: dbUserData.getTaskList()){
+                            myDBHandler.addTask(task, dbUserData);
+                        }
+                        for (FriendData friend: dbUserData.getFriendList()){
+                            myDBHandler.addFriend(friend.getFriendName(), dbUserData, friend.getStatus());
+                        }
+                        for (FriendRequest friendRequest: dbUserData.getFriendReqList()){
+                            myDBHandler.addFriendReq(friendRequest.getFriendReqName(), dbUserData, friendRequest.getReqStatus());
+                        }
                         // Adding user to database
                         myDBHandler.addUser(dbUserData);
 
