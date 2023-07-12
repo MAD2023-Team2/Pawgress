@@ -23,6 +23,8 @@
     <string name="analyticsText">Analytics</string>
     <string name="logOutText">Log Out</string>
 
+    <string name="friendRequest">Friend Requests</string>
+
     // Home Page
     <string name="greeting">Hello</string>
     <string name="title_activity_edit_profile_password">EditProfilePassword</string>
