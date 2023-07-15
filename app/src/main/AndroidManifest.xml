@@ -23,6 +23,7 @@
             android:exported="false" />
         <activity
             android:name=".Fragments.Profile.editProfilePassword"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".Tasks.EditTask"
@@ -38,6 +39,7 @@
             android:exported="false" />
         <activity
             android:name=".CreateAccount"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".DailyLogIn"
@@ -59,6 +61,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginPage"
+            android:windowSoftInputMode="adjustResize"
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
