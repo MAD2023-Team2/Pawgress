@@ -5,27 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FCFBFC"
         android:textAlignment="textEnd"
         tools:context=".CreateAccount">
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="193dp"
-            android:layout_height="91dp"
-            android:layout_marginTop="76dp"
-            android:fontFamily="sans-serif-condensed-medium"
-            android:text="@string/createAcctTitle"
-            android:textAlignment="textEnd"
-            android:textSize="34sp"
-            android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.076"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/textView6"
@@ -36,8 +21,8 @@
             android:fontFamily="sans-serif-condensed-medium"
             android:text="@string/usernameText"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/textView5" />
 
         <TextView
             android:id="@+id/textView7"
@@ -48,12 +33,12 @@
             android:fontFamily="sans-serif-condensed-medium"
             android:text="@string/passwordText"
             android:textSize="18sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            android:layout_alignParentStart="true"
+            android:layout_below="@id/textView5" />
 
         <EditText
             android:id="@+id/editTextText3"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
             android:layout_marginTop="128dp"
@@ -63,25 +48,23 @@
             android:hint="@string/inputUsername"
             android:ems="10"
             android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView6"
-            app:layout_constraintTop_toBottomOf="@id/textView5" />
+            android:layout_toEndOf="@+id/textView6"
+            android:layout_below="@id/textView5" />
 
         <EditText
             android:id="@+id/editTextText4"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="212dp"
+            android:layout_marginTop="30dp"
             android:layout_marginEnd="64dp"
             android:background="@drawable/field_background"
             android:fontFamily="sans-serif-condensed-medium"
             android:hint="@string/inputPassword"
             android:ems="10"
             android:inputType="text"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/textView7"
-            app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            android:layout_toEndOf="@+id/textView7"
+            android:layout_below="@+id/editTextText3" />
 
         <Button
             android:id="@+id/button2"
@@ -94,9 +77,8 @@
             android:backgroundTint="#88E473"
             android:fontFamily="sans-serif-condensed-medium"
             android:text="@string/confirmCreationText"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextText4"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@+id/editTextText4"
             app:rippleColor="#939376" />
 
         <Button
@@ -110,22 +92,41 @@
             android:backgroundTint="#88E473"
             android:fontFamily="sans-serif-condensed-medium"
             android:text="@string/cancelCreationText"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextText4"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/editTextText4"
             app:rippleColor="#939376" />
 
         <ImageView
-            android:id="@+id/imageView11"
-            android:layout_width="131dp"
-            android:layout_height="237dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="3dp"
-            app:layout_constraintStart_toEndOf="@+id/textView5"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/pawgress_icon_final_png" />
+            android:id="@+id/imageView4"
+            android:layout_width="119dp"
+            android:layout_height="119dp"
+            android:layout_marginTop="25dp"
+            android:contentDescription="App Icon"
+            android:layout_toEndOf="@id/centerpiece"
+            android:src="@drawable/pawgress_icon_final_png" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/centerpiece"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="25dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginEnd="15dp"
+            app:srcCompat="@drawable/ic_launcher_background" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="193dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40dp"
+            android:layout_toLeftOf="@id/centerpiece"
+            android:layout_marginEnd="-10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="@string/createAcctTitle"
+            android:textAlignment="textEnd"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
 
 </ScrollView>
-
