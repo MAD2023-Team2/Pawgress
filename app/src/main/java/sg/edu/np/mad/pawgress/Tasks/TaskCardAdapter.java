@@ -99,7 +99,7 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
             });
         }
         else if (task.getDailyChallenge() == 1) {
-            holder.card2.setBackgroundColor(Color.parseColor("#B9C498"));
+            holder.card2.setBackgroundColor(Color.parseColor(task.getColorCode().get(0)));
         }
 
         // complete task

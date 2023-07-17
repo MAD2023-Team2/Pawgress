@@ -32,22 +32,27 @@ public class DailyLogIn extends AppCompatActivity {
 
     public void createChallenge(){
         Random random = new Random();
-        int challengeInt = random.nextInt(5);
+        int challengeInt = random.nextInt(6) + 1;
         String name;
-        if (challengeInt == 1){
-            name = "Drink Water";
-        }
-        else if (challengeInt == 2){
-            name = "Learn a New Word";
-        }
-        else if (challengeInt == 3){
-            name = "Stretch for 5 minutes";
-        }
-        else if (challengeInt == 4){
-            name = "Take a 10 minutes walk";
-        }
-        else{
-            name = "Take a 5 minute break";
+        switch (challengeInt) {
+            case 1:
+                name = "Drink Water";
+                break;
+            case 2:
+                name = "Read (books/news, etc) for 10 mins";
+                break;
+            case 3:
+                name = "Stretch for 5 minutes";
+                break;
+            case 4:
+                name = "Take a 10 minutes walk";
+                break;
+            case 5:
+                name = "Meditate for 15 minutes";
+                break;
+            default:
+                name = "Take a 5 minute break";
+                break;
         }
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String newDayDate = formatter.format(new Date());

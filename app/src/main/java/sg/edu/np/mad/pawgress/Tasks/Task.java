@@ -7,7 +7,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Task implements Parcelable {
     private int dailyChallenge;
@@ -121,4 +123,37 @@ public class Task implements Parcelable {
     public void setDailyChallenge(int dailyChallenge) { this.dailyChallenge = dailyChallenge;}
     public int getPriority() { return priority;}
     public void setPriority(int priority) { this.priority = priority;}
+
+    public List<String> getColorCode() {
+        List<String> colorCodes = new ArrayList<>();
+
+        switch (taskName) {
+            case "Drink Water":
+                colorCodes.add("#bde0fe"); // water blue
+                colorCodes.add("#FFFFFF");
+                break;
+            case "Read (books/news, etc) for 10 mins":
+                colorCodes.add("#ffddd2"); // skin color
+                colorCodes.add("#FFFFFF");
+                break;
+            case "Stretch for 5 minutes":
+                colorCodes.add("#ffc8dd"); // light cute pink
+                colorCodes.add("#FFFFFF");
+                break;
+            case "Take a 10 minutes walk":
+                colorCodes.add("#cdb4db"); // some light purple
+                colorCodes.add("#FFFFFF");
+                break;
+            case "Meditate for 15 minutes":
+                colorCodes.add("#ffcad4"); // almost skin color
+                colorCodes.add("#FFFFFF");
+                break;
+            default:
+                colorCodes.add("#d0f4de"); // mint green
+                colorCodes.add("#FFFFFF");
+                break;
+        }
+
+        return colorCodes;
+    }
 }

@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -128,6 +129,12 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
             holder.duedate.setText("Due on: " + task.getDueDate());
         }
         else holder.duedate.setVisibility(INVISIBLE);
+
+        // if it is daily challenge
+        if (getItemViewType(position) == 1) {
+            holder.card.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(0))));
+            holder.name.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(1))));
+        }
         // if it is not daily challenge
         if (getItemViewType(position) == 0){
             // view task
