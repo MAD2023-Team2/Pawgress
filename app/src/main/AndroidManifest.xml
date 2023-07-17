@@ -17,7 +17,7 @@
             android:exported="false" />
         <activity
             android:name=".MainMainMain"
-            android:exported="false" />
+            android:exported="false"/>
         <activity
             android:name=".Tasks.TaskCompletion"
             android:exported="false" />
@@ -29,12 +29,6 @@
             android:exported="false" />
         <activity
             android:name=".Tasks.TaskView"
-            android:exported="false" />
-        <activity
-            android:name=".Tasks.CreateTask"
-            android:exported="false" />
-        <activity
-            android:name=".Tasks.TaskList"
             android:exported="false" />
         <activity
             android:name=".CreateAccount"
@@ -59,7 +53,7 @@
             android:exported="false" />
         <activity
             android:name=".LoginPage"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
