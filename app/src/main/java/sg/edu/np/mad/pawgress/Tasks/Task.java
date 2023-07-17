@@ -7,7 +7,9 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Task implements Parcelable {
     private int dailyChallenge;
@@ -20,13 +22,13 @@ public class Task implements Parcelable {
     private String dueDate;
     private String dateCreated;
     private String dateComplete;
-
+    private int priority;
 
     public Task() {
     }
 
     // add in date of creation and duedate(can accept null)
-    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec, String dueDate, String dateCreated, String dateComplete, int dailyChallenge) {
+    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec, String dueDate, String dateCreated, String dateComplete, int dailyChallenge, int priority) {
         this.taskID = taskID;
         this.taskName = taskName;
         this.status = status;
@@ -37,6 +39,7 @@ public class Task implements Parcelable {
         this.dateCreated = dateCreated;
         this.dateComplete = dateComplete;
         this.dailyChallenge = dailyChallenge;
+        this.priority = priority;
     }
 
     protected Task(Parcel in) {
@@ -50,6 +53,7 @@ public class Task implements Parcelable {
         dateCreated = in.readString();
         dateComplete = in.readString();
         dailyChallenge = in.readInt();
+        priority = in.readInt();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -81,6 +85,7 @@ public class Task implements Parcelable {
         dest.writeString(dateCreated);
         dest.writeString(dateComplete);
         dest.writeInt(dailyChallenge);
+        dest.writeInt(priority);
     }
     public int getTaskID() {
         return taskID;
@@ -116,4 +121,39 @@ public class Task implements Parcelable {
     public void setDateComplete(String dateComplete) { this.dateComplete = dateComplete; }
     public int getDailyChallenge() { return dailyChallenge; }
     public void setDailyChallenge(int dailyChallenge) { this.dailyChallenge = dailyChallenge;}
+    public int getPriority() { return priority;}
+    public void setPriority(int priority) { this.priority = priority;}
+
+    public List<String> getColorCode() {
+        List<String> colorCodes = new ArrayList<>();
+
+        switch (taskName) {
+            case "Drink Water":
+                colorCodes.add("#bde0fe"); // water blue
+                colorCodes.add("#FFFFFF");
+                break;
+            case "Read (books/news, etc) for 10 mins":
+                colorCodes.add("#ffddd2"); // skin color
+                colorCodes.add("#FFFFFF");
+                break;
+            case "Stretch for 5 minutes":
+                colorCodes.add("#ffc8dd"); // light cute pink
+                colorCodes.add("#FFFFFF");
+                break;
+            case "Take a 10 minutes walk":
+                colorCodes.add("#cdb4db"); // some light purple
+                colorCodes.add("#FFFFFF");
+                break;
+            case "Meditate for 15 minutes":
+                colorCodes.add("#ffcad4"); // almost skin color
+                colorCodes.add("#FFFFFF");
+                break;
+            default:
+                colorCodes.add("#d0f4de"); // mint green
+                colorCodes.add("#FFFFFF");
+                break;
+        }
+
+        return colorCodes;
+    }
 }

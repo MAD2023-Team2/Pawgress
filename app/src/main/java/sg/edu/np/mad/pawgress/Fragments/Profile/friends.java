@@ -85,7 +85,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                         searchDialog.setContentView(R.layout.search_friend);
                         searchDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         searchDialog.setCancelable(true);
-                        searchDialog.getWindow().getAttributes().windowAnimations = R.style.animation;
+
                         searchDialog.show();
 
                         RecyclerView searchRecyclerView = searchDialog.findViewById(R.id.searchRecyclerView);
@@ -129,7 +129,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                         requestDialog.setContentView(R.layout.friend_requests);
                         requestDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         requestDialog.setCancelable(true);
-                        requestDialog.getWindow().getAttributes().windowAnimations = R.style.animation;
+
                         requestDialog.show();
 
                         RecyclerView friendRequestRecyclerView = requestDialog.findViewById(R.id.friendRequestRecyclerView);

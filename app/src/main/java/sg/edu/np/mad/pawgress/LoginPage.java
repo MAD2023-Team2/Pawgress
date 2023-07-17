@@ -61,8 +61,8 @@ public class LoginPage extends AppCompatActivity {
                     ArrayList<Task> taskList = new ArrayList<Task>();
                     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                     String newDayDate = formatter.format(new Date());
-                    Task task = new Task(1, "name", "In Progress", "cat" ,0, 1, "1", newDayDate, null, 0);
-                    Task task2 = new Task(2, "name2", "In Progress", "cat" ,0, 1, "1", newDayDate,null, 0);
+                    Task task = new Task(1, "name", "In Progress", "cat" ,0, 1, "1", newDayDate, null, 0, 1);
+                    Task task2 = new Task(2, "name2", "In Progress", "cat" ,0, 1, "1", newDayDate,null, 0, 0);
                     taskList.add(task);
                     taskList.add(task2);
                     String accCreateDate = formatter.format(new Date());

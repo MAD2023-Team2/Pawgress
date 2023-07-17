@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -11,17 +12,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import sg.edu.np.mad.pawgress.R;
 
-public class TaskViewHolder extends RecyclerView.ViewHolder {
+public class ChildTaskViewHolder extends RecyclerView.ViewHolder {
 
     String title = "ViewHolder!";
     TextView name, category, duedate;
-    ConstraintLayout card;
+    RelativeLayout card;
     ImageButton edit,delete;
     CheckBox complete;
+    RecyclerView childList;
 
-    public TaskViewHolder(View itemView){
+    public ChildTaskViewHolder(View itemView){
         super(itemView);
-        category = itemView.findViewById(R.id.textView3);
         name = itemView.findViewById(R.id.textView4);
         card = itemView.findViewById(R.id.taskCard); // individual task
         edit = itemView.findViewById(R.id.button3);

@@ -32,11 +32,33 @@ public class DailyLogIn extends AppCompatActivity {
 
     public void createChallenge(){
         Random random = new Random();
-        String wat = String.valueOf(random.nextInt(1000));
+        int challengeInt = random.nextInt(6) + 1;
+        String name;
+        switch (challengeInt) {
+            case 1:
+                name = "Drink Water";
+                break;
+            case 2:
+                name = "Read (books/news, etc) for 10 mins";
+                break;
+            case 3:
+                name = "Stretch for 5 minutes";
+                break;
+            case 4:
+                name = "Take a 10 minutes walk";
+                break;
+            case 5:
+                name = "Meditate for 15 minutes";
+                break;
+            default:
+                name = "Take a 5 minute break";
+                break;
+        }
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String newDayDate = formatter.format(new Date());
-        Task task = new Task(1, wat, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,1);
+        Task task = new Task(1, name, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,1, 0);
         myDBHandler.addTask(task, user);
+        Log.w("Daily Log In","Created Daily Challenge: " + task.getTaskName());
     }
 
     @Override
@@ -49,23 +71,20 @@ public class DailyLogIn extends AppCompatActivity {
         user = receivingEnd.getParcelableExtra("User");
         try{
             new_day = receivingEnd.getExtras().getBoolean("new_day");
-        } catch (Exception exception){ Log.v("DailyLogIn","not from inside app"); }
-        System.out.println(user.getUsername() + user.getPassword());
-        System.out.println("Updated pet type:  " + user.getPetType() + "\n" + "Updated pet deisgn: " + user.getPetDesign());
+        } catch (Exception exception){ Log.w("DailyLogIn","not from inside app"); }
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         String newDayDate = formatter.format(new Date());
 
 
         String lastInDate = user.getLastLogInDate();
-        System.out.println("Last In Date = "+ lastInDate);
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         Date date1;
         Date date2;
         int currency = user.getCurrency();
         int streak = user.getStreak();
-        System.out.println("Current Currency:" + currency + "\n" + "Current Streak: " + streak + "\n" + "logged in status: " + user.getLoggedInTdy());
+        Log.w("Daily Log In","Current Currency:" + currency + "\n" + "Current Streak: " + streak + "\n" + "logged in status: " + user.getLoggedInTdy());
 
         String tempStr = "No";
 
@@ -83,21 +102,20 @@ public class DailyLogIn extends AppCompatActivity {
         Button closeButton = findViewById(R.id.closeDaily);
 
         if (lastInDate.equals(newDayDate)){
-            System.out.println("Last log in date equal to todays date.");
-            System.out.println("same day:" + user.getLoggedInTdy().equals(tempStr));
-            System.out.println("same day status : " + user.getLoggedInTdy());
+            Log.w("Daily Log In","Last log in date equal to todays date.");
 
             // scenario where user first create their account and their first streak will pop up
             if (user.getLoggedInTdy().equals(tempStr)){
-                createChallenge();
-                // text will change to "streak:1, current rewarded:0[for now], let's start streaking and stay productive!"
 
+                createChallenge();
+
+                // text will change to "streak:1, current rewarded:0[for now], let's start streaking and stay productive!"
                 statusText.setText("Let's start streaking and stay productive!");
                 streakText.setText("Streak: " + streak);
-                //rewardText.setText("Reward: " + (streak*1));
-                //myDBHandler.updateData(user.getUsername(), newDayDate, streak, streak*1, "Yes");
-                rewardText.setText("Reward:0");
-                myDBHandler.updateData(user.getUsername(), newDayDate, streak, 0, "Yes");
+                rewardText.setText("Reward: 1");
+                myDBHandler.updateData(user.getUsername(), newDayDate, streak, currency, "Yes");
+                user.setStreak(streak);
+                user.setCurrency(currency);
                 closeButton.setOnClickListener(new View.OnClickListener(){
                     @Override
                     public void onClick(View v){
@@ -130,29 +148,30 @@ public class DailyLogIn extends AppCompatActivity {
             }
         }
         else{
-            System.out.println("Last log in date not equal to todays date.");
+            Log.w("Daily Log In","Last log in date not equal to todays date.");
             user.setLoggedInTdy("No");
-            System.out.println(user.getLoggedInTdy());
+
             createChallenge();
+
             if (user.getLoggedInTdy().equals(tempStr)){
                 long diffInMilliseconds = date2.getTime() - date1.getTime();
                 long diffInDays = TimeUnit.DAYS.convert(diffInMilliseconds, TimeUnit.MILLISECONDS);
 
-                System.out.println("Last log in date: " + date1);
-                System.out.println("Today's date: " + date2);
-                System.out.println("Difference in days: " + diffInDays);
+                Log.w("Daily Log In","Difference in Log in days: " + diffInDays);
 
                 if (diffInDays != 1){
                     //they break streak
-                    System.out.println("break streak");
+                    Log.w("Daily Log In","Broke Streak");
 
-                    //myDBHandler.updateData(user.getUsername(), newDayDate, 1, currency+1, "Yes");
-                    myDBHandler.updateData(user.getUsername(), newDayDate, 1, 0, "Yes");
+                    int newCurrency = currency + 1;
+                    myDBHandler.updateData(user.getUsername(), newDayDate, 1, newCurrency, "Yes");
+                    user.setStreak(1);
+                    user.setCurrency(newCurrency);
                     //set text to streak broken
                     statusText.setText("You broke your " + streak + " days streak! Let's keep streaking!");
                     streakText.setText("Streak: " + 1);
-                    //rewardText.setText("Reward: " + 1);
-                    rewardText.setText("Reward:0");
+                    rewardText.setText("Reward: 1");
+                    Log.w("Daily Log In","Current Streak: " + user.getStreak());
                     closeButton.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v){
@@ -169,20 +188,25 @@ public class DailyLogIn extends AppCompatActivity {
                 else{
                     //they streak
                     int newStreak = streak+1;
-                    //int newCurrency = currency + (newStreak*1);
 
-                    System.out.println("Newstreak:"+newStreak);
-                    //myDBHandler.updateData(user.getUsername(), newDayDate, newStreak, newCurrency, "Yes");
-                    myDBHandler.updateData(user.getUsername(), newDayDate, newStreak, 0, "Yes");
+                    // for every 1 week, they gain an extra currency
+                    int extra_reward = newStreak / 7;
+                    int reward = extra_reward + 1;
+                    int newCurrency = currency + reward;
+                    Log.w("Daily Log In","Newstreak: "+newStreak);
+                    Log.w("Daily Log In","New Currency: "+newCurrency);
+                    myDBHandler.updateData(user.getUsername(), newDayDate, newStreak, newCurrency, "Yes");
+                    user.setStreak(newStreak);
+                    user.setCurrency(newCurrency);
                     //set text to streaking stuff idk
                     statusText.setText("You're streaking! Keep up the good work!");
                     streakText.setText("Streak: " + newStreak);
-                    //rewardText.setText("Reward: " + newStreak*1);
-                    rewardText.setText("Reward:0");
+                    rewardText.setText("Reward: "+ reward);
+
                     closeButton.setOnClickListener(new View.OnClickListener(){
                         @Override
                         public void onClick(View v){
-                            Log.v("Daily Login","not same day");
+                            Log.w("Daily Login","not same day");
                             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
                             String newDayDate = formatter.format(new Date());

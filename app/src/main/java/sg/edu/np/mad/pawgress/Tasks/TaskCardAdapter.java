@@ -99,7 +99,7 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
             });
         }
         else if (task.getDailyChallenge() == 1) {
-            holder.card2.setBackgroundColor(Color.parseColor("#B9C498"));
+            holder.card2.setBackgroundColor(Color.parseColor(task.getColorCode().get(0)));
         }
 
         // complete task
@@ -121,6 +121,26 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                         task.setDateComplete(newDayDate);
                         mDataBase.updateTask(task, user.getUsername());
                         recyclerTaskList.remove(task);
+
+                        // after completing any task, gain 5 currency
+                        // for every 30 minutes spent on the task, an additional 1 currency is added
+                        // if timespent > target time, an additional 1 currency is added
+                        int additonal_currency;
+                        int task_seconds = task.getTimeSpent();
+                        int task_minutes = task_seconds / 60;
+                        int task_minutes_30 = task_minutes / 30;
+                        int current_currency = user.getCurrency();
+                        int target_sec = task.getTargetSec();
+                        if (task_seconds >= target_sec){
+                            additonal_currency = 1;
+                        }
+                        else{
+                            additonal_currency = 0;
+                        }
+                        int new_currency = current_currency + 5 + task_minutes_30 + additonal_currency;
+                        user.setCurrency(new_currency);
+                        mDataBase.updateCurrency(user.getUsername(), new_currency);
+
                         // notify adapter about changes to list
                         notifyItemRemoved(recyclerTaskList.indexOf(task) + 1);
                         notifyItemRangeChanged(recyclerTaskList.indexOf(task), recyclerTaskList.size());
@@ -152,15 +172,15 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
         String lastInDate = user.getLastLogInDate();
         if (!lastInDate.equals(newDayDate)) {
             if (task.getDailyChallenge() == 1){
-                Log.i("TaskCardAdapter","new day, previous daily challenge removed");
+                Log.w("TaskCardAdapter","new day, previous daily challenge removed");
                 task.setStatus("Completed");
                 mDataBase.updateTask(task, user.getUsername());
                 recyclerTaskList.remove(task);
             }
             else{
-                Log.i("TaskCardAdapter","new day, no previous daily challenge removed");
+                Log.w("TaskCardAdapter","new day, no previous daily challenge to be removed");
             }
-            Log.i("TaskCardAdapter","new day, add new challenge");
+            Log.w("TaskCardAdapter","new day, adding new daily challenge");
             Intent intent = new Intent(context, DailyLogIn.class);
             intent.putExtra("User", user);
             intent.putExtra("tab", "home_tab");
