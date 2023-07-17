@@ -345,6 +345,25 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
                         if (recyclerTaskList.size() == 0) {
                             fragment.refreshRecyclerView();
                         }
+
+                        // after completing any task, gain 5 currency
+                        // for every 30 minutes spent on the task, an additional 1 currency is added
+                        // if timespent > target time, an additional 1 currency is added
+                        int additonal_currency;
+                        int task_seconds = task.getTimeSpent();
+                        int task_minutes = task_seconds / 60;
+                        int task_minutes_30 = task_minutes / 30;
+                        int current_currency = user.getCurrency();
+                        int target_sec = task.getTargetSec();
+                        if (task_seconds >= target_sec){
+                            additonal_currency = 1;
+                        }
+                        else{
+                            additonal_currency = 0;
+                        }
+                        int new_currency = current_currency + 5 + task_minutes_30 + additonal_currency;
+                        user.setCurrency(new_currency);
+                        mDataBase.updateCurrency(user.getUsername(), new_currency);
                     }
                 });
                 builder.setNegativeButton("No", new DialogInterface.OnClickListener(){

@@ -35,8 +35,26 @@ public class TaskCompletion extends AppCompatActivity {
         finalTask.setStatus("Completed");
         myDBHandler.updateTask(finalTask, user.getUsername());
 
-        ImageButton backButton = findViewById(R.id.backButton);
+        // after completing any task, gain 5 currency
+        // for every 30 minutes spent on the task, an additional 1 currency is added
+        // if timespent > target time, an additional 1 currency is added
+        int additonal_currency;
+        int task_seconds = finalTask.getTimeSpent();
+        int task_minutes = task_seconds / 60;
+        int task_minutes_30 = task_minutes / 30;
+        int current_currency = user.getCurrency();
+        int target_sec = finalTask.getTargetSec();
+        if (task_seconds >= target_sec){
+            additonal_currency = 1;
+        }
+        else{
+            additonal_currency = 0;
+        }
+        int new_currency = current_currency + 5 + task_minutes_30 + additonal_currency;
+        user.setCurrency(new_currency);
+        myDBHandler.updateCurrency(user.getUsername(), new_currency);
 
+        ImageButton backButton = findViewById(R.id.backButton);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
