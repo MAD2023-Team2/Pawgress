@@ -9,12 +9,17 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 import sg.edu.np.mad.pawgress.FriendData;
+import sg.edu.np.mad.pawgress.FriendRequest;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.Tasks.Task;
@@ -67,7 +72,34 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
                 friend.setStatus("Unfriend");
                 recyclerFriendList.remove(friend);
                 notifyDataSetChanged();
-                //myRef.child(user.getUsername()).child("friendList").child(friend.getFriendName()).setValue(friend);
+                FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+                DatabaseReference myRef = database.getReference("Users");
+                Query query = myRef.orderByChild("username").equalTo(friend.getFriendName());
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            // Friend already exists, update its status
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                UserData receivingUser = snapshot.getValue(UserData.class);
+                                ArrayList<FriendData> friendList = receivingUser.getFriendList();
+                                found:{
+                                    for (FriendData friend: friendList){
+                                        if (friend.getFriendName().equals(user.getUsername())){
+                                            friend.setStatus("Unfriended");
+                                            break found;
+                                        }
+                                    }
+                                }
+                                myRef.child(friend.getFriendName()).setValue(receivingUser);
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        // Handle error
+                    }
+                });
             }
         });
 

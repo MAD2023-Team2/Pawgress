@@ -112,7 +112,27 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                     friendList.add(newFriend);
                                     receivingUser.setFriendList(friendList);
                                 }
+                                ArrayList<FriendData> thisUserFriendList = user.getFriendList();
+                                // Checks if friend is already in friend list, if it is: change the status
+                                found:
+                                {
+                                    for (FriendData friend : thisUserFriendList) {
+                                        if (friend.getFriendName().equals(receivingUser.getUsername())) {
+                                            thisUserFriendList.remove(friend);
+
+                                            FriendData newFriend = new FriendData(receivingUser.getUsername(), "Friend");
+                                            thisUserFriendList.add(newFriend);
+                                            user.setFriendList(thisUserFriendList);
+                                            break found;
+                                        }
+                                    }
+                                    // If friend not in friend list, add friend to friend list
+                                    FriendData newFriend = new FriendData(receivingUser.getUsername(), "Friend");
+                                    thisUserFriendList.add(newFriend);
+                                    user.setFriendList(thisUserFriendList);
+                                }
                                 myRef.child(name).setValue(receivingUser);
+                                myRef.child(user.getUsername()).setValue(user);
                             }
                         }
                     }
