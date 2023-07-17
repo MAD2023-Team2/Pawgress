@@ -47,7 +47,7 @@ public class MainMainMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Setting content view
         setContentView(R.layout.activity_main_main_main);
-
+        setTheme(R.style.Theme_Pawgress_LightBeigeMode);
         // Binding of navigation bar and fragments
         binding = ActivityMainMainMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());

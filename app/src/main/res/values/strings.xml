@@ -81,4 +81,19 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     // Companion Selection
+
+    // User Settings Page
+    <string name="UserSettingsTitle"><string2 id="User Settings">user setting 2</string2></string>
+    <string name="pfpText">Profile Picture</string>
+    <string name="themeText">Theme</string>
+    <string name="fontTheme">Fonts</string>
+    <string name="notifwidgetText">Notifications/Widgets</string>
+    <string name="modeText">App Mode</string>
+
+    // Theme Selection Page
+    <string name="themeSelectionTitle">Select Theme</string>
+    <string name="darkTheme">Dark Theme</string>
+    <string name="lightTheme">Light Beige Theme</string>
+    <string name="patternTheme">Paw Pattern Theme</string>
+    <string name="defaultTheme">Default Theme</string>
 </resources>

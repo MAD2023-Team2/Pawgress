@@ -17,10 +17,9 @@
             android:layout_height="0dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="25dp"
-
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="35dp"
-            android:background="@drawable/recycler_view_border"
+            android:background="@drawable/rounded_corners"
             android:text=""
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

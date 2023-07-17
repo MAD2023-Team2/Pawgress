@@ -1,14 +1,20 @@
 package sg.edu.np.mad.pawgress.Fragments.Profile;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import sg.edu.np.mad.pawgress.LoginPage;
@@ -28,8 +34,12 @@ public class ProfileFragment extends Fragment{
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    public ImageView profilePictureImageView;
+    private int[] profilePictures = {R.drawable.corgi, R.drawable.corgi_sunglasses};
 
-    // TODO: Rename and change types of parameters
+
+
+// TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -71,6 +81,8 @@ public class ProfileFragment extends Fragment{
         // Inflate the layout for this fragment
         View view;
         view = inflater.inflate(R.layout.fragment_profile, container, false);
+        profilePictureImageView = view.findViewById(R.id.imageView10);
+
 
         MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
 
@@ -82,7 +94,7 @@ public class ProfileFragment extends Fragment{
         username.setText(dbData.getUsername());
 
         //Log Out button
-        Button logoutButton = (Button) view.findViewById(R.id.logoutFrag);
+        Button logoutButton = (Button) view.findViewById(R.id.logOut);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -96,7 +108,7 @@ public class ProfileFragment extends Fragment{
         });
 
         // Edit Profile Button
-        Button editProfileButton = (Button) view.findViewById(R.id.editProfilePassword);
+        Button editProfileButton = (Button) view.findViewById(R.id.editProfilePicture);
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,9 +119,43 @@ public class ProfileFragment extends Fragment{
             }
         });
 
-        return view;
+        // User Settings Button
+        Button userSettingsButton = (Button) view.findViewById(R.id.userSettings);
+        userSettingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("ProfilePage", "User Settings button clicked");
 
+                //SaveSharedPreference.clearUserName(getActivity()); //clears shared preference so no auto login
+                Intent intent = new Intent(getActivity(), UserSettingsActivity.class);
+                intent.putExtra("User", dbData);
+                startActivity(intent);
+            }
+        });
+
+        // profile picture image view
+        // ImageView profilePictureImageView = view.findViewById(R.id.profile_picture_image_view);
+        //this.profilePictureImageView = profilePictureImageView; // Assign to class level variable
+
+
+        return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // Retrieve the updated profile picture path from SharedPreferences
+        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
+        String profilePicturePath = sharedPreferences.getString("profilePicturePath", "");
+
+        // Update the profile picture ImageView if the path is not empty
+        if (!profilePicturePath.isEmpty() && profilePictureImageView != null) {
+            int profilePictureResId = Integer.parseInt(profilePicturePath);
+            profilePictureImageView.setImageResource(profilePictureResId);
+        }
+    }
+
 
 
 }

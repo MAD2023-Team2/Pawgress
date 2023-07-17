@@ -14,15 +14,8 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 
-import sg.edu.np.mad.pawgress.CreateAccount;
-import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -44,7 +37,7 @@ public class CreateTask extends AppCompatActivity {
 
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
-        Button createButton = findViewById(R.id.button6);
+        Button createButton = findViewById(R.id.findFriends);
         Button cancelButton = findViewById(R.id.button5);
 
         NumberPicker ethr = (NumberPicker) findViewById(R.id.hourPicker);

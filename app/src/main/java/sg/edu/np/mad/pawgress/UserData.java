@@ -22,6 +22,8 @@ public class UserData implements Parcelable{
 
     private String actualUserName;
     private int userId;
+    private String profilePicturePath;
+    private int ResId;
 
     public UserData(int userId, String username, String password, ArrayList<Task> taskList, String lastLogInDate, int streak, int currency, String loggedInTdy, String petType, int petDesign){// String actualUserName) {
         this.userId = userId;
@@ -103,4 +105,6 @@ public class UserData implements Parcelable{
     public void setPetType(String petType){ this.petType = petType; }
     public int getPetDesign(){ return petDesign; }
     public void setPetDesign(int petDesign) { this.petDesign = petDesign; }
+    public void setProfilePicturePath(String profilePicturePath) { this.profilePicturePath = profilePicturePath; }
+    public String getProfilePicturePath() { return profilePicturePath; }
 }

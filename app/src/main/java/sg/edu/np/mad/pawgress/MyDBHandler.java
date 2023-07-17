@@ -40,6 +40,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_PET_DESIGN = "PetDesign";
     public static String COLUMN_TARGET_SEC = "TargetSec";
     public static String COLUMN_DAILY_CHALLENGE = "DailyChallenge";
+    public static String COLUMN_PROFILE_PICTURE = "ProfilePicture";
 
 
 
@@ -63,7 +64,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_CURRENCY + " INTEGER," +
                 COLUMN_LOGIN + " TEXT," +
                 COLUMN_PET_TYPE + " TEXT," +
-                COLUMN_PET_DESIGN + " INTEGER)";
+                COLUMN_PET_DESIGN + " INTEGER," +
+                COLUMN_PROFILE_PICTURE + " TEXT)";
         db.execSQL(CREATE_ACCOUNT_TABLE);
         Log.i(title, CREATE_ACCOUNT_TABLE);
 
@@ -193,6 +195,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setLoggedInTdy(cursor.getString(6));
             queryResult.setPetType(cursor.getString(7));
             queryResult.setPetDesign(cursor.getInt(8));
+            int profilePictureIndex = cursor.getColumnIndex(COLUMN_PROFILE_PICTURE);
+            String profilePicturePath = cursor.getString(profilePictureIndex);
+            queryResult.setProfilePicturePath(profilePicturePath);
             cursor.close();
         }
         else{
@@ -344,6 +349,45 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         return targetSec;
     }
+
+    public String getProfilePicturePath(String username) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        String profilePicturePath = null;
+
+        String query = "SELECT " + COLUMN_PROFILE_PICTURE + " FROM " + ACCOUNTS +
+                " WHERE " + COLUMN_USERNAME + "=?";
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+
+        if (cursor.moveToFirst()) {
+            profilePicturePath = cursor.getString(0);
+        }
+
+        cursor.close();
+        return profilePicturePath;
+    }
+
+    public void saveProfilePicture(String username, String profilePicturePath) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        // Retrieve the previous profile picture path
+        String previousProfilePicturePath = getProfilePicturePath(username);
+
+        // Log the previous profile picture path
+        Log.i("MyDBHandler", "Previous profile picture path: " + previousProfilePicturePath);
+
+        // Update the profile picture path in the database
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PROFILE_PICTURE, profilePicturePath);
+        db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
+
+        
+
+        // Log the updated profile picture path
+        Log.i("MyDBHandler", "Profile picture saved for user: " + username);
+        Log.i("MyDBHandler", "Updated profile picture path: " + profilePicturePath);
+    }
+
+
     public void clearDatabase(String TABLE_NAME) {
         SQLiteDatabase db = this.getWritableDatabase();
         String clearDBQuery = "DELETE FROM "+TABLE_NAME;
