@@ -1,96 +1,83 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/taskCard"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginStart="33dp"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_marginStart="0dp"
     android:layout_marginTop="10dp"
-    android:layout_marginEnd="33dp"
-    android:background="@drawable/rounded_corners"
-    android:backgroundTint="#F7E6DB"
+    android:layout_marginEnd="10dp"
     android:clickable="true"
-    app:layout_constraintEnd_toEndOf="parent"
-    app:layout_constraintStart_toStartOf="parent"
-    app:layout_constraintTop_toTopOf="parent">
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="0dp"
-        android:layout_height="18dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
-        android:background="@drawable/rounded_corners"
-        android:backgroundTint="#B7B7A4"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:paddingStart="5dp"
-        android:text="Category"
-        app:layout_constraintEnd_toStartOf="@+id/button3"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    android:background="@drawable/field_background">
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="224dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Task Title"
-        android:paddingStart="5dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3" />
-
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="100dp"
-        android:layout_height="25dp"
+        android:layout_width="166dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
-        android:checked="false"
+        android:background="@drawable/field_background"
+        android:backgroundTint="#A5A58D"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="Complete"
-        app:layout_constraintBottom_toBottomOf="@+id/taskCard"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/taskCard" />
+        android:paddingStart="5dp"
+        android:text="Task Title" />
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="177dp"
+        android:layout_marginBottom="8dp"
+        android:layout_below="@+id/textView4"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:paddingStart="5dp"
+        android:text="DueDate"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageButton
         android:id="@+id/button3"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="5dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toRightOf="@+id/textView4"
         android:backgroundTint="#A5A58D"
-        app:layout_constraintEnd_toStartOf="@+id/button4"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_edit_24" />
 
     <ImageButton
         android:id="@+id/button4"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginEnd="5dp"
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
         android:backgroundTint="#A5A58D"
+        android:layout_marginStart="10dp"
+        android:layout_below="@+id/button3"
+        android:layout_toRightOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/baseline_delete_24" />
 
-    <TextView
-        android:id="@+id/textView21"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginEnd="177dp"
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="32dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/button4"
+        android:layout_marginStart="11dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        android:layout_toRightOf="@+id/textView4"
+        android:checked="false"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="DueDate"
-        android:paddingStart="5dp"
-        app:layout_constraintEnd_toStartOf="@+id/checkBox"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.1" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
 
+</RelativeLayout>

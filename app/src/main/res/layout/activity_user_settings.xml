@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FCFBFC"
+    tools:context=".Fragments.Profile.ProfilePage">
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="112dp"
+        android:layout_marginTop="40dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="@string/UserSettingsTitle"
+        android:textSize="34sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/editProfilePicture"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="29dp"
+        android:backgroundTint="#EFDFCE"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:gravity="fill_vertical"
+        android:text="@string/pfpText"
+        app:icon="@android:drawable/ic_menu_edit"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+    <Button
+        android:id="@+id/Notifs"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="29dp"
+        android:backgroundTint="#EFDFCE"
+        android:gravity="fill_vertical"
+        android:text="@string/notifwidgetText"
+        app:icon="@android:drawable/ic_menu_search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editFonts" />
+
+    <Button
+        android:id="@+id/editFonts"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="29dp"
+        android:backgroundTint="#EFDFCE"
+        android:gravity="fill_vertical"
+        android:text="@string/fontTheme"
+        app:icon="@android:drawable/ic_menu_preferences"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/findTheme" />
+
+    <Button
+        android:id="@+id/appMode"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="29dp"
+        android:autoText="false"
+        android:backgroundTint="#EFDFCE"
+        android:gravity="fill_vertical"
+        android:text="@string/modeText"
+        app:icon="?attr/homeAsUpIndicator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Notifs" />
+
+    <Button
+        android:id="@+id/findTheme"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="29dp"
+        android:backgroundTint="#EFDFCE"
+        android:gravity="fill_vertical"
+        android:text="@string/themeText"
+        app:icon="@android:drawable/ic_menu_myplaces"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editProfilePicture" />
+
+    <ImageView
+        android:id="@+id/return_button2"
+        android:layout_width="39dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="43dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="?attr/actionModeCloseDrawable" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

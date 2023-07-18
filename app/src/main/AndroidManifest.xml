@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools" >
 
     <application
         android:allowBackup="true"
@@ -32,6 +32,7 @@
             android:exported="false" />
         <activity
             android:name=".Fragments.Profile.editProfilePassword"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".Tasks.EditTask"
@@ -40,13 +41,8 @@
             android:name=".Tasks.TaskView"
             android:exported="false" />
         <activity
-            android:name=".Tasks.CreateTask"
-            android:exported="false" />
-        <activity
-            android:name=".Tasks.TaskList"
-            android:exported="false" />
-        <activity
             android:name=".CreateAccount"
+            android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
             android:name=".DailyLogIn"
@@ -68,7 +64,8 @@
             android:exported="false" />
         <activity
             android:name=".LoginPage"
-            android:exported="true">
+            android:windowSoftInputMode="adjustResize"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

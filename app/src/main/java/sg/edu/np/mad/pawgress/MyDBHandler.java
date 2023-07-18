@@ -40,6 +40,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_PET_DESIGN = "PetDesign";
     public static String COLUMN_TARGET_SEC = "TargetSec";
     public static String COLUMN_DAILY_CHALLENGE = "DailyChallenge";
+    public static String COLUMN_TASK_PRIORITY = "Priority";
     public static String COLUMN_PROFILE_PICTURE = "ProfilePicture";
 
 
@@ -81,7 +82,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_TASK_DUEDATE + " TEXT," +
                 COLUMN_TASK_DATECREATED + " TEXT," +
                 COLUMN_TASK_DATECOMPLETED + " TEXT," +
-                COLUMN_DAILY_CHALLENGE + " INTEGER)";
+                COLUMN_DAILY_CHALLENGE + " INTEGER," +
+                COLUMN_TASK_PRIORITY + " INTEGER)";
 
         db.execSQL(CREATE_TASK_TABLE);
         Log.i(title, CREATE_TASK_TABLE);
@@ -125,6 +127,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_TASK_DATECREATED, task.getDateCreated());
         values.put(COLUMN_TASK_DATECOMPLETED, task.getDateComplete());
         values.put(COLUMN_DAILY_CHALLENGE, task.getDailyChallenge());
+        values.put(COLUMN_TASK_PRIORITY, task.getPriority());
         db.insert(TASKS, null, values);
         taskList.add(task); // adds new task into task list
         userData.setTaskList(taskList); // new task list assigned to user that was passed in
@@ -145,6 +148,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_TASK_DATECREATED, task.getDateCreated());
         values.put(COLUMN_TASK_DATECOMPLETED, task.getDateComplete());
         values.put(COLUMN_DAILY_CHALLENGE, task.getDailyChallenge());
+        values.put(COLUMN_TASK_PRIORITY, task.getPriority());
 
         db.update(TASKS, values, COLUMN_TASK_ID + "=?", new String[]{String.valueOf(task.getTaskID())});
         Log.i(title, "Updated Task");
@@ -234,6 +238,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setDateCreated(cursor.getString(8));
             queryResult.setDateComplete(cursor.getString(9));
             queryResult.setDailyChallenge(cursor.getInt(10));
+            queryResult.setPriority(cursor.getInt(11));
             NewtaskList.add(queryResult);
             while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
                 Task task = new Task();
@@ -247,6 +252,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 task.setDateCreated(cursor.getString(8));
                 task.setDateComplete(cursor.getString(9));
                 task.setDailyChallenge(cursor.getInt(10));
+                task.setPriority(cursor.getInt(11));
                 NewtaskList.add(task);
             }
             cursor.close();
@@ -380,7 +386,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_PROFILE_PICTURE, profilePicturePath);
         db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
 
-        
+
 
         // Log the updated profile picture path
         Log.i("MyDBHandler", "Profile picture saved for user: " + username);
@@ -394,5 +400,13 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.execSQL(clearDBQuery);
     }
 
+    public void updateCurrency(String username, int currency){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CURRENCY, currency);
 
+        db.update(ACCOUNTS, values,COLUMN_USERNAME + "=?", new String[]{username});
+
+        Log.i(title, "Currency has been updated");
+    }
 }

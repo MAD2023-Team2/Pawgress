@@ -14,24 +14,29 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
 import sg.edu.np.mad.pawgress.DailyLogIn;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.Tasks.ParentTaskAdapter;
+import sg.edu.np.mad.pawgress.Tasks.SpinnerAdapter;
 import sg.edu.np.mad.pawgress.Tasks.Task;
-import sg.edu.np.mad.pawgress.Tasks.TaskAdapter;
 import sg.edu.np.mad.pawgress.UserData;
 
 /**
@@ -52,9 +57,11 @@ public class TasksFragment extends Fragment {
     private TextView emptyTaskText;
     private String dueDate;
     int hr,min,sec;
+    int taskPriority = 0;
     UserData user;
     RecyclerView recyclerView;
     MyDBHandler myDBHandler;
+    SpinnerAdapter adapter;
 
     public TasksFragment() {
         // Required empty public constructor
@@ -104,17 +111,22 @@ public class TasksFragment extends Fragment {
         user = receivingEnd.getParcelableExtra("User");
         refreshRecyclerView();
         FloatingActionButton button = view.findViewById(R.id.addTask);
-        Dialog createTask = new Dialog(getActivity());
+        BottomSheetDialog createTask = new BottomSheetDialog(getActivity());
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 createTask.setContentView(R.layout.create_task);
                 createTask.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                createTask.setCancelable(false);
-                createTask.getWindow().getAttributes().windowAnimations = R.style.animation;
-                Button create_task = createTask.findViewById(R.id.findFriends);
-                Button discard = createTask.findViewById(R.id.button5);
-                TextView date = createTask.findViewById(R.id.btnPickDate);
+                createTask.setCancelable(true);
+                createTask.setDismissWithAnimation(true);
+
+                ImageButton create = createTask.findViewById(R.id.create);
+                EditText taskName = createTask.findViewById(R.id.taskName);
+                EditText taskCat = createTask.findViewById(R.id.taskCategory);
+                TextView chooseDate = createTask.findViewById(R.id.dueDate);
+                TextView date = createTask.findViewById(R.id.date);
+                TextView spinnerText = createTask.findViewById(R.id.spinner);
+                Spinner spinner = createTask.findViewById(R.id.priority);
 
                 NumberPicker ethr = (NumberPicker) createTask.findViewById(R.id.hourPicker);
                 ethr.setMaxValue(999);
@@ -154,7 +166,7 @@ public class TasksFragment extends Fragment {
                         sec = i1;
                     }
                 });
-                date.setOnClickListener(new View.OnClickListener() {
+                chooseDate.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         final Calendar c = Calendar.getInstance();
@@ -166,71 +178,69 @@ public class TasksFragment extends Fragment {
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
                                 String day1 = String.valueOf(dayOfMonth);
-                                String month1 =String.valueOf(monthOfYear + 1);
-                                if (day1.length() != 2){
-                                    day1 = "0" +day1;
+                                String month1 = String.valueOf(monthOfYear + 1);
+                                if (day1.length() != 2) {
+                                    day1 = "0" + day1;
                                 }
-                                if (month1.length() != 2){
+                                if (month1.length() != 2) {
                                     month1 = "0" + month1;
                                 }
                                 date.setText(day1 + "/" + month1 + "/" + year);
                                 dueDate = date.getText().toString();
                             }
-                        },
+                            },
                                 year, month, day);
-                        datePickerDialog.show();
+                        datePickerDialog.show();}
+                });
+                ArrayList<String> priority = new ArrayList<>();
+                priority.add("Normal");
+                priority.add("Prioritised");
+                adapter = new SpinnerAdapter(getActivity(), priority);
+                spinner.setSelection(adapter.getPosition("Normal"));
+                spinner.setAdapter(adapter);
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String priority = (String)parent.getItemAtPosition(position);
+                        if (priority.equals("Prioritised")){
+                            taskPriority = 1;
+                        }
+                        else taskPriority=0;
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        taskPriority=0;
                     }
                 });
 
-                create_task.setOnClickListener(new View.OnClickListener() {
+                create.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        EditText etname = createTask.findViewById(R.id.editTitle);
-                        String name = etname.getText().toString();
-                        EditText etcat = createTask.findViewById(R.id.editCat);
+                        String name = taskName.getText().toString();
                         // do not accept blank task title or category
                         int totalSeconds = (hr * 3600) + (min * 60) + sec;
-                        if (etname.length() > 0 && etname.getText().charAt(0) != ' ') {
-                            String cat = etcat.getText().toString();
-                            if (cat.length()==0 || etcat.getText().charAt(0) == ' '){
+                        if (taskName.length() > 0 && taskName.getText().charAt(0) != ' ') {
+                            String cat = taskCat.getText().toString();
+                            if (cat.length()==0 || taskCat.getText().charAt(0) == ' '){
                                 cat = "Uncategorised";
                             }
                             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                             String newDayDate = formatter.format(new Date());
-
-                            Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds, dueDate, newDayDate, null, 0);
+                            Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds, dueDate, newDayDate, null, 0, taskPriority);
                             myDBHandler.addTask(task, user);
                             createTask.dismiss();
                             refreshRecyclerView();
-                            Toast.makeText(getActivity(), "Task Created", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Task created", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Toast.makeText(getActivity(), "Invalid Title", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getActivity(), "Invalid title", Toast.LENGTH_SHORT).show();
                         }
                     }});
-
-                discard.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        createTask.dismiss();
-                        Toast.makeText(getActivity(), "Task Discarded", Toast.LENGTH_SHORT).show();
-                    }
-                });
-
-                createTask.setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialog) {
-
-                    }
-                });
                 createTask.show();
-                //Intent createTask = new Intent(getActivity(), CreateTask.class);
-                //createTask.putExtra("User", user);
-                //startActivity(createTask);
-                //getActivity().finish();
+
             }
         });
-
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String newDayDate = formatter.format(new Date());
         String lastInDate = user.getLastLogInDate();
@@ -247,7 +257,7 @@ public class TasksFragment extends Fragment {
     }
 
     public void refreshRecyclerView(){
-        TaskAdapter mAdapter = new TaskAdapter(user,myDBHandler, getActivity() );
+        ParentTaskAdapter mAdapter = new ParentTaskAdapter(user,myDBHandler, getActivity(), TasksFragment.this);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         mAdapter.emptyTasktext = emptyTaskText;

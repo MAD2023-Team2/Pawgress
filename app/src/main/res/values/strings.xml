@@ -71,6 +71,10 @@
     // Task
     <string name="taskName">Task Name</string>
     <string name="taskCategory">Task Category</string>
+    <string-array name="priority">
+        <item>Normal</item>
+        <item>Prioritised</item>
+    </string-array>
 
     // Stopwatch
     <string name="mainTimer">0:00:00</string>

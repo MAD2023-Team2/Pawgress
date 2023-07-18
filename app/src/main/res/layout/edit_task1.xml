@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="55dp"
         android:layout_marginTop="33dp"
-        android:layout_toLeftOf="@id/create"
+        android:layout_toLeftOf="@id/edit"
         android:background="@drawable/field_background"
         android:backgroundTint="#FCFBFC"
         android:elevation="1dp"
@@ -26,7 +26,7 @@
         android:textSize="26sp" />
 
     <ImageButton
-        android:id="@+id/create"
+        android:id="@+id/edit"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:layout_alignStart="@id/taskName"
-        android:layout_alignEnd="@id/create"
+        android:layout_alignEnd="@id/edit"
         android:background="@drawable/rounded_border"
         android:drawableStart="@android:drawable/ic_menu_sort_by_size"
         android:drawablePadding="10dp"
