@@ -123,6 +123,15 @@ public class Task implements Parcelable {
     public void setDailyChallenge(int dailyChallenge) { this.dailyChallenge = dailyChallenge;}
     public int getPriority() { return priority;}
     public void setPriority(int priority) { this.priority = priority;}
+    public static int countTasksLeft(List<Task> tasks) {
+        int count = 0;
+        for (Task task : tasks) {
+            if (task.getStatus().equals("In Progress")) {
+                count++;
+            }
+        }
+        return count;
+    }
 
     public List<String> getColorCode() {
         List<String> colorCodes = new ArrayList<>();
