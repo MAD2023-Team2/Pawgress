@@ -41,6 +41,17 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_TARGET_SEC = "TargetSec";
     public static String COLUMN_DAILY_CHALLENGE = "DailyChallenge";
     public static String COLUMN_TASK_PRIORITY = "Priority";
+    public static String FRIENDS = "Friends";
+    public static String COLUMN_FRIENDNAME = "FriendName";
+    public static String COLUMN_FRIEND_STATUS = "FriendStatus";
+    public static String FRIENDREQUEST = "FriendRequest";
+    public static String COLUMN_FRIENDREQ_NAME = "FriendReqName";
+    public static String COLUMN_FRIENDREQ_STATUS = "FriendReqStatus";
+    public static String QUOTE = "Quote";
+    public static String COLUMN_QUOTE_TEXT = "QuoteText";
+    public static String COLUMN_AUTHOR = "Author";
+
+
 
 
 
@@ -85,6 +96,30 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         db.execSQL(CREATE_TASK_TABLE);
         Log.i(title, CREATE_TASK_TABLE);
+
+        String CREATE_FRIENDS_TABLE = "Create TABLE " + FRIENDS + "(" +
+                COLUMN_FRIENDNAME + " TEXT," +
+                COLUMN_FRIEND_STATUS + " TEXT," +
+                COLUMN_USERNAME + " TEXT)";
+
+        db.execSQL(CREATE_FRIENDS_TABLE);
+        Log.i(title, CREATE_FRIENDS_TABLE);
+
+        String CREATE_FRIENDREQUEST_TABLE = "Create TABLE " + FRIENDREQUEST + "(" +
+                COLUMN_FRIENDREQ_NAME + " TEXT," +
+                COLUMN_FRIENDREQ_STATUS + " TEXT," +
+                COLUMN_USERNAME + " TEXT)";
+
+        db.execSQL(CREATE_FRIENDREQUEST_TABLE);
+        Log.i(title, CREATE_FRIENDREQUEST_TABLE);
+
+        String CREATE_QUOTE_TABLE = "Create TABLE " + QUOTE + "(" +
+                COLUMN_QUOTE_TEXT + " TEXT," +
+                COLUMN_AUTHOR + " TEXT," +
+                COLUMN_USERNAME + " TEXT)";
+
+        db.execSQL(CREATE_QUOTE_TABLE);
+        Log.i(title, CREATE_QUOTE_TABLE);
     }
 
     @Override
@@ -356,6 +391,121 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.execSQL(clearDBQuery);
     }
 
+    public ArrayList<FriendData> findFriendList(UserData userData){
+        String query = "SELECT * FROM " + FRIENDS + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
+        Log.i(title, "Query :" + query);
+        ArrayList<FriendData> friendList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        FriendData queryResult = new FriendData();
+        if (cursor.moveToFirst()){ // goes to first row if not null
+            queryResult.setFriendName(cursor.getString(0));
+            queryResult.setStatus(cursor.getString(1));
+            friendList.add(queryResult);
+            while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
+                FriendData friend = new FriendData();
+                friend.setFriendName(cursor.getString(0));
+                friend.setStatus(cursor.getString(1));
+                friendList.add(friend);
+            }
+            cursor.close();
+            userData.setFriendList(friendList);
+        }
+        else{
+            userData.setFriendList(friendList);
+        }
+//        db.close();
+        return userData.getFriendList();
+    }
+
+    public void addFriend(String friendName, UserData userData, String status){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_FRIENDNAME, friendName);
+        values.put(COLUMN_FRIEND_STATUS, status);
+        values.put(COLUMN_USERNAME, userData.getUsername());
+
+        db.insert(FRIENDS, null, values);
+
+        Log.i(title, "Inserted Friend");
+//        db.close();
+    }
+
+    public void removeFriend(String friendName, UserData userData){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+        values.put(COLUMN_FRIENDNAME, friendName);
+        values.put(COLUMN_FRIEND_STATUS, "Unfriended");
+        values.put(COLUMN_USERNAME, userData.getUsername());
+
+
+        db.update(FRIENDS, values,COLUMN_FRIENDNAME + "='" + friendName + "' AND " + COLUMN_USERNAME + "='" + userData.getUsername() + "'", null);
+
+        Log.i(title, "Friend Status updated");
+
+
+//        db.close();
+    }
+
+
+
+    public ArrayList<FriendRequest> findFriendReqList(UserData userData){
+        String query = "SELECT * FROM " + FRIENDREQUEST + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
+        Log.i(title, "Query :" + query);
+        ArrayList<FriendRequest> friendReqList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        FriendRequest queryResult = new FriendRequest();
+        if (cursor.moveToFirst()){ // goes to first row if not null
+            queryResult.setFriendReqName(cursor.getString(0));
+            queryResult.setReqStatus(cursor.getString(1));
+            friendReqList.add(queryResult);
+            while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
+                FriendRequest friend = new FriendRequest();
+                friend.setFriendReqName(cursor.getString(0));
+                friend.setReqStatus(cursor.getString(1));
+                friendReqList.add(friend);
+            }
+            cursor.close();
+            userData.setFriendReqList(friendReqList);
+        }
+        else{
+            userData.setFriendReqList(friendReqList);
+        }
+//        db.close();
+        return userData.getFriendReqList();
+    }
+
+    public void addFriendReq(String friendReqName, UserData userData, String reqStatus){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_FRIENDREQ_NAME, friendReqName);
+        values.put(COLUMN_FRIENDREQ_STATUS, reqStatus);
+        values.put(COLUMN_USERNAME, userData.getUsername());
+
+        db.insert(FRIENDREQUEST, null, values);
+
+        Log.i(title, "Inserted Friend Request");
+//        db.close();
+    }
+
+    public void removeFriendReq(String friendReqName, UserData userData){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        /*
+        values.put(COLUMN_FRIENDREQ_NAME, friendReqName);
+        values.put(COLUMN_FRIENDREQ_STATUS, "Rejected");
+        values.put(COLUMN_USERNAME, userData.getUsername());
+        */
+        db.delete(FRIENDREQUEST, COLUMN_FRIENDREQ_NAME + "='" + friendReqName + "' AND " + COLUMN_USERNAME + "='" + userData.getUsername() + "'", null);
+        //db.update(FRIENDREQUEST, values,COLUMN_FRIENDREQ_NAME + "='" + friendReqName + "' AND " + COLUMN_USERNAME + "='" + userData.getUsername() + "'", null);
+
+        Log.i(title, "Friend Request removed");
+//        db.close();
+    }
     public void updateCurrency(String username, int currency){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -365,4 +515,55 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         Log.i(title, "Currency has been updated");
     }
+
+    public void updateQuoteAndAuthor(String quoteText, String author, UserData userData){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        try{
+            db.delete(QUOTE, COLUMN_USERNAME + "=?", new String[]{String.valueOf(userData.getUsername())});
+
+            values.put(COLUMN_QUOTE_TEXT, quoteText);
+            values.put(COLUMN_AUTHOR, author);
+            values.put(COLUMN_USERNAME, userData.getUsername());
+        }catch (Exception e){
+            values.put(COLUMN_QUOTE_TEXT, quoteText);
+            values.put(COLUMN_AUTHOR, author);
+            values.put(COLUMN_USERNAME, userData.getUsername());
+        }
+        db.insert(QUOTE, null, values);
+
+        Log.i(title, "Quote updated");
+//        db.close();
+    }
+
+    public String getQuote(UserData userData){
+        String query = "SELECT * FROM " + QUOTE + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        String quote = "Quote";
+        if (cursor != null && cursor.moveToFirst()) {
+            int quoteIndex = cursor.getColumnIndex(COLUMN_QUOTE_TEXT);
+            quote = cursor.getString(quoteIndex);
+            cursor.close();
+        }
+//        db.close();
+
+        return quote;
+    }
+
+    public String getAuthor(UserData userData){
+        String query = "SELECT * FROM " + QUOTE + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        String author = "Author";
+        if (cursor != null && cursor.moveToFirst()) {
+            int authorIndex = cursor.getColumnIndex(COLUMN_AUTHOR);
+            author = cursor.getString(authorIndex);
+            cursor.close();
+        }
+//        db.close();
+
+        return author;
+    }
+
 }
