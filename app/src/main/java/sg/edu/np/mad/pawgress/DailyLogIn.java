@@ -56,7 +56,7 @@ public class DailyLogIn extends AppCompatActivity {
         }
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String newDayDate = formatter.format(new Date());
-        Task task = new Task(1, name, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,1, 0);
+        Task task = new Task(1, name, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,null,1, 0);
         myDBHandler.addTask(task, user);
         Log.w("Daily Log In","Created Daily Challenge: " + task.getTaskName());
     }

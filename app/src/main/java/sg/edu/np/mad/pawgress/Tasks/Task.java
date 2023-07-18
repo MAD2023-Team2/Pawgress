@@ -21,6 +21,7 @@ public class Task implements Parcelable {
     private int targetSec;
     private String dueDate;
     private String dateCreated;
+    private String dateStart;
     private String dateComplete;
     private int priority;
 
@@ -28,7 +29,7 @@ public class Task implements Parcelable {
     }
 
     // add in date of creation and duedate(can accept null)
-    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec, String dueDate, String dateCreated, String dateComplete, int dailyChallenge, int priority) {
+    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec, String dueDate, String dateCreated, String dateStart, String dateComplete, int dailyChallenge, int priority) {
         this.taskID = taskID;
         this.taskName = taskName;
         this.status = status;
@@ -37,6 +38,7 @@ public class Task implements Parcelable {
         this.targetSec = targetSec;
         this.dueDate = dueDate;
         this.dateCreated = dateCreated;
+        this.dateStart = dateStart;
         this.dateComplete = dateComplete;
         this.dailyChallenge = dailyChallenge;
         this.priority = priority;
@@ -51,6 +53,7 @@ public class Task implements Parcelable {
         targetSec = in.readInt();
         dueDate = in.readString();
         dateCreated = in.readString();
+        dateStart = in.readString();
         dateComplete = in.readString();
         dailyChallenge = in.readInt();
         priority = in.readInt();
@@ -83,6 +86,7 @@ public class Task implements Parcelable {
         dest.writeInt(targetSec);
         dest.writeString(dueDate);
         dest.writeString(dateCreated);
+        dest.writeString(dateStart);
         dest.writeString(dateComplete);
         dest.writeInt(dailyChallenge);
         dest.writeInt(priority);
@@ -123,6 +127,8 @@ public class Task implements Parcelable {
     public void setDailyChallenge(int dailyChallenge) { this.dailyChallenge = dailyChallenge;}
     public int getPriority() { return priority;}
     public void setPriority(int priority) { this.priority = priority;}
+    public String getDateStart() { return dateStart; }
+    public void setDateStart(String dateStart) { this.dateStart = dateStart; }
 
     public List<String> getColorCode() {
         List<String> colorCodes = new ArrayList<>();
