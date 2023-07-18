@@ -113,7 +113,7 @@ public class ProfileFragment extends Fragment{
         });
 
         // Edit Profile Button
-        Button editProfileButton = (Button) view.findViewById(R.id.editProfilePicture);
+        Button editProfileButton = (Button) view.findViewById(R.id.editProfilePassword);
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
