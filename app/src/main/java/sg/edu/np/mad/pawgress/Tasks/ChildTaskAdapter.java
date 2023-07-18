@@ -29,6 +29,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -334,8 +335,9 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         Log.v(THIS, "Completed task " + task.getTaskName());
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                        String newDayDate = formatter.format(new Date());
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy, h:mm");
+                        String newDayDate = formatter.format(new Date().getTime());
+                        Log.w(THIS, "Task Completed at " + newDayDate);
                         task.setStatus("Completed");
                         task.setDateComplete(newDayDate);
                         mDataBase.updateTask(task, user.getUsername());
