@@ -2,11 +2,13 @@ package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -16,11 +18,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import sg.edu.np.mad.pawgress.LoginPage;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.SaveSharedPreference;
+import sg.edu.np.mad.pawgress.Tasks.TaskCompletion;
+import sg.edu.np.mad.pawgress.Tasks.TaskGame;
 import sg.edu.np.mad.pawgress.UserData;
 
 /**
@@ -148,7 +153,46 @@ public class ProfileFragment extends Fragment{
             }
         });
 
+        //Delete Account button
+        Button deleteAccountButton = (Button) view.findViewById(R.id.deleteButton);
+        deleteAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // cheat method for deleting account
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setTitle("Delete Account?");
+                builder.setMessage("");
 
+                // Set the positive button and its click listener
+                builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Toast.makeText(getContext(), "Account has been deleted!", Toast.LENGTH_SHORT).show();
+                        dbData.setPassword("");
+                        myDBHandler.updatePassword(dbData.getUsername(), "");
+                        // Clears shared preference so no auto login
+                        SaveSharedPreference.clearUserName(getActivity());
+
+                        // Goes to login page after logging out
+                        Intent intent = new Intent(getActivity(), LoginPage.class);
+                        startActivity(intent);
+                    }
+                });
+
+                // Set the negative button and its click listener
+                builder.setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        // do nth
+                    }
+                });
+
+                // Create and show the dialog
+                AlertDialog dialog = builder.create();
+                dialog.show();
+
+            }
+        });
         return view;
     }
 

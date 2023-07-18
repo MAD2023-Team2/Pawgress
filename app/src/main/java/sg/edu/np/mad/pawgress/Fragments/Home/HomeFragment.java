@@ -21,10 +21,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
 import sg.edu.np.mad.pawgress.DailyLogIn;
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfileFragment;
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
+import sg.edu.np.mad.pawgress.InspirationalQuote;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -94,10 +102,17 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         Log.i(null, "Starting App Home Page");
+        MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
 
         // Get user data from the intent
         Intent receivingEnd = getActivity().getIntent();
         UserData user = receivingEnd.getParcelableExtra("User");
+
+        TextView quoteTextView = view.findViewById(R.id.quoteTextView);
+        TextView authorTextView = view.findViewById(R.id.authorTextView);
+        Log.i(null, ""+ myDBHandler.getQuote(user) + myDBHandler.getAuthor(user));
+        quoteTextView.setText(myDBHandler.getQuote(user));
+        authorTextView.setText(myDBHandler.getAuthor(user));
 
         // Set pet picture based on user's pet design
         ImageView pet_picture = view.findViewById(R.id.homeGame);
@@ -134,7 +149,7 @@ public class HomeFragment extends Fragment {
         });
 
         // Set up the task list RecyclerView
-        MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
+
         RecyclerView recyclerView = view.findViewById(R.id.taskcardlist);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
         emptySpaceTextView = view.findViewById(R.id.emptyspace_home);
@@ -215,5 +230,7 @@ public class HomeFragment extends Fragment {
         });
         return view;
     }
+
+
 
 }

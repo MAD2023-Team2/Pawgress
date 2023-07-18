@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,7 +7,7 @@
     android:background="#FAF5F0"
     tools:context=".Fragments.Profile.ProfileFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#FCFBFC"
@@ -21,27 +21,24 @@
             android:fontFamily="sans-serif-condensed-medium"
             android:text="@string/profilePageTitle"
             android:textSize="17sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_centerHorizontal="true"/>
 
         <Button
-            android:id="@+id/editProfilePicture"
+            android:id="@+id/editProfilePassword"
             style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="29dp"
-            android:layout_marginTop="180dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="29dp"
             android:backgroundTint="#EFDFCE"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="fill_vertical"
             android:text="@string/editProfileText"
             app:icon="@android:drawable/ic_menu_edit"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ProfileUsername" />
+            android:layout_below="@+id/SettingsText"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"/>
 
         <Button
             android:id="@+id/analytics"
@@ -56,9 +53,9 @@
             android:gravity="fill_vertical"
             android:text="@string/analyticsText"
             app:icon="@android:drawable/ic_menu_search"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/userSettings" />
+            android:layout_below="@+id/userSettings"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"/>
 
         <Button
             android:id="@+id/userSettings"
@@ -73,9 +70,9 @@
             android:gravity="fill_vertical"
             android:text="@string/userSettingsText"
             app:icon="@android:drawable/ic_menu_preferences"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/findFriends" />
+            android:layout_below="@+id/findFriends"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"/>
 
         <Button
             android:id="@+id/logOut"
@@ -83,16 +80,36 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="29dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="29dp"
+            android:backgroundTint="#EFDFCE"
+            android:textColor="#FF5722"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="fill_vertical"
+            android:text="@string/logOutText"
+            app:icon="?attr/homeAsUpIndicator"
+            android:layout_below="@+id/AccountText"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"/>
+
+        <Button
+            android:id="@+id/deleteButton"
+            style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="29dp"
+            android:layout_marginBottom="29dp"
             android:layout_marginTop="20dp"
             android:layout_marginEnd="29dp"
             android:backgroundTint="#EFDFCE"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="fill_vertical"
-            android:text="@string/logOutText"
+            android:text="@string/deleteAccountText"
+            android:textColor="#FF5722"
             app:icon="?attr/homeAsUpIndicator"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/analytics" />
+            android:layout_below="@+id/logOut"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"/>
 
         <Button
             android:id="@+id/findFriends"
@@ -107,21 +124,42 @@
             android:gravity="fill_vertical"
             android:text="Friends"
             app:icon="@android:drawable/ic_menu_myplaces"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editProfilePicture" />
+            android:layout_below="@+id/editProfilePassword"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"/>
 
         <TextView
             android:id="@+id/ProfileUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="29dp"
             android:layout_marginTop="20dp"
             android:fontFamily="sans-serif-condensed-medium"
-            android:text="TextView"
+            android:text="@string/filler"
             android:textSize="34sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView8" />
+            android:layout_below="@+id/textView8"
+            android:layout_marginStart="29dp"/>
+
+        <TextView
+            android:id="@+id/AccountText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/accountText"
+            android:textSize="15sp"
+            android:layout_below="@+id/analytics"
+            android:layout_marginStart="29dp"/>
+
+        <TextView
+            android:id="@+id/SettingsText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:fontFamily="sans-serif-condensed"
+            android:text="@string/settingsText"
+            android:textSize="15sp"
+            android:layout_below="@+id/ProfileUsername"
+            android:layout_marginStart="29dp"/>
 
         <ImageView
             android:id="@+id/imageView10"
@@ -135,5 +173,5 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ProfileUsername" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+    </RelativeLayout>
+</ScrollView>

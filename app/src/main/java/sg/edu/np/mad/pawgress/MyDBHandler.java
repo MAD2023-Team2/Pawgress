@@ -35,6 +35,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_TASK_TIMESPENT = "TimeSpent";
     public static String COLUMN_TASK_DUEDATE = "DueDate";
     public static String COLUMN_TASK_DATECREATED = "DateCreated";
+    public static String COLUMN_TASK_DATESTARTED = "DateStarted";
     public static String COLUMN_TASK_DATECOMPLETED = "DateCompleted";
     public static String COLUMN_PET_TYPE = "PetType";
     public static String COLUMN_PET_DESIGN = "PetDesign";
@@ -48,6 +49,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String FRIENDREQUEST = "FriendRequest";
     public static String COLUMN_FRIENDREQ_NAME = "FriendReqName";
     public static String COLUMN_FRIENDREQ_STATUS = "FriendReqStatus";
+    public static String QUOTE = "Quote";
+    public static String COLUMN_QUOTE_TEXT = "QuoteText";
+    public static String COLUMN_AUTHOR = "Author";
+
 
 
 
@@ -88,6 +93,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_TARGET_SEC + " INTERGER," +
                 COLUMN_TASK_DUEDATE + " TEXT," +
                 COLUMN_TASK_DATECREATED + " TEXT," +
+                COLUMN_TASK_DATESTARTED + " TEXT, " +
                 COLUMN_TASK_DATECOMPLETED + " TEXT," +
                 COLUMN_DAILY_CHALLENGE + " INTEGER," +
                 COLUMN_TASK_PRIORITY + " INTEGER)";
@@ -110,6 +116,14 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         db.execSQL(CREATE_FRIENDREQUEST_TABLE);
         Log.i(title, CREATE_FRIENDREQUEST_TABLE);
+
+        String CREATE_QUOTE_TABLE = "Create TABLE " + QUOTE + "(" +
+                COLUMN_QUOTE_TEXT + " TEXT," +
+                COLUMN_AUTHOR + " TEXT," +
+                COLUMN_USERNAME + " TEXT)";
+
+        db.execSQL(CREATE_QUOTE_TABLE);
+        Log.i(title, CREATE_QUOTE_TABLE);
     }
 
     @Override
@@ -148,6 +162,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_TARGET_SEC, task.getTargetSec());
         values.put(COLUMN_TASK_DUEDATE, task.getDueDate());
         values.put(COLUMN_TASK_DATECREATED, task.getDateCreated());
+        values.put(COLUMN_TASK_DATESTARTED, task.getDateStart());
         values.put(COLUMN_TASK_DATECOMPLETED, task.getDateComplete());
         values.put(COLUMN_DAILY_CHALLENGE, task.getDailyChallenge());
         values.put(COLUMN_TASK_PRIORITY, task.getPriority());
@@ -169,6 +184,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_TARGET_SEC, task.getTargetSec());
         values.put(COLUMN_TASK_DUEDATE, task.getDueDate());
         values.put(COLUMN_TASK_DATECREATED, task.getDateCreated());
+        values.put(COLUMN_TASK_DATESTARTED, task.getDateStart());
         values.put(COLUMN_TASK_DATECOMPLETED, task.getDateComplete());
         values.put(COLUMN_DAILY_CHALLENGE, task.getDailyChallenge());
         values.put(COLUMN_TASK_PRIORITY, task.getPriority());
@@ -259,9 +275,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setTargetSec(cursor.getInt(6));
             queryResult.setDueDate(cursor.getString(7));
             queryResult.setDateCreated(cursor.getString(8));
-            queryResult.setDateComplete(cursor.getString(9));
-            queryResult.setDailyChallenge(cursor.getInt(10));
-            queryResult.setPriority(cursor.getInt(11));
+            queryResult.setDateStart(cursor.getString(9));
+            queryResult.setDateComplete(cursor.getString(10));
+            queryResult.setDailyChallenge(cursor.getInt(11));
+            queryResult.setPriority(cursor.getInt(12));
             NewtaskList.add(queryResult);
             while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
                 Task task = new Task();
@@ -273,9 +290,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 task.setTargetSec(cursor.getInt(6));
                 task.setDueDate(cursor.getString(7));
                 task.setDateCreated(cursor.getString(8));
-                task.setDateComplete(cursor.getString(9));
-                task.setDailyChallenge(cursor.getInt(10));
-                task.setPriority(cursor.getInt(11));
+                task.setDateStart(cursor.getString(9));
+                task.setDateComplete(cursor.getString(10));
+                task.setDailyChallenge(cursor.getInt(11));
+                task.setPriority(cursor.getInt(12));
                 NewtaskList.add(task);
             }
             cursor.close();
@@ -547,4 +565,74 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         Log.i(title, "Currency has been updated");
     }
+
+    public void updatePassword(String username, String password){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PASSWORD, password);
+
+        db.update(ACCOUNTS, values,COLUMN_USERNAME + "=?", new String[]{username});
+
+        Log.i(title, "Password has been updated");
+    }
+
+    public void updateQuoteAndAuthor(String quoteText, String author, UserData userData){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        try{
+            db.delete(QUOTE, COLUMN_USERNAME + "=?", new String[]{String.valueOf(userData.getUsername())});
+
+            values.put(COLUMN_QUOTE_TEXT, quoteText);
+            values.put(COLUMN_AUTHOR, author);
+            values.put(COLUMN_USERNAME, userData.getUsername());
+        }catch (Exception e){
+            values.put(COLUMN_QUOTE_TEXT, quoteText);
+            values.put(COLUMN_AUTHOR, author);
+            values.put(COLUMN_USERNAME, userData.getUsername());
+        }
+        db.insert(QUOTE, null, values);
+
+        Log.i(title, "Quote updated");
+//        db.close();
+    }
+
+    public String getQuote(UserData userData){
+        String query = "SELECT * FROM " + QUOTE + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        String quote = "Quote";
+        if (cursor != null && cursor.moveToFirst()) {
+            int quoteIndex = cursor.getColumnIndex(COLUMN_QUOTE_TEXT);
+            quote = cursor.getString(quoteIndex);
+            cursor.close();
+        }
+//        db.close();
+
+        return quote;
+    }
+
+    public String getAuthor(UserData userData){
+        String query = "SELECT * FROM " + QUOTE + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        String author = "Author";
+        if (cursor != null && cursor.moveToFirst()) {
+            int authorIndex = cursor.getColumnIndex(COLUMN_AUTHOR);
+            author = cursor.getString(authorIndex);
+            cursor.close();
+        }
+//        db.close();
+
+        return author;
+    }
+    public void updateUsername(String username, String newName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, newName);
+
+        db.update(ACCOUNTS, values,COLUMN_USERNAME + "=?", new String[]{username});
+
+        Log.i(title, "Username has been updated");
+    }
+
 }

@@ -15,15 +15,25 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 
 public class DailyLogIn extends AppCompatActivity {
-    MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
+    MyDBHandler myDBHandler = new MyDBHandler(this, null, null, 1);
     UserData user;
     Boolean new_day = false;
+    String quoteText;
+    String author;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,9 +66,9 @@ public class DailyLogIn extends AppCompatActivity {
         }
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String newDayDate = formatter.format(new Date());
-        Task task = new Task(1, name, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,1, 0);
+        Task task = new Task(1, name, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,null,1, 0);
         myDBHandler.addTask(task, user);
-        Log.w("Daily Log In","Created Daily Challenge: " + task.getTaskName());
+        Log.w("Daily Log In", "Created Daily Challenge: " + task.getTaskName());
     }
 
     @Override
@@ -69,9 +79,15 @@ public class DailyLogIn extends AppCompatActivity {
 
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
-        try{
+
+        fetchRandomQuote();
+        myDBHandler.updateQuoteAndAuthor(quoteText, author, user);
+
+        try {
             new_day = receivingEnd.getExtras().getBoolean("new_day");
-        } catch (Exception exception){ Log.w("DailyLogIn","not from inside app"); }
+        } catch (Exception exception) {
+            Log.w("DailyLogIn", "not from inside app");
+        }
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
         String newDayDate = formatter.format(new Date());
@@ -84,14 +100,14 @@ public class DailyLogIn extends AppCompatActivity {
         Date date2;
         int currency = user.getCurrency();
         int streak = user.getStreak();
-        Log.w("Daily Log In","Current Currency:" + currency + "\n" + "Current Streak: " + streak + "\n" + "logged in status: " + user.getLoggedInTdy());
+        Log.w("Daily Log In", "Current Currency:" + currency + "\n" + "Current Streak: " + streak + "\n" + "logged in status: " + user.getLoggedInTdy());
 
         String tempStr = "No";
 
-        try{
+        try {
             date1 = dateFormat.parse(lastInDate);
             date2 = dateFormat.parse(newDayDate);
-        } catch(ParseException e){
+        } catch (ParseException e) {
             e.printStackTrace();
             return;
         }
@@ -101,8 +117,8 @@ public class DailyLogIn extends AppCompatActivity {
         TextView rewardText = findViewById(R.id.rewardText);
         Button closeButton = findViewById(R.id.closeDaily);
 
-        if (lastInDate.equals(newDayDate)){
-            Log.w("Daily Log In","Last log in date equal to todays date.");
+        if (lastInDate.equals(newDayDate)) {
+            Log.w("Daily Log In", "Last log in date equal to today's date.");
 
             // scenario where user first create their account and their first streak will pop up
             if (user.getLoggedInTdy().equals(tempStr)){
@@ -116,10 +132,10 @@ public class DailyLogIn extends AppCompatActivity {
                 myDBHandler.updateData(user.getUsername(), newDayDate, streak, currency, "Yes");
                 user.setStreak(streak);
                 user.setCurrency(currency);
-                closeButton.setOnClickListener(new View.OnClickListener(){
+                closeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v){
-                        Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DailyLogIn.this, MainMainMain.class);
                         user.setLastLogInDate(newDayDate);
                         intent.putExtra("User", user);
                         intent.putExtra("tab", "home_tab");
@@ -134,10 +150,10 @@ public class DailyLogIn extends AppCompatActivity {
                 statusText.setText("You've logged in today, keep up with the Pawgress!");
                 streakText.setText(" ");
                 rewardText.setText(" ");
-                closeButton.setOnClickListener(new View.OnClickListener(){
+                closeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onClick(View v){
-                        Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
+                    public void onClick(View v) {
+                        Intent intent = new Intent(DailyLogIn.this, MainMainMain.class);
                         user.setLastLogInDate(newDayDate);
                         intent.putExtra("User", user);
                         intent.putExtra("tab", "home_tab");
@@ -221,5 +237,46 @@ public class DailyLogIn extends AppCompatActivity {
                 }
             }
         }
+    }
+
+    public interface ProductivityQuoteApi {
+        @GET("random") // Replace with the actual API endpoint
+        Call<List<InspirationalQuote>> getRandomQuote();
+    }
+
+    private void fetchRandomQuote() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://zenquotes.io/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ProductivityQuoteApi apiService = retrofit.create(ProductivityQuoteApi.class);
+
+        Call<List<InspirationalQuote>> call = apiService.getRandomQuote();
+        call.enqueue(new Callback<List<InspirationalQuote>>() {
+            @Override
+            public void onResponse(Call<List<InspirationalQuote>> call, Response<List<InspirationalQuote>> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    InspirationalQuote quote = response.body().get(0);
+                    quoteText = quote.getQuote();
+                    author = quote.getAuthor();
+
+                    onQuoteFetched(quoteText, author);
+                } else {
+                    // Handle API error or empty response
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<InspirationalQuote>> call, Throwable t) {
+                // Handle network error
+            }
+        });
+    }
+
+    public void onQuoteFetched(String quoteText, String author) {
+        this.quoteText = quoteText;
+        this.author = author;
+        myDBHandler.updateQuoteAndAuthor(quoteText, author, user);
     }
 }
