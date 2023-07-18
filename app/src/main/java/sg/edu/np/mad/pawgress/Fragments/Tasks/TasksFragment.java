@@ -99,7 +99,6 @@ public class TasksFragment extends Fragment {
 
         String TAG = "Task List";
         myDBHandler = new MyDBHandler(getActivity(),null,null,1);
-
         // Inflate the layout for this fragment
         View view;
         view = inflater.inflate(R.layout.fragment_tasks, container, false);
@@ -226,7 +225,7 @@ public class TasksFragment extends Fragment {
                             }
                             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                             String newDayDate = formatter.format(new Date());
-                            Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds, dueDate, newDayDate, null, 0, taskPriority);
+                            Task task = new Task(1, name, "In Progress", cat ,0, totalSeconds, dueDate, newDayDate, null, null, 0, taskPriority);
                             myDBHandler.addTask(task, user);
                             createTask.dismiss();
                             refreshRecyclerView();
