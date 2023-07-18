@@ -138,6 +138,17 @@ public class ProfileFragment extends Fragment{
         //this.profilePictureImageView = profilePictureImageView; // Assign to class level variable
 
 
+        Button friendsButton = (Button) view.findViewById(R.id.findFriends);
+        friendsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), friends.class);
+                intent.putExtra("User", dbData);
+                startActivity(intent);
+            }
+        });
+
+
         return view;
     }
 

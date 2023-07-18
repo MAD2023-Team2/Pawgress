@@ -1,233 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#FCFBFC"
-    tools:context=".Tasks.EditTask">
+    android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/button12"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-        android:layout_width="100dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="88dp"
-        android:layout_marginBottom="36dp"
-        android:backgroundTint="#88E473"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Confirm"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button13"
-        app:layout_constraintTop_toBottomOf="@id/minPicker3"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <Button
-        android:id="@+id/button13"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-        android:layout_width="100dp"
-        android:layout_height="43dp"
-        android:layout_marginStart="88dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="35dp"
-        android:layout_marginBottom="36dp"
-        android:backgroundTint="#88E473"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Cancel"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/button12"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/minPicker3"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <NumberPicker
-        android:id="@+id/minPicker3"
-        android:layout_width="65dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="15dp"
-        android:layout_weight="1"
-        app:layout_constraintEnd_toStartOf="@+id/secPicker3"
-        app:layout_constraintStart_toEndOf="@+id/hourPicker3"
-        app:layout_constraintTop_toBottomOf="@+id/textView30" />
-
-    <NumberPicker
-        android:id="@+id/secPicker3"
-        android:layout_width="65dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:layout_marginEnd="72dp"
-        android:layout_weight="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView31" />
-
-    <NumberPicker
-        android:id="@+id/hourPicker3"
-        android:layout_width="65dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="4dp"
-        android:layout_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView29" />
-
-    <TextView
-        android:id="@+id/textView28"
+    <EditText
+        android:id="@+id/taskName"
+        style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="160dp"
-
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="160dp"
+        android:layout_marginStart="55dp"
+        android:layout_marginTop="33dp"
+        android:layout_toLeftOf="@id/edit"
+        android:background="@drawable/field_background"
+        android:backgroundTint="#FCFBFC"
+        android:elevation="1dp"
+        android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="Target Time"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView24" />
+        android:hint="Task Name"
+        android:inputType="text"
+        android:paddingStart="5dp"
+        android:singleLine="false"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="26sp" />
+
+    <ImageButton
+        android:id="@+id/edit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginLeft="33dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="55dp"
+        android:backgroundTint="#CACFB4"
+        app:srcCompat="@drawable/baseline_add_task_24" />
+
+    <EditText
+        android:id="@+id/taskCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_alignStart="@id/taskName"
+        android:layout_alignEnd="@id/edit"
+        android:background="@drawable/rounded_border"
+        android:drawableStart="@android:drawable/ic_menu_sort_by_size"
+        android:drawablePadding="10dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:gravity="center_vertical"
+        android:hint="Add Category"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:layout_below="@id/taskName" />
 
     <TextView
-        android:id="@+id/textView29"
-        android:layout_width="65dp"
+        android:id="@+id/dueDate"
+        android:layout_width="126dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="16dp"
+        android:layout_below="@id/taskCategory"
+        android:layout_alignStart="@id/taskCategory"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="5dp"
+        android:background="@drawable/rounded_border"
+        android:drawableStart="@android:drawable/ic_menu_today"
+        android:drawablePadding="5dp"
+        android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
-        android:gravity="center"
+        android:hint="Due date"
+        android:inputType="text"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/black"
+        android:textSize="13sp" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskCategory"
+        android:layout_alignStart="@id/dueDate"
+        android:layout_marginStart="47dp"
+        android:layout_marginTop="38dp"
+        android:fontFamily="sans-serif-condensed-medium" />
+
+    <TextView
+        android:id="@+id/spinner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskCategory"
+        android:layout_alignEnd="@id/taskCategory"
+        android:layout_alignBottom="@id/dueDate"
+        android:layout_marginTop="14dp"
+        android:layout_toRightOf="@id/dueDate"
+        android:background="@drawable/rounded_border"
+        android:drawableStart="@android:drawable/presence_invisible"
+        android:drawablePadding="5dp"
+        android:ems="10"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:hint="Priority"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:textSize="13sp" />
+
+
+    <Spinner
+        android:id="@+id/priority"
+        android:layout_width="149dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskCategory"
+        android:layout_alignEnd="@id/taskCategory"
+        android:layout_marginStart="13dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="27dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toRightOf="@id/dueDate"
+        android:paddingStart="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:spinnerMode="dropdown" />
+
+    <TextView
+        android:id="@+id/selectTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/dueDate"
+        android:layout_alignStart="@id/dueDate"
+        android:layout_alignEnd="@id/priority"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="-2dp"
+        android:layout_marginBottom="33dp"
+        android:background="@drawable/rounded_border"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:hint="Target Time"
+        android:paddingTop="7dp"
+        android:paddingBottom="150dp"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+
+    <NumberPicker
+        android:id="@+id/hourPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/dueDate"
+        android:layout_alignBottom="@id/selectTime"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="23dp"
+        android:layout_alignTop="@id/selectTime"
+        android:layout_marginTop="50dp"/>
+
+    <TextView
+        android:id="@+id/Hours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Hours"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView28" />
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_alignTop="@id/selectTime"
+        android:layout_marginTop="30dp"
+        android:layout_alignStart="@id/hourPicker"
+        android:layout_alignEnd="@id/hourPicker"
+        android:textAlignment="center"/>
+
+    <NumberPicker
+        android:id="@+id/minPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/hourPicker"
+        android:layout_alignBottom="@id/selectTime"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="23dp"
+        android:layout_alignTop="@id/selectTime"
+        android:layout_marginTop="50dp"/>
 
     <TextView
-        android:id="@+id/textView30"
-        android:layout_width="65dp"
+        android:id="@+id/Minutes"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="50dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:gravity="center"
         android:text="Minutes"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView28" />
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_alignTop="@id/selectTime"
+        android:layout_marginTop="30dp"
+        android:layout_alignStart="@id/minPicker"
+        android:layout_alignEnd="@id/minPicker"
+        android:textAlignment="center"/>
+
+    <NumberPicker
+        android:id="@+id/secPicker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/minPicker"
+        android:layout_alignBottom="@id/selectTime"
+        android:layout_marginBottom="10dp"
+        android:layout_marginStart="23dp"
+        android:layout_alignTop="@id/selectTime"
+        android:layout_marginTop="50dp"/>
 
     <TextView
-        android:id="@+id/textView31"
-        android:layout_width="65dp"
+        android:id="@+id/Seconds"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="72dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:gravity="center"
         android:text="Seconds"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView28" />
-
-    <TextView
-        android:id="@+id/textView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="148dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="Edit Task"
-        android:textSize="27sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <EditText
-        android:id="@+id/editTextText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_alignTop="@id/selectTime"
         android:layout_marginTop="30dp"
-        android:layout_marginEnd="60dp"
-        android:background="@drawable/field_background"
-        android:ems="10"
-        android:fontFamily="sans-serif-condensed"
-        android:inputType="text"
-        android:paddingStart="5dp"
-        android:text="@string/taskName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView8"
-        app:layout_constraintTop_toBottomOf="@id/editTextText2" />
+        android:layout_alignStart="@id/secPicker"
+        android:layout_alignEnd="@id/secPicker"
+        android:textAlignment="center"/>
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="30dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Title: "
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView9" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="70dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="40dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Category: "
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textView6" />
-
-    <EditText
-        android:id="@+id/editTextText2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginEnd="60dp"
-        android:background="@drawable/field_background"
-        android:ems="10"
-        android:fontFamily="sans-serif-condensed"
-        android:inputType="text"
-        android:paddingStart="5dp"
-        android:text="@string/taskCategory"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView9"
-        app:layout_constraintTop_toBottomOf="@id/textView6" />
-
-    <TextView
-        android:id="@+id/textView16"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="60dp"
-        android:layout_marginTop="30dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Due Date:"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
-
-    <TextView
-        android:id="@+id/textView24"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="60dp"
-        android:background="@drawable/field_background"
-        android:fontFamily="sans-serif-condensed"
-        android:paddingStart="5dp"
-        android:text="no due date set"
-        android:textSize="18sp"
-        app:flow_horizontalAlign="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/textView16"
-        app:layout_constraintTop_toBottomOf="@+id/editTextText" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

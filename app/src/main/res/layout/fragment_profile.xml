@@ -105,7 +105,7 @@
             android:backgroundTint="#EFDFCE"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="fill_vertical"
-            android:text="@string/findFriendsText"
+            android:text="Friends"
             app:icon="@android:drawable/ic_menu_myplaces"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

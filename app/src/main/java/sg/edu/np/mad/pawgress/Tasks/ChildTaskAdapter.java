@@ -1,10 +1,8 @@
 package sg.edu.np.mad.pawgress.Tasks;
 
 import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +14,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -27,8 +24,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -154,7 +149,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
             holder.edit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    editTask.setContentView(R.layout.edit_task1);
+                    editTask.setContentView(R.layout.edit_task);
                     editTask.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     editTask.setCancelable(true);
                     editTask.setDismissWithAnimation(true);
@@ -274,7 +269,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
                             if (taskName.length() > 0 && taskName.getText().charAt(0) != ' ') {
                                 task.setTaskName(taskName.getText().toString());
                                 task.setCategory(taskCat.getText().toString());
-                                task.setDueDate(date.getText().toString());
+                                task.setDueDate(dueDate);
                                 task.setPriority(finalTaskPriority);
                                 task.setTargetSec(totalSeconds);
                                 if (taskCat.length()==0 || taskCat.getText().charAt(0) == ' '){

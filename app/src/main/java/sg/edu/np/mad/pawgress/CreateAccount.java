@@ -14,6 +14,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.tutorials.tutPage1;
@@ -47,20 +49,42 @@ public class CreateAccount extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() { //create button in create account page
             @Override
             public void onClick(View v) {
+                String dbUsername = etUsername.getText().toString();
+                String dbPassword = etPassword.getText().toString();
                 //input validation, no empty inputs
-                if (etUsername.length() > 0 && etPassword.length() > 0) {
+                if (etUsername.length() > 0 && validatePassword(dbPassword)) {
                     UserData dbData = myDBHandler.findUser(etUsername.getText().toString());
 
                     // Checking that account does not already exists
                     if (dbData == null){
-                        String dbUsername = etUsername.getText().toString();
-                        String dbPassword = etPassword.getText().toString();
                         ArrayList<Task> taskList = new ArrayList<Task>();
                         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                         String accCreateDate = formatter.format(new Date());
-                        UserData dbUserData = new UserData(1,dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354);
+
+                        ArrayList<FriendData> friendList = new ArrayList<>();
+                        FriendData friendData = new FriendData("abc", "Unfriended");
+                        friendList.add(friendData);
+
+                        ArrayList<FriendRequest> friendRequests = new ArrayList<>();
+                        FriendRequest friendReq = new FriendRequest("admin", "Rejected");
+                        friendRequests.add(friendReq);
+
+                        UserData dbUserData = new UserData(1,dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354, friendList, friendRequests);
                         System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
 
+                        myDBHandler.clearDatabase("ACCOUNTS");
+                        myDBHandler.clearDatabase("TASKS");
+                        myDBHandler.clearDatabase("FRIENDS");
+                        myDBHandler.clearDatabase("FRIENDREQUEST");
+                        for (Task task: dbUserData.getTaskList()){
+                            myDBHandler.addTask(task, dbUserData);
+                        }
+                        for (FriendData friend: dbUserData.getFriendList()){
+                            myDBHandler.addFriend(friend.getFriendName(), dbUserData, friend.getStatus());
+                        }
+                        for (FriendRequest friendRequest: dbUserData.getFriendReqList()){
+                            myDBHandler.addFriendReq(friendRequest.getFriendReqName(), dbUserData, friendRequest.getReqStatus());
+                        }
                         // Adding user to database
                         myDBHandler.addUser(dbUserData);
 
@@ -96,5 +120,12 @@ public class CreateAccount extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    // Using Regular Expression for Password Validation
+    // Conditions : Password Length 8-20 characters, must have lower and upper case & digits
+    public static boolean validatePassword(String password) {
+        String passwordRegex = "^(?=.*[A-Z])(?=.*[a-z])(?=.*\\d).{8,20}$";
+        return Pattern.matches(passwordRegex, password);
     }
 }

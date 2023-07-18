@@ -35,9 +35,6 @@
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
-            android:name=".Tasks.EditTask"
-            android:exported="false" />
-        <activity
             android:name=".Tasks.TaskView"
             android:exported="false" />
         <activity
@@ -61,6 +58,9 @@
             android:exported="false" />
         <activity
             android:name=".EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".Fragments.Profile.friends"
             android:exported="false" />
         <activity
             android:name=".LoginPage"

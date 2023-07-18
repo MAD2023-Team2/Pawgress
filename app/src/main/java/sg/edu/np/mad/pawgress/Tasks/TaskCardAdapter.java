@@ -63,7 +63,7 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
         }
         else{
             for (Task task : taskList){
-                if(task.getStatus().equals("In Progress")){
+                if(task.getStatus().equals("In Progress") && (task.getPriority()==1 || task.getDailyChallenge()==1)){
                     count+=1;
                     recyclerTaskList.add(task);
                 }
