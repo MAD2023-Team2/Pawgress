@@ -26,9 +26,6 @@
             android:windowSoftInputMode="adjustResize"
             android:exported="false" />
         <activity
-            android:name=".Tasks.EditTask"
-            android:exported="false" />
-        <activity
             android:name=".Tasks.TaskView"
             android:exported="false" />
         <activity
