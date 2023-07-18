@@ -66,7 +66,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
         recyclerView.setAdapter(friendsAdapter);
 
         addFriend = findViewById(R.id.addFriend);
-        Dialog searchDialog = new Dialog(this);
+        Dialog searchDialog = new Dialog(this, R.style.CustomDialog);
         addFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -118,7 +118,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
         });
 
         friendRequest = findViewById(R.id.friendRequest);
-        Dialog requestDialog = new Dialog(this);
+        Dialog requestDialog = new Dialog(this, R.style.CustomDialog);
         friendRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
