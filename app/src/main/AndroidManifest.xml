@@ -51,6 +51,9 @@
             android:name=".EditProfileActivity"
             android:exported="false" />
         <activity
+            android:name=".Fragments.Profile.friends"
+            android:exported="false" />
+        <activity
             android:name=".LoginPage"
             android:windowSoftInputMode="adjustResize"
             android:exported="true" >
