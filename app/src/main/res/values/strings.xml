@@ -22,8 +22,11 @@
     <string name="userSettingsText">User Settings</string>
     <string name="analyticsText">Analytics</string>
     <string name="logOutText">Log Out</string>
-
     <string name="friendRequest">Friend Requests</string>
+    <string name="filler">John Doe</string>
+    <string name="accountText">ACCOUNTS</string>
+    <string name="settingsText">SETTINGS</string>
+    <string name="deleteAccountText">Delete Pawgress Account</string>
 
     // Home Page
     <string name="greeting">Hello</string>
