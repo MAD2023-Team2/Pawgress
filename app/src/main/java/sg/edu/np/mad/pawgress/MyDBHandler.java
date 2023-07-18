@@ -514,5 +514,14 @@ public class MyDBHandler extends SQLiteOpenHelper{
         Log.i(title, "Password has been updated");
     }
 
+    public void updateUsername(String username, String newName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, newName);
+
+        db.update(ACCOUNTS, values,COLUMN_USERNAME + "=?", new String[]{username});
+
+        Log.i(title, "Username has been updated");
+    }
 
 }
