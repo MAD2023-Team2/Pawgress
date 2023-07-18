@@ -21,6 +21,8 @@ public class UserData implements Parcelable{
     private int petDesign;
     private String actualUserName;
     private int userId;
+    private String profilePicturePath;
+    private int ResId;
     private ArrayList<FriendData> friendList;
     private ArrayList<FriendRequest> friendReqList;
 
@@ -106,6 +108,8 @@ public class UserData implements Parcelable{
     public void setPetType(String petType){ this.petType = petType; }
     public int getPetDesign(){ return petDesign; }
     public void setPetDesign(int petDesign) { this.petDesign = petDesign; }
+    public void setProfilePicturePath(String profilePicturePath) { this.profilePicturePath = profilePicturePath; }
+    public String getProfilePicturePath() { return profilePicturePath; }
     public ArrayList<FriendData> getFriendList() {return this.friendList; }
     public void setFriendList(ArrayList<FriendData> friendList) { this.friendList = friendList; }
     public ArrayList<FriendRequest> getFriendReqList() {return friendReqList;}

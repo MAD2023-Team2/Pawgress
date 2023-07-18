@@ -129,6 +129,15 @@ public class Task implements Parcelable {
     public void setPriority(int priority) { this.priority = priority;}
     public String getDateStart() { return dateStart; }
     public void setDateStart(String dateStart) { this.dateStart = dateStart; }
+    public static int countTasksLeft(List<Task> tasks) {
+        int count = 0;
+        for (Task task : tasks) {
+            if (task.getStatus().equals("In Progress")) {
+                count++;
+            }
+        }
+        return count;
+    }
 
     public List<String> getColorCode() {
         List<String> colorCodes = new ArrayList<>();

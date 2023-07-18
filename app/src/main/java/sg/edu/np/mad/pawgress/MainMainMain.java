@@ -6,23 +6,34 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+
 import sg.edu.np.mad.pawgress.Fragments.Game.GameFragment;
 import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfileFragment;
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
+import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.databinding.ActivityMainMainMainBinding;
 
 public class MainMainMain extends AppCompatActivity {
     ActivityMainMainMainBinding binding;
     UserData user;
+    private static final int NOTIFICATION_REQUEST_CODE = 123;
+
+    private PendingIntent notificationPendingIntent;
+    private AlarmManager alarmManager;
     @Override
     public void onBackPressed(){
         new AlertDialog.Builder(this)
@@ -44,11 +55,28 @@ public class MainMainMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         // Setting content view
         setContentView(R.layout.activity_main_main_main);
-
+        // setTheme(R.style.Theme_Pawgress_LightBeigeMode);
         // Binding of navigation bar and fragments
         binding = ActivityMainMainMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        // Create a pending intent for the notification receiver
+        Intent notificationIntent = new Intent(this, MyNotificationReceiver.class);
+        notificationPendingIntent = PendingIntent.getBroadcast(
+                this,
+                NOTIFICATION_REQUEST_CODE,
+                notificationIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        // Set up the alarm manager to schedule notifications
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        // Set the alarm to trigger at 7 AM, 12 PM, and 6 PM
+        setNotificationAlarm(18, 17);
+        setNotificationAlarm(12, 0);
+        // testing
+        setNotificationAlarm(18, 0);
 
         // Update the bottomNavigationView selection based of page of origin
         Intent receivingEnd = getIntent();
@@ -104,6 +132,34 @@ public class MainMainMain extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    // Sets the alarm for the specified hour and minute
+    private void setNotificationAlarm(int hourOfDay, int minute) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, hourOfDay);
+        calendar.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.SECOND, 0);
+
+        // If the specified time has already passed, set the alarm for the next day
+        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+        // Set the alarm using the appropriate method based on the device's Android version
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            alarmManager.setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis(),
+                    notificationPendingIntent
+            );
+        } else {
+            alarmManager.setExact(
+                    AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis(),
+                    notificationPendingIntent
+            );
+        }
+    }
+
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
     @Override
     protected void onStop() {
@@ -116,5 +172,15 @@ public class MainMainMain extends AppCompatActivity {
         fbUser.setFriendReqList(myDBHandler.findFriendReqList(user));
 
         myRef.child(user.getUsername()).setValue(fbUser);
+    }
+    // Count the number of tasks with "In Progress" status
+    public int countTasks(ArrayList<Task> newTaskList){
+        int count = 0;
+        for (Task task : newTaskList){
+            if (task.getStatus().equals("In Progress")){
+                count++;
+            }
+        }
+        return count;
     }
 }

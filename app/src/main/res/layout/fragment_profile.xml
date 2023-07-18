@@ -41,7 +41,7 @@
             android:layout_alignParentEnd="true"/>
 
         <Button
-            android:id="@+id/button9"
+            android:id="@+id/analytics"
             style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -53,12 +53,12 @@
             android:gravity="fill_vertical"
             android:text="@string/analyticsText"
             app:icon="@android:drawable/ic_menu_search"
-            android:layout_below="@+id/button8"
+            android:layout_below="@+id/userSettings"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"/>
 
         <Button
-            android:id="@+id/button8"
+            android:id="@+id/userSettings"
             style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -70,12 +70,12 @@
             android:gravity="fill_vertical"
             android:text="@string/userSettingsText"
             app:icon="@android:drawable/ic_menu_preferences"
-            android:layout_below="@+id/friendsButton"
+            android:layout_below="@+id/findFriends"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"/>
 
         <Button
-            android:id="@+id/logoutFrag"
+            android:id="@+id/logOut"
             style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -107,12 +107,12 @@
             android:text="@string/deleteAccountText"
             android:textColor="#FF5722"
             app:icon="?attr/homeAsUpIndicator"
-            android:layout_below="@+id/logoutFrag"
+            android:layout_below="@+id/logOut"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"/>
 
         <Button
-            android:id="@+id/friendsButton"
+            android:id="@+id/findFriends"
             style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -122,7 +122,7 @@
             android:backgroundTint="#EFDFCE"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="fill_vertical"
-            android:text="@string/friendsText"
+            android:text="Friends"
             app:icon="@android:drawable/ic_menu_myplaces"
             android:layout_below="@+id/editProfilePassword"
             android:layout_alignParentStart="true"
@@ -147,7 +147,7 @@
             android:fontFamily="sans-serif-condensed"
             android:text="@string/accountText"
             android:textSize="15sp"
-            android:layout_below="@+id/button9"
+            android:layout_below="@+id/analytics"
             android:layout_marginStart="29dp"/>
 
         <TextView
@@ -160,6 +160,18 @@
             android:textSize="15sp"
             android:layout_below="@+id/ProfileUsername"
             android:layout_marginStart="29dp"/>
+
+        <ImageView
+            android:id="@+id/imageView10"
+            android:layout_width="124dp"
+            android:layout_height="136dp"
+            android:layout_marginStart="143dp"
+            android:layout_marginTop="19dp"
+            android:background="@drawable/rounded_background"
+            android:scaleType="centerInside"
+            android:src="@drawable/corgi_sunglasses"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ProfileUsername" />
 
     </RelativeLayout>
 </ScrollView>

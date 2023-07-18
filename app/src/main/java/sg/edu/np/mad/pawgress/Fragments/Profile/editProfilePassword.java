@@ -33,7 +33,7 @@ public class editProfilePassword extends AppCompatActivity {
 
     private TextView noPass, noName;
 
-    private CardView frameOne, frameTwo, frameThree, frameFour;
+    private CardView frameOne, frameTwo, frameThree;
     private boolean passChar8 = false, passUpper = false, passNum = false, isRegistrationClickable = false;
 
     @Override
@@ -150,12 +150,15 @@ public class editProfilePassword extends AppCompatActivity {
             noPass.setVisibility(View.GONE);
         }
     }
+    @SuppressLint("ResourceType")
     private void checkAllData() {
         if (passChar8 && passUpper && passNum) {
             isRegistrationClickable = true;
+            btnSave.setBackgroundColor(Color.parseColor("#88E473"));
         }
         else {
             isRegistrationClickable = false;
+            btnSave.setBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
         }
     }
     @SuppressLint("ResourceType")
@@ -164,14 +167,14 @@ public class editProfilePassword extends AppCompatActivity {
 
         checkEmpty(name, password);
 
-        if (password.length() >= 8) {
+        if (password.length() >= 8 && password.length() <= 20) {
             passChar8 = true;
             frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
         } else {
             passChar8 = false;
             frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
         }
-        if (password.matches("(.*[A-Z].*)")) {
+        if (password.matches("(?=.*[A-Z])(?=.*[a-z]).+")) {
             passUpper = true;
             frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
         } else {

@@ -3,6 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools" >
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SET_ALARM" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -14,6 +22,18 @@
         android:theme="@style/Theme.Pawgress"
         android:usesCleartextTraffic="true"
         tools:targetApi="31" >
+        <activity
+            android:name=".Fragments.Profile.NotificationSelection"
+            android:exported="false" />
+        <!-- <activity -->
+        <!-- android:name=".Fragments.Profile.ThemeSelectionActivity" -->
+        <!-- android:exported="false" /> -->
+        <activity
+            android:name=".Fragments.Profile.ProfilePictureSelection"
+            android:exported="false" />
+        <activity
+            android:name=".Fragments.Profile.UserSettingsActivity"
+            android:exported="false" />
         <activity
             android:name=".CompanionSelectionActivity"
             android:exported="false" />
@@ -72,6 +92,17 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
+        <receiver
+            android:name=".MyNotificationReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

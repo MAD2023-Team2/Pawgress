@@ -2,6 +2,7 @@ package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -27,7 +28,7 @@ public class ProfilePage extends AppCompatActivity {
         super.onStart();
 
         //Log Out button
-        Button logoutButton = findViewById(R.id.logoutFrag);
+        Button logoutButton = findViewById(R.id.logOut);
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -38,15 +39,32 @@ public class ProfilePage extends AppCompatActivity {
         });
 
         // Edit Profile Button
-        Button editProfileButton = findViewById(R.id.editProfilePassword);
+        Button editProfileButton = findViewById(R.id.editProfilePicture);
         editProfileButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SaveSharedPreference.clearUserName(ProfilePage.this); //clears shared preference so no auto login
+                //SaveSharedPreference.clearUserName(ProfilePage.this); //clears shared preference so no auto login
                 Intent intent = new Intent(ProfilePage.this, editProfilePassword.class);
                 startActivity(intent);
             }
         });
+
+        // User Settings Button
+        Button userSettingsButton = findViewById(R.id.userSettings);
+        userSettingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Log the click event
+                Log.i("ProfilePage", "User Settings button clicked");
+
+                //SaveSharedPreference.clearUserName(ProfilePage.this); //clears shared preference so no auto login
+                Intent intent = new Intent(ProfilePage.this, UserSettingsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Update/Display User Profile Pic
+        // receive intent/data from pfp selection?? 
 
         // Setting Username Text
         UserData dbData = myDBHandler.findUser(SaveSharedPreference.getUserName(ProfilePage.this));

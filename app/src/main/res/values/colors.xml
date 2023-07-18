@@ -1,7 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="black">#FF0000</color>
+    <color name="white">#FFFFFF</color>
+
+    <color name="darkModeBlack">#2D2E33</color>
+    <color name="backgroundColour">#FCF6F1</color>
+
+    <!-- Home Page -->
+    <!-- Used for drawable and RV -->
+    <color name="drawableColour">#F3DFCD</color>
+    <!-- Taskcard xml -->
+    <color name="taskColour">#FFFFFF</color>
+
+    <!-- Edit Profile Password -->
+    <!-- Username and Password field (update @drawable/field_background) -->
+    <color name="fieldColour">#F3DFCD</color>
+
+    <!-- PFP selection -->
+    <!-- Update background -->
+
+    <!-- Task Completion screen -->
+    <!-- Update background -->
+
+    <!-- User Settings -->
+    <!-- Update background -->
+
+    <!-- Fragment Profile screen -->
+    <!-- Update background + button colour -->
+
+    <!-- Login page -->
+    <!-- See how -->
+
+    <!-- Task xml -->
+    <!-- Make the task a darker beige -->
+
+    <!-- Text Colour change -->
+    <color name="textColour">#47525E</color>
     <color name="colorAccent">#03DAC5</color>
     <color name="colorDefault">#dcdcdc</color>
 </resources>
