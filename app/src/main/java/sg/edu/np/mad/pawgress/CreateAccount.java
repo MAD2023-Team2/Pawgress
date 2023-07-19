@@ -20,12 +20,9 @@ import androidx.cardview.widget.CardView;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import sg.edu.np.mad.pawgress.Fragments.Profile.editProfilePassword;
 import sg.edu.np.mad.pawgress.Tasks.Task;
-import sg.edu.np.mad.pawgress.tutorials.tutPage1;
+import sg.edu.np.mad.pawgress.tutorials.Tutorial_Page;
 
 public class CreateAccount extends AppCompatActivity {
     String title = "Main Activity 2";
@@ -110,7 +107,7 @@ public class CreateAccount extends AppCompatActivity {
 
                             // Setting shared preference for auto login
                             SaveSharedPreference.setUserName(CreateAccount.this ,etUsername.getText().toString());
-                            Intent intent = new Intent(CreateAccount.this, tutPage1.class);
+                            Intent intent = new Intent(CreateAccount.this, Tutorial_Page.class);
                             intent.putExtra("User", dbUserData);
 
                             // for CreateAccount to CompanionSelectionActivity

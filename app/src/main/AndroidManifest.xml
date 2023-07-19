@@ -35,6 +35,9 @@
             android:name=".Fragments.Profile.UserSettingsActivity"
             android:exported="false" />
         <activity
+            android:name=".tutorials.Tutorial_Page"
+            android:exported="false" />
+        <activity
             android:name=".CompanionSelectionActivity"
             android:exported="false" />
         <activity
@@ -61,15 +64,6 @@
             android:name=".Fragments.Profile.ProfilePage"
             android:exported="false" />
         <activity
-            android:name=".tutorials.tutPage1"
-            android:exported="false" />
-        <activity
-            android:name=".tutorials.tutPage2"
-            android:exported="false" />
-        <activity
-            android:name=".tutorials.tutPage3"
-            android:exported="false" />
-        <activity
             android:name=".EditProfileActivity"
             android:exported="false" />
         <activity
@@ -81,7 +75,6 @@
             android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
