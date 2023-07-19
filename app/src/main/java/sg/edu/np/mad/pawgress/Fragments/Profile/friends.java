@@ -63,6 +63,100 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                         UserData tempUser = snapshot.getValue(UserData.class);
                         user.setFriendList(tempUser.getFriendList());
                         user.setFriendReqList(tempUser.getFriendReqList());
+
+                        //ArrayList<FriendRequest> friendRequests = myDBHandler.findFriendReqList(user);
+                        //user.setFriendReqList(friendRequests);
+
+                        setContentView(R.layout.activity_friends);
+
+                        RecyclerView recyclerView = findViewById(R.id.friendsRecycler);
+                        friendsAdapter =
+                                new FriendsAdapter(friends.this, user, myDBHandler);
+                        LinearLayoutManager mLayoutManager =
+                                new LinearLayoutManager(friends.this);
+                        recyclerView.setLayoutManager(mLayoutManager);
+                        recyclerView.setItemAnimator(new DefaultItemAnimator());
+                        recyclerView.setAdapter(friendsAdapter);
+
+                        addFriend = findViewById(R.id.addFriend);
+                        Dialog searchDialog = new Dialog(friends.this, R.style.CustomDialog);
+                        addFriend.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                getFirebaseList(new FirebaseDataListener() {
+                                    @Override
+                                    public void onDataLoaded(ArrayList<String> firebaseList) {
+                                        /*
+                                        for (String name: firebaseList){
+                                            FriendRequest req = new FriendRequest(name, "Outgoing Pending");
+                                            ArrayList<FriendRequest> reqList = myDBHandler.findFriendReqList(user);
+                                            if (reqList.contains(req)){
+                                                firebaseList.remove(req.getFriendReqName());
+                                            }
+                                        }
+                                         */
+                                        searchDialog.setContentView(R.layout.search_friend);
+                                        searchDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                        searchDialog.setCancelable(true);
+
+                                        searchDialog.show();
+
+                                        RecyclerView searchRecyclerView = searchDialog.findViewById(R.id.searchRecyclerView);
+                                        searchAdapter =
+                                                new SearchAdapter(friends.this, firebaseList, myDBHandler, user);
+                                        LinearLayoutManager searchLayoutManager =
+                                                new LinearLayoutManager(friends.this);
+                                        searchRecyclerView.setLayoutManager(searchLayoutManager);
+                                        searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                                        searchRecyclerView.setAdapter(searchAdapter);
+
+                                        searchView = searchDialog.findViewById(R.id.searchView);
+                                        searchView.clearFocus();
+                                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                                            @Override
+                                            public boolean onQueryTextSubmit(String query) {
+                                                return false;
+                                            }
+
+                                            @Override
+                                            public boolean onQueryTextChange(String newText) {
+                                                filterList(newText, firebaseList);
+                                                return true;
+                                            }
+                                        });
+                                    }
+                                });
+
+                            }
+                        });
+
+                        friendRequest = findViewById(R.id.friendRequest);
+                        Dialog requestDialog = new Dialog(friends.this, R.style.CustomDialog);
+                        friendRequest.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+
+                                getFirebaseRequestList(new FirebaseRequestDataListener() {
+                                    @Override
+                                    public void onRequestDataLoaded(ArrayList<String> firebaseRequestList) {
+                                        requestDialog.setContentView(R.layout.friend_requests);
+                                        requestDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                        requestDialog.setCancelable(true);
+
+                                        requestDialog.show();
+
+                                        RecyclerView friendRequestRecyclerView = requestDialog.findViewById(R.id.friendRequestRecyclerView);
+                                        friendRequestAdapter =
+                                                new FriendRequestAdapter(friends.this, user, myDBHandler, firebaseRequestList, friends.this);
+                                        LinearLayoutManager searchLayoutManager =
+                                                new LinearLayoutManager(friends.this);
+                                        friendRequestRecyclerView.setLayoutManager(searchLayoutManager);
+                                        friendRequestRecyclerView.setItemAnimator(new DefaultItemAnimator());
+                                        friendRequestRecyclerView.setAdapter(friendRequestAdapter);
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
             }
@@ -72,99 +166,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
 
             }
         });
-        //ArrayList<FriendRequest> friendRequests = myDBHandler.findFriendReqList(user);
-        //user.setFriendReqList(friendRequests);
 
-        setContentView(R.layout.activity_friends);
-
-        RecyclerView recyclerView = findViewById(R.id.friendsRecycler);
-        friendsAdapter =
-                new FriendsAdapter(this, user, myDBHandler);
-        LinearLayoutManager mLayoutManager =
-                new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(mLayoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(friendsAdapter);
-
-        addFriend = findViewById(R.id.addFriend);
-        Dialog searchDialog = new Dialog(this, R.style.CustomDialog);
-        addFriend.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getFirebaseList(new FirebaseDataListener() {
-                    @Override
-                    public void onDataLoaded(ArrayList<String> firebaseList) {
-                        /*
-                        for (String name: firebaseList){
-                            FriendRequest req = new FriendRequest(name, "Outgoing Pending");
-                            ArrayList<FriendRequest> reqList = myDBHandler.findFriendReqList(user);
-                            if (reqList.contains(req)){
-                                firebaseList.remove(req.getFriendReqName());
-                            }
-                        }
-                         */
-                        searchDialog.setContentView(R.layout.search_friend);
-                        searchDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        searchDialog.setCancelable(true);
-
-                        searchDialog.show();
-
-                        RecyclerView searchRecyclerView = searchDialog.findViewById(R.id.searchRecyclerView);
-                        searchAdapter =
-                                new SearchAdapter(friends.this, firebaseList, myDBHandler, user);
-                        LinearLayoutManager searchLayoutManager =
-                                new LinearLayoutManager(friends.this);
-                        searchRecyclerView.setLayoutManager(searchLayoutManager);
-                        searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                        searchRecyclerView.setAdapter(searchAdapter);
-
-                        searchView = searchDialog.findViewById(R.id.searchView);
-                        searchView.clearFocus();
-                        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                            @Override
-                            public boolean onQueryTextSubmit(String query) {
-                                return false;
-                            }
-
-                            @Override
-                            public boolean onQueryTextChange(String newText) {
-                                filterList(newText, firebaseList);
-                                return true;
-                            }
-                        });
-                    }
-                });
-
-            }
-        });
-
-        friendRequest = findViewById(R.id.friendRequest);
-        Dialog requestDialog = new Dialog(this, R.style.CustomDialog);
-        friendRequest.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                getFirebaseRequestList(new FirebaseRequestDataListener() {
-                    @Override
-                    public void onRequestDataLoaded(ArrayList<String> firebaseRequestList) {
-                        requestDialog.setContentView(R.layout.friend_requests);
-                        requestDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                        requestDialog.setCancelable(true);
-
-                        requestDialog.show();
-
-                        RecyclerView friendRequestRecyclerView = requestDialog.findViewById(R.id.friendRequestRecyclerView);
-                        friendRequestAdapter =
-                                new FriendRequestAdapter(friends.this, user, myDBHandler, firebaseRequestList, friends.this);
-                        LinearLayoutManager searchLayoutManager =
-                                new LinearLayoutManager(friends.this);
-                        friendRequestRecyclerView.setLayoutManager(searchLayoutManager);
-                        friendRequestRecyclerView.setItemAnimator(new DefaultItemAnimator());
-                        friendRequestRecyclerView.setAdapter(friendRequestAdapter);
-                    }
-                });
-            }
-        });
     }
 
     public void filterList(String text, ArrayList<String> firebaseList){

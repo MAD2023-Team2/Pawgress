@@ -98,7 +98,27 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
                                     reqList.add(req);
                                     receivingUser.setFriendReqList(reqList);
                                 }
+                                ArrayList<FriendRequest> thisUserReqList = user.getFriendReqList();
+                                // Checks if friend is already in friend list, if it is: change the status
+                                found:
+                                {
+                                    for (FriendRequest req : thisUserReqList) {
+                                        if (req.getFriendReqName().equals(receivingUser.getUsername())) {
+                                            thisUserReqList.remove(req);
+
+                                            FriendRequest newFriendReq = new FriendRequest(receivingUser.getUsername(), "Outgoing Pending");
+                                            thisUserReqList.add(newFriendReq);
+                                            user.setFriendReqList(thisUserReqList);
+                                            break found;
+                                        }
+                                    }
+                                    // If friend not in friend list, add friend to friend list
+                                    FriendRequest req = new FriendRequest(receivingUser.getUsername(), "Outgoing Pending");
+                                    thisUserReqList.add(req);
+                                    user.setFriendReqList(thisUserReqList);
+                                }
                                 myRef.child(name).setValue(receivingUser);
+                                myRef.child(user.getUsername()).setValue(user);
                             }
                         }
                     }

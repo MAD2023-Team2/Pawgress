@@ -1,6 +1,7 @@
 package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -111,27 +112,60 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                     friendList.add(newFriend);
                                     receivingUser.setFriendList(friendList);
                                 }
-                                ArrayList<FriendData> thisUserFriendList = user.getFriendList();
-                                // Checks if friend is already in friend list, if it is: change the status
-                                found:
-                                {
-                                    for (FriendData friend : thisUserFriendList) {
-                                        if (friend.getFriendName().equals(receivingUser.getUsername())) {
-                                            thisUserFriendList.remove(friend);
-
-                                            FriendData newFriend = new FriendData(receivingUser.getUsername(), "Friend");
-                                            thisUserFriendList.add(newFriend);
-                                            user.setFriendList(thisUserFriendList);
-                                            break found;
-                                        }
-                                    }
-                                    // If friend not in friend list, add friend to friend list
-                                    FriendData newFriend = new FriendData(receivingUser.getUsername(), "Friend");
-                                    thisUserFriendList.add(newFriend);
-                                    user.setFriendList(thisUserFriendList);
-                                }
                                 myRef.child(name).setValue(receivingUser);
-                                myRef.child(user.getUsername()).setValue(user);
+
+                                Query query1 = myRef.orderByChild("username").equalTo(user.getUsername());
+                                query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists() && dataSnapshot.hasChildren()) {
+                                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                UserData tempUser = snapshot.getValue(UserData.class);
+
+                                                // Clear existing friend and friend request data in local SQLite database
+                                                myDBHandler.removeAllFriends(user);
+                                                myDBHandler.removeAllFriendRequests(user);
+
+                                                // Add new friends data to local SQLite database
+                                                for (FriendData friend : tempUser.getFriendList()) {
+                                                    myDBHandler.addFriend(friend.getFriendName(), user, friend.getStatus());
+                                                }
+                                                for (FriendRequest req : tempUser.getFriendReqList()) {
+                                                    myDBHandler.addFriendReq(req.getFriendReqName(), user, req.getReqStatus());
+                                                }
+
+                                                ArrayList<FriendData> thisUserFriendList = myDBHandler.findFriendList(user);
+                                                for (FriendData friend: thisUserFriendList){
+                                                    if (friend.getFriendName().equals(receivingUser.getUsername())){
+                                                        thisUserFriendList.remove(friend);
+                                                    }
+                                                }
+                                                thisUserFriendList.add(new FriendData(receivingUser.getUsername(), "Friend"));
+
+                                                ArrayList<FriendRequest> thisUserFriendReqList = myDBHandler.findFriendReqList(user);
+                                                for (FriendRequest req: thisUserFriendReqList){
+                                                    if (req.getFriendReqName().equals(receivingUser.getUsername())){
+                                                        thisUserFriendReqList.remove(req);
+                                                    }
+                                                }
+
+                                                myDBHandler.addFriend(receivingUser.getUsername(), user, "Friend");
+                                                user.setTaskList(myDBHandler.findTaskList(user));
+                                                user.setFriendList(thisUserFriendList);
+                                                user.setFriendReqList(thisUserFriendReqList);
+
+                                                for (FriendData friend: user.getFriendList()){
+                                                    Log.i(null, "Clear and Update---------------------------------" + friend.getFriendName());
+                                                }
+                                            }
+                                        }
+                                        myRef.child(user.getUsername()).setValue(user);
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        // Handle error
+                                    }
+                                });
                             }
                         }
                     }

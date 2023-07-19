@@ -16,6 +16,13 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -35,6 +42,8 @@ public class editProfilePassword extends AppCompatActivity {
 
     private CardView frameOne, frameTwo, frameThree;
     private boolean passChar8 = false, passUpper = false, passNum = false, isRegistrationClickable = false;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +55,8 @@ public class editProfilePassword extends AppCompatActivity {
         btnSave = findViewById(R.id.button7);
         back = findViewById(R.id.imageButton);
         dbHandler = new MyDBHandler(this, null, null, 1);
+        database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+        myRef = database.getReference("Users");
 
         frameOne = findViewById(R.id.frameOne);
         frameTwo = findViewById(R.id.frameTwo);
@@ -73,13 +84,16 @@ public class editProfilePassword extends AppCompatActivity {
                         String updatedPassword = etPassword.getText().toString();
                         // Getting user data
                         UserData dbData = dbHandler.findUser(etUsername.getText().toString());
-
+                        String userId = String.valueOf(user.getUserId());
                         // Checks that user does not already exists
                         if (dbData == null || oldName.equals(updatedUsername)){
 
-                            // Updating user data in database
+                            // Updating user data in database and firebase
+                            DatabaseReference userRef = myRef.child(userId);
+                            userRef.child("username").setValue(updatedUsername);
+
                             dbHandler.updatePassword(oldName,updatedPassword);
-                            dbHandler.updateUsername(oldName,updatedUsername);
+                            dbHandler.updateUsername(userId,updatedUsername);
 
                             // Updates username associated with tasks
                             for (Task task: dbHandler.findTaskList(user)) {
