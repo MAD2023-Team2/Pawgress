@@ -4,15 +4,20 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
+import me.relex.circleindicator.CircleIndicator;
+import me.relex.circleindicator.Config;
 import sg.edu.np.mad.pawgress.CompanionSelectionActivity;
+import sg.edu.np.mad.pawgress.CreateAccount;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
@@ -20,7 +25,7 @@ import sg.edu.np.mad.pawgress.UserData;
 public class Tutorial_Page extends AppCompatActivity {
 
     ViewPager mSLideViewPager;
-    LinearLayout mDotLayout;
+    CircleIndicator indicator;
     Button backbtn, nextbtn, skipbtn;
 
     TextView[] dots;
@@ -34,6 +39,24 @@ public class Tutorial_Page extends AppCompatActivity {
         backbtn = findViewById(R.id.backbtn);
         nextbtn = findViewById(R.id.nextbtn);
         skipbtn = findViewById(R.id.skipButton);
+
+        // circle indicator
+        indicator = findViewById(R.id.indicator);
+        int indicatorWidth = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10,
+                getResources().getDisplayMetrics()) + 0.5f);
+        int indicatorHeight = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 4,
+                getResources().getDisplayMetrics()) + 0.5f);
+        int indicatorMargin = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 6,
+                getResources().getDisplayMetrics()) + 0.5f);
+
+        Config config = new Config.Builder().width(indicatorWidth)
+                .height(indicatorHeight)
+                .margin(indicatorMargin)
+                .animator(R.animator.indicator_animator)
+                .animatorReverse(R.animator.indicator_animator_reverse)
+                .drawable(R.drawable.black_radius_square)
+                .build();
+        indicator.initialize(config);
 
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,11 +75,17 @@ public class Tutorial_Page extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (getitem(0) < 3)
+                if (getitem(0) < 2)
                     mSLideViewPager.setCurrentItem(getitem(1),true);
                 else {
 
-                    Intent i = new Intent(Tutorial_Page.this, MainMainMain.class);
+                    // Receive user data through intent
+                    Intent receivingEnd = getIntent();
+                    UserData user = receivingEnd.getParcelableExtra("User");
+                    Intent i = new Intent(Tutorial_Page.this, CompanionSelectionActivity.class);
+
+                    // Send user data
+                    i.putExtra("User", user);
                     startActivity(i);
                     finish();
 
@@ -83,7 +112,6 @@ public class Tutorial_Page extends AppCompatActivity {
         });
 
         mSLideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
-        mDotLayout = (LinearLayout) findViewById(R.id.indicator_layout);
 
         viewPagerAdapter = new ViewPagerAdapter(this);
 
@@ -91,6 +119,7 @@ public class Tutorial_Page extends AppCompatActivity {
 
         setUpindicator(0);
         mSLideViewPager.addOnPageChangeListener(viewListener);
+        indicator.setViewPager(mSLideViewPager);
 
     }
 
@@ -98,7 +127,6 @@ public class Tutorial_Page extends AppCompatActivity {
     public void setUpindicator(int position){
 
         dots = new TextView[3];
-        mDotLayout.removeAllViews();
 
         for (int i = 0 ; i < dots.length ; i++){
 
@@ -106,7 +134,6 @@ public class Tutorial_Page extends AppCompatActivity {
             dots[i].setText(Html.fromHtml("&#8226"));
             dots[i].setTextSize(35);
             dots[i].setTextColor(getResources().getColor(R.color.inactive,getApplicationContext().getTheme()));
-            mDotLayout.addView(dots[i]);
 
         }
 
@@ -124,7 +151,14 @@ public class Tutorial_Page extends AppCompatActivity {
         public void onPageSelected(int position) {
 
             setUpindicator(position);
-
+            if (position == 2){
+                skipbtn.setVisibility(View.INVISIBLE);
+                nextbtn.setText("Finish");
+            }
+            else{
+                skipbtn.setVisibility(View.VISIBLE);
+                nextbtn.setText("Next");
+            }
             if (position == 0 || position == 1){
                 int color = getResources().getColor(R.color.white);
                 backbtn.setTextColor(color);
