@@ -51,8 +51,29 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
         MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
-        ArrayList<FriendRequest> friendRequests = myDBHandler.findFriendReqList(user);
-        user.setFriendReqList(friendRequests);
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("Users");
+        Query query = myRef.orderByChild("username").equalTo(user.getUsername());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        UserData tempUser = snapshot.getValue(UserData.class);
+                        user.setFriendList(tempUser.getFriendList());
+                        user.setFriendReqList(tempUser.getFriendReqList());
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        //ArrayList<FriendRequest> friendRequests = myDBHandler.findFriendReqList(user);
+        //user.setFriendReqList(friendRequests);
 
         setContentView(R.layout.activity_friends);
 

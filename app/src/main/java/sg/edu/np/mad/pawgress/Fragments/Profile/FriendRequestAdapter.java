@@ -42,7 +42,6 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
         this.listener = listener;
     }
 
-
     @Override
     public FriendRequestViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View item = LayoutInflater.from(parent.getContext()).inflate(
@@ -200,8 +199,6 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
     public int getItemCount() {
         return friendRequestList.size();
     }
-
-
 
     public interface FriendRequestAdapterListener {
         void onFriendRequestAccepted(String friendName);
