@@ -207,23 +207,10 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
         String newDayDate = formatter.format(new Date());
         String lastInDate = user.getLastLogInDate();
         if (!lastInDate.equals(newDayDate)) {
-            if (task.getDailyChallenge() == 1){
-                Log.i("TaskCardAdapter","new day, previous daily challenge removed");
-                task.setStatus("Completed");
-                mDataBase.updateTask(task, user.getUsername());
-                recyclerTaskList.remove(task);
-                if (recyclerTaskList.size() == 0) {
-                    fragment.refreshRecyclerView();
-                }
-            }
-            else{
-                Log.i("TaskCardAdapter","new day, no previous daily challenge removed");
-            }
-            Log.i("TaskCardAdapter","new day, add new challenge");
+            Log.i("ChildTaskAdapter","new day, send to dalylogin");
             Intent intent = new Intent(context, DailyLogIn.class);
             intent.putExtra("User", user);
             intent.putExtra("tab", "home_tab");
-            intent.putExtra("new_day",true);
             context.startActivity(intent);
         }
     }
