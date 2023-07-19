@@ -2,10 +2,13 @@ package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import static android.content.Context.MODE_PRIVATE;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.Image;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AlertDialog;
@@ -103,12 +106,18 @@ public class ProfileFragment extends Fragment{
         logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Clears shared preference so no auto login
-                SaveSharedPreference.clearUserName(getActivity());
+                // Checks that there is internet connection before logging out
+                if (!isNetworkAvailable()) {
+                    Toast.makeText(getActivity(), "No internet access. Unable to log out.", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    // Clears shared preference so no auto login
+                    SaveSharedPreference.clearUserName(getActivity());
 
-                // Goes to login page after logging out
-                Intent intent = new Intent(getActivity(), LoginPage.class);
-                startActivity(intent);
+                    // Goes to login page after logging out
+                    Intent intent = new Intent(getActivity(), LoginPage.class);
+                    startActivity(intent);
+                }
             }
         });
 
@@ -211,6 +220,12 @@ public class ProfileFragment extends Fragment{
         }
     }
 
-
-
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        }
+        return false;
+    }
 }

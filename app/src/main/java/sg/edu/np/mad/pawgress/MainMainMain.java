@@ -173,7 +173,8 @@ public class MainMainMain extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("Users");
         UserData fbUser = myDBHandler.findUser(user.getUsername());
         fbUser.setTaskList(myDBHandler.findTaskList(user));
-
+        fbUser.setFriendList(myDBHandler.findFriendList(user));
+        fbUser.setFriendReqList(myDBHandler.findFriendReqList(user));
 
         // Set friends and friend request list based on firebase, not sql
         Query query = myRef.orderByChild("username").equalTo(user.getUsername());
@@ -185,6 +186,22 @@ public class MainMainMain extends AppCompatActivity {
                         UserData tempUser = snapshot.getValue(UserData.class);
                         fbUser.setFriendList(tempUser.getFriendList());
                         fbUser.setFriendReqList(tempUser.getFriendReqList());
+
+                        // Clear db of old friends data
+                        for (FriendData friend: user.getFriendList()){
+                            myDBHandler.removeFriend(friend.getFriendName(), user);
+                        }
+                        for (FriendRequest req: user.getFriendReqList()){
+                            myDBHandler.removeFriendReq(req.getFriendReqName(), user);
+                        }
+
+                        // Add new friends data to db
+                        for (FriendData friend: fbUser.getFriendList()){
+                            myDBHandler.addFriend(friend.getFriendName(), user, friend.getStatus());
+                        }
+                        for (FriendRequest req: fbUser.getFriendReqList()){
+                            myDBHandler.addFriendReq(req.getFriendReqName(), user, req.getReqStatus());
+                        }
                     }
                 }
             }

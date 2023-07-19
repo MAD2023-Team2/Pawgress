@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -271,6 +272,7 @@ public class DailyLogIn extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<InspirationalQuote>> call, Throwable t) {
                 // Handle network error
+                Toast.makeText(DailyLogIn.this, "No internet access. Unable to load motivational message.", Toast.LENGTH_SHORT).show();
             }
         });
     }
