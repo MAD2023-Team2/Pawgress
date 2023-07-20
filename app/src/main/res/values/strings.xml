@@ -96,7 +96,7 @@
     <string name="pfpText">Profile Picture</string>
     <string name="themeText">Theme</string>
     <string name="fontTheme">Fonts</string>
-    <string name="notifwidgetText">Notifications/Widgets</string>
+    <string name="notifwidgetText">Notifications</string>
     <string name="modeText">App Mode</string>
 
     // Theme Selection Page

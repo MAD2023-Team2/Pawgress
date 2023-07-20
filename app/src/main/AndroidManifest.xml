@@ -94,12 +94,11 @@
             android:resource="@array/preloaded_fonts" />
 
         <receiver
-            android:name=".MyNotificationReceiver"
+            android:name=".MyNotificationPublisher"
             android:enabled="true"
-            android:exported="false">
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 
