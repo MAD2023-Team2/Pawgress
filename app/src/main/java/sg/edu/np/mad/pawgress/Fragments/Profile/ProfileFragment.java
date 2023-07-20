@@ -196,6 +196,7 @@ public class ProfileFragment extends Fragment{
         return view;
     }
 
+
     @Override
     public void onResume() {
         super.onResume();

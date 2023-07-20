@@ -13,6 +13,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
@@ -66,8 +67,12 @@ public class MainMainMain extends AppCompatActivity {
         binding = ActivityMainMainMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        scheduleNoonNotification(getNotification("Keep up with the Pawgress, you're halfway through the day! Remember to stay hydrated and on top of tasks!"));
-        Log.i("MainMainMain","Notification Scheduled and Created!");
+        // Load the current notification preference from SharedPreferences
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        boolean userWantsNotifications = sharedPreferences.getBoolean("notification_preference", true);
+
+        // Update the notification preference and schedule/cancel notification accordingly
+        updateNotificationPreference(userWantsNotifications);
 
         // Update the bottomNavigationView selection based of page of origin
         Intent receivingEnd = getIntent();
@@ -114,6 +119,18 @@ public class MainMainMain extends AppCompatActivity {
             return true;
         });
     }
+
+    // Add this method to handle the notification preference change from NotificationSelection activity
+    @Override
+    protected void onResume() {
+        super.onResume();
+        SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+        boolean userWantsNotifications = sharedPreferences.getBoolean("notification_preference", true);
+
+        // Update the notification preference and schedule/cancel notification accordingly
+        updateNotificationPreference(userWantsNotifications);
+    }
+
 
     // Replaces current fragment with new fragment
     private void replaceFragment(Fragment fragment){
@@ -163,8 +180,8 @@ public class MainMainMain extends AppCompatActivity {
 
         // Calculate the time for noon
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 15);
-        calendar.set(Calendar.MINUTE, 40);
+        calendar.set(Calendar.HOUR_OF_DAY, 22);
+        calendar.set(Calendar.MINUTE, 24);
         calendar.set(Calendar.SECOND, 0);
 
         // If the time has already passed today, schedule it for the next day
@@ -183,6 +200,40 @@ public class MainMainMain extends AppCompatActivity {
                 AlarmManager.INTERVAL_DAY,
                 pendingIntent
         );
+    }
+
+    private void cancelNoonNotification() {
+        // Create an Intent for the MyNotificationPublisher class
+        Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, 1);
+
+        // Use PendingIntent.FLAG_NO_CREATE to check if a matching PendingIntent exists
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this,
+                0,
+                notificationIntent,
+                PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        // If a matching PendingIntent exists, cancel the notification
+        if (pendingIntent != null) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            assert alarmManager != null;
+            alarmManager.cancel(pendingIntent);
+            pendingIntent.cancel();
+        }
+    }
+
+    private void updateNotificationPreference(boolean userWantsNotifications) {
+        if (userWantsNotifications) {
+            // Schedule the notification if the user prefers to receive notifications
+            scheduleNoonNotification(getNotification("Keep up with the Pawgress, you're halfway through the day! Remember to stay hydrated and on top of tasks!"));
+            Log.i("MainMainMain", "Notification Scheduled and Created!");
+        } else {
+            // Cancel the notification if the user prefers not to receive notifications
+            cancelNoonNotification();
+            Log.i("MainMainMain", "Notification Canceled!");
+        }
     }
 
     private Notification getNotification(String content) {
