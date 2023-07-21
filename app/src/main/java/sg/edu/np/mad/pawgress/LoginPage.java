@@ -4,9 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -51,6 +55,7 @@ public class LoginPage extends AppCompatActivity {
         DatabaseReference myRef = database.getReference("Users");
 
         // Admin account credentials verification
+        /*
         validateCredentials("admin", "admin123", new CredentialsValidationListener() {
             @Override
             public void onCredentialsValidated(boolean isValid) {
@@ -86,6 +91,7 @@ public class LoginPage extends AppCompatActivity {
                 }
             }
         });
+        */
     }
     String title = "Main Activity";
     /*
@@ -180,7 +186,12 @@ public class LoginPage extends AppCompatActivity {
                                     });
                                 }
                                 else {
-                                    Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
+                                    if (!isNetworkAvailable()) {
+                                        Toast.makeText(LoginPage.this, "No internet access. Unable to login.", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
+                                    }
                                 }
                             }
                         });
@@ -194,7 +205,12 @@ public class LoginPage extends AppCompatActivity {
 //                            finish();
 //                        }
                     else{
-                        Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
+                        if (!isNetworkAvailable()) {
+                            Toast.makeText(LoginPage.this, "No internet access. Unable to login.", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(LoginPage.this, "Invalid Username/Password", Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
             });
@@ -222,6 +238,11 @@ public class LoginPage extends AppCompatActivity {
     }
 
     private void validateCredentials(String username, String password, CredentialsValidationListener listener) {
+        if (!isNetworkAvailable()) {
+            Toast.makeText(LoginPage.this, "No internet access. Unable to login.", Toast.LENGTH_SHORT).show();
+            listener.onCredentialsValidated(false);
+            return;
+        }
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
         DatabaseReference myRef = database.getReference("Users");
 
@@ -251,6 +272,15 @@ public class LoginPage extends AppCompatActivity {
                 listener.onCredentialsValidated(false);
             }
         });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        }
+        return false;
     }
 }
 

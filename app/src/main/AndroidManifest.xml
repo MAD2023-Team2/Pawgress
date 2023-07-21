@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools" >
-    <uses-permission android:name="android.permission.INTERNET" />
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-
 
     <application
         android:allowBackup="true"
@@ -21,11 +20,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Pawgress"
         android:usesCleartextTraffic="true"
-        tools:targetApi="31" >
+        tools:targetApi="31">
+        <activity
+            android:name=".LandingPage"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".Fragments.Profile.NotificationSelection"
-            android:exported="false" />
-        <!-- <activity -->
+            android:exported="false" /> <!-- <activity -->
         <!-- android:name=".Fragments.Profile.ThemeSelectionActivity" -->
         <!-- android:exported="false" /> -->
         <activity
@@ -33,6 +39,9 @@
             android:exported="false" />
         <activity
             android:name=".Fragments.Profile.UserSettingsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".tutorials.Tutorial_Page"
             android:exported="false" />
         <activity
             android:name=".CompanionSelectionActivity"
@@ -45,29 +54,20 @@
             android:exported="false" />
         <activity
             android:name=".Fragments.Profile.editProfilePassword"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Tasks.TaskView"
             android:exported="false" />
         <activity
             android:name=".CreateAccount"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".DailyLogIn"
             android:exported="false" />
         <activity
             android:name=".Fragments.Profile.ProfilePage"
-            android:exported="false" />
-        <activity
-            android:name=".tutorials.tutPage1"
-            android:exported="false" />
-        <activity
-            android:name=".tutorials.tutPage2"
-            android:exported="false" />
-        <activity
-            android:name=".tutorials.tutPage3"
             android:exported="false" />
         <activity
             android:name=".EditProfileActivity"
@@ -77,14 +77,8 @@
             android:exported="false" />
         <activity
             android:name=".LoginPage"
-            android:windowSoftInputMode="adjustResize"
-            android:exported="true" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".Tasks.TaskGame"
             android:exported="false" />
@@ -101,7 +95,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

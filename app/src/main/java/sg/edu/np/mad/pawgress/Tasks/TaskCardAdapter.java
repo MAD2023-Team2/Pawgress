@@ -171,20 +171,10 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
         String newDayDate = formatter.format(new Date());
         String lastInDate = user.getLastLogInDate();
         if (!lastInDate.equals(newDayDate)) {
-            if (task.getDailyChallenge() == 1){
-                Log.w("TaskCardAdapter","new day, previous daily challenge removed");
-                task.setStatus("Completed");
-                mDataBase.updateTask(task, user.getUsername());
-                recyclerTaskList.remove(task);
-            }
-            else{
-                Log.w("TaskCardAdapter","new day, no previous daily challenge to be removed");
-            }
-            Log.w("TaskCardAdapter","new day, adding new daily challenge");
+            Log.i("TaskCardAdapter","new day, send to dalylogin");
             Intent intent = new Intent(context, DailyLogIn.class);
             intent.putExtra("User", user);
             intent.putExtra("tab", "home_tab");
-            intent.putExtra("new_day",true);
             context.startActivity(intent);
         }
     }

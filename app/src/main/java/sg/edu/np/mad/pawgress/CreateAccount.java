@@ -1,9 +1,12 @@
 package sg.edu.np.mad.pawgress;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,18 +17,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import sg.edu.np.mad.pawgress.Fragments.Profile.editProfilePassword;
 import sg.edu.np.mad.pawgress.Tasks.Task;
-import sg.edu.np.mad.pawgress.tutorials.tutPage1;
+import sg.edu.np.mad.pawgress.tutorials.Tutorial_Page;
 
 public class CreateAccount extends AppCompatActivity {
     String title = "Main Activity 2";
@@ -68,63 +76,140 @@ public class CreateAccount extends AppCompatActivity {
         createButton.setOnClickListener(new View.OnClickListener() { //create button in create account page
             @Override
             public void onClick(View v) {
+                FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+                DatabaseReference myRef = database.getReference("Users");
+
+
                 String dbUsername = etUsername.getText().toString();
                 String dbPassword = etPassword.getText().toString();
 
                 if (dbUsername.length() > 0 && dbPassword.length() > 0) {
                     if (isRegistrationClickable) {
-                        UserData dbData = myDBHandler.findUser(etUsername.getText().toString());
-
-                        // Checking that account does not already exists
-                        if (dbData == null){
-                            ArrayList<Task> taskList = new ArrayList<Task>();
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                            String accCreateDate = formatter.format(new Date());
-
-                            ArrayList<FriendData> friendList = new ArrayList<>();
-                            FriendData friendData = new FriendData("abc", "Unfriended");
-                            friendList.add(friendData);
-
-                            ArrayList<FriendRequest> friendRequests = new ArrayList<>();
-                            FriendRequest friendReq = new FriendRequest("admin", "Rejected");
-                            friendRequests.add(friendReq);
-
-                            UserData dbUserData = new UserData(1,dbUsername,dbPassword,taskList,accCreateDate,1,0,"No","dog",2354, friendList, friendRequests);
-                            System.out.println(dbUsername + dbPassword + taskList+ accCreateDate+dbUserData.getStreak()+dbUserData.getCurrency()+dbUserData.getLoggedInTdy());
-
-                            myDBHandler.clearDatabase("ACCOUNTS");
-                            myDBHandler.clearDatabase("TASKS");
-                            myDBHandler.clearDatabase("FRIENDS");
-                            myDBHandler.clearDatabase("FRIENDREQUEST");
-                            for (Task task: dbUserData.getTaskList()){
-                                myDBHandler.addTask(task, dbUserData);
-                            }
-                            for (FriendData friend: dbUserData.getFriendList()){
-                                myDBHandler.addFriend(friend.getFriendName(), dbUserData, friend.getStatus());
-                            }
-                            for (FriendRequest friendRequest: dbUserData.getFriendReqList()){
-                                myDBHandler.addFriendReq(friendRequest.getFriendReqName(), dbUserData, friendRequest.getReqStatus());
-                            }
-                            // Adding user to database
-                            myDBHandler.addUser(dbUserData);
-
-                            // Setting shared preference for auto login
-                            SaveSharedPreference.setUserName(CreateAccount.this ,etUsername.getText().toString());
-                            Intent intent = new Intent(CreateAccount.this, tutPage1.class);
-                            intent.putExtra("User", dbUserData);
-
-                            // for CreateAccount to CompanionSelectionActivity
-                            // pass username info over
-                            // sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
-                            // SharedPreferences.Editor editor = sharedPreferences.edit();
-                            // editor.putString(MY_USERNAME, etUsername.getText().toString());
-                            // editor.commit();
-
-                            startActivity(intent);
-                            finish();
+                        if (!isNetworkAvailable()) {
+                            Toast.makeText(CreateAccount.this, "No internet access. Unable to create account.", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Toast.makeText(CreateAccount.this, "Username Already Exist!", Toast.LENGTH_SHORT).show();
+                            // UserData dbData = myDBHandler.findUser(etUsername.getText().toString());
+                            Query query = myRef.orderByChild("username").equalTo(dbUsername);
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                                    // Checking that account does not already exists
+                                    if (dataSnapshot.exists()) {
+                                        Toast.makeText(CreateAccount.this, "Username Already Exist!", Toast.LENGTH_SHORT).show();
+                                    }
+                                    else{
+                                        ArrayList<Task> taskList = new ArrayList<Task>();
+                                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                                        String accCreateDate = formatter.format(new Date());
+
+                                        ArrayList<FriendData> friendList = new ArrayList<>();
+                                        FriendData friendData = new FriendData("abc", "Unfriended");
+                                        friendList.add(friendData);
+
+                                        ArrayList<FriendRequest> friendRequests = new ArrayList<>();
+                                        FriendRequest friendReq = new FriendRequest("admin", "Rejected");
+                                        friendRequests.add(friendReq);
+
+                                        final int[] newID = new int[1];
+                                        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+                                        DatabaseReference myRef = database.getReference("Users");
+
+                                        // Query the users collection and sort by the unique ID field in descending order
+                                        Query query = myRef.orderByChild("userID");
+                                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                if (dataSnapshot.exists()) {
+                                                    int highestUniqueId = -1;
+                                                    // Iterate over the result and retrieve the highest unique ID
+                                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                        UserData user = snapshot.getValue(UserData.class);
+                                                        int currentUniqueId = user.getUserId() + 1;
+                                                        if (currentUniqueId > highestUniqueId) {
+                                                            highestUniqueId = currentUniqueId;
+                                                            newID[0] = highestUniqueId;
+                                                        }
+                                                    }
+                                                    UserData dbUserData = new UserData(newID[0], dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests);
+                                                    System.out.println(dbUsername + dbPassword + taskList + accCreateDate + dbUserData.getStreak() + dbUserData.getCurrency() + dbUserData.getLoggedInTdy());
+                                                    myDBHandler.clearDatabase("ACCOUNTS");
+                                                    myDBHandler.clearDatabase("TASKS");
+                                                    myDBHandler.clearDatabase("FRIENDS");
+                                                    myDBHandler.clearDatabase("FRIENDREQUEST");
+                                                    for (Task task : dbUserData.getTaskList()) {
+                                                        myDBHandler.addTask(task, dbUserData);
+                                                    }
+                                                    for (FriendData friend : dbUserData.getFriendList()) {
+                                                        myDBHandler.addFriend(friend.getFriendName(), dbUserData, friend.getStatus());
+                                                    }
+                                                    for (FriendRequest friendRequest : dbUserData.getFriendReqList()) {
+                                                        myDBHandler.addFriendReq(friendRequest.getFriendReqName(), dbUserData, friendRequest.getReqStatus());
+                                                    }
+                                                    // Adding user to database
+                                                    myDBHandler.addUser(dbUserData);
+                                                    // Setting shared preference for auto login
+                                                    SaveSharedPreference.setUserName(CreateAccount.this, etUsername.getText().toString());
+                                                    Intent intent = new Intent(CreateAccount.this, Tutorial_Page.class);
+                                                    intent.putExtra("User", dbUserData);
+
+                                                    // for CreateAccount to CompanionSelectionActivity
+                                                    // pass username info over
+                                                    // sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
+                                                    // SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                    // editor.putString(MY_USERNAME, etUsername.getText().toString());
+                                                    // editor.commit();
+
+                                                    startActivity(intent);
+                                                    finish();
+                                                } else {
+                                                    // Handle the case when there are no users in the database
+                                                    UserData dbUserData = new UserData(1, dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests);
+                                                    System.out.println(dbUsername + dbPassword + taskList + accCreateDate + dbUserData.getStreak() + dbUserData.getCurrency() + dbUserData.getLoggedInTdy());
+                                                    myDBHandler.clearDatabase("ACCOUNTS");
+                                                    myDBHandler.clearDatabase("TASKS");
+                                                    myDBHandler.clearDatabase("FRIENDS");
+                                                    myDBHandler.clearDatabase("FRIENDREQUEST");
+                                                    for (Task task : dbUserData.getTaskList()) {
+                                                        myDBHandler.addTask(task, dbUserData);
+                                                    }
+                                                    for (FriendData friend : dbUserData.getFriendList()) {
+                                                        myDBHandler.addFriend(friend.getFriendName(), dbUserData, friend.getStatus());
+                                                    }
+                                                    for (FriendRequest friendRequest : dbUserData.getFriendReqList()) {
+                                                        myDBHandler.addFriendReq(friendRequest.getFriendReqName(), dbUserData, friendRequest.getReqStatus());
+                                                    }
+                                                    // Adding user to database
+                                                    myDBHandler.addUser(dbUserData);
+                                                    // Setting shared preference for auto login
+                                                    SaveSharedPreference.setUserName(CreateAccount.this, etUsername.getText().toString());
+                                                    Intent intent = new Intent(CreateAccount.this, Tutorial_Page.class);
+                                                    intent.putExtra("User", dbUserData);
+
+                                                    // for CreateAccount to CompanionSelectionActivity
+                                                    // pass username info over
+                                                    // sharedPreferences = getSharedPreferences(GLOBAL_PREF, MODE_PRIVATE);
+                                                    // SharedPreferences.Editor editor = sharedPreferences.edit();
+                                                    // editor.putString(MY_USERNAME, etUsername.getText().toString());
+                                                    // editor.commit();
+
+                                                    startActivity(intent);
+                                                    finish();
+                                                }
+                                            }
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                // Handle the error if the database operation was canceled
+                                                Log.e(title, "Database error: " + databaseError.getMessage());
+                                            }
+                                        });
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                }
+                            });
                         }
                     }
                 } else {
@@ -231,5 +316,13 @@ public class CreateAccount extends AppCompatActivity {
 
             }
         });
+    }
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        }
+        return false;
     }
 }

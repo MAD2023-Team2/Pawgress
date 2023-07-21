@@ -100,6 +100,7 @@ public class TaskView extends AppCompatActivity {
                 TextView chooseDate = editTask.findViewById(R.id.dueDate);
                 TextView date = editTask.findViewById(R.id.date);
                 date.setText(task.getDueDate());
+                dueDate = date.getText().toString();
                 Spinner spinner = editTask.findViewById(R.id.priority);
 
 
@@ -237,12 +238,19 @@ public class TaskView extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id){
                         task.setStatus("Deleted");
                         myDBHandler.updateTask(task, user.getUsername());
-                        finish();
+                        refreshView(task.getTaskID());
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
                         dialog.dismiss();
+                    }
+                });
+
+                builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        overridePendingTransition(android.R.anim.fade_out, android.R.anim.fade_in);
                     }
                 });
                 AlertDialog alert = builder.create();
@@ -273,6 +281,7 @@ public class TaskView extends AppCompatActivity {
         TextView taskCategory = findViewById(R.id.textView10);
         taskCategory.setText(task.getCategory());
         targettime = findViewById(R.id.targettime);
+        ImageButton backButton = findViewById(R.id.backButton);
 
         int tseconds = myDBHandler.getTaskTargetSec(task.getTaskID());
         int thours = tseconds / 3600;
@@ -287,5 +296,17 @@ public class TaskView extends AppCompatActivity {
         int secs = seconds % 60;
         time.setText("Current Time Spent: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
         if (task.getTimeSpent() > 0) { gameButton.setText("Resume Timer");}
+
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(TaskView.this, MainMainMain.class);
+                intent.putExtra("User", user);
+                intent.putExtra("tab", "tasks_tab");
+                startActivity(intent);
+                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                finish();
+            }
+        });
     }
 }

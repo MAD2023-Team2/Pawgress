@@ -26,7 +26,6 @@ public class ChildTaskViewHolder extends RecyclerView.ViewHolder {
         name = itemView.findViewById(R.id.textView4);
         card = itemView.findViewById(R.id.taskCard); // individual task
         edit = itemView.findViewById(R.id.button3);
-        delete = itemView.findViewById(R.id.button4);
         complete = itemView.findViewById(R.id.checkBox);
         duedate = itemView.findViewById(R.id.textView21);
         Log.i(title, "viewholder");

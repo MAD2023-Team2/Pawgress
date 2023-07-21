@@ -10,10 +10,12 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -30,9 +32,9 @@ import sg.edu.np.mad.pawgress.Tasks.Task;
 public class DailyLogIn extends AppCompatActivity {
     MyDBHandler myDBHandler = new MyDBHandler(this, null, null, 1);
     UserData user;
-    Boolean new_day = false;
     String quoteText;
     String author;
+    String newDayDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +42,16 @@ public class DailyLogIn extends AppCompatActivity {
         setContentView(R.layout.activity_daily_log_in);
     }
 
-    public void createChallenge(){
+    public void createDeleteChallenge(){
+        ArrayList<Task> taskList = myDBHandler.findTaskList(user);
+        for (Task task : taskList){
+            if(task.getStatus().equals("In Progress") && (!task.getDueDate().equals(newDayDate))){
+                task.setStatus("Missed");
+                myDBHandler.updateTask(task, user.getUsername());
+                Log.v("Daily Log In","New Day, previous daily challenge task set to missed");
+            }
+        }
+
         Random random = new Random();
         int challengeInt = random.nextInt(6) + 1;
         String name;
@@ -64,8 +75,7 @@ public class DailyLogIn extends AppCompatActivity {
                 name = "Take a 5 minute break";
                 break;
         }
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-        String newDayDate = formatter.format(new Date());
+
         Task task = new Task(1, name, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,null,1, 0);
         myDBHandler.addTask(task, user);
         Log.w("Daily Log In", "Created Daily Challenge: " + task.getTaskName());
@@ -83,14 +93,9 @@ public class DailyLogIn extends AppCompatActivity {
         fetchRandomQuote();
         myDBHandler.updateQuoteAndAuthor(quoteText, author, user);
 
-        try {
-            new_day = receivingEnd.getExtras().getBoolean("new_day");
-        } catch (Exception exception) {
-            Log.w("DailyLogIn", "not from inside app");
-        }
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
-        String newDayDate = formatter.format(new Date());
+        newDayDate = formatter.format(new Date());
 
 
         String lastInDate = user.getLastLogInDate();
@@ -123,7 +128,7 @@ public class DailyLogIn extends AppCompatActivity {
             // scenario where user first create their account and their first streak will pop up
             if (user.getLoggedInTdy().equals(tempStr)){
 
-                createChallenge();
+                createDeleteChallenge();
 
                 // text will change to "streak:1, current rewarded:0[for now], let's start streaking and stay productive!"
                 statusText.setText("Let's start streaking and stay productive!");
@@ -167,7 +172,7 @@ public class DailyLogIn extends AppCompatActivity {
             Log.w("Daily Log In","Last log in date not equal to todays date.");
             user.setLoggedInTdy("No");
 
-            createChallenge();
+            createDeleteChallenge();
 
             if (user.getLoggedInTdy().equals(tempStr)){
                 long diffInMilliseconds = date2.getTime() - date1.getTime();
@@ -223,9 +228,6 @@ public class DailyLogIn extends AppCompatActivity {
                         @Override
                         public void onClick(View v){
                             Log.w("Daily Login","not same day");
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-                            String newDayDate = formatter.format(new Date());
                             Intent intent = new Intent(DailyLogIn.this,MainMainMain.class);
                             user.setLastLogInDate(newDayDate);
                             intent.putExtra("User", user);
@@ -270,6 +272,7 @@ public class DailyLogIn extends AppCompatActivity {
             @Override
             public void onFailure(Call<List<InspirationalQuote>> call, Throwable t) {
                 // Handle network error
+                Toast.makeText(DailyLogIn.this, "No internet access. Unable to load motivational message.", Toast.LENGTH_SHORT).show();
             }
         });
     }

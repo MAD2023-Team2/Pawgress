@@ -1,5 +1,6 @@
 package sg.edu.np.mad.pawgress;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
@@ -20,8 +21,12 @@ import android.os.SystemClock;
 import android.util.Log;
 import android.widget.Button;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -152,7 +157,41 @@ public class MainMainMain extends AppCompatActivity {
         fbUser.setFriendList(myDBHandler.findFriendList(user));
         fbUser.setFriendReqList(myDBHandler.findFriendReqList(user));
 
-        myRef.child(user.getUsername()).setValue(fbUser);
+        // Set friends and friend request list based on Firebase, not SQLite
+        Query query = myRef.orderByChild("username").equalTo(user.getUsername());
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists() && dataSnapshot.hasChildren()) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        UserData tempUser = snapshot.getValue(UserData.class);
+
+                        // Clear existing friend and friend request data in local SQLite database
+                        myDBHandler.removeAllFriends(user);
+                        myDBHandler.removeAllFriendRequests(user);
+
+                        // Add new friends data to local SQLite database
+                        for (FriendData friend : tempUser.getFriendList()) {
+                            myDBHandler.addFriend(friend.getFriendName(), user, friend.getStatus());
+                        }
+                        for (FriendRequest req : tempUser.getFriendReqList()) {
+                            myDBHandler.addFriendReq(req.getFriendReqName(), user, req.getReqStatus());
+                        }
+                        fbUser.setFriendList(tempUser.getFriendList());
+                        fbUser.setFriendReqList(tempUser.getFriendReqList());
+                        for (FriendData friend: fbUser.getFriendList()){
+                            Log.i(null, "Clear and Update---------------------------------" + friend.getFriendName());
+                        }
+                    }
+                }
+                myRef.child(user.getUsername()).setValue(fbUser);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+            }
+        });
+
     }
 
     private void scheduleNoonNotification(Notification notification) {
