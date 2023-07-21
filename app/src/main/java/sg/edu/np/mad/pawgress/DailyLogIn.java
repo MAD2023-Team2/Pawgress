@@ -45,10 +45,15 @@ public class DailyLogIn extends AppCompatActivity {
     public void createDeleteChallenge(){
         ArrayList<Task> taskList = myDBHandler.findTaskList(user);
         for (Task task : taskList){
-            if(task.getStatus().equals("In Progress") && (!task.getDueDate().equals(newDayDate))){
-                task.setStatus("Missed");
-                myDBHandler.updateTask(task, user.getUsername());
-                Log.v("Daily Log In","New Day, previous daily challenge task set to missed");
+            try {
+                if(task.getStatus().equals("In Progress") && (!task.getDueDate().equals(newDayDate)) && task.getDailyChallenge() == 1){
+                    task.setStatus("Missed");
+                    myDBHandler.updateTask(task, user.getUsername());
+                    Log.v("Daily Log In","New Day, previous daily challenge task set to missed");
+                }
+            }
+            catch (Exception e) {
+                // task has no due date, therefore it is not a daily challenge
             }
         }
 
