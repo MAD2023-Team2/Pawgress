@@ -16,8 +16,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.Locale;
 
 import sg.edu.np.mad.pawgress.Tasks.Task;
 
@@ -743,4 +746,32 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         Log.i(title, "Created a new row with a desired unique ID and deleted the old row");
     }
+
+    public int getNumberOfTasksDueAtTime() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        // Get the current date in "dd/MM/yyyy" format
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        String currentDate = sdf.format(new Date());
+
+        // Create the SQL query to count tasks due on the current date with status "In Progress"
+        String query = "SELECT COUNT(*) FROM " + TASKS +
+                " WHERE DATE(" + COLUMN_TASK_DUEDATE + ") = ? AND " +
+                COLUMN_TASK_STATUS + " = 'In Progress'";
+
+        Cursor cursor = db.rawQuery(query, new String[]{currentDate});
+
+        int count = 0;
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                count = cursor.getInt(0);
+            }
+            cursor.close();
+        }
+
+        db.close();
+
+        return count;
+    }
+
 }
