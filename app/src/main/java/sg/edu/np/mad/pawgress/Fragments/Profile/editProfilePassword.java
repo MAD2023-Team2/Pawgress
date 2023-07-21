@@ -1,5 +1,6 @@
 package sg.edu.np.mad.pawgress.Fragments.Profile;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -9,6 +10,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -23,6 +25,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
+import sg.edu.np.mad.pawgress.DailyLogIn;
+import sg.edu.np.mad.pawgress.FriendData;
+import sg.edu.np.mad.pawgress.FriendRequest;
+import sg.edu.np.mad.pawgress.LoginPage;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -88,21 +96,80 @@ public class editProfilePassword extends AppCompatActivity {
                         // Checks that user does not already exists
                         if (dbData == null || oldName.equals(updatedUsername)){
 
-                            // Updating user data in database and firebase
-                            DatabaseReference userRef = myRef.child(userId);
-                            userRef.child("username").setValue(updatedUsername);
+                            user.setTaskList(dbHandler.findTaskList(user));
+                            user.setFriendList(dbHandler.findFriendList(user));
+                            user.setFriendReqList(dbHandler.findFriendReqList(user));
 
-                            dbHandler.updatePassword(oldName,updatedPassword);
-                            dbHandler.updateUsername(userId,updatedUsername);
+                            // Store old username
+                            String oldUsername = user.getUsername();
 
-                            // Updates username associated with tasks
-                            for (Task task: dbHandler.findTaskList(user)) {
-                                dbHandler.updateTask(task, updatedUsername);
-                            }
+                            // Remove user in firebase
+                            myRef.child(user.getUsername()).removeValue();
 
                             // Update username and password
                             user.setUsername(updatedUsername);
                             user.setPassword(updatedPassword);
+
+                            // Add user back with updated name in firebase
+                            myRef.child(updatedUsername).setValue(user);
+
+                            dbHandler.clearDatabase("ACCOUNTS");
+                            dbHandler.clearDatabase("TASKS");
+                            dbHandler.clearDatabase("FRIENDS");
+                            dbHandler.clearDatabase("FRIENDREQUEST");
+                            dbHandler.addUser(user);
+                            for (Task task: user.getTaskList()){
+                                dbHandler.addTask(task, user);
+                            }
+                            for (FriendData friend: user.getFriendList()){
+                                dbHandler.addFriend(friend.getFriendName(), user, friend.getStatus());
+                                Query query = myRef.orderByChild("username").equalTo(friend.getFriendName());
+                                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()){
+                                            for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                                UserData friend = snapshot.getValue(UserData.class);
+                                                ArrayList<FriendData> friendFriendList = friend.getFriendList();
+                                                for (FriendData friendData: friendFriendList){
+                                                    if (friendData.getFriendName().equals(oldUsername)){
+                                                        friendData.setFriendName(updatedUsername);
+                                                    }
+                                                }
+                                                myRef.child(friend.getUsername()).child("friendList").setValue(friendFriendList);
+                                            }
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                    }
+                                });
+                            }
+                            for (FriendRequest friendRequest: user.getFriendReqList()){
+                                dbHandler.addFriendReq(friendRequest.getFriendReqName(), user, friendRequest.getReqStatus());
+                                Query query = myRef.orderByChild("username").equalTo(friendRequest.getFriendReqName());
+                                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists()){
+                                            for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                                UserData friend = snapshot.getValue(UserData.class);
+                                                ArrayList<FriendRequest> friendFriendReqList = friend.getFriendReqList();
+                                                for (FriendRequest friendRequest: friendFriendReqList){
+                                                    if (friendRequest.getFriendReqName().equals(oldUsername)){
+                                                        friendRequest.setFriendReqName(updatedUsername);
+                                                    }
+                                                }
+                                                myRef.child(friend.getUsername()).child("friendReqList").setValue(friendFriendReqList);
+                                            }
+
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                    }
+                                });
+                            }
 
                             Toast.makeText(editProfilePassword.this, "User information updated", Toast.LENGTH_SHORT).show();
 

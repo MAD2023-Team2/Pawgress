@@ -94,10 +94,17 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         Log.i(null, "Starting App Home Page");
+        MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
 
         // Get user data from the intent
         Intent receivingEnd = getActivity().getIntent();
         UserData user = receivingEnd.getParcelableExtra("User");
+
+        TextView quoteTextView = view.findViewById(R.id.quoteTextView);
+        TextView authorTextView = view.findViewById(R.id.authorTextView);
+        Log.i(null, ""+ myDBHandler.getQuote(user) + myDBHandler.getAuthor(user));
+        quoteTextView.setText(myDBHandler.getQuote(user));
+        authorTextView.setText(myDBHandler.getAuthor(user));
 
         // Set pet picture based on user's pet design
         ImageView pet_picture = view.findViewById(R.id.homeGame);
@@ -134,7 +141,6 @@ public class HomeFragment extends Fragment {
         });
 
         // Set up the task list RecyclerView
-        MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
         RecyclerView recyclerView = view.findViewById(R.id.taskcardlist);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
         emptySpaceTextView = view.findViewById(R.id.emptyspace_home);
