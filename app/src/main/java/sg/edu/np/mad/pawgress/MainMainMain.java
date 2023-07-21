@@ -201,7 +201,7 @@ public class MainMainMain extends AppCompatActivity {
         notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, 1);
         notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
 
-        // Use PendingIntent.FLAG_CANCEL_CURRENT to ensure only one pending intent is used
+        // Use the unique request code in the PendingIntent
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 this,
                 0,
@@ -219,8 +219,8 @@ public class MainMainMain extends AppCompatActivity {
 
         // Calculate the time for noon
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 22);
-        calendar.set(Calendar.MINUTE, 24);
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
         // If the time has already passed today, schedule it for the next day
@@ -246,7 +246,7 @@ public class MainMainMain extends AppCompatActivity {
         Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
         notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, 1);
 
-        // Use PendingIntent.FLAG_NO_CREATE to check if a matching PendingIntent exists
+        // Use the unique request code in the PendingIntent
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
                 this,
                 0,
