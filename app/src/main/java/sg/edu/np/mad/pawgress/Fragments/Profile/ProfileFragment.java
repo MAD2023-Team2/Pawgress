@@ -147,6 +147,17 @@ public class ProfileFragment extends Fragment{
             }
         });
 
+        // Analytics Button
+        Button analyticsButton = (Button) view.findViewById(R.id.analytics);
+        analyticsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), Analytics.class);
+                intent.putExtra("User", dbData);
+                startActivity(intent);
+            }
+        });
+
         // profile picture image view
         // ImageView profilePictureImageView = view.findViewById(R.id.profile_picture_image_view);
         //this.profilePictureImageView = profilePictureImageView; // Assign to class level variable
