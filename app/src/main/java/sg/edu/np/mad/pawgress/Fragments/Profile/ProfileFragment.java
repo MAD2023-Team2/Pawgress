@@ -11,6 +11,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
@@ -23,10 +24,24 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+import sg.edu.np.mad.pawgress.FriendData;
+import sg.edu.np.mad.pawgress.FriendRequest;
+import sg.edu.np.mad.pawgress.LandingPage;
 import sg.edu.np.mad.pawgress.LoginPage;
+import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.SaveSharedPreference;
+import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.Tasks.TaskCompletion;
 import sg.edu.np.mad.pawgress.Tasks.TaskGame;
 import sg.edu.np.mad.pawgress.UserData;
@@ -187,15 +202,109 @@ public class ProfileFragment extends Fragment{
                 builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+                        DatabaseReference myRef = database.getReference("Users");
                         Toast.makeText(getContext(), "Account has been deleted!", Toast.LENGTH_SHORT).show();
-                        dbData.setPassword("");
-                        myDBHandler.updatePassword(dbData.getUsername(), "");
-                        // Clears shared preference so no auto login
-                        SaveSharedPreference.clearUserName(getActivity());
 
-                        // Goes to login page after logging out
-                        Intent intent = new Intent(getActivity(), LoginPage.class);
-                        startActivity(intent);
+
+                        // Set friends and friend request list based on Firebase, not SQLite
+                        Query query = myRef.orderByChild("username").equalTo(dbData.getUsername());
+                        query.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.exists() && dataSnapshot.hasChildren()) {
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        UserData tempUser = snapshot.getValue(UserData.class);
+
+                                        // Get most recent friend and request list from firebase
+                                        dbData.setFriendList(tempUser.getFriendList());
+                                        dbData.setFriendReqList(tempUser.getFriendReqList());
+                                        for (FriendData friend: dbData.getFriendList()){
+                                            Log.i(null, "Clear and Update---------------------------------" + friend.getFriendName());
+                                        }
+
+                                        for (FriendData friend: dbData.getFriendList()){
+                                            Log.v("22345678345678", String.valueOf(friend.getFriendName()));
+                                            Query query = myRef.orderByChild("username").equalTo(friend.getFriendName());
+                                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                    Log.v("22345678345678", String.valueOf(dataSnapshot.getValue()));
+
+                                                    if (dataSnapshot.exists()) {
+                                                        // Friend exists, update as deleted
+                                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                            UserData receivingUser = snapshot.getValue(UserData.class);
+                                                            ArrayList<FriendData> friendList = receivingUser.getFriendList();
+                                                            found:{
+                                                                for (FriendData friend: friendList){
+                                                                    if (friend.getFriendName().equals(dbData.getUsername())){
+                                                                        friend.setStatus("Deleted");
+                                                                        break found;
+                                                                    }
+                                                                }
+                                                            }
+                                                            for (FriendData friend: dbData.getFriendList()){
+                                                                Log.i(null, "Remove---------------------------------" + friend.getFriendName()+ friend.getStatus());
+                                                            }
+                                                            myRef.child(friend.getFriendName()).setValue(receivingUser);
+                                                        }
+                                                    }
+                                                }
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                }
+                                            });
+                                        }
+
+
+
+                                        for (FriendRequest friendRequest: dbData.getFriendReqList()){
+                                            Query query = myRef.orderByChild("username").equalTo(friendRequest.getFriendReqName());
+                                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                @Override
+                                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                    if (dataSnapshot.exists()){
+                                                        for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                                            UserData friend = snapshot.getValue(UserData.class);
+                                                            ArrayList<FriendRequest> friendFriendReqList = friend.getFriendReqList();
+                                                            for (FriendRequest friendRequest: friendFriendReqList){
+                                                                if (friendRequest.getFriendReqName().equals(dbData.getUsername())){
+                                                                    friendRequest.setFriendReqName("Deleted");
+                                                                }
+                                                            }
+                                                            myRef.child(friend.getUsername()).child("friendReqList").setValue(friendFriendReqList);
+                                                        }
+
+                                                    }
+                                                }
+                                                @Override
+                                                public void onCancelled(@NonNull DatabaseError error) {
+                                                }
+                                            });
+                                        }
+
+                                        // Remove user in firebase
+                                        myRef.child(dbData.getUsername()).removeValue();
+                                        myDBHandler.clearDatabase("ACCOUNTS");
+                                        myDBHandler.clearDatabase("TASKS");
+                                        myDBHandler.clearDatabase("FRIENDS");
+                                        myDBHandler.clearDatabase("FRIENDREQUEST");
+
+                                        // Clears shared preference so no auto login
+                                        SaveSharedPreference.clearUserName(getActivity());
+
+                                        // Goes to login page after logging out
+                                        Intent intent = new Intent(getActivity(), LandingPage.class);
+                                        startActivity(intent);
+                                    }
+                                }
+                            }
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                // Handle error
+                            }
+                        });
                     }
                 });
 
