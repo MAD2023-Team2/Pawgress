@@ -6,16 +6,28 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
-    </style>
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
     </style>
 
+
+    <!-- Persistent Bottom Sheet -->
+    <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/PersistentBottomSheet</item>
+    </style>
+    <style name="PersistentBottomSheet" parent="">
+        <item name="android:background">@drawable/rounded_dialog</item>
+    </style>
+
+    <!-- Rounded Dialog -->
     <style name="CustomDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowBackground">@drawable/rounded_dialog </item>
     </style>
 
+    <!-- Modal Bottom Sheet -->
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
     <style name="AppModalStyle"
         parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_dialog</item>

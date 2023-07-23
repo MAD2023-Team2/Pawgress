@@ -261,7 +261,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
     }
     public ArrayList<Task> findTaskList(UserData userData){
         String query = "SELECT * FROM " + TASKS + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
-        Log.i(title, "Query :" + query);
         ArrayList<Task> NewtaskList = new ArrayList<>();
         Task queryResult = new Task();
         SQLiteDatabase db = this.getWritableDatabase();

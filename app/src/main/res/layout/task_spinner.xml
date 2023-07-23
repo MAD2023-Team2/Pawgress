@@ -12,7 +12,8 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:paddingStart="8dp"
         android:paddingEnd="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:text="Priority"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

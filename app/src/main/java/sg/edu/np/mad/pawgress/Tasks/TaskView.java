@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,10 +18,12 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.NumberPicker;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.SimpleDateFormat;
@@ -39,14 +42,15 @@ public class TaskView extends AppCompatActivity {
 
     private Button gameButton;
     String View = "Task View";
-    String dueDate;
+    String dueDate, category;
     Task task;
-    TextView time;
-    TextView targettime;
+    TextView time, targettime, dateText, timeText;
     UserData user;
     int hr,min,sec;
     int taskPriority, finalTaskPriority;
-    SpinnerAdapter adapter;
+    RelativeLayout bottom;
+    BottomSheetBehavior behavior;
+    SpinnerAdapter adapter, adapter1;
     MyDBHandler myDBHandler = new MyDBHandler(this, null,null,1);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +63,14 @@ public class TaskView extends AppCompatActivity {
         task = receivingEnd.getParcelableExtra("Task");
 
         ImageButton backButton = findViewById(R.id.backButton);
-        ImageButton editButton = findViewById(R.id.imageButton3);
-        ImageButton deleteButton = findViewById(R.id.imageButton4);
+        ImageButton editButton = findViewById(R.id.editButton);
+        ImageButton deleteButton = findViewById(R.id.delete);
+        bottom = findViewById(R.id.bottom_sheet);
+        behavior=BottomSheetBehavior.from(bottom);
+        bottom.setBackgroundColor(Color.parseColor("#FCFBFC"));
+        dateText = bottom.findViewById(R.id.dateText);
+        timeText = bottom.findViewById(R.id.timeText);
+
         refreshView(task.getTaskID());
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,14 +104,14 @@ public class TaskView extends AppCompatActivity {
                 editTask.setDismissWithAnimation(true);
                 ImageButton edit = editTask.findViewById(R.id.edit);
                 EditText taskName = editTask.findViewById(R.id.taskName);
-                EditText taskCat = editTask.findViewById(R.id.taskCategory);
+                TextView taskCat = editTask.findViewById(R.id.taskCategory);
                 taskName.setText(task.getTaskName());
-                taskCat.setText(task.getCategory());
                 TextView chooseDate = editTask.findViewById(R.id.dueDate);
                 TextView date = editTask.findViewById(R.id.date);
                 date.setText(task.getDueDate());
                 dueDate = date.getText().toString();
                 Spinner spinner = editTask.findViewById(R.id.priority);
+                Spinner chooseCat = editTask.findViewById(R.id.chooseCat);
 
 
                 int seconds = task.getTargetSec();
@@ -176,6 +186,7 @@ public class TaskView extends AppCompatActivity {
                                 year, month, day);
                         datePickerDialog.show();}
                 });
+                dueDate = null;
                 ArrayList<String> priority = new ArrayList<>();
                 priority.add("Normal");
                 priority.add("Prioritised");
@@ -201,6 +212,54 @@ public class TaskView extends AppCompatActivity {
                     }
                 });
 
+                ArrayList<String> cats = new ArrayList<>();
+                cats.add("Others");
+                cats.add("School");
+                cats.add("Work");
+                cats.add("Lifestyle");
+                cats.add("TBC");//CHANGE
+                adapter1 = new SpinnerAdapter(TaskView.this, cats);
+                chooseCat.setSelection(adapter1.getPosition("Others"));
+                chooseCat.setAdapter(adapter1);
+                if (task.getCategory().equals("School")){
+                    chooseCat.setSelection(adapter1.getPosition("School"));
+                }
+                else if (task.getCategory().equals("Work")){
+                    chooseCat.setSelection(adapter1.getPosition("Work"));
+                }
+                else if (task.getCategory().equals("Lifestyle")){
+                    chooseCat.setSelection(adapter1.getPosition("Lifestyle"));
+                }
+                else if (task.getCategory().equals("TBC")){
+                    chooseCat.setSelection(adapter1.getPosition("TBC"));
+                }
+                else chooseCat.setSelection(adapter1.getPosition("Others"));;
+                chooseCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String cat = (String)parent.getItemAtPosition(position);
+                        if (cat.equals("School")){
+                            category = "School";
+                        }
+                        else if (cat.equals("Work")){
+                            category = "Work";
+                        }
+                        else if (cat.equals("Lifestyle")){
+                            category = "Lifestyle";
+                        }
+                        else if (cat.equals("TBC")){
+                            category = "TBC";
+                        }
+                        else category = "Others";
+                        Log.w(null, category);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        chooseCat.setSelection(adapter1.getPosition("Others"));
+                    }
+                });
+
                 edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -208,13 +267,10 @@ public class TaskView extends AppCompatActivity {
                         // do not accept blank task title or category
                         if (taskName.length() > 0 && taskName.getText().charAt(0) != ' ') {
                             task.setTaskName(taskName.getText().toString());
-                            task.setCategory(taskCat.getText().toString());
+                            task.setCategory(category);
                             task.setDueDate(dueDate);
                             task.setPriority(finalTaskPriority);
                             task.setTargetSec(totalSeconds);
-                            if (taskCat.length()==0 || taskCat.getText().charAt(0) == ' '){
-                                task.setCategory("Uncategorised");
-                            }
                             myDBHandler.updateTask(task, user.getUsername());
                             editTask.dismiss();
                             refreshView(task.getTaskID());
@@ -238,7 +294,12 @@ public class TaskView extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id){
                         task.setStatus("Deleted");
                         myDBHandler.updateTask(task, user.getUsername());
-                        refreshView(task.getTaskID());
+                        dialog.dismiss();
+                        Intent intent = new Intent(TaskView.this, MainMainMain.class);
+                        intent.putExtra("User", user);
+                        intent.putExtra("tab", "tasks_tab");
+                        startActivity(intent);
+                        finish();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
@@ -250,7 +311,7 @@ public class TaskView extends AppCompatActivity {
                 builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        overridePendingTransition(android.R.anim.fade_out, android.R.anim.fade_in);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
                     }
                 });
                 AlertDialog alert = builder.create();
@@ -276,20 +337,26 @@ public class TaskView extends AppCompatActivity {
     public void refreshView(int id){
         task = myDBHandler.findTask(id, myDBHandler.findTaskList(user));
         gameButton = findViewById(R.id.to_Game);
-        TextView taskName = findViewById(R.id.textView11);
+        TextView taskName = findViewById(R.id.name);
         taskName.setText(task.getTaskName());
-        TextView taskCategory = findViewById(R.id.textView10);
+        TextView taskCategory = findViewById(R.id.cat);
         taskCategory.setText(task.getCategory());
         targettime = findViewById(R.id.targettime);
         ImageButton backButton = findViewById(R.id.backButton);
+
+        if (task.getDueDate() == null){
+            dateText.setText("No due date");
+        }
+        else dateText.setText(task.getDueDate());
 
         int tseconds = myDBHandler.getTaskTargetSec(task.getTaskID());
         int thours = tseconds / 3600;
         int tminutes = (tseconds % 3600) / 60;
         int tsecs = tseconds % 60;
 
+        timeText.setText(String.format(Locale.getDefault(), "%d h %02d m %02d s",thours, tminutes, tsecs));
         targettime.setText("Target Time: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",thours, tminutes, tsecs));
-        time = findViewById(R.id.textView15);
+        time = findViewById(R.id.timeSpent);
         int seconds = task.getTimeSpent();
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
@@ -308,5 +375,6 @@ public class TaskView extends AppCompatActivity {
                 finish();
             }
         });
+
     }
 }

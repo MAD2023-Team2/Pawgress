@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -80,7 +82,6 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
 
     @Override
     public void onBindViewHolder(TaskCardViewHolder holder, int position){
-        Log.i(THIS, "onbind");
         Task task = recyclerTaskList.get(position);
         holder.name.setText(task.getTaskName());
         // view individual task
@@ -99,7 +100,9 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
             });
         }
         else if (task.getDailyChallenge() == 1) {
-            holder.card2.setBackgroundColor(Color.parseColor(task.getColorCode().get(0)));
+            Drawable background = context.getDrawable(R.drawable.rounded_corners_challenge);
+            background.setTint(Color.parseColor(task.getColorCode().get(0)));
+            holder.card2.setBackground(background);
         }
 
         // complete task
@@ -114,10 +117,9 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                 builder.setMessage("Is it really completed?");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
-                        Log.v(THIS, "Completed task " + task.getTaskName());
                         task.setStatus("Completed");
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                        String newDayDate = formatter.format(new Date());
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy, h:mm");
+                        String newDayDate = formatter.format(new Date().getTime());
                         task.setDateComplete(newDayDate);
                         mDataBase.updateTask(task, user.getUsername());
                         recyclerTaskList.remove(task);
