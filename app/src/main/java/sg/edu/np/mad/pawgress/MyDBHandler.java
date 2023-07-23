@@ -16,8 +16,11 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 
 import sg.edu.np.mad.pawgress.Tasks.Task;
 
@@ -741,5 +744,18 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.delete(ACCOUNTS, COLUMN_USERID + "=?", new String[]{oldUniqueId});
 
         Log.i(title, "Created a new row with a desired unique ID and deleted the old row");
+    }
+
+    public int countTasks(ArrayList<Task> taskList){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = sdf.format(new Date());
+        int count = 0;
+        for (Task task : taskList){
+            if (task.getStatus().equals("In Progress") && task.getDueDate() != null && task.getDueDate().equals(currentDate)){
+                Log.w(null, "Task due date: " + task.getDueDate());
+                count+=1;
+            }
+        }
+        return count;
     }
 }

@@ -2,7 +2,10 @@ package sg.edu.np.mad.pawgress.Tasks;
 
 import static android.view.View.INVISIBLE;
 
+import static java.lang.Integer.parseInt;
+
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -115,7 +118,6 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
     @Override
     public void onBindViewHolder(ChildTaskViewHolder holder, int position){
         Task task = recyclerTaskList.get(position);
-        //Log.v("taskadapter", String.valueOf(task.getDailyChallenge()));
         holder.name.setText(task.getTaskName());
         if (task.getDueDate() != null){
             holder.duedate.setText("Due on: " + task.getDueDate());
@@ -205,6 +207,34 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
             intent.putExtra("User", user);
             intent.putExtra("tab", "home_tab");
             context.startActivity(intent);
+        }
+        int currentDay = Integer.parseInt(newDayDate.substring(0,2));
+        int currentMonth = Integer.parseInt(newDayDate.substring(3,5));
+        int currentYear = Integer.parseInt(newDayDate.substring(6));
+        if (task.getDueDate()!=null){
+            int day = Integer.parseInt(task.getDueDate().substring(0,2));
+            int month = Integer.parseInt(task.getDueDate().substring(3,5));
+            int year = Integer.parseInt(task.getDueDate().substring(6));
+            if (currentDay > day && currentMonth <= month && currentYear<=year){
+                holder.warn.setVisibility(View.VISIBLE);
+            }
+            else if (currentMonth > month || currentYear > year){
+                holder.warn.setVisibility(View.VISIBLE);
+            }
+            else Log.w(null, "TASK DATE ELSE IN CHILDADAPTER");
+        }
+        if (holder.warn != null){
+            holder.warn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Warning");
+                    builder.setMessage("This task is overdue. Currency will be deducted.");
+                    builder.setCancelable(true);
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            });
         }
     }
 }

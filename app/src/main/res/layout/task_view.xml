@@ -7,6 +7,14 @@
     android:background="#FBFAFB"
     tools:context=".Tasks.TaskView">
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:alpha="0.4"
+        android:scaleType="matrix"
+        app:srcCompat="@drawable/study_background" />
+
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
@@ -57,18 +65,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/targettime" />
 
-    <Button
-        android:id="@+id/to_Game"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#88E473"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Start Timer"
-        android:layout_below="@id/targettime" />
-
     <TextView
         android:id="@+id/targettime"
         android:layout_width="match_parent"
@@ -98,10 +94,24 @@
         app:srcCompat="@drawable/baseline_delete_24" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/dialog"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <include layout="@layout/task_view1" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+
+    <Button
+        android:id="@+id/to_Game"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="10dp"
+        android:backgroundTint="#88E473"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="Start Timer"
+        android:layout_below="@id/targettime" />
 
 </RelativeLayout>
