@@ -15,11 +15,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Button;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -28,16 +25,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
-import sg.edu.np.mad.pawgress.Fragments.Game.GameFragment;
+import sg.edu.np.mad.pawgress.Fragments.Game_Shop.GameFragment;
 import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfileFragment;
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
-import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.databinding.ActivityMainMainMainBinding;
 
 public class MainMainMain extends AppCompatActivity {

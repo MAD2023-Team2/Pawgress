@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/shopCard"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_centerInParent="true"
+    android:gravity="center"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/itemCard1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/itemPic"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/itemName"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:layout_below="@id/itemPic"
+            android:text="Ice Cream" />
+
+        <TextView
+            android:id="@+id/itemCost"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="50 Currency"
+            android:layout_below="@id/itemName"
+            android:textColor="#E84F1E" />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
+        android:id="@+id/itemCard2"
+        android:layout_toEndOf="@id/itemCard1"
+        android:layout_marginStart="15dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/itemPic2"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            tools:srcCompat="@tools:sample/avatars" />
+
+        <TextView
+            android:id="@+id/itemName2"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:layout_below="@id/itemPic2"
+            android:text="Ice Cream" />
+
+        <TextView
+            android:id="@+id/itemCost2"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="50 Currency"
+            android:layout_below="@id/itemName2"
+            android:textColor="#E84F1E" />
+    </RelativeLayout>
+
+</RelativeLayout>
