@@ -44,7 +44,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/taskcardlist"
             android:layout_width="335dp"
-            android:layout_height="121dp"
+            android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
             android:layout_marginTop="3dp"
             android:layout_marginEnd="3dp"
@@ -56,14 +56,13 @@
         <TextView
             android:id="@+id/emptyTextView"
             android:layout_width="340dp"
-            android:layout_height="229dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="35dp"
             android:clickable="true"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
-
+            android:layout_height="0dp"
             android:text="No tasks to work on for now :)"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -71,7 +70,7 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/taskcardlist"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"/>
 
         <TextView
             android:id="@+id/quoteTextView"
