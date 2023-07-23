@@ -14,12 +14,14 @@ public class ShopViewHolder extends RecyclerView.ViewHolder{
     TextView itemName;
     TextView itemCost;
     RelativeLayout itemCard2;
+    RelativeLayout itemCard1;
     ImageView itemPic2;
     TextView itemName2;
     TextView itemCost2;
     public ShopViewHolder(View itemView){
         super(itemView);
         // First card items
+        itemCard1 = itemView.findViewById(R.id.itemCard1);
         itemPic = itemView.findViewById(R.id.itemPic);
         itemCost = itemView.findViewById(R.id.itemCost);
         itemName = itemView.findViewById(R.id.itemName);

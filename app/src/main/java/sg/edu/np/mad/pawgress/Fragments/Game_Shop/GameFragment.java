@@ -20,6 +20,7 @@ import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
@@ -115,13 +116,11 @@ public class GameFragment extends Fragment {
 
         FloatingActionButton button = view.findViewById(R.id.goShop);
         BottomSheetDialog shop = new BottomSheetDialog(getActivity());
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-
-
-
                 List<Product> allProducts = new ArrayList<>();
                 database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("ShopItems");
                 database.addValueEventListener(new ValueEventListener() {
@@ -141,15 +140,16 @@ public class GameFragment extends Fragment {
                             cat1 = shop.findViewById(R.id.cat1);
                             cat2 = shop.findViewById(R.id.cat2);
                             cat3 = shop.findViewById(R.id.cat3);
-//                            cat4 = shop.findViewById(R.id.cat4);
-//                            cat5 = shop.findViewById(R.id.cat5);
+                            cat4 = shop.findViewById(R.id.cat4);
+                            cat5 = shop.findViewById(R.id.cat5);
                             recyclerView = shop.findViewById(R.id.shopRecyclerView);
                             LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
                             recyclerView.setLayoutManager(mLayoutManager);
 
                             Product product = dataSnapshot.getValue(Product.class);
                             allProducts.add(product);
-                            shopAdapter = new ShopAdapter(allProducts);
+                            shopAdapter = new ShopAdapter(allProducts,user,myDBHandler,getContext());
+                            shopAdapter.currentCurrencyText = currentCurrencyText;
                             recyclerView.setAdapter(shopAdapter);
 
                             cat1.setOnClickListener(new View.OnClickListener() {
@@ -158,8 +158,10 @@ public class GameFragment extends Fragment {
                                     cat1.setBackgroundColor(Color.parseColor("#B9C498"));
                                     cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
                                     cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                                    cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                                    cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
 
-                                    shopAdapter = new ShopAdapter(allProducts);
+                                    shopAdapter = new ShopAdapter(allProducts,user,myDBHandler,getContext());
                                     recyclerView.setAdapter(shopAdapter);
                                 }
                             });
@@ -169,6 +171,8 @@ public class GameFragment extends Fragment {
                                     cat2.setBackgroundColor(Color.parseColor("#B9C498"));
                                     cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
                                     cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                                    cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                                    cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
 
                                     List<Product> foodProducts = new ArrayList<>();
                                     // Filter the data to get banana items
@@ -177,7 +181,7 @@ public class GameFragment extends Fragment {
                                             foodProducts.add(item);
                                         }
                                     }
-                                    shopAdapter = new ShopAdapter(foodProducts);
+                                    shopAdapter = new ShopAdapter(foodProducts,user,myDBHandler,getContext());
                                     recyclerView.setAdapter(shopAdapter);
                                 }
                             });
@@ -188,6 +192,8 @@ public class GameFragment extends Fragment {
                                     cat3.setBackgroundColor(Color.parseColor("#B9C498"));
                                     cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
                                     cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                                    cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                                    cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
 
                                     List<Product> furnitureProducts = new ArrayList<>();
                                     // Filter the data to get Furniture items
@@ -196,7 +202,49 @@ public class GameFragment extends Fragment {
                                             furnitureProducts.add(item);
                                         }
                                     }
-                                    shopAdapter = new ShopAdapter(furnitureProducts);
+                                    shopAdapter = new ShopAdapter(furnitureProducts,user,myDBHandler,getContext());
+                                    recyclerView.setAdapter(shopAdapter);
+                                }
+                            });
+
+                            cat4.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    cat4.setBackgroundColor(Color.parseColor("#B9C498"));
+                                    cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                                    cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                                    cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                                    cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                                    List<Product> plantsProducts = new ArrayList<>();
+                                    // Filter the data to get Plants items
+                                    for (Product item : allProducts) {
+                                        if (item.getCategory().equals("Plants")) {
+                                            plantsProducts.add(item);
+                                        }
+                                    }
+                                    shopAdapter = new ShopAdapter(plantsProducts,user,myDBHandler,getContext());
+                                    recyclerView.setAdapter(shopAdapter);
+                                }
+                            });
+
+                            cat5.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    cat5.setBackgroundColor(Color.parseColor("#B9C498"));
+                                    cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                                    cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                                    cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                                    cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                                    List<Product> toysProducts = new ArrayList<>();
+                                    // Filter the data to get Toys items
+                                    for (Product item : allProducts) {
+                                        if (item.getCategory().equals("Toys")) {
+                                            toysProducts.add(item);
+                                        }
+                                    }
+                                    shopAdapter = new ShopAdapter(toysProducts,user,myDBHandler,getContext());
                                     recyclerView.setAdapter(shopAdapter);
                                 }
                             });

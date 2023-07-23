@@ -9,17 +9,24 @@
     android:layout_height="wrap_content">
     <RelativeLayout
         android:id="@+id/itemCard1"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_border"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
         <ImageView
             android:id="@+id/itemPic"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_width="130dp"
             android:layout_height="130dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/itemName"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed-medium"
@@ -30,6 +37,9 @@
 
         <TextView
             android:id="@+id/itemCost"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
@@ -45,6 +55,8 @@
 
     <RelativeLayout
         android:id="@+id/itemCard2"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/rounded_border"
         android:layout_toEndOf="@id/itemCard1"
         android:layout_marginStart="15dp"
         android:layout_width="wrap_content"
@@ -52,12 +64,17 @@
 
         <ImageView
             android:id="@+id/itemPic2"
+            android:layout_marginTop="10dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_width="130dp"
             android:layout_height="130dp"
             tools:srcCompat="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/itemName2"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed-medium"
@@ -68,6 +85,9 @@
 
         <TextView
             android:id="@+id/itemCost2"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"
             android:layout_width="130dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="5dp"
