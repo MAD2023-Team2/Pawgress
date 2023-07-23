@@ -63,6 +63,16 @@ public class ProfilePage extends AppCompatActivity {
             }
         });
 
+        // Analytics Button
+        Button analyticsButton = findViewById(R.id.analytics);
+        analyticsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ProfilePage.this, Analytics.class);
+                startActivity(intent);
+            }
+        });
+
         // Update/Display User Profile Pic
         // receive intent/data from pfp selection?? 
 

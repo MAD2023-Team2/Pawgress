@@ -1,14 +1,19 @@
 package sg.edu.np.mad.pawgress.Fragments.Profile;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,6 +21,20 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
+
+import sg.edu.np.mad.pawgress.CreateAccount;
+import sg.edu.np.mad.pawgress.DailyLogIn;
+import sg.edu.np.mad.pawgress.FriendData;
+import sg.edu.np.mad.pawgress.FriendRequest;
+import sg.edu.np.mad.pawgress.LoginPage;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -35,6 +54,8 @@ public class editProfilePassword extends AppCompatActivity {
 
     private CardView frameOne, frameTwo, frameThree;
     private boolean passChar8 = false, passUpper = false, passNum = false, isRegistrationClickable = false;
+    FirebaseDatabase database;
+    DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +67,8 @@ public class editProfilePassword extends AppCompatActivity {
         btnSave = findViewById(R.id.button7);
         back = findViewById(R.id.imageButton);
         dbHandler = new MyDBHandler(this, null, null, 1);
+        database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+        myRef = database.getReference("Users");
 
         frameOne = findViewById(R.id.frameOne);
         frameTwo = findViewById(R.id.frameTwo);
@@ -69,42 +92,133 @@ public class editProfilePassword extends AppCompatActivity {
 
                 if (name.length() > 0 && password.length() > 0) {
                     if (isRegistrationClickable) {
-                        String updatedUsername = etUsername.getText().toString();
-                        String updatedPassword = etPassword.getText().toString();
-                        // Getting user data
-                        UserData dbData = dbHandler.findUser(etUsername.getText().toString());
-
-                        // Checks that user does not already exists
-                        if (dbData == null || oldName.equals(updatedUsername)){
-
-                            // Updating user data in database
-                            dbHandler.updatePassword(oldName,updatedPassword);
-                            dbHandler.updateUsername(oldName,updatedUsername);
-
-                            // Updates username associated with tasks
-                            for (Task task: dbHandler.findTaskList(user)) {
-                                dbHandler.updateTask(task, updatedUsername);
-                            }
-
-                            // Update username and password
-                            user.setUsername(updatedUsername);
-                            user.setPassword(updatedPassword);
-
-                            Toast.makeText(editProfilePassword.this, "User information updated", Toast.LENGTH_SHORT).show();
-
-                            // Updates shared preference for auto login
-                            SaveSharedPreference.setUserName(editProfilePassword.this, updatedUsername);
-
-                            // Goes back to Profile page
-                            Intent newTask = new Intent(editProfilePassword.this, MainMainMain.class);
-                            newTask.putExtra("New Task List", user);
-                            newTask.putExtra("User", user);
-                            newTask.putExtra("tab", "profile_tab");
-                            startActivity(newTask);
-                            finish();
+                        if (!isNetworkAvailable()) {
+                            Toast.makeText(editProfilePassword.this, "No internet access. Unable to edit account.", Toast.LENGTH_SHORT).show();
                         }
-                        else{
-                            Toast.makeText(editProfilePassword.this, "Username Already Exist!", Toast.LENGTH_SHORT).show();
+                        else {
+                            String updatedUsername = etUsername.getText().toString();
+                            String updatedPassword = etPassword.getText().toString();
+                            // Getting user data
+                            UserData dbData = dbHandler.findUser(etUsername.getText().toString());
+                            String userId = String.valueOf(user.getUserId());
+                            // Checks that user does not already exists
+                            if (dbData == null || oldName.equals(updatedUsername)){
+
+                                user.setTaskList(dbHandler.findTaskList(user));
+                                user.setFriendList(dbHandler.findFriendList(user));
+                                user.setFriendReqList(dbHandler.findFriendReqList(user));
+
+                                // Set friends and friend request list based on Firebase, not SQLite
+                                Query query = myRef.orderByChild("username").equalTo(user.getUsername());
+                                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                        if (dataSnapshot.exists() && dataSnapshot.hasChildren()) {
+                                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                UserData tempUser = snapshot.getValue(UserData.class);
+
+                                                // Store old username
+                                                String oldUsername = user.getUsername();
+
+                                                // Remove user in firebase
+                                                myRef.child(user.getUsername()).removeValue();
+
+                                                // Get most recent friend and request list from firebase
+                                                user.setFriendList(tempUser.getFriendList());
+                                                user.setFriendReqList(tempUser.getFriendReqList());
+                                                for (FriendData friend: user.getFriendList()){
+                                                    Log.i(null, "Clear and Update---------------------------------" + friend.getFriendName());
+                                                }
+
+                                                // Update username and password
+                                                user.setUsername(updatedUsername);
+                                                user.setPassword(updatedPassword);
+
+                                                // Add user back with updated name in firebase
+                                                myRef.child(updatedUsername).setValue(user);
+
+                                                dbHandler.clearDatabase("ACCOUNTS");
+                                                dbHandler.clearDatabase("TASKS");
+                                                dbHandler.clearDatabase("FRIENDS");
+                                                dbHandler.clearDatabase("FRIENDREQUEST");
+                                                dbHandler.addUser(user);
+                                                for (Task task: user.getTaskList()){
+                                                    dbHandler.addTask(task, user);
+                                                }
+                                                for (FriendData friend: user.getFriendList()){
+                                                    dbHandler.addFriend(friend.getFriendName(), user, friend.getStatus());
+                                                    Query query = myRef.orderByChild("username").equalTo(friend.getFriendName());
+                                                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            if (dataSnapshot.exists()){
+                                                                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                                                    UserData friend = snapshot.getValue(UserData.class);
+                                                                    ArrayList<FriendData> friendFriendList = friend.getFriendList();
+                                                                    for (FriendData friendData: friendFriendList){
+                                                                        if (friendData.getFriendName().equals(oldUsername)){
+                                                                            friendData.setFriendName(updatedUsername);
+                                                                        }
+                                                                    }
+                                                                    myRef.child(friend.getUsername()).child("friendList").setValue(friendFriendList);
+                                                                }
+                                                            }
+                                                        }
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+                                                        }
+                                                    });
+                                                }
+                                                for (FriendRequest friendRequest: user.getFriendReqList()){
+                                                    dbHandler.addFriendReq(friendRequest.getFriendReqName(), user, friendRequest.getReqStatus());
+                                                    Query query = myRef.orderByChild("username").equalTo(friendRequest.getFriendReqName());
+                                                    query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                                        @Override
+                                                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                            if (dataSnapshot.exists()){
+                                                                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                                                                    UserData friend = snapshot.getValue(UserData.class);
+                                                                    ArrayList<FriendRequest> friendFriendReqList = friend.getFriendReqList();
+                                                                    for (FriendRequest friendRequest: friendFriendReqList){
+                                                                        if (friendRequest.getFriendReqName().equals(oldUsername)){
+                                                                            friendRequest.setFriendReqName(updatedUsername);
+                                                                        }
+                                                                    }
+                                                                    myRef.child(friend.getUsername()).child("friendReqList").setValue(friendFriendReqList);
+                                                                }
+
+                                                            }
+                                                        }
+                                                        @Override
+                                                        public void onCancelled(@NonNull DatabaseError error) {
+                                                        }
+                                                    });
+                                                }
+
+                                                Toast.makeText(editProfilePassword.this, "User information updated", Toast.LENGTH_SHORT).show();
+
+                                                // Updates shared preference for auto login
+                                                SaveSharedPreference.setUserName(editProfilePassword.this, updatedUsername);
+
+                                                // Goes back to Profile page
+                                                Intent newTask = new Intent(editProfilePassword.this, MainMainMain.class);
+                                                newTask.putExtra("New Task List", user);
+                                                newTask.putExtra("User", user);
+                                                newTask.putExtra("tab", "profile_tab");
+                                                startActivity(newTask);
+                                                finish();
+                                            }
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+                                        // Handle error
+                                    }
+                                });
+                            }
+                            else{
+                                Toast.makeText(editProfilePassword.this, "Username Already Exist!", Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }
                 } else {
@@ -224,5 +338,14 @@ public class editProfilePassword extends AppCompatActivity {
 
             }
         });
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivityManager != null) {
+            NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+            return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+        }
+        return false;
     }
 }

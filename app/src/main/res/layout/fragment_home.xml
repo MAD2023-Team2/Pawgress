@@ -11,10 +11,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <TextView
             android:id="@+id/emptyspace_home"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_width="340dp"
+            android:layout_height="354dp"
             android:layout_marginStart="30dp"
             android:layout_marginTop="25dp"
             android:layout_marginEnd="30dp"
@@ -23,51 +24,26 @@
             android:text=""
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/homeGame" />
+            app:layout_constraintTop_toBottomOf="@+id/greeting"
+            app:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/greeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="43dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-condensed-medium"
             android:text="@string/greeting"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <ImageButton
-            android:id="@+id/profile"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:backgroundTint="#B9C498"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/baseline_person_24" />
-
-        <ImageView
-            android:id="@+id/homeGame"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="470dp"
-            android:background="@drawable/field_background"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/greeting"
-            app:layout_constraintVertical_bias="0.0"
-            app:srcCompat="@drawable/corgi" />
-
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/taskcardlist"
-            android:layout_width="0dp"
+            android:layout_width="335dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
             android:layout_marginTop="3dp"
@@ -79,43 +55,62 @@
 
         <TextView
             android:id="@+id/emptyTextView"
-            android:layout_width="332dp"
-            android:layout_height="0dp"
+            android:layout_width="340dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="35dp"
             android:clickable="true"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
-
+            android:layout_height="0dp"
             android:text="No tasks to work on for now :)"
             android:visibility="visible"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/taskcardlist" />
+            app:layout_constraintTop_toBottomOf="@+id/taskcardlist"
+            app:layout_constraintVertical_bias="0.0"/>
 
         <TextView
             android:id="@+id/quoteTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="165dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="188dp"
+            android:layout_marginStart="28dp"
+            android:layout_marginTop="20dp"
             android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/greeting" />
 
         <TextView
             android:id="@+id/authorTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="68dp"
+            android:layout_marginStart="260dp"
+            android:layout_marginTop="40dp"
             android:text="TextView"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@id/quoteTextView"
+            app:layout_constraintTop_toBottomOf="@+id/quoteTextView" />
+
+        <TextView
+            android:id="@+id/taskLeft"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="40dp"
+            android:text="TextView"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/authorTextView" />
+
+        <TextView
+            android:id="@+id/productiveToday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="44dp"
+            android:layout_marginTop="8dp"
+            android:text="TextView"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/taskLeft" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -68,7 +68,6 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
         holder.removeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myDBHandler.removeFriend(friend.getFriendName(), user);
                 friend.setStatus("Unfriend");
                 recyclerFriendList.remove(friend);
                 notifyDataSetChanged();
@@ -91,12 +90,54 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
                                         }
                                     }
                                 }
+                                for (FriendData friend: user.getFriendList()){
+                                    Log.i(null, "Remove---------------------------------" + friend.getFriendName()+ friend.getStatus());
+                                }
                                 myRef.child(friend.getFriendName()).setValue(receivingUser);
                             }
                         }
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
+                        // Handle error
+                    }
+                });
+
+                Query query1 = myRef.orderByChild("username").equalTo(user.getUsername());
+                query1.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists() && dataSnapshot.hasChildren()) {
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                UserData tempUser = snapshot.getValue(UserData.class);
+
+                                // Clear existing friend and friend request data in local SQLite database
+                                myDBHandler.removeAllFriends(user);
+                                myDBHandler.removeAllFriendRequests(user);
+
+                                // Add new friends data to local SQLite database
+                                for (FriendData friend : tempUser.getFriendList()) {
+                                    myDBHandler.addFriend(friend.getFriendName(), user, friend.getStatus());
+                                }
+                                for (FriendRequest req : tempUser.getFriendReqList()) {
+                                    myDBHandler.addFriendReq(req.getFriendReqName(), user, req.getReqStatus());
+                                }
+
+                                myDBHandler.removeFriend(friend.getFriendName(), user);
+
+                                user.setTaskList(myDBHandler.findTaskList(user));
+                                user.setFriendList(myDBHandler.findFriendList(user));
+                                user.setFriendReqList(myDBHandler.findFriendReqList(user));
+
+                                for (FriendData friend: user.getFriendList()){
+                                    Log.i(null, "Clear and Update---------------------------------" + friend.getFriendName());
+                                }
+                            }
+                        }
+                        myRef.child(user.getUsername()).setValue(user);
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
                         // Handle error
                     }
                 });
@@ -125,5 +166,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
             }
         }
         notifyDataSetChanged();
+    }
+
+    public void updateCurrentUserInFB(UserData user){
+
     }
 }

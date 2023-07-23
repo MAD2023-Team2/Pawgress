@@ -3,9 +3,17 @@ package sg.edu.np.mad.pawgress;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -69,7 +77,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public void onCreate(SQLiteDatabase db){
         // One table for accounts (users)
         String CREATE_ACCOUNT_TABLE = "Create TABLE " + ACCOUNTS + " (" +
-                COLUMN_USERID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                COLUMN_USERID + " INTEGER PRIMARY KEY," +
                 COLUMN_USERNAME + " TEXT," +
                 COLUMN_PASSWORD + " TEXT," +
                 COLUMN_DATE + " TEXT," +
@@ -84,7 +92,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         // One table for tasks, with username from user table as foreign key
         String CREATE_TASK_TABLE = "Create TABLE " + TASKS + "(" +
-                COLUMN_TASK_ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                COLUMN_TASK_ID + " INTEGER PRIMARY KEY," +
                 COLUMN_TASK_NAME + " TEXT," +
                 COLUMN_TASK_STATUS + " TEXT," +
                 COLUMN_TASK_CATEGORY + " TEXT," +
@@ -135,7 +143,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     public void addUser(UserData userData){
         ContentValues values = new ContentValues();
-
+        values.put(COLUMN_USERID, userData.getUserId());
         values.put(COLUMN_USERNAME, userData.getUsername());
         values.put(COLUMN_PASSWORD, userData.getPassword());
         values.put(COLUMN_DATE, userData.getLastLogInDate());
@@ -221,6 +229,37 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     public UserData findUser(String username){
         String query = "SELECT * FROM " + ACCOUNTS + " WHERE " + COLUMN_USERNAME + "=\'" + username + "\'";
+        Log.i(title, "Query :" + query);
+
+        UserData queryResult = new UserData();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        Log.i(title, "Cursor");
+        if (cursor.moveToFirst()){
+            queryResult.setUserId(cursor.getInt(0));
+            queryResult.setUsername(cursor.getString(1));
+            queryResult.setPassword(cursor.getString(2));
+            queryResult.setTaskList(taskList);
+            queryResult.setLastLogInDate(cursor.getString(3));
+            queryResult.setStreak(cursor.getInt(4));
+            queryResult.setCurrency(cursor.getInt(5));
+            queryResult.setLoggedInTdy(cursor.getString(6));
+            queryResult.setPetType(cursor.getString(7));
+            queryResult.setPetDesign(cursor.getInt(8));
+            int profilePictureIndex = cursor.getColumnIndex(COLUMN_PROFILE_PICTURE);
+            String profilePicturePath = cursor.getString(profilePictureIndex);
+            queryResult.setProfilePicturePath(profilePicturePath);
+            cursor.close();
+        }
+        else{
+            Log.i(title, "Null");
+            queryResult = null;
+        }
+//        db.close();
+        return queryResult;
+    }
+    public UserData findUserID(int userID){
+        String query = "SELECT * FROM " + ACCOUNTS + " WHERE " + COLUMN_USERID + "=\'" + userID + "\'";
         Log.i(title, "Query :" + query);
 
         UserData queryResult = new UserData();
@@ -555,6 +594,18 @@ public class MyDBHandler extends SQLiteOpenHelper{
         Log.i(title, "Friend Request removed");
 //        db.close();
     }
+
+    public void removeAllFriends(UserData user) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(FRIENDS, COLUMN_USERNAME + "=?", new String[]{String.valueOf(user.getUsername())});
+
+    }
+
+    public void removeAllFriendRequests(UserData user) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(FRIENDREQUEST, COLUMN_USERNAME + "=?", new String[]{String.valueOf(user.getUsername())});
+    }
+
     public void updateCurrency(String username, int currency){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -573,6 +624,16 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.update(ACCOUNTS, values,COLUMN_USERNAME + "=?", new String[]{username});
 
         Log.i(title, "Password has been updated");
+    }
+
+    public void updateUsername(String userID, String newName){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, newName);
+
+        db.update(ACCOUNTS, values,COLUMN_USERID + "=?", new String[]{userID});
+
+        Log.i(title, "Username has been updated");
     }
 
     public void updateQuoteAndAuthor(String quoteText, String author, UserData userData){
@@ -624,14 +685,61 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         return author;
     }
-    public void updateUsername(String username, String newName){
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put(COLUMN_USERNAME, newName);
 
-        db.update(ACCOUNTS, values,COLUMN_USERNAME + "=?", new String[]{username});
+    public void findHighestID(String oldUniqueId) {
+        final String[] newID = new String[1];
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("Users");
 
-        Log.i(title, "Username has been updated");
+        // Query the users collection and sort by the unique ID field in descending order
+        Query query = myRef.orderByChild("userID");
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    int highestUniqueId = -1;
+                    // Iterate over the result and retrieve the highest unique ID
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                        UserData user = snapshot.getValue(UserData.class);
+                        int currentUniqueId = user.getUserId() + 1;
+                        if (currentUniqueId > highestUniqueId) {
+                            highestUniqueId = currentUniqueId;
+                            newID[0] = String.valueOf(highestUniqueId);
+                        }
+                    }
+                createNewRowWithUniqueID(oldUniqueId,newID[0]);
+                } else {
+                    // Handle the case when there are no users in the database
+                    Log.i(title, "No users found");
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Handle the error if the database operation was canceled
+                Log.e(title, "Database error: " + databaseError.getMessage());
+            }
+        });
+
     }
+    public void createNewRowWithUniqueID(String oldUniqueId,String newID){
+        // Do something with the highest unique ID
+        Log.i(title, "Highest Unique ID: " + newID);
+        SQLiteDatabase db = this.getWritableDatabase();
 
+        // Copy data from the old row to the new row
+        ContentValues newValues = new ContentValues();
+        Cursor cursor = db.query(ACCOUNTS, null, COLUMN_USERID + "=?", new String[]{oldUniqueId}, null, null, null);
+        if (cursor.moveToFirst()) {
+            DatabaseUtils.cursorRowToContentValues(cursor, newValues);
+            newValues.put(COLUMN_USERID, newID);
+            db.insert(ACCOUNTS, null, newValues);
+        }
+        cursor.close();
+
+        // Delete the old row
+        db.delete(ACCOUNTS, COLUMN_USERID + "=?", new String[]{oldUniqueId});
+
+        Log.i(title, "Created a new row with a desired unique ID and deleted the old row");
+    }
 }

@@ -2,6 +2,7 @@ package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -40,6 +41,12 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         if (view.getId() == R.id.editProfilePicture) {
             // Open profile picture settings
             Intent intent = new Intent(UserSettingsActivity.this, ProfilePictureSelection.class);
+            startActivity(intent);
+        }
+
+        if (view.getId() == R.id.Notifs) {
+            // Open profile picture settings
+            Intent intent = new Intent(UserSettingsActivity.this, NotificationSelection.class);
             startActivity(intent);
         }
     }
