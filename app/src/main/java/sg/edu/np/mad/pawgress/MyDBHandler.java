@@ -746,34 +746,17 @@ public class MyDBHandler extends SQLiteOpenHelper{
         Log.i(title, "Created a new row with a desired unique ID and deleted the old row");
     }
 
-//    public int getNumberOfTasksDueAtTime() {
-//        SQLiteDatabase db = this.getReadableDatabase();
-//
-//        // Get the current date in "dd/MM/yyyy" format
-//        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-//        String currentDate = sdf.format(new Date());
-//        Log.d("MyDBHandler", "Current Date: " + currentDate);
-//
-//
-//        // Create the SQL query to count tasks due on the current date with status "In Progress"
-//        String query = "SELECT COUNT(" + COLUMN_TASK_ID + ") FROM " + TASKS +
-//                " WHERE DATE(" + COLUMN_TASK_DUEDATE + ") = ? AND " +
-//                COLUMN_TASK_STATUS + " = 'In Progress'";
-//        Log.d("MyDBHandler", "Query: " + query);
-//
-//        Cursor cursor = db.rawQuery(query, new String[]{currentDate});
-//
-//        int count = 0;
-//        if (cursor != null) {
-//            if (cursor.moveToFirst()) {
-//                count = cursor.getInt(0);
-//            }
-//            cursor.close();
-//        }
-//
-//        db.close();
-//
-//        return count;
-//    }
+    public int countTasks(ArrayList<Task> taskList){
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String currentDate = sdf.format(new Date());
+        int count = 0;
+        for (Task task : taskList){
+            if (task.getStatus().equals("In Progress") && task.getDueDate() != null && task.getDueDate().equals(currentDate)){
+                count+=1;
+            }
+        }
+        Log.i(title, "Number of tasks : " + count);
+        return count;
+    }
 
 }

@@ -80,6 +80,10 @@ public class MainMainMain extends AppCompatActivity {
         binding = ActivityMainMainMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        Intent receivingEnd = getIntent();
+        String tab = receivingEnd.getExtras().getString("tab");
+        user = receivingEnd.getParcelableExtra("User");
+
         // Load the current notification preference from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         boolean userWantsNotifications = sharedPreferences.getBoolean("notification_preference", true);
@@ -92,9 +96,7 @@ public class MainMainMain extends AppCompatActivity {
 
 
         // Update the bottomNavigationView selection based of page of origin
-        Intent receivingEnd = getIntent();
-        String tab = receivingEnd.getExtras().getString("tab");
-        user = receivingEnd.getParcelableExtra("User");
+        Log.w(null, "User is null : " + String.valueOf(user==null));
         Log.i("MainMainMain", "Tab: " + tab);
         if (tab.equals("tasks_tab")){
             replaceFragment(new TasksFragment());
@@ -237,8 +239,8 @@ public class MainMainMain extends AppCompatActivity {
 
         // Calculate the time for 7am
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 2);
-        calendar.set(Calendar.MINUTE, 18);
+        calendar.set(Calendar.HOUR_OF_DAY, 15);
+        calendar.set(Calendar.MINUTE, 44);
         calendar.set(Calendar.SECOND, 0);
 
 
@@ -307,8 +309,8 @@ public class MainMainMain extends AppCompatActivity {
 
         // Calculate the time for noon
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 2);
-        calendar.set(Calendar.MINUTE, 20);
+        calendar.set(Calendar.HOUR_OF_DAY, 15);
+        calendar.set(Calendar.MINUTE, 46);
         calendar.set(Calendar.SECOND, 0);
 
         // If the time has already passed today, schedule it for the next day
@@ -374,8 +376,8 @@ public class MainMainMain extends AppCompatActivity {
 
         // Calculate the time for 6pm
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 2);
-        calendar.set(Calendar.MINUTE, 21);
+        calendar.set(Calendar.HOUR_OF_DAY, 15);
+        calendar.set(Calendar.MINUTE, 47);
         calendar.set(Calendar.SECOND, 0);
 
         // If the time has already passed today, schedule it for the next day
@@ -434,8 +436,8 @@ public class MainMainMain extends AppCompatActivity {
 
         // Calculate the time for 7:02 AM
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 2);
-        calendar.set(Calendar.MINUTE, 19);
+        calendar.set(Calendar.HOUR_OF_DAY, 15);
+        calendar.set(Calendar.MINUTE, 45);
         calendar.set(Calendar.SECOND, 0);
 
         // If the time has already passed today, schedule it for the next day
@@ -481,13 +483,14 @@ public class MainMainMain extends AppCompatActivity {
     private void updateNotificationPreference(boolean userWantsNotifications) {
 
         if (userWantsNotifications) {
+            int countTaskNotifs = myDBHandler.countTasks(myDBHandler.findTaskList(user));
             Random random = new Random();
 
             // Get a random morning notification message
             List<String> morningNotifList = new ArrayList<>();
-            morningNotifList.add("Good morning! Rise and shine, it's a brand new day full of possibilities. Make it count!");
-            morningNotifList.add("Rise and grind! A productive day starts with a positive mindset. You've got this!");
-            morningNotifList.add("It's a new day, a new beginning. Start it with enthusiasm and accomplish great things!");
+            morningNotifList.add(countTaskNotifs + "Good morning! Rise and shine, it's a brand new day full of possibilities. Make it count!");
+            morningNotifList.add(countTaskNotifs + "Rise and grind! A productive day starts with a positive mindset. You've got this!");
+            morningNotifList.add(countTaskNotifs + "It's a new day, a new beginning. Start it with enthusiasm and accomplish great things!");
 
             String selectedMorningNotif = morningNotifList.get(random.nextInt(morningNotifList.size()));
 
@@ -496,9 +499,9 @@ public class MainMainMain extends AppCompatActivity {
 
             // Get a random noon notification message
             List<String> noonNotifList = new ArrayList<>();
-            noonNotifList.add("Halfway there! You're doing great. Take a deep breath, stretch, and keep up the good work!");
-            noonNotifList.add("Keep pushing forward! The afternoon is a perfect time to tackle challenging tasks. Stay focused!");
-            noonNotifList.add("Remember to recharge as you conquer the day! You're doing fantastic!");
+            noonNotifList.add(countTaskNotifs + "Halfway there! You're doing great. Take a deep breath, stretch, and keep up the good work!");
+            noonNotifList.add(countTaskNotifs + "Keep pushing forward! The afternoon is a perfect time to tackle challenging tasks. Stay focused!");
+            noonNotifList.add(countTaskNotifs + "Remember to recharge as you conquer the day! You're doing fantastic!");
 
             String selectedNoonNotif = morningNotifList.get(random.nextInt(noonNotifList.size()));
 
@@ -507,9 +510,9 @@ public class MainMainMain extends AppCompatActivity {
 
             // Get a random evening notification message
             List<String> eveningNotifList = new ArrayList<>();
-            eveningNotifList.add("Great job today! Take a moment to pat yourself on the back for all the progress you've made.");
-            eveningNotifList.add("Finish strong! There's still time to wrap up any pending tasks. You're almost there!");
-            eveningNotifList.add("Take pride in the progress you've made today! Keep going and finish strong. Tomorrow's success begins with today's efforts.");
+            eveningNotifList.add(countTaskNotifs + "Great job today! Take a moment to pat yourself on the back for all the progress you've made.");
+            eveningNotifList.add(countTaskNotifs + "Finish strong! There's still time to wrap up any pending tasks. You're almost there!");
+            eveningNotifList.add(countTaskNotifs + "Take pride in the progress you've made today! Keep going and finish strong. Tomorrow's success begins with today's efforts.");
 
             String selectedEveningNotif = eveningNotifList.get(random.nextInt(eveningNotifList.size()));
 

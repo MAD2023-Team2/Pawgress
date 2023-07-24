@@ -42,6 +42,8 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
     MyDBHandler mDataBase;
     RecyclerView recyclerView;
     ArrayList<Task> taskList;
+    ArrayList<Task> updatedList;
+
     public TaskCardAdapter(UserData userData, MyDBHandler mDatabase, Context context, RecyclerView recyclerView){
         this.user = userData;
         this.mDataBase = mDatabase;
@@ -123,6 +125,36 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                         task.setDateComplete(newDayDate);
                         mDataBase.updateTask(task, user.getUsername());
                         recyclerTaskList.remove(task);
+
+                        // updating stats at homepage
+                        // hardcoded in case database not updated in time
+
+                        TextView taskLeft = v.getRootView().findViewById(R.id.taskLeft);
+                        TextView productiveTime = v.getRootView().findViewById(R.id.productiveToday);
+                        updatedList = mDataBase.findTaskList(user);
+
+                        int totalTime = 0;
+                        int inProgress = 0;
+                        SimpleDateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");
+
+                        String todaysDate = formatter2.format(new Date());
+                        for (Task task:updatedList){
+                            if (task.getStatus().equals("In Progress")){
+                                inProgress++;
+                            }
+                            else if (task.getDateCreated().equals(todaysDate) && task.getStatus().equals("Completed")){
+                                totalTime += task.getTimeSpent();
+                            }
+                        }
+
+                        totalTime+=task.getTimeSpent();
+
+                        int hrs = totalTime / 3600;
+                        int mins = (totalTime % 3600) / 60;
+                        int secs = totalTime % 60;
+                        int size = updatedList.size() - 1;
+                        taskLeft.setText("Total task left In Progress: " + inProgress);
+                        productiveTime.setText("Productive Time: " + String.format("%d hrs %d mins %d secs",hrs,mins,secs));;
 
                         // after completing any task, gain 5 currency
                         // for every 30 minutes spent on the task, an additional 1 currency is added

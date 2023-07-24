@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -29,9 +30,12 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
@@ -64,7 +68,11 @@ public class GameFragment extends Fragment {
     private Button cat3;
     private Button cat4;
     private Button cat5;
+    private ImageButton filterButton;
     DatabaseReference database;
+    List<Product> allProducts, foodProducts, furnitureProducts, plantsProducts, toysProducts;
+    MyDBHandler myDBHandler;
+    private int queryMode; // 0 is unfiltered, 1 is descending, 2 is ascending
     public GameFragment() {
         // Required empty public constructor
     }
@@ -94,6 +102,7 @@ public class GameFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        queryMode = 1;
     }
 
     @Override
@@ -104,7 +113,7 @@ public class GameFragment extends Fragment {
         View view;
         view = inflater.inflate(R.layout.fragment_game, container, false);
 
-        MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
+        myDBHandler = new MyDBHandler(getActivity(),null,null,1);
 
         // Getting pet picture for user based on selection
         user = myDBHandler.findUser(SaveSharedPreference.getUserName(getActivity()));
@@ -114,149 +123,301 @@ public class GameFragment extends Fragment {
         else if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
 
-        FloatingActionButton button = view.findViewById(R.id.goShop);
+        FloatingActionButton goShop = view.findViewById(R.id.goShop);
+        FloatingActionButton goInventory = view.findViewById(R.id.goInventory);
+        FloatingActionButton openMenu = view.findViewById(R.id.openMenu);
+        FloatingActionButton closeMenu = view.findViewById(R.id.close_menu);
+        RelativeLayout menu = view.findViewById(R.id.menu);
+
         BottomSheetDialog shop = new BottomSheetDialog(getActivity());
 
-
-        button.setOnClickListener(new View.OnClickListener() {
+        openMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                List<Product> allProducts = new ArrayList<>();
-                database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("ShopItems");
-                database.addValueEventListener(new ValueEventListener() {
-                    @SuppressLint("SetTextI18n")
+                openMenu.setVisibility(View.GONE);
+                menu.setVisibility(View.VISIBLE);
+            }
+        });
+
+        closeMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                menu.setVisibility(View.GONE);
+                openMenu.setVisibility(View.VISIBLE);
+            }
+        });
+
+        goInventory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                shop.setContentView(R.layout.inventory);
+                shop.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                shop.setCancelable(true);
+                shop.setDismissWithAnimation(true);
+
+                cat1 = shop.findViewById(R.id.cat1);
+                cat2 = shop.findViewById(R.id.cat2);
+                cat3 = shop.findViewById(R.id.cat3);
+                cat4 = shop.findViewById(R.id.cat4);
+                cat5 = shop.findViewById(R.id.cat5);
+                cat1.setOnClickListener(new View.OnClickListener() {
                     @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-
-                            shop.setContentView(R.layout.shop);
-                            shop.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                            shop.setCancelable(true);
-                            shop.setDismissWithAnimation(true);
-
-                            currentCurrencyText = shop.findViewById(R.id.currentCurrency);
-                            currentCurrencyText.setText(user.getCurrency() +" Currency");
-
-                            cat1 = shop.findViewById(R.id.cat1);
-                            cat2 = shop.findViewById(R.id.cat2);
-                            cat3 = shop.findViewById(R.id.cat3);
-                            cat4 = shop.findViewById(R.id.cat4);
-                            cat5 = shop.findViewById(R.id.cat5);
-                            recyclerView = shop.findViewById(R.id.shopRecyclerView);
-                            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
-                            recyclerView.setLayoutManager(mLayoutManager);
-
-                            Product product = dataSnapshot.getValue(Product.class);
-                            allProducts.add(product);
-                            shopAdapter = new ShopAdapter(allProducts,user,myDBHandler,getContext());
-                            shopAdapter.currentCurrencyText = currentCurrencyText;
-                            recyclerView.setAdapter(shopAdapter);
-
-                            cat1.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    cat1.setBackgroundColor(Color.parseColor("#B9C498"));
-                                    cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
-
-                                    shopAdapter = new ShopAdapter(allProducts,user,myDBHandler,getContext());
-                                    recyclerView.setAdapter(shopAdapter);
-                                }
-                            });
-                            cat2.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    cat2.setBackgroundColor(Color.parseColor("#B9C498"));
-                                    cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
-
-                                    List<Product> foodProducts = new ArrayList<>();
-                                    // Filter the data to get banana items
-                                    for (Product item : allProducts) {
-                                        if (item.getCategory().equals("Food")) {
-                                            foodProducts.add(item);
-                                        }
-                                    }
-                                    shopAdapter = new ShopAdapter(foodProducts,user,myDBHandler,getContext());
-                                    recyclerView.setAdapter(shopAdapter);
-                                }
-                            });
-
-                            cat3.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    cat3.setBackgroundColor(Color.parseColor("#B9C498"));
-                                    cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
-
-                                    List<Product> furnitureProducts = new ArrayList<>();
-                                    // Filter the data to get Furniture items
-                                    for (Product item : allProducts) {
-                                        if (item.getCategory().equals("Furniture")) {
-                                            furnitureProducts.add(item);
-                                        }
-                                    }
-                                    shopAdapter = new ShopAdapter(furnitureProducts,user,myDBHandler,getContext());
-                                    recyclerView.setAdapter(shopAdapter);
-                                }
-                            });
-
-                            cat4.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    cat4.setBackgroundColor(Color.parseColor("#B9C498"));
-                                    cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
-
-                                    List<Product> plantsProducts = new ArrayList<>();
-                                    // Filter the data to get Plants items
-                                    for (Product item : allProducts) {
-                                        if (item.getCategory().equals("Plants")) {
-                                            plantsProducts.add(item);
-                                        }
-                                    }
-                                    shopAdapter = new ShopAdapter(plantsProducts,user,myDBHandler,getContext());
-                                    recyclerView.setAdapter(shopAdapter);
-                                }
-                            });
-
-                            cat5.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    cat5.setBackgroundColor(Color.parseColor("#B9C498"));
-                                    cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
-                                    cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
-
-                                    List<Product> toysProducts = new ArrayList<>();
-                                    // Filter the data to get Toys items
-                                    for (Product item : allProducts) {
-                                        if (item.getCategory().equals("Toys")) {
-                                            toysProducts.add(item);
-                                        }
-                                    }
-                                    shopAdapter = new ShopAdapter(toysProducts,user,myDBHandler,getContext());
-                                    recyclerView.setAdapter(shopAdapter);
-                                }
-                            });
-
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
+                    public void onClick(View v) {
+                        cat1.setBackgroundColor(Color.parseColor("#B9C498"));
+                        cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
                     }
                 });
+                cat2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cat2.setBackgroundColor(Color.parseColor("#B9C498"));
+                        cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                    }
+                });
+
+                cat3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cat3.setBackgroundColor(Color.parseColor("#B9C498"));
+                        cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                    }
+                });
+
+                cat4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cat4.setBackgroundColor(Color.parseColor("#B9C498"));
+                        cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                    }
+                });
+
+                cat5.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cat5.setBackgroundColor(Color.parseColor("#B9C498"));
+                        cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                    }
+                });
+
+                shop.show();
+            }
+        });
+        goShop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("ShopItems");
+
+                shop.setContentView(R.layout.shop);
+                shop.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                shop.setCancelable(true);
+                shop.setDismissWithAnimation(true);
+
+                currentCurrencyText = shop.findViewById(R.id.currentCurrency);
+                currentCurrencyText.setText(user.getCurrency() +" Paws");
+
+                filterButton = shop.findViewById(R.id.filterButton);
+                // create
+                generateUnfiltered();
+                filterButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        // Toggle the query mode
+                        if (queryMode == 3){
+                            queryMode = 0;
+                        }
+
+                        // set All Categories button to green
+                        cat1.setBackgroundColor(Color.parseColor("#B9C498"));
+                        cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                        if (queryMode == 2) {
+                            // Use query to generate the list
+                            // Query the users collection and sort by the price in descending order
+                            Log.v("GameFragment","Sorted by descending");
+                            Query query = database.orderByChild("price");
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @SuppressLint("SetTextI18n")
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    allProducts = new ArrayList<>();
+                                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                                        Product product = dataSnapshot.getValue(Product.class);
+                                        allProducts.add(product);
+                                    }
+                                    Collections.reverse(allProducts);
+                                    shopAdapter = new ShopAdapter(allProducts,user,myDBHandler,getContext());
+                                    shopAdapter.currentCurrencyText = currentCurrencyText;
+                                    recyclerView.setAdapter(shopAdapter);
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    // do nth
+                                }
+                            });
+
+                            filterButton.setImageResource(R.drawable.filter);
+                            filterButton.setRotation(0);
+
+                        }
+                        else if (queryMode == 1){
+                            // Use query to generate the list
+                            // Query the users collection and sort by the price in ascending order
+                            Log.v("GameFragment","Sorted by ascending");
+                            Query query = database.orderByChild("price");
+                            query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @SuppressLint("SetTextI18n")
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                    allProducts = new ArrayList<>();
+                                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                                        Product product = dataSnapshot.getValue(Product.class);
+                                        allProducts.add(product);
+                                    }
+                                    shopAdapter = new ShopAdapter(allProducts,user,myDBHandler,getContext());
+                                    shopAdapter.currentCurrencyText = currentCurrencyText;
+                                    recyclerView.setAdapter(shopAdapter);
+                                }
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError error) {
+                                    // do nth
+                                }
+                            });
+
+                            filterButton.setImageResource(R.drawable.filter);
+                            filterButton.setRotation(180);
+
+                        }
+                        else if (queryMode == 0){
+                            generateUnfiltered();
+                        }
+                        queryMode = queryMode + 1;
+                    }
+                });
+
+                cat1 = shop.findViewById(R.id.cat1);
+                cat2 = shop.findViewById(R.id.cat2);
+                cat3 = shop.findViewById(R.id.cat3);
+                cat4 = shop.findViewById(R.id.cat4);
+                cat5 = shop.findViewById(R.id.cat5);
+                recyclerView = shop.findViewById(R.id.shopRecyclerView);
+                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+                recyclerView.setLayoutManager(mLayoutManager);
+
+                cat1.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cat1.setBackgroundColor(Color.parseColor("#B9C498"));
+                        cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                        shopAdapter = new ShopAdapter(allProducts,user,myDBHandler,getContext());
+                        recyclerView.setAdapter(shopAdapter);
+                    }
+                });
+                cat2.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cat2.setBackgroundColor(Color.parseColor("#B9C498"));
+                        cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                        foodProducts = new ArrayList<>();
+                        // Filter the data to get banana items
+                        for (Product item : allProducts) {
+                            if (item.getCategory().equals("Food")) {
+                                foodProducts.add(item);
+                            }
+                        }
+                        shopAdapter = new ShopAdapter(foodProducts,user,myDBHandler,getContext());
+                        recyclerView.setAdapter(shopAdapter);
+                    }
+                });
+
+                cat3.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cat3.setBackgroundColor(Color.parseColor("#B9C498"));
+                        cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                        furnitureProducts = new ArrayList<>();
+                        // Filter the data to get Furniture items
+                        for (Product item : allProducts) {
+                            if (item.getCategory().equals("Furniture")) {
+                                furnitureProducts.add(item);
+                            }
+                        }
+                        shopAdapter = new ShopAdapter(furnitureProducts,user,myDBHandler,getContext());
+                        recyclerView.setAdapter(shopAdapter);
+                    }
+                });
+
+                cat4.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cat4.setBackgroundColor(Color.parseColor("#B9C498"));
+                        cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                        plantsProducts = new ArrayList<>();
+                        // Filter the data to get Plants items
+                        for (Product item : allProducts) {
+                            if (item.getCategory().equals("Plants")) {
+                                plantsProducts.add(item);
+                            }
+                        }
+                        shopAdapter = new ShopAdapter(plantsProducts,user,myDBHandler,getContext());
+                        recyclerView.setAdapter(shopAdapter);
+                    }
+                });
+
+                cat5.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        cat5.setBackgroundColor(Color.parseColor("#B9C498"));
+                        cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
+                        cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                        toysProducts = new ArrayList<>();
+                        // Filter the data to get Toys items
+                        for (Product item : allProducts) {
+                            if (item.getCategory().equals("Toys")) {
+                                toysProducts.add(item);
+                            }
+                        }
+                        shopAdapter = new ShopAdapter(toysProducts,user,myDBHandler,getContext());
+                        recyclerView.setAdapter(shopAdapter);
+                    }
+                });
+
                 shop.show();
             }
         });
@@ -325,5 +486,30 @@ public class GameFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void generateUnfiltered(){
+        // Use unsorted way to generate the list
+        Log.v("GameFragment","not sorted");
+        database.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                allProducts = new ArrayList<>();
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    Product product = dataSnapshot.getValue(Product.class);
+                    allProducts.add(product);
+                }
+                shopAdapter = new ShopAdapter(allProducts,user,myDBHandler,getContext());
+                shopAdapter.currentCurrencyText = currentCurrencyText;
+                recyclerView.setAdapter(shopAdapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // do nth
+            }
+        });
+
+        filterButton.setImageResource(R.drawable.filter_off);
     }
 }
