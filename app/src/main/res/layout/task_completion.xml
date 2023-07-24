@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FCFBFC"
+    tools:context=".Tasks.TaskCompletion">
+
+    <Button
+        android:id="@+id/close"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="33dp"
+        android:backgroundTint="#88E473"
+        android:fontFamily="sans-serif-medium"
+        android:layout_below="@id/completeDialog"
+        android:text="CLOSE" />
+
+    <RelativeLayout
+        android:id="@+id/completeDialog"
+        android:background="@drawable/rounded_border_green"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="220dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="33dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:elevation="5dp">
+
+        <TextView
+            android:id="@+id/catText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Category"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/nameText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/catText"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Task Name Testing"
+            android:textSize="30sp" />
+
+        <TextView
+            android:id="@+id/dateLength"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nameText"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/outline_calendar_month_24"
+            android:text="21/07/2023 ~ 25/07/2023"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:drawablePadding="10dp"
+            android:padding="10dp"
+            android:gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dateLength"
+            android:layout_marginTop="20dp"
+            android:drawableStart="@drawable/baseline_access_time_24"
+            android:text="10 hours 10 minutes 10 seconds"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:drawablePadding="10dp"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            />
+
+    </RelativeLayout>
+</RelativeLayout>

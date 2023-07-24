@@ -110,7 +110,7 @@ public class TaskGame extends AppCompatActivity {
         user = receivingEnd.getParcelableExtra("User");
         task = receivingEnd.getParcelableExtra("Task");
 
-        ImageButton backButton = findViewById(R.id.backButton);
+        ImageButton backButton = findViewById(R.id.close);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
