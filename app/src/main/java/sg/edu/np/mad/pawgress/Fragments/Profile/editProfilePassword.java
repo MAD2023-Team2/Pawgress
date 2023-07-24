@@ -3,6 +3,7 @@ package sg.edu.np.mad.pawgress.Fragments.Profile;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.WindowCompat;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -60,6 +61,7 @@ public class editProfilePassword extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.activity_edit_profile_password);
         System.out.println("IN EDIT PROFILE");
         etUsername = findViewById(R.id.editTextText5);

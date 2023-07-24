@@ -37,5 +37,9 @@
     <style name="Theme.Pawgress.LightBeigeMode" parent="Theme.Pawgress">
         // should contain colour hex
         <item name="backgroundColor">#FF00FF</item>
+        <item name="android:statusBarColor">#FCFBFC</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowActionBar">false</item>
     </style>
 </resources>
