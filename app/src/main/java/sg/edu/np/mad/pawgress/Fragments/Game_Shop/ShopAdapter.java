@@ -55,13 +55,13 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {
         }
 
         holder.itemName.setText(shopItem1.getName());
-        holder.itemCost.setText(shopItem1.getPriceString());
+        holder.itemCost.setText(shopItem1.getPriceString() + " Paws");
         holder.itemPic.setImageResource(R.drawable.grey_cat);
 
         // Check if the second item exists and set its data
         if (shopItem2 != null) {
             holder.itemName2.setText(shopItem2.getName());
-            holder.itemCost2.setText(shopItem2.getPriceString());
+            holder.itemCost2.setText(shopItem2.getPriceString() + " Paws");
             holder.itemPic2.setImageResource(R.drawable.grey_cat);
 
         } else {
@@ -93,7 +93,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {
                             myDBHandler.updateCurrency(user.getUsername(), finalCurrency);
 
                             // update shop of current final currency left
-                            currentCurrencyText.setText(finalCurrency +" Currency");
+                            currentCurrencyText.setText(finalCurrency +" Paws");
                         }
                     });
                     builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
@@ -134,7 +134,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {
                                 myDBHandler.updateCurrency(user.getUsername(), finalCurrency);
 
                                 // update shop of current final currency left
-                                currentCurrencyText.setText(finalCurrency +" Currency");
+                                currentCurrencyText.setText(finalCurrency +" Paws");
                             }
                         });
                         builder.setNegativeButton("No", new DialogInterface.OnClickListener(){

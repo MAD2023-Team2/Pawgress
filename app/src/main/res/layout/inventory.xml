@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed-medium"
             android:layout_centerHorizontal="true"
-            android:text="SHOP"
+            android:text="INVENTORY"
             android:textSize="35sp"/>
 
         <TextView
@@ -28,18 +28,8 @@
             android:fontFamily="sans-serif-condensed-medium"
             android:layout_centerVertical="true"
             android:layout_marginStart="50dp"
-            android:text="0 Paws"
+            android:text="0 Items"
             android:textSize="15sp"/>
-
-        <ImageButton
-            android:id="@+id/filterButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="50dp"
-            android:layout_toStartOf="@id/shopText"
-            android:background="@null"
-            app:srcCompat="@drawable/filter" />
 
     </RelativeLayout>
 
