@@ -18,6 +18,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -33,7 +34,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -45,7 +45,7 @@ public class TaskView extends AppCompatActivity {
     String View = "Task View";
     String dueDate, category;
     Task task;
-    TextView time, targettime, dateText, timeText;
+    TextView spend, spendHr, spendMin, spendSec, dateText, timeText;
     UserData user;
     int hr,min,sec;
     int taskPriority, finalTaskPriority;
@@ -64,22 +64,9 @@ public class TaskView extends AppCompatActivity {
         user = receivingEnd.getParcelableExtra("User");
         task = receivingEnd.getParcelableExtra("Task");
 
-        ImageButton backButton = findViewById(R.id.backButton);
         ImageButton editButton = findViewById(R.id.editButton);
         ImageButton deleteButton = findViewById(R.id.delete);
-        bottom = findViewById(R.id.bottom_sheet);
-        behavior=BottomSheetBehavior.from(bottom);
-        bottom.setBackgroundColor(Color.parseColor("#FCFBFC"));
-        dateText = bottom.findViewById(R.id.dateText);
-        timeText = bottom.findViewById(R.id.timeText);
-
         refreshView(task.getTaskID());
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
 
         gameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,7 +87,7 @@ public class TaskView extends AppCompatActivity {
             @Override
             public void onClick(android.view.View v) {
                 BottomSheetDialog editTask = new BottomSheetDialog(TaskView.this);
-                editTask.setContentView(R.layout.edit_task);
+                editTask.setContentView(R.layout.task_edit);
                 editTask.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 editTask.setCancelable(true);
                 editTask.setDismissWithAnimation(true);
@@ -232,8 +219,8 @@ public class TaskView extends AppCompatActivity {
                 else if (task.getCategory().equals("Lifestyle")){
                     chooseCat.setSelection(adapter1.getPosition("Lifestyle"));
                 }
-                else if (task.getCategory().equals("TBC")){
-                    chooseCat.setSelection(adapter1.getPosition("TBC"));
+                else if (task.getCategory().equals("Chores")){
+                    chooseCat.setSelection(adapter1.getPosition("Chores"));
                 }
                 else chooseCat.setSelection(adapter1.getPosition("Others"));;
                 chooseCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -249,8 +236,8 @@ public class TaskView extends AppCompatActivity {
                         else if (cat.equals("Lifestyle")){
                             category = "Lifestyle";
                         }
-                        else if (cat.equals("TBC")){
-                            category = "TBC";
+                        else if (cat.equals("Chores")){
+                            category = "Chores";
                         }
                         else category = "Others";
                         Log.w(null, category);
@@ -259,6 +246,7 @@ public class TaskView extends AppCompatActivity {
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
                         chooseCat.setSelection(adapter1.getPosition("Others"));
+                        category = "Others";
                     }
                 });
 
@@ -331,41 +319,78 @@ public class TaskView extends AppCompatActivity {
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
         int secs = seconds % 60;
-        time.setText("Current Time Spent: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
+        spendHr = findViewById(R.id.spendHours);
+        spendMin = findViewById(R.id.spendMins);
+        spendSec = findViewById(R.id.spendSecs);
+        spendHr.setText(String.format(Locale.getDefault(), "%02d h",hours));
+        spendMin.setText(String.format(Locale.getDefault(), "%02d m",minutes));
+        spendSec.setText(String.format(Locale.getDefault(), "%02d s",secs));
         if (task.getTimeSpent() > 0) { gameButton.setText("Resume Timer");}
 
     }
 
     public void refreshView(int id){
+        // reflect task details and subsequent updates
         task = myDBHandler.findTask(id, myDBHandler.findTaskList(user));
-        gameButton = findViewById(R.id.to_Game);
-        TextView taskName = findViewById(R.id.name);
+
+        // task details
+        TextView taskName = findViewById(R.id.name); // name
         taskName.setText(task.getTaskName());
-        TextView taskCategory = findViewById(R.id.cat);
+        TextView taskCategory = findViewById(R.id.cat); // category
         taskCategory.setText(task.getCategory());
-        targettime = findViewById(R.id.targettime);
-        ImageButton backButton = findViewById(R.id.backButton);
-
-        if (task.getDueDate() == null){
-            dateText.setText("No due date");
+        ImageView background = findViewById(R.id.wallpaper); // background image
+        spendHr = findViewById(R.id.spendHours);
+        spendMin = findViewById(R.id.spendMins);
+        spendSec = findViewById(R.id.spendSecs);
+        // setting background depending on task category
+        if (task.getCategory().equals("School")){
+            background.setImageDrawable(getDrawable(R.drawable.study_background));
         }
-        else dateText.setText(task.getDueDate());
-
-        int tseconds = myDBHandler.getTaskTargetSec(task.getTaskID());
-        int thours = tseconds / 3600;
-        int tminutes = (tseconds % 3600) / 60;
-        int tsecs = tseconds % 60;
-
-        timeText.setText(String.format(Locale.getDefault(), "%d h %02d m %02d s",thours, tminutes, tsecs));
-        targettime.setText("Target Time: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",thours, tminutes, tsecs));
-        time = findViewById(R.id.timeSpent);
+        else if (task.getCategory().equals("Work")){
+            background.setImageDrawable(getDrawable(R.drawable.work_background));
+        }
+        else if (task.getCategory().equals("Lifestyle")){
+            background.setImageDrawable(getDrawable(R.drawable.lifestyle_background));
+            background.setAlpha(0.3f);
+        }
+        else if (task.getCategory().equals("Chores")){
+            background.setImageDrawable(getDrawable(R.drawable.chores_background));
+            background.setAlpha(0.2f);
+        }
+        // getting time spent on this task
         int seconds = task.getTimeSpent();
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
         int secs = seconds % 60;
-        time.setText("Current Time Spent: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
+        spendHr.setText(String.format(Locale.getDefault(), "%02d h",hours));
+        spendMin.setText(String.format(Locale.getDefault(), "%02d m",minutes));
+        spendSec.setText(String.format(Locale.getDefault(), "%02d s",secs));
+
+
+        // start timer button
+        gameButton = findViewById(R.id.to_Game);
         if (task.getTimeSpent() > 0) { gameButton.setText("Resume Timer");}
 
+        //bottom sheet elements
+        bottom = findViewById(R.id.bottom_sheet);
+        behavior=BottomSheetBehavior.from(bottom);
+        bottom.setBackgroundColor(Color.parseColor("#FCFBFC"));
+        dateText = bottom.findViewById(R.id.dateText); // due date
+        timeText = bottom.findViewById(R.id.timeText); // target time
+        // if no due date was set
+        if (task.getDueDate() == null){
+            dateText.setText("No due date");
+        }
+        else dateText.setText(task.getDueDate());
+        // get target time set
+        int tseconds = myDBHandler.getTaskTargetSec(task.getTaskID());
+        int thours = tseconds / 3600;
+        int tminutes = (tseconds % 3600) / 60;
+        int tsecs = tseconds % 60;
+        timeText.setText(String.format(Locale.getDefault(), "%02d h %02d m %02d s",thours,tminutes,tsecs));
+
+        // back button
+        ImageButton backButton = findViewById(R.id.close);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

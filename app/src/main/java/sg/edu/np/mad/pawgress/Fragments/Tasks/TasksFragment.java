@@ -1,8 +1,6 @@
 package sg.edu.np.mad.pawgress.Fragments.Tasks;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,7 +8,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -166,7 +163,7 @@ public class TasksFragment extends Fragment{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createTask.setContentView(R.layout.create_task);
+                createTask.setContentView(R.layout.task_create);
                 createTask.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 createTask.setCancelable(true);
                 createTask.setDismissWithAnimation(true);
@@ -271,7 +268,7 @@ public class TasksFragment extends Fragment{
                 cats.add("School");
                 cats.add("Work");
                 cats.add("Lifestyle");
-                cats.add("TBC");
+                cats.add("Chores");
                 adapter1 = new SpinnerAdapter(getActivity(), cats);
                 chooseCat.setSelection(adapter1.getPosition("Others"));
                 chooseCat.setAdapter(adapter1);
@@ -288,8 +285,8 @@ public class TasksFragment extends Fragment{
                         else if (cat.equals("Lifestyle")){
                             category = "Lifestyle";
                         }
-                        else if (cat.equals("TBC")){
-                            category = "TBC";//CHANGE
+                        else if (cat.equals("Chores")){
+                            category = "Chores";//CHANGE
                         }
                         else category = "Others";
                     }
@@ -297,6 +294,7 @@ public class TasksFragment extends Fragment{
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) {
                         chooseCat.setSelection(adapter1.getPosition("Others"));
+                        category = "Others";
                     }
                 });
 
@@ -309,6 +307,7 @@ public class TasksFragment extends Fragment{
                         if (taskName.length() > 0 && taskName.getText().charAt(0) != ' ') {
                             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                             String newDayDate = formatter.format(new Date());
+                            Log.w(null, "Task Category: " + category);
                             Task task = new Task(1, name, "In Progress", category ,0, totalSeconds, dueDate, newDayDate, null, null, 0, taskPriority);
                             myDBHandler.addTask(task, user);
                             createTask.dismiss();

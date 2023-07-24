@@ -7,12 +7,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
-import sg.edu.np.mad.pawgress.DailyLogIn;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -28,12 +32,15 @@ public class TaskCompletion extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
-        setContentView(R.layout.activity_task_completion);
+        setContentView(R.layout.task_completion);
 
         Intent receivingEnd = getIntent();
         Task task = receivingEnd.getParcelableExtra("Task");
         UserData user = receivingEnd.getParcelableExtra("User");
         Task finalTask = myDBHandler.findTask(task.getTaskID(), myDBHandler.findTaskList(user));
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy, h:mm");
+        String newDayDate = formatter.format(new Date().getTime());
+        finalTask.setDateComplete(newDayDate);
         finalTask.setStatus("Completed");
         myDBHandler.updateTask(finalTask, user.getUsername());
 
@@ -56,7 +63,11 @@ public class TaskCompletion extends AppCompatActivity {
         user.setCurrency(new_currency);
         myDBHandler.updateCurrency(user.getUsername(), new_currency);
 
-        ImageButton backButton = findViewById(R.id.backButton);
+        Button backButton = findViewById(R.id.close);
+        TextView category = findViewById(R.id.catText);
+        TextView name = findViewById(R.id.nameText);
+        TextView dates = findViewById(R.id.dateLength);
+        TextView duration = findViewById(R.id.duration);
 
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,12 +80,15 @@ public class TaskCompletion extends AppCompatActivity {
             }
         });
 
+        category.setText(finalTask.getCategory());
+        name.setText(finalTask.getTaskName());
+        dates.setText(finalTask.getDateCreated()+ " ~ " + finalTask.getDateComplete().substring(0,9));
+
         int seconds = finalTask.getTimeSpent();
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
         int secs = seconds % 60;
 
-        seconds_complete = findViewById(R.id.seconds_complete);
-        seconds_complete.setText(String.format(Locale.getDefault(),"Time Spent on %s :\n%d Hours %02d Mins %02d Secs",task.getTaskName(),hours, minutes, secs));
+        duration.setText(String.format(Locale.getDefault(),"%02d hours %02d minutes %02d seconds",hours, minutes, secs));
     }
 }

@@ -39,6 +39,17 @@
         android:text="DueDate"
         app:layout_constraintVertical_bias="1.0" />
 
+    <ImageView
+        android:id="@+id/warn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/textView4"
+        android:layout_alignBottom="@id/textView4"
+        android:layout_marginEnd="5dp"
+        android:layout_toRightOf="@id/textView4"
+        app:srcCompat="@drawable/baseline_priority_high_24"
+        android:visibility="gone"/>
+
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="23dp"

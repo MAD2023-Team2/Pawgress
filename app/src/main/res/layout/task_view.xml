@@ -7,6 +7,15 @@
     android:background="#FBFAFB"
     tools:context=".Tasks.TaskView">
 
+    <ImageView
+        android:id="@+id/wallpaper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:alpha="0.4"
+        android:scaleType="matrix"
+        app:srcCompat="@drawable/others_background" />
+
     <TextView
         android:id="@+id/name"
         android:layout_width="match_parent"
@@ -16,16 +25,17 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="@string/taskName"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:textSize="30sp"
+        android:textStyle="bold"
+        android:textAlignment="center"/>
 
     <ImageButton
-        android:id="@+id/backButton"
+        android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
         android:layout_marginTop="29dp"
-        android:backgroundTint="#B9C498"
+        android:backgroundTint="#C9DBB1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="?attr/actionModeCloseDrawable" />
@@ -34,14 +44,15 @@
         android:id="@+id/cat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@id/backButton"
+        android:layout_alignTop="@id/close"
         android:layout_marginTop="8dp"
         android:layout_toLeftOf="@id/editButton"
-        android:layout_toRightOf="@id/backButton"
+        android:layout_toRightOf="@id/close"
         android:fontFamily="sans-serif-condensed-medium"
-        android:textSize="18sp"
+        android:textSize="20sp"
         android:text="@string/taskCategory"
-        android:textAlignment="center" />
+        android:textAlignment="viewStart"
+        android:paddingStart="5dp"/>
 
     <TextView
         android:id="@+id/timeSpent"
@@ -49,13 +60,78 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="TextView"
+        android:text="Current Time Spent"
         android:layout_below="@id/name"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/targettime" />
+        android:textSize="20sp"/>
+    <RelativeLayout
+        android:id="@+id/spendCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="50dp"
+        android:layout_below="@id/timeSpent">
+        <TextView
+            android:id="@+id/spendHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00 h"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:textSize="40dp"/>
+        <TextView
+            android:id="@+id/spendMins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00 m"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_toEndOf="@id/spendHours"
+            android:layout_toStartOf="@id/spendSecs"
+            android:textAlignment="center"
+            android:textSize="40dp" />
+        <TextView
+            android:id="@+id/spendSecs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00 s"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:textSize="40dp"/>
+
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="11dp"
+        android:layout_toLeftOf="@id/delete"
+        android:backgroundTint="#C9DBB1"
+        app:srcCompat="@drawable/baseline_edit_24" />
+
+    <ImageButton
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="29dp"
+        android:layout_marginEnd="33dp"
+        android:backgroundTint="#C9DBB1"
+        app:srcCompat="@drawable/baseline_delete_24" />
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/task_view_bottom" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
 
     <Button
         android:id="@+id/to_Game"
@@ -67,41 +143,6 @@
         android:backgroundTint="#88E473"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Start Timer"
-        android:layout_below="@id/targettime" />
-
-    <TextView
-        android:id="@+id/targettime"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:gravity="center"
-        android:text="TextView"
-        android:layout_below="@id/timeSpent"/>
-
-    <ImageButton
-        android:id="@+id/editButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        android:layout_marginEnd="11dp"
-        android:layout_toLeftOf="@id/delete"
-        app:srcCompat="@drawable/baseline_edit_24" />
-
-    <ImageButton
-        android:id="@+id/delete"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        android:layout_marginEnd="10dp"
-        android:layout_alignParentEnd="true"
-        app:srcCompat="@drawable/baseline_delete_24" />
-
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <include layout="@layout/task_view1" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        android:layout_below="@id/spendCard" />
 
 </RelativeLayout>
