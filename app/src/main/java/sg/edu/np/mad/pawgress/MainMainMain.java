@@ -15,8 +15,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
+import android.widget.Button;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,12 +28,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Random;
 
 import sg.edu.np.mad.pawgress.Fragments.Game_Shop.GameFragment;
 import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfileFragment;
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
+import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.databinding.ActivityMainMainMainBinding;
 
 public class MainMainMain extends AppCompatActivity {
@@ -38,6 +48,11 @@ public class MainMainMain extends AppCompatActivity {
     UserData user;
     public static String NOTIFICATION_CHANNEL_ID = "1001";
     public static String default_notification_id = "default";
+    private static final int MORNING_NOTIFICATION_ID = 1;
+    private static final int NOON_NOTIFICATION_ID = 2;
+    private static final int EVENING_NOTIFICATION_ID = 3;
+    private boolean previousNotificationPreference;
+
 
     @Override
     public void onBackPressed(){
@@ -69,8 +84,12 @@ public class MainMainMain extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         boolean userWantsNotifications = sharedPreferences.getBoolean("notification_preference", true);
 
+        // Save the current notification preference to compare in onResume
+        previousNotificationPreference = userWantsNotifications;
+
         // Update the notification preference and schedule/cancel notification accordingly
         updateNotificationPreference(userWantsNotifications);
+
 
         // Update the bottomNavigationView selection based of page of origin
         Intent receivingEnd = getIntent();
@@ -122,11 +141,19 @@ public class MainMainMain extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+
+        // Load the current notification preference from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
         boolean userWantsNotifications = sharedPreferences.getBoolean("notification_preference", true);
 
-        // Update the notification preference and schedule/cancel notification accordingly
-        updateNotificationPreference(userWantsNotifications);
+        // Compare with the previous notification preference to check if it changed
+        if (userWantsNotifications != previousNotificationPreference) {
+            // Update the notification preference and schedule/cancel notification accordingly
+            updateNotificationPreference(userWantsNotifications);
+
+            // Update the previous notification preference for the next comparison
+            previousNotificationPreference = userWantsNotifications;
+        }
     }
 
 
@@ -191,11 +218,75 @@ public class MainMainMain extends AppCompatActivity {
         }
     }
 
+    private void scheduleMorningNotification(Notification notification) {
+        // Create an Intent for the MyNotificationPublisher class
+        Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, MORNING_NOTIFICATION_ID);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
+
+        // Generate a unique request code for the morning notification
+        int uniqueRequestCode = 1001;
+
+        // Use the unique request code in the PendingIntent
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this,
+                uniqueRequestCode,
+                notificationIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        // Calculate the time for 7am
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 2);
+        calendar.set(Calendar.MINUTE, 18);
+        calendar.set(Calendar.SECOND, 0);
+
+
+        // If the time has already passed today, schedule it for the next day
+        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+        // Get the AlarmManager and schedule the notification at 7am
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        assert alarmManager != null;
+        alarmManager.setInexactRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+        );
+
+        Log.i("MainMainMain", "Scheduled Morning Notification time: " + calendar.getTime());
+    }
+
+    private void cancelMorningNotification() {
+        // Create an Intent for the MyNotificationPublisher class
+        Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID,  MORNING_NOTIFICATION_ID);
+
+        // Use the unique request code in the PendingIntent
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this,
+                1001,
+                notificationIntent,
+                PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        // If a matching PendingIntent exists, cancel the notification
+        if (pendingIntent != null) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            assert alarmManager != null;
+            alarmManager.cancel(pendingIntent);
+            pendingIntent.cancel();
+        }
+    }
+
     private void scheduleNoonNotification(Notification notification) {
         Log.i("MainMainMain", "Received Notification: " + notification);
         // Create an Intent for the MyNotificationPublisher class
         Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
-        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, 1);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, NOON_NOTIFICATION_ID);
         notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
 
         // Use the unique request code in the PendingIntent
@@ -216,8 +307,8 @@ public class MainMainMain extends AppCompatActivity {
 
         // Calculate the time for noon
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 12);
-        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.HOUR_OF_DAY, 2);
+        calendar.set(Calendar.MINUTE, 20);
         calendar.set(Calendar.SECOND, 0);
 
         // If the time has already passed today, schedule it for the next day
@@ -236,12 +327,16 @@ public class MainMainMain extends AppCompatActivity {
                 AlarmManager.INTERVAL_DAY,
                 pendingIntent
         );
+
+        Log.i("MainMainMain", "Scheduled Noon Notification time: " + calendar.getTime());
     }
+
+
 
     private void cancelNoonNotification() {
         // Create an Intent for the MyNotificationPublisher class
         Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
-        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, 1);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, NOON_NOTIFICATION_ID);
 
         // Use the unique request code in the PendingIntent
         PendingIntent pendingIntent = PendingIntent.getBroadcast(
@@ -260,22 +355,223 @@ public class MainMainMain extends AppCompatActivity {
         }
     }
 
-    private void updateNotificationPreference(boolean userWantsNotifications) {
-        if (userWantsNotifications) {
-            // Schedule the notification if the user prefers to receive notifications
-            scheduleNoonNotification(getNotification("Keep up with the Pawgress, you're halfway through the day! Remember to stay hydrated and on top of tasks!"));
-            Log.i("MainMainMain", "Notification Scheduled and Created!");
-        } else {
-            // Cancel the notification if the user prefers not to receive notifications
-            cancelNoonNotification();
-            Log.i("MainMainMain", "Notification Canceled!");
+    private void scheduleEveningNotification(Notification notification) {
+        // Create an Intent for the MyNotificationPublisher class
+        Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, EVENING_NOTIFICATION_ID);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
+
+        // Generate a unique request code for the evening notification
+        int uniqueRequestCode = 1003;
+
+        // Use the unique request code in the PendingIntent
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this,
+                uniqueRequestCode,
+                notificationIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        // Calculate the time for 6pm
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 2);
+        calendar.set(Calendar.MINUTE, 21);
+        calendar.set(Calendar.SECOND, 0);
+
+        // If the time has already passed today, schedule it for the next day
+        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+        // Get the AlarmManager and schedule the notification at 6pm
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        assert alarmManager != null;
+        alarmManager.setInexactRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+        );
+
+        Log.i("MainMainMain", "Scheduled Evening Notification time: " + calendar.getTime());
+    }
+
+    private void cancelEveningNotification() {
+        // Create an Intent for the MyNotificationPublisher class
+        Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, EVENING_NOTIFICATION_ID);
+
+        // Use the unique request code in the PendingIntent
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this,
+                1003,
+                notificationIntent,
+                PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        // If a matching PendingIntent exists, cancel the notification
+        if (pendingIntent != null) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            assert alarmManager != null;
+            alarmManager.cancel(pendingIntent);
+            pendingIntent.cancel();
         }
     }
 
-    private Notification getNotification(String content) {
+    private void scheduleStudyAdviceNotification(Notification notification) {
+        // Create an Intent for the MyNotificationPublisher class
+        Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, 4); // Use a different ID for the Study Advice Notification
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATION, notification);
+
+        // Use the unique request code in the PendingIntent
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this,
+                1004,
+                notificationIntent,
+                PendingIntent.FLAG_CANCEL_CURRENT | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        // Calculate the time for 7:02 AM
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 2);
+        calendar.set(Calendar.MINUTE, 19);
+        calendar.set(Calendar.SECOND, 0);
+
+        // If the time has already passed today, schedule it for the next day
+        if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+            calendar.add(Calendar.DAY_OF_YEAR, 1);
+        }
+
+        // Get the AlarmManager and schedule the notification at 7:02 AM
+        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+        assert alarmManager != null;
+        alarmManager.setInexactRepeating(
+                AlarmManager.RTC_WAKEUP,
+                calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY,
+                pendingIntent
+        );
+
+        Log.i("MainMainMain", "Scheduled Study Advice Notification time: " + calendar.getTime());
+    }
+
+    private void cancelStudyAdviceNotification() {
+        // Create an Intent for the MyNotificationPublisher class
+        Intent notificationIntent = new Intent(this, MyNotificationPublisher.class);
+        notificationIntent.putExtra(MyNotificationPublisher.NOTIFICATIONID, 4); // Use the same ID used in the scheduleStudyAdviceNotification method
+
+        // Use the unique request code in the PendingIntent
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(
+                this,
+                1004,
+                notificationIntent,
+                PendingIntent.FLAG_NO_CREATE | PendingIntent.FLAG_IMMUTABLE
+        );
+
+        // If a matching PendingIntent exists, cancel the notification
+        if (pendingIntent != null) {
+            AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+            assert alarmManager != null;
+            alarmManager.cancel(pendingIntent);
+            pendingIntent.cancel();
+        }
+    }
+
+    private void updateNotificationPreference(boolean userWantsNotifications) {
+
+        if (userWantsNotifications) {
+            Random random = new Random();
+
+            // Get a random morning notification message
+            List<String> morningNotifList = new ArrayList<>();
+            morningNotifList.add("Good morning! Rise and shine, it's a brand new day full of possibilities. Make it count!");
+            morningNotifList.add("Rise and grind! A productive day starts with a positive mindset. You've got this!");
+            morningNotifList.add("It's a new day, a new beginning. Start it with enthusiasm and accomplish great things!");
+
+            String selectedMorningNotif = morningNotifList.get(random.nextInt(morningNotifList.size()));
+
+            // Schedule the morning notification
+            scheduleMorningNotification(getNotification(selectedMorningNotif, "morning"));
+
+            // Get a random noon notification message
+            List<String> noonNotifList = new ArrayList<>();
+            noonNotifList.add("Halfway there! You're doing great. Take a deep breath, stretch, and keep up the good work!");
+            noonNotifList.add("Keep pushing forward! The afternoon is a perfect time to tackle challenging tasks. Stay focused!");
+            noonNotifList.add("Remember to recharge as you conquer the day! You're doing fantastic!");
+
+            String selectedNoonNotif = morningNotifList.get(random.nextInt(noonNotifList.size()));
+
+            // Schedule the noon notification
+            scheduleNoonNotification(getNotification(selectedNoonNotif, "noon"));
+
+            // Get a random evening notification message
+            List<String> eveningNotifList = new ArrayList<>();
+            eveningNotifList.add("Great job today! Take a moment to pat yourself on the back for all the progress you've made.");
+            eveningNotifList.add("Finish strong! There's still time to wrap up any pending tasks. You're almost there!");
+            eveningNotifList.add("Take pride in the progress you've made today! Keep going and finish strong. Tomorrow's success begins with today's efforts.");
+
+            String selectedEveningNotif = eveningNotifList.get(random.nextInt(eveningNotifList.size()));
+
+            // Schedule the evening notification
+            scheduleEveningNotification(getNotification(selectedEveningNotif, "evening"));
+
+            // Get a random piece of study advice
+            List<String> studyAdviceList = new ArrayList<>();
+            studyAdviceList.add("Set Clear Goals: Define what you want to achieve each day and break tasks into smaller, manageable chunks. It will make your progress feel more tangible and achievable.");
+            studyAdviceList.add("Time Management: Prioritize tasks based on their importance and deadline. Allocate specific time blocks for studying and stick to your schedule.");
+            studyAdviceList.add("Stay Organized: Keep your study space clutter-free and organize your materials for easy access. A tidy environment can help you stay focused.");
+            studyAdviceList.add("Take Breaks: Remember to take short breaks during study sessions. Stretch, walk around, or do something enjoyable to refresh your mind.");
+            studyAdviceList.add("Stay Positive: Maintain a positive mindset. Believe in your abilities and stay motivated even during challenging times.");
+            studyAdviceList.add("Practice Active Learning: Engage with the material actively by summarizing, questioning, and discussing concepts. It enhances retention and understanding.");
+            studyAdviceList.add("Seek Help: Don't hesitate to ask for help if you encounter difficulties. Reach out to teachers, peers, or online resources for support.");
+            studyAdviceList.add("Reward Yourself: Celebrate your achievements, no matter how small. Treat yourself to something you enjoy after completing a significant task.");
+            studyAdviceList.add("Stay Consistent: Consistency is key to success. Make studying a regular habit, and over time, it will yield great results.");
+            studyAdviceList.add("Take Care of Yourself: Remember to get enough rest, eat well, and exercise. A healthy body and mind contribute to better learning and productivity.");
+
+            String selectedStudyAdvice = studyAdviceList.get(random.nextInt(studyAdviceList.size()));
+
+            // Schedule the Study Advice Notification with the selected study advice
+            scheduleStudyAdviceNotification(getStudyAdviceNotification(selectedStudyAdvice));
+
+            Log.i("MainMainMain", "Notifications Scheduled and Created!");
+        } else {
+            // Cancel all notifications if the user prefers not to receive notifications
+            cancelMorningNotification();
+            cancelNoonNotification();
+            cancelEveningNotification();
+
+            // Cancel the Study Advice Notification
+            cancelStudyAdviceNotification();
+
+            Log.i("MainMainMain", "Notifications Canceled!");
+        }
+    }
+
+    private Notification getNotification(String content, String notificationType) {
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, default_notification_id);
 
-        builder.setContentTitle("Scheduled Noon Notification");
+        // Set the notification title based on the notification type
+        String notificationTitle;
+        switch (notificationType) {
+            case "morning":
+                notificationTitle = "Morning Notification";
+                break;
+            case "noon":
+                notificationTitle = "Noon Notification";
+                break;
+            case "evening":
+                notificationTitle = "Evening Notification";
+                break;
+            case "study":
+                notificationTitle = "Study Advice Notification";
+                break;
+            default:
+                notificationTitle = "Default Notification";
+                break;
+        }
+
+        builder.setContentTitle(notificationTitle);
         builder.setContentText(content);
         builder.setSmallIcon(R.drawable.ic_launcher_foreground);
         builder.setAutoCancel(true);
@@ -288,5 +584,21 @@ public class MainMainMain extends AppCompatActivity {
         return builder.build(); // Return the built notification, not the builder itself
     }
 
+    // Create separate methods for getting morning, noon, and evening notifications
+    private Notification getMorningNotification(String content) {
+        return getNotification(content, "morning");
+    }
+
+    private Notification getNoonNotification(String content) {
+        return getNotification(content, "noon");
+    }
+
+    private Notification getEveningNotification(String content) {
+        return getNotification(content, "evening");
+    }
+
+    private Notification getStudyAdviceNotification(String content) {
+        return getNotification(content, "study");
+    }
 
 }
