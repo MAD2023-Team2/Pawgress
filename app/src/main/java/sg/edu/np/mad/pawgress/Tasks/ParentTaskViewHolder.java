@@ -15,10 +15,8 @@ import sg.edu.np.mad.pawgress.R;
 public class ParentTaskViewHolder extends RecyclerView.ViewHolder {
 
     String title = "ViewHolder!";
-    TextView name, category, duedate;
+    TextView category;
     RelativeLayout card;
-    ImageButton edit,delete;
-    CheckBox complete;
     RecyclerView childList;
 
     public ParentTaskViewHolder(View itemView){
@@ -26,6 +24,5 @@ public class ParentTaskViewHolder extends RecyclerView.ViewHolder {
         category = itemView.findViewById(R.id.taskCat);
         card = itemView.findViewById(R.id.CategoryCard); // individual task
         childList = itemView.findViewById(R.id.childList);
-        Log.i(title, "parent viewholder");
     }
 }

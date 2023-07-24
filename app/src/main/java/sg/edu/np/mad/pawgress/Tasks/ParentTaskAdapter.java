@@ -24,18 +24,20 @@ import sg.edu.np.mad.pawgress.UserData;
 public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder>{
     public TextView emptyTasktext;
     ArrayList<Task> taskList, recyclerTaskList;
-    ArrayList<String> categoryList;
+    ArrayList<String> categoryList, categories;
     Context context;
     String THIS = "Adapter";
     UserData user;
     MyDBHandler mDataBase;
     TasksFragment fragment;
-    public ParentTaskAdapter(UserData userData, MyDBHandler mDatabase, Context context, TasksFragment fragment){
+    public ParentTaskAdapter(UserData userData, MyDBHandler mDatabase, Context context, TasksFragment fragment, ArrayList<String> categories){
         this.user = userData;
         this.mDataBase = mDatabase;
         this.context = context;
         this.taskList = mDataBase.findTaskList(user);
         this.fragment = fragment;
+        this.categories = categories;
+
     }
     @NonNull
     @Override
@@ -87,6 +89,24 @@ public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder
         else emptyTasktext.setVisibility(VISIBLE);
     }
 
+    public void updateFilteredView(){
+        categoryList = new ArrayList<>();
+        int count = 0;
+        if (taskList.size() == 0){
+            count = -1;
+        }
+        else{
+            for (Task task:taskList){
+                if (!categoryList.contains(task.getCategory()) && task.getStatus().equals("In Progress") && task.getDailyChallenge()==1){
+                    categoryList.add("Daily Challenge");
+                }
+            }
+            for (String s:categories){
+                categoryList.add(s);
+            }
+        }
+    }
+
     @Override
     public ParentTaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         return new ParentTaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task_category, parent, false));
@@ -94,7 +114,6 @@ public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder
 
     @Override
     public void onBindViewHolder(ParentTaskViewHolder holder, int position) {
-        Log.i(THIS, "onbind parent");
         String category = categoryList.get(position);
         holder.category.setText(category);
         // creates the child adapter that will show the tasks that belong to each category

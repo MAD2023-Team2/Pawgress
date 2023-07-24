@@ -49,11 +49,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
     UserData user;
     MyDBHandler mDataBase;
     String category;
-    int hr, min, sec;
-    int taskPriority, finalTaskPriority;
-    String dueDate;
     TasksFragment fragment;
-    SpinnerAdapter adapter;
     public ChildTaskAdapter(UserData userData, MyDBHandler mDatabase, Context context, String category, TasksFragment fragment){
         this.user = userData;
         this.mDataBase = mDatabase;
@@ -118,7 +114,6 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
 
     @Override
     public void onBindViewHolder(ChildTaskViewHolder holder, int position){
-        Log.i(THIS, "onbind");
         Task task = recyclerTaskList.get(position);
         //Log.v("taskadapter", String.valueOf(task.getDailyChallenge()));
         holder.name.setText(task.getTaskName());
@@ -156,10 +151,8 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
                 builder.setMessage("Is it really completed?");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
-                        Log.v(THIS, "Completed task " + task.getTaskName());
                         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy, h:mm");
                         String newDayDate = formatter.format(new Date().getTime());
-                        Log.w(THIS, "Task Completed at " + newDayDate);
                         task.setStatus("Completed");
                         task.setDateComplete(newDayDate);
                         mDataBase.updateTask(task, user.getUsername());
@@ -167,7 +160,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
                         // notify adapter about changes to list
                         notifyDataSetChanged();
                         if (recyclerTaskList.size() == 0) {
-                            fragment.refreshRecyclerView();
+                            fragment.refreshTaskRecyclerView();
                         }
 
                         // after completing any task, gain 5 currency

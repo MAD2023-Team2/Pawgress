@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import sg.edu.np.mad.pawgress.DailyLogIn;
@@ -28,6 +29,7 @@ import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.Tasks.TaskCardAdapter;
 import sg.edu.np.mad.pawgress.UserData;
 
@@ -44,6 +46,8 @@ public class HomeFragment extends Fragment {
     private static final String ARG_PARAM2 = "param2";
     private TextView emptyTaskText;
     private TextView emptySpaceTextView;
+    private ArrayList<Task> taskList;
+    String todaysDate;
 
 
     // TODO: Rename and change types of parameters
@@ -94,21 +98,63 @@ public class HomeFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_home, container, false);
 
         Log.i(null, "Starting App Home Page");
+        MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
 
         // Get user data from the intent
         Intent receivingEnd = getActivity().getIntent();
         UserData user = receivingEnd.getParcelableExtra("User");
 
+        TextView quoteTextView = view.findViewById(R.id.quoteTextView);
+        TextView authorTextView = view.findViewById(R.id.authorTextView);
+        Log.i(null, ""+ myDBHandler.getQuote(user) + myDBHandler.getAuthor(user));
+        quoteTextView.setText(myDBHandler.getQuote(user));
+        authorTextView.setText(myDBHandler.getAuthor(user));
+
+        TextView taskLeft = view.findViewById(R.id.taskLeft);
+        TextView productiveTime = view.findViewById(R.id.productiveToday);
+
+        taskList=myDBHandler.findTaskList(user);
+
+        int inProgress = 0;
+        int totalTime = 0;
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+        todaysDate = formatter.format(new Date());
+
+        for (Task task:taskList){
+            if (task.getStatus().equals("In Progress")){
+                inProgress++;
+            }
+            else if (task.getDateCreated().equals(todaysDate) && task.getStatus().equals("Completed")){
+                totalTime += task.getTimeSpent();
+            }
+        }
+
+        int mins=0;
+        int secs = 0;
+        int hrs = 0;
+        mins = totalTime/60;
+        secs = totalTime - (mins*60);
+        hrs = mins/60;
+        mins = mins - (hrs*60);
+
+        taskLeft.setText("Total task left In Progress: " + inProgress);
+        productiveTime.setText("Productive Time: " + String.format("%d hrs %d mins %d secs",hrs,mins,secs));;
+
+
+        /*
         // Set pet picture based on user's pet design
         ImageView pet_picture = view.findViewById(R.id.homeGame);
         if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
         else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
         else if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
+         */
 
-        ImageButton profilePhoto = view.findViewById((R.id.profile));
+        // ImageButton profilePhoto = view.findViewById((R.id.profile));
         TextView greeting = view.findViewById(R.id.greeting);
         greeting.setText("Hello " + user.getUsername()); // add username
+        /*
         profilePhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,8 +179,9 @@ public class HomeFragment extends Fragment {
             }
         });
 
+         */
+
         // Set up the task list RecyclerView
-        MyDBHandler myDBHandler = new MyDBHandler(getActivity(),null,null,1);
         RecyclerView recyclerView = view.findViewById(R.id.taskcardlist);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
         emptySpaceTextView = view.findViewById(R.id.emptyspace_home);

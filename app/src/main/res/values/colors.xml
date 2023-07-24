@@ -15,7 +15,7 @@
 
     <!-- Edit Profile Password -->
     <!-- Username and Password field (update @drawable/field_background) -->
-    <color name="fieldColour">#F3DFCD</color>
+    <color name="fieldColour">#EFDFCE</color>
 
     <!-- PFP selection -->
     <!-- Update background -->
