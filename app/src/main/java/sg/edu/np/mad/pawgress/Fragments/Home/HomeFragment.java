@@ -130,13 +130,9 @@ public class HomeFragment extends Fragment {
             }
         }
 
-        int mins=0;
-        int secs = 0;
-        int hrs = 0;
-        mins = totalTime/60;
-        secs = totalTime - (mins*60);
-        hrs = mins/60;
-        mins = mins - (hrs*60);
+        int hrs = totalTime / 3600;
+        int mins = (totalTime % 3600) / 60;
+        int secs = totalTime % 60;
 
         taskLeft.setText("Total task left In Progress: " + inProgress);
         productiveTime.setText("Productive Time: " + String.format("%d hrs %d mins %d secs",hrs,mins,secs));;
