@@ -1,6 +1,7 @@
 package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 
 import android.os.Bundle;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ public class Analytics extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.activity_analytics);
         dbHandler = new MyDBHandler(this, null, null, 1);
         // Getting userData

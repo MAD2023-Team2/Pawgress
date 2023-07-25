@@ -22,6 +22,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
 
+import sg.edu.np.mad.pawgress.Fragments.Game_Shop.InventoryItem;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 
 public class MyDBHandler extends SQLiteOpenHelper{
@@ -64,6 +65,11 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String QUOTE = "Quote";
     public static String COLUMN_QUOTE_TEXT = "QuoteText";
     public static String COLUMN_AUTHOR = "Author";
+    public static String INVENTORY = "Inventory";
+    public static String COLUMN_ITEM_NAME = "ItemName";
+    public static String COLUMN_ITEM_QUANTITY = "Quantity";
+    public static String COLUMN_ITEM_CATEGORY = "Category";
+
 
 
 
@@ -114,6 +120,16 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.execSQL(CREATE_TASK_TABLE);
         Log.i(title, CREATE_TASK_TABLE);
 
+
+        String CREATE_INVENTORY_TABLE = "Create TABLE " + INVENTORY + "(" +
+                COLUMN_USERNAME + " TEXT," +
+                COLUMN_ITEM_NAME + " TEXT," +
+                COLUMN_ITEM_QUANTITY + " INTEGER," +
+                COLUMN_ITEM_CATEGORY + " TEXT)";
+
+        db.execSQL(CREATE_INVENTORY_TABLE);
+        Log.i(title, CREATE_INVENTORY_TABLE);
+
         String CREATE_FRIENDS_TABLE = "Create TABLE " + FRIENDS + "(" +
                 COLUMN_FRIENDNAME + " TEXT," +
                 COLUMN_FRIEND_STATUS + " TEXT," +
@@ -143,6 +159,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){
         db.execSQL("DROP TABLE IF EXISTS " + ACCOUNTS);
         db.execSQL("DROP TABLE IF EXISTS " + TASKS);
+        db.execSQL("DROP TABLE IF EXISTS " + INVENTORY);
         onCreate(db);
     }
 
@@ -515,6 +532,36 @@ public class MyDBHandler extends SQLiteOpenHelper{
         return userData.getFriendList();
     }
 
+    public ArrayList<InventoryItem> findInventoryList(UserData userData){
+        String query = "SELECT * FROM " + INVENTORY + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
+
+        Log.i(title, "Query :" + query);
+        ArrayList<InventoryItem> inventoryItemList = new ArrayList<>();
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor cursor = db.rawQuery(query, null);
+        InventoryItem queryResult = new InventoryItem();
+        if (cursor.moveToFirst()){ // goes to first row if not null
+            queryResult.setItemName(cursor.getString(1));
+            queryResult.setQuantity(cursor.getInt(2));
+            queryResult.setItemCategory(cursor.getString(3));
+            inventoryItemList.add(queryResult);
+            while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
+                InventoryItem inventoryItem = new InventoryItem();
+                inventoryItem.setItemName(cursor.getString(1));
+                inventoryItem.setQuantity(cursor.getInt(2));
+                inventoryItem.setItemCategory(cursor.getString(3));
+                inventoryItemList.add(inventoryItem);
+            }
+            cursor.close();
+            userData.setInventoryList(inventoryItemList);
+        }
+        else{
+            userData.setInventoryList(inventoryItemList);
+        }
+//        db.close();
+        return userData.getInventoryList();
+    }
+
     public void addFriend(String friendName, UserData userData, String status){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -613,6 +660,43 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public void removeAllFriendRequests(UserData user) {
         SQLiteDatabase db = getWritableDatabase();
         db.delete(FRIENDREQUEST, COLUMN_USERNAME + "=?", new String[]{String.valueOf(user.getUsername())});
+    }
+
+    public void removeAllInventoryItems(UserData user) {
+        SQLiteDatabase db = getWritableDatabase();
+        db.delete(INVENTORY, COLUMN_USERNAME + "=?", new String[]{String.valueOf(user.getUsername())});
+    }
+
+    public void addInventoryItem(InventoryItem inventoryItem, UserData userData){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_USERNAME, userData.getUsername());
+        values.put(COLUMN_ITEM_NAME, inventoryItem.getItemName());
+        values.put(COLUMN_ITEM_QUANTITY, inventoryItem.getQuantity());
+        values.put(COLUMN_ITEM_CATEGORY, inventoryItem.getItemCategory());
+
+        db.insert(INVENTORY, null, values);
+        Log.i(title, "Inserted InventoryItem");
+        //        db.close();
+    }
+
+    public void updateInventoryQuantity(InventoryItem inventoryItem, UserData userData, int newQuantity){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+
+
+        Log.i(title, "Password has been updated");
+        values.put(COLUMN_USERNAME, userData.getUsername());
+        values.put(COLUMN_ITEM_NAME, inventoryItem.getItemName());
+        values.put(COLUMN_ITEM_QUANTITY, newQuantity);
+        values.put(COLUMN_ITEM_CATEGORY, inventoryItem.getItemCategory());
+
+
+        db.update(INVENTORY, values,COLUMN_USERNAME + "=? AND " + COLUMN_ITEM_NAME + "=?", new String[]{userData.getUsername(), inventoryItem.getItemName()});
+        Log.i(title, "Inventory Item Quantity Updated");
+
+//        db.close();
     }
 
     public void updateCurrency(String username, int currency){

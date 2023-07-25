@@ -1,6 +1,7 @@
 package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -32,6 +33,7 @@ public class ProfilePictureSelection extends AppCompatActivity implements Profil
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.activity_profile_picture_selection);
 
         // Initialize SharedPreferences

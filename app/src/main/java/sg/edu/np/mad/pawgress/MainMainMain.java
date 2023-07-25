@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -37,6 +38,7 @@ import java.util.Locale;
 import java.util.Random;
 
 import sg.edu.np.mad.pawgress.Fragments.Game_Shop.GameFragment;
+import sg.edu.np.mad.pawgress.Fragments.Game_Shop.InventoryItem;
 import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfileFragment;
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
@@ -179,6 +181,7 @@ public class MainMainMain extends AppCompatActivity {
             fbUser.setTaskList(myDBHandler.findTaskList(user));
             fbUser.setFriendList(myDBHandler.findFriendList(user));
             fbUser.setFriendReqList(myDBHandler.findFriendReqList(user));
+            fbUser.setInventoryList(myDBHandler.findInventoryList(user));
 
             // Set friends and friend request list based on Firebase, not SQLite
             Query query = myRef.orderByChild("username").equalTo(user.getUsername());
@@ -189,11 +192,11 @@ public class MainMainMain extends AppCompatActivity {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             UserData tempUser = snapshot.getValue(UserData.class);
 
-                            // Clear existing friend and friend request data in local SQLite database
+                            // Clear existing friend and friend request and inventory items data in local SQLite database
                             myDBHandler.removeAllFriends(user);
                             myDBHandler.removeAllFriendRequests(user);
 
-                            // Add new friends data to local SQLite database
+                            // Add new friends data to local SQLite database and inventory items
                             for (FriendData friend : tempUser.getFriendList()) {
                                 myDBHandler.addFriend(friend.getFriendName(), user, friend.getStatus());
                             }
@@ -202,6 +205,7 @@ public class MainMainMain extends AppCompatActivity {
                             }
                             fbUser.setFriendList(tempUser.getFriendList());
                             fbUser.setFriendReqList(tempUser.getFriendReqList());
+                            fbUser.setInventoryList(user.getInventoryList());
                             for (FriendData friend: fbUser.getFriendList()){
                                 Log.i(null, "Clear and Update---------------------------------" + friend.getFriendName());
                             }

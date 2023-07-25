@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 
 import java.util.Locale;
 import java.util.Random;
@@ -44,6 +45,7 @@ public class TaskGame extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.task_game);
 
         MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);

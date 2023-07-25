@@ -6,6 +6,7 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -60,7 +61,9 @@ public class GameFragment extends Fragment {
     private String mParam1;
     private String mParam2;
     private RecyclerView recyclerView;
+    private RecyclerView recyclerViewInventory;
     private ShopAdapter shopAdapter;
+    private InventoryAdapter inventoryAdapter;
     private TextView currentCurrencyText;
     UserData user;
     private Button cat1;
@@ -71,6 +74,7 @@ public class GameFragment extends Fragment {
     private ImageButton filterButton;
     DatabaseReference database;
     List<Product> allProducts, foodProducts, furnitureProducts, plantsProducts, toysProducts;
+    List<InventoryItem> inventoryItemList, foodItems, furnitureItems, plantsItems, toysItems;
     MyDBHandler myDBHandler;
     private int queryMode; // 0 is unfiltered, 1 is descending, 2 is ascending
     public GameFragment() {
@@ -150,6 +154,8 @@ public class GameFragment extends Fragment {
         goInventory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("Users");
+
                 shop.setContentView(R.layout.inventory);
                 shop.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 shop.setCancelable(true);
@@ -160,14 +166,26 @@ public class GameFragment extends Fragment {
                 cat3 = shop.findViewById(R.id.cat3);
                 cat4 = shop.findViewById(R.id.cat4);
                 cat5 = shop.findViewById(R.id.cat5);
+
+                recyclerViewInventory = shop.findViewById(R.id.inventoryRecyclerView);
+                LinearLayoutManager mLayoutManager = new LinearLayoutManager(getContext());
+                recyclerViewInventory.setLayoutManager(mLayoutManager);
+
+                // when first open inventory recycler view, show all inventory from all category
+                generateAllCat();
+
                 cat1.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        // make all category button green and the rest as default button color
                         cat1.setBackgroundColor(Color.parseColor("#B9C498"));
                         cat2.setBackgroundColor(Color.parseColor("#dcdcdc"));
                         cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
                         cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
                         cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                        // make recycler view show all category
+                        generateAllCat();
                     }
                 });
                 cat2.setOnClickListener(new View.OnClickListener() {
@@ -178,6 +196,16 @@ public class GameFragment extends Fragment {
                         cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
                         cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
                         cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                        foodItems = new ArrayList<>();
+                        // Filter the data to get Food items
+                        for (InventoryItem item : inventoryItemList) {
+                            if (item.getItemCategory().equals("Food")) {
+                                foodItems.add(item);
+                            }
+                        }
+                        inventoryAdapter = new InventoryAdapter(foodItems, user, myDBHandler, getContext());
+                        recyclerViewInventory.setAdapter(inventoryAdapter);
                     }
                 });
 
@@ -189,6 +217,16 @@ public class GameFragment extends Fragment {
                         cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
                         cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
                         cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                        furnitureItems = new ArrayList<>();
+                        // Filter the data to get Furniture items
+                        for (InventoryItem item : inventoryItemList) {
+                            if (item.getItemCategory().equals("Furniture")) {
+                                furnitureItems.add(item);
+                            }
+                        }
+                        inventoryAdapter = new InventoryAdapter(furnitureItems, user, myDBHandler, getContext());
+                        recyclerViewInventory.setAdapter(inventoryAdapter);
                     }
                 });
 
@@ -200,6 +238,16 @@ public class GameFragment extends Fragment {
                         cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
                         cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
                         cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                        plantsItems = new ArrayList<>();
+                        // Filter the data to get Plants items
+                        for (InventoryItem item : inventoryItemList) {
+                            if (item.getItemCategory().equals("Plants")) {
+                                plantsItems.add(item);
+                            }
+                        }
+                        inventoryAdapter = new InventoryAdapter(plantsItems, user, myDBHandler, getContext());
+                        recyclerViewInventory.setAdapter(inventoryAdapter);
                     }
                 });
 
@@ -211,6 +259,16 @@ public class GameFragment extends Fragment {
                         cat3.setBackgroundColor(Color.parseColor("#dcdcdc"));
                         cat4.setBackgroundColor(Color.parseColor("#dcdcdc"));
                         cat1.setBackgroundColor(Color.parseColor("#dcdcdc"));
+
+                        toysItems = new ArrayList<>();
+                        // Filter the data to get Toys items
+                        for (InventoryItem item : inventoryItemList) {
+                            if (item.getItemCategory().equals("Toys")) {
+                                toysItems.add(item);
+                            }
+                        }
+                        inventoryAdapter = new InventoryAdapter(toysItems, user, myDBHandler, getContext());
+                        recyclerViewInventory.setAdapter(inventoryAdapter);
                     }
                 });
 
@@ -231,7 +289,7 @@ public class GameFragment extends Fragment {
                 currentCurrencyText.setText(user.getCurrency() +" Paws");
 
                 filterButton = shop.findViewById(R.id.filterButton);
-                // create
+                // when first open shop recycler view, show all shop items in all categories, unsorted
                 generateUnfiltered();
                 filterButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -331,6 +389,7 @@ public class GameFragment extends Fragment {
                         cat5.setBackgroundColor(Color.parseColor("#dcdcdc"));
 
                         shopAdapter = new ShopAdapter(allProducts,user,myDBHandler,getContext());
+                        shopAdapter.currentCurrencyText = currentCurrencyText;
                         recyclerView.setAdapter(shopAdapter);
                     }
                 });
@@ -351,6 +410,7 @@ public class GameFragment extends Fragment {
                             }
                         }
                         shopAdapter = new ShopAdapter(foodProducts,user,myDBHandler,getContext());
+                        shopAdapter.currentCurrencyText = currentCurrencyText;
                         recyclerView.setAdapter(shopAdapter);
                     }
                 });
@@ -372,6 +432,7 @@ public class GameFragment extends Fragment {
                             }
                         }
                         shopAdapter = new ShopAdapter(furnitureProducts,user,myDBHandler,getContext());
+                        shopAdapter.currentCurrencyText = currentCurrencyText;
                         recyclerView.setAdapter(shopAdapter);
                     }
                 });
@@ -393,6 +454,7 @@ public class GameFragment extends Fragment {
                             }
                         }
                         shopAdapter = new ShopAdapter(plantsProducts,user,myDBHandler,getContext());
+                        shopAdapter.currentCurrencyText = currentCurrencyText;
                         recyclerView.setAdapter(shopAdapter);
                     }
                 });
@@ -414,6 +476,7 @@ public class GameFragment extends Fragment {
                             }
                         }
                         shopAdapter = new ShopAdapter(toysProducts,user,myDBHandler,getContext());
+                        shopAdapter.currentCurrencyText = currentCurrencyText;
                         recyclerView.setAdapter(shopAdapter);
                     }
                 });
@@ -486,6 +549,12 @@ public class GameFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    private void generateAllCat() {
+        inventoryItemList = myDBHandler.findInventoryList(user);
+        inventoryAdapter = new InventoryAdapter(inventoryItemList, user, myDBHandler, getContext());
+        recyclerViewInventory.setAdapter(inventoryAdapter);
     }
 
     private void generateUnfiltered(){

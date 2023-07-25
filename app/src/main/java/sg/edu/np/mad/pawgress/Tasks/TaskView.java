@@ -2,6 +2,8 @@ package sg.edu.np.mad.pawgress.Tasks;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
@@ -55,6 +57,7 @@ public class TaskView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.task_view);
 
         Log.v(View, "In Task View");
@@ -204,7 +207,7 @@ public class TaskView extends AppCompatActivity {
                 cats.add("School");
                 cats.add("Work");
                 cats.add("Lifestyle");
-                cats.add("Chores");
+                cats.add("TBC");//CHANGE
                 adapter1 = new SpinnerAdapter(TaskView.this, cats);
                 chooseCat.setSelection(adapter1.getPosition("Others"));
                 chooseCat.setAdapter(adapter1);

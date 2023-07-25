@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.Fragments.Game_Shop.InventoryItem;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 
 public class UserData implements Parcelable{
@@ -25,8 +26,11 @@ public class UserData implements Parcelable{
     private int ResId;
     private ArrayList<FriendData> friendList;
     private ArrayList<FriendRequest> friendReqList;
+    private ArrayList<InventoryItem> inventoryList;
 
-    public UserData(int userId, String username, String password, ArrayList<Task> taskList, String lastLogInDate, int streak, int currency, String loggedInTdy, String petType, int petDesign, ArrayList<FriendData> friendList, ArrayList<FriendRequest> friendReqList){
+    public UserData(int userId, String username, String password, ArrayList<Task> taskList, String lastLogInDate,
+                    int streak, int currency, String loggedInTdy, String petType, int petDesign,
+                    ArrayList<FriendData> friendList, ArrayList<FriendRequest> friendReqList, ArrayList<InventoryItem> inventoryList){
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -39,7 +43,7 @@ public class UserData implements Parcelable{
         this.petDesign = petDesign;
         this.friendList = friendList;
         this.friendReqList = friendReqList;
-
+        this.inventoryList = inventoryList;
     }
 
     public UserData(){
@@ -114,4 +118,7 @@ public class UserData implements Parcelable{
     public void setFriendList(ArrayList<FriendData> friendList) { this.friendList = friendList; }
     public ArrayList<FriendRequest> getFriendReqList() {return friendReqList;}
     public void setFriendReqList(ArrayList<FriendRequest> friendReqList) {this.friendReqList = friendReqList;}
+    public ArrayList<InventoryItem> getInventoryList() { return inventoryList; }
+    public void setInventoryList(ArrayList<InventoryItem> inventoryList) { this.inventoryList = inventoryList; }
+
 }
