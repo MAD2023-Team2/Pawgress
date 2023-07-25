@@ -44,6 +44,7 @@ public class TaskView extends AppCompatActivity {
     String dueDate, category;
     Task task;
     TextView spend, spendHr, spendMin, spendSec, dateText, timeText;
+    EditText description;
     UserData user;
     int hr,min,sec;
     int taskPriority, finalTaskPriority;
@@ -63,8 +64,8 @@ public class TaskView extends AppCompatActivity {
 
         ImageButton editButton = findViewById(R.id.editButton);
         ImageButton deleteButton = findViewById(R.id.delete);
+        ImageButton backButton = findViewById(R.id.close);
         refreshView(task.getTaskID());
-
         gameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -305,6 +306,8 @@ public class TaskView extends AppCompatActivity {
                 alert.show();
             }
         });
+
+        Log.v(null , " Description " + description.getText().toString());
     }
 
     @Override
@@ -333,8 +336,6 @@ public class TaskView extends AppCompatActivity {
         // task details
         TextView taskName = findViewById(R.id.name); // name
         taskName.setText(task.getTaskName());
-        TextView taskCategory = findViewById(R.id.cat); // category
-        taskCategory.setText(task.getCategory());
         ImageView background = findViewById(R.id.wallpaper); // background image
         spendHr = findViewById(R.id.spendHours);
         spendMin = findViewById(R.id.spendMins);
@@ -372,6 +373,10 @@ public class TaskView extends AppCompatActivity {
         bottom = findViewById(R.id.bottom_sheet);
         behavior=BottomSheetBehavior.from(bottom);
         bottom.setBackgroundColor(Color.parseColor("#FCFBFC"));
+        TextView taskCategory = bottom.findViewById(R.id.category);
+        taskCategory.setText(task.getCategory());
+        description = bottom.findViewById(R.id.descText); // description(notes) for the task
+        description.setText(task.getDescription());
         dateText = bottom.findViewById(R.id.dateText); // due date
         timeText = bottom.findViewById(R.id.timeText); // target time
         // if no due date was set
@@ -391,6 +396,8 @@ public class TaskView extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                task.setDescription(description.getText().toString());
+                myDBHandler.updateTask(task, user.getUsername());
                 Intent intent = new Intent(TaskView.this, MainMainMain.class);
                 intent.putExtra("User", user);
                 intent.putExtra("tab", "tasks_tab");
@@ -399,6 +406,5 @@ public class TaskView extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 }

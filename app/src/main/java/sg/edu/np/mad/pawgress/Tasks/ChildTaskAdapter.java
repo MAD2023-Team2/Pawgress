@@ -221,7 +221,6 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
             else if (currentMonth > month || currentYear > year){
                 holder.warn.setVisibility(View.VISIBLE);
             }
-            else Log.w(null, "TASK DATE ELSE IN CHILDADAPTER");
         }
         if (holder.warn != null){
             holder.warn.setOnClickListener(new View.OnClickListener() {

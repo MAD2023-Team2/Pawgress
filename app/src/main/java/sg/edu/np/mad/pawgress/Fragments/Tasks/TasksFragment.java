@@ -1,5 +1,6 @@
 package sg.edu.np.mad.pawgress.Fragments.Tasks;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -170,7 +171,6 @@ public class TasksFragment extends Fragment{
 
                 ImageButton create = createTask.findViewById(R.id.create);
                 EditText taskName = createTask.findViewById(R.id.taskName);
-                TextView taskCat = createTask.findViewById(R.id.taskCategory);
                 TextView chooseDate = createTask.findViewById(R.id.dueDate);
                 TextView date = createTask.findViewById(R.id.date);
                 Spinner spinner = createTask.findViewById(R.id.priority);
@@ -222,7 +222,7 @@ public class TasksFragment extends Fragment{
                         int year = c.get(Calendar.YEAR);
                         int month = c.get(Calendar.MONTH);
                         int day = c.get(Calendar.DAY_OF_MONTH);
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
@@ -308,7 +308,7 @@ public class TasksFragment extends Fragment{
                             SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                             String newDayDate = formatter.format(new Date());
                             Log.w(null, "Task Category: " + category);
-                            Task task = new Task(1, name, "In Progress", category ,0, totalSeconds, dueDate, newDayDate, null, null, 0, taskPriority);
+                            Task task = new Task(1, name, "In Progress", category ,0, totalSeconds, dueDate, newDayDate, null, null, 0, taskPriority, null);
                             myDBHandler.addTask(task, user);
                             createTask.dismiss();
                             refreshTaskRecyclerView();

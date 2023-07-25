@@ -13,13 +13,23 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <TextView
+        android:id="@+id/details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Details"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textAlignment="center"
+        android:layout_marginTop="5dp"
+        android:textSize="25dp"/>
+    <TextView
         android:id="@+id/background"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@id/dateText"
         android:layout_alignParentStart="true"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@id/details"
         android:background="@drawable/field_background"
         android:backgroundTint="#CADCB2"
         android:paddingStart="16dp"
@@ -63,7 +73,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignStart="@id/timeText"
-        android:layout_marginTop="20dp"
+        android:layout_below="@id/details"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="50dp"
         android:background="@drawable/field_background"
         android:backgroundTint="#CADCB2"
@@ -78,7 +89,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginTop="-5dp"
-        android:layout_alignTop="@id/background"
+        android:layout_alignTop="@id/background1"
         android:layout_alignParentEnd="true"
         android:layout_marginEnd="50dp"
         android:fontFamily="sans-serif-condensed-medium"
@@ -103,6 +114,27 @@
         android:layout_marginBottom="5dp"/>
 
     <TextView
+        android:id="@+id/categoryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/background"
+        android:text="Category:"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_alignStart="@id/background"
+        android:layout_marginTop="20dp"
+        android:textSize="20sp"/>
+    <TextView
+        android:id="@+id/category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Testing"
+        android:layout_alignBottom="@id/categoryTitle"
+        android:layout_toRightOf="@id/categoryTitle"
+        android:layout_marginStart="10dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="20dp"/>
+
+    <TextView
         android:id="@+id/descTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -110,16 +142,27 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:textSize="20dp"
         android:layout_alignStart="@id/background"
-        android:layout_below="@id/background"
-        android:layout_marginTop="30dp"/>
+        android:layout_below="@id/categoryTitle"
+        android:layout_marginTop="20dp"/>
 
-    <TextView
+    <EditText
         android:id="@+id/descText"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="test"
-        android:fontFamily="sans-serif-condensed-medium"
         android:layout_below="@id/descTitle"
-        android:layout_alignStart="@id/descTitle"/>
+        android:layout_alignStart="@id/descTitle"
+        android:layout_alignEnd="@id/background1"
+        android:background="@drawable/rounded_border_green"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:gravity="start|top"
+        android:inputType="text|textMultiLine"
+        android:lines="8"
+        android:maxLines="12"
+        android:paddingStart="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:paddingEnd="10dp"
+        android:hint="Add notes" />
 
 </RelativeLayout>

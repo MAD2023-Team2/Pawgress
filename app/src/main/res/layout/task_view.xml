@@ -41,20 +41,6 @@
         app:srcCompat="?attr/actionModeCloseDrawable" />
 
     <TextView
-        android:id="@+id/cat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/close"
-        android:layout_marginTop="8dp"
-        android:layout_toLeftOf="@id/editButton"
-        android:layout_toRightOf="@id/close"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:textSize="20sp"
-        android:text="@string/taskCategory"
-        android:textAlignment="viewStart"
-        android:paddingStart="5dp"/>
-
-    <TextView
         android:id="@+id/timeSpent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -124,6 +110,19 @@
         android:backgroundTint="#C9DBB1"
         app:srcCompat="@drawable/baseline_delete_24" />
 
+    <Button
+        android:id="@+id/to_Game"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spendCard"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="16dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="Start Timer"
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="33dp"/>
+
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/dialog"
         android:layout_width="match_parent"
@@ -131,18 +130,5 @@
 
         <include layout="@layout/task_view_bottom" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
-    <Button
-        android:id="@+id/to_Game"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#88E473"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Start Timer"
-        android:layout_below="@id/spendCard" />
 
 </RelativeLayout>
