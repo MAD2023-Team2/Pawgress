@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +49,7 @@ public class HomeFragment extends Fragment {
     private TextView emptySpaceTextView;
     private ArrayList<Task> taskList;
     String todaysDate;
+    String checkDate;
 
 
     // TODO: Rename and change types of parameters
@@ -122,12 +124,29 @@ public class HomeFragment extends Fragment {
         todaysDate = formatter.format(new Date());
 
         for (Task task:taskList){
+            checkDate = task.getDateComplete();
+            System.out.println(checkDate);
             if (task.getStatus().equals("In Progress")){
                 inProgress++;
             }
-            else if (task.getDateCreated().equals(todaysDate) && task.getStatus().equals("Completed")){
-                totalTime += task.getTimeSpent();
+            else if (//task.getDateComplete().equals(todaysDate) &&
+                    //task.getDateComplete().equals(todaysDate) &&
+                    task.getStatus().equals("Completed")){
+
+                // System.out.println(task.getTaskID());
+                System.out.println(task.getDateComplete());
+                System.out.println(task.getTimeSpent() + "Task ID" + task.getTaskID());
+                // totalTime += task.getTimeSpent();
+                /*
+                if (task.getDateComplete() == null){
+                    System.out.println(task.getTaskID() + "bbbbbbb");
+                    System.out.println(task.getTimeSpent());
+                }
+
+                 */
             }
+
+
         }
 
         int hrs = totalTime / 3600;

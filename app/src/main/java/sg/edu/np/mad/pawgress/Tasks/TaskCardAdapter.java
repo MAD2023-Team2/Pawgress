@@ -147,12 +147,9 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                             }
                         }
 
-                        totalTime+=task.getTimeSpent();
-
                         int hrs = totalTime / 3600;
                         int mins = (totalTime % 3600) / 60;
                         int secs = totalTime % 60;
-                        int size = updatedList.size() - 1;
                         taskLeft.setText("Total task left In Progress: " + inProgress);
                         productiveTime.setText("Productive Time: " + String.format("%d hrs %d mins %d secs",hrs,mins,secs));;
 
