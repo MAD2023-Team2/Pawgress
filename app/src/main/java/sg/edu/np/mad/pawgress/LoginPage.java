@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import sg.edu.np.mad.pawgress.Fragments.Game_Shop.InventoryItem;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 
 public class LoginPage extends AppCompatActivity {
@@ -165,6 +166,7 @@ public class LoginPage extends AppCompatActivity {
                                                     myDBHandler.clearDatabase("TASKS");
                                                     myDBHandler.clearDatabase("FRIENDS");
                                                     myDBHandler.clearDatabase("FRIENDREQUEST");
+                                                    myDBHandler.clearDatabase("INVENTORY");
                                                     myDBHandler.addUser(user);
                                                     for (Task task: user.getTaskList()){
                                                         myDBHandler.addTask(task, user);
@@ -174,6 +176,9 @@ public class LoginPage extends AppCompatActivity {
                                                     }
                                                     for (FriendRequest friendRequest: user.getFriendReqList()){
                                                         myDBHandler.addFriendReq(friendRequest.getFriendReqName(), user, friendRequest.getReqStatus());
+                                                    }
+                                                    for (InventoryItem inventoryItem : user.getInventoryList()) {
+                                                        myDBHandler.addInventoryItem(inventoryItem, user);
                                                     }
                                                     Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
                                                     intent.putExtra("User", user);

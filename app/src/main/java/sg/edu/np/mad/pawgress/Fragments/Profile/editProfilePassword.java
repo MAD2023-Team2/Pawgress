@@ -109,6 +109,7 @@ public class editProfilePassword extends AppCompatActivity {
                                 user.setTaskList(dbHandler.findTaskList(user));
                                 user.setFriendList(dbHandler.findFriendList(user));
                                 user.setFriendReqList(dbHandler.findFriendReqList(user));
+                                user.setInventoryList(dbHandler.findInventoryList(user));
 
                                 // Set friends and friend request list based on Firebase, not SQLite
                                 Query query = myRef.orderByChild("username").equalTo(user.getUsername());
@@ -125,9 +126,10 @@ public class editProfilePassword extends AppCompatActivity {
                                                 // Remove user in firebase
                                                 myRef.child(user.getUsername()).removeValue();
 
-                                                // Get most recent friend and request list from firebase
+                                                // Get most recent friend and inventory items, request list from firebase
                                                 user.setFriendList(tempUser.getFriendList());
                                                 user.setFriendReqList(tempUser.getFriendReqList());
+                                                user.setInventoryList(tempUser.getInventoryList());
                                                 for (FriendData friend: user.getFriendList()){
                                                     Log.i(null, "Clear and Update---------------------------------" + friend.getFriendName());
                                                 }
@@ -143,6 +145,7 @@ public class editProfilePassword extends AppCompatActivity {
                                                 dbHandler.clearDatabase("TASKS");
                                                 dbHandler.clearDatabase("FRIENDS");
                                                 dbHandler.clearDatabase("FRIENDREQUEST");
+                                                dbHandler.clearDatabase("INVENTORY");
                                                 dbHandler.addUser(user);
                                                 for (Task task: user.getTaskList()){
                                                     dbHandler.addTask(task, user);
