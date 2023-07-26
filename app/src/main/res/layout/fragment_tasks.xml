@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.Tasks.TasksFragment">
+    tools:context=".Fragments.Tasks.TasksFragment"
+    android:theme="@style/AppBackgroundColour">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -38,8 +39,7 @@
             android:id="@+id/list"
             android:layout_below="@id/filterCard"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#FCFBFC" />
+            android:layout_height="match_parent"/>
 
         <TextView
             android:id="@+id/emptyCatText"

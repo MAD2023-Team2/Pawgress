@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <EditText
         android:id="@+id/taskName"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
@@ -23,7 +24,8 @@
         android:paddingStart="5dp"
         android:singleLine="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="26sp" />
+        android:textSize="26sp"
+        android:textColor="#000000"/>
 
     <ImageButton
         android:id="@+id/create"
@@ -62,7 +64,7 @@
         android:layout_alignTop="@id/taskCategory"
         android:layout_marginTop="18dp"
         android:layout_alignBottom="@id/taskCategory"
-        android:layout_alignEnd="@id/taskCategory"/>
+        android:layout_alignEnd="@id/taskCategory" />
 
     <TextView
         android:id="@+id/dueDate"

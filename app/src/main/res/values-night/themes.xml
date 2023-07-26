@@ -4,4 +4,29 @@
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
     </style>
+
+    <style name="AppBackgroundColour">
+        <item name="android:background">#11161C</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="PopUpColour">
+        <item name="android:background">#414141</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <style name="TaskColour">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+
+    <style name="ReturnButtonStyle">
+        <item name="android:tint">#FFFFFF</item>
+    </style>
+
+    <style name="AppTaskViewBottomStyle">
+        <item name="android:background">#11161C</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
 </resources>

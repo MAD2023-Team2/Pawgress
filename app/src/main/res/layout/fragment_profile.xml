@@ -4,13 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FAF5F0"
+    android:theme="@style/AppBackgroundColour"
     tools:context=".Fragments.Profile.ProfileFragment">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FCFBFC"
         tools:context=".Fragments.Profile.ProfilePage">
 
         <TextView

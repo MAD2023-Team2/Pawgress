@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FCFBFC"
+    android:theme="@style/AppBackgroundColour"
     tools:context=".Fragments.Home.HomeFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,6 +48,7 @@
             android:layout_marginStart="3dp"
             android:layout_marginTop="3dp"
             android:layout_marginEnd="3dp"
+            android:background="@drawable/rounded_border_tasklist"
             app:layout_constraintEnd_toEndOf="@+id/emptyspace_home"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="@+id/emptyspace_home"
@@ -65,6 +66,7 @@
             android:layout_height="0dp"
             android:text="No tasks to work on for now :)"
             android:visibility="visible"
+            android:background="@drawable/rounded_border_tasklist"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"

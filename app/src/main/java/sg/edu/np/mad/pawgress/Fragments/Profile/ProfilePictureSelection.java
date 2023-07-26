@@ -53,7 +53,7 @@ public class ProfilePictureSelection extends AppCompatActivity implements Profil
         recyclerView.setAdapter(profilePictureAdapter);
 
         // Set the Return Button
-        ImageView returnButton = findViewById(R.id.return_button);
+        ImageView returnButton = findViewById(R.id.imageButton);
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
