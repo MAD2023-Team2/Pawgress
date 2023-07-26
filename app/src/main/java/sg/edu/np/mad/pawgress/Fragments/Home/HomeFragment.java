@@ -3,6 +3,7 @@ package sg.edu.np.mad.pawgress.Fragments.Home;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -107,10 +108,14 @@ public class HomeFragment extends Fragment {
         UserData user = receivingEnd.getParcelableExtra("User");
 
         TextView quoteTextView = view.findViewById(R.id.quoteTextView);
-        TextView authorTextView = view.findViewById(R.id.authorTextView);
+        // TextView authorTextView = view.findViewById(R.id.authorTextView);
         Log.i(null, ""+ myDBHandler.getQuote(user) + myDBHandler.getAuthor(user));
-        quoteTextView.setText(myDBHandler.getQuote(user));
-        authorTextView.setText(myDBHandler.getAuthor(user));
+
+        String quote = myDBHandler.getQuote(user);
+        String author = myDBHandler.getAuthor(user);
+
+        quoteTextView.setText("\t\t" +quote + "\t\t\n\n" + author);
+        // authorTextView.setText(myDBHandler.getAuthor(user));
 
         TextView taskLeft = view.findViewById(R.id.taskLeft);
         TextView productiveTime = view.findViewById(R.id.productiveToday);
@@ -155,8 +160,8 @@ public class HomeFragment extends Fragment {
         int mins = (totalTime % 3600) / 60;
         int secs = totalTime % 60;
 
-        taskLeft.setText("Total task left In Progress: " + inProgress);
-        productiveTime.setText("Productive Time: " + String.format("%d hrs %d mins %d secs",hrs,mins,secs));;
+        taskLeft.setText(String.valueOf(inProgress));
+        productiveTime.setText(String.format("%d hrs %d mins %d secs",hrs,mins,secs));
 
 
         /*

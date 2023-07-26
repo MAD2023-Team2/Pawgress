@@ -169,8 +169,8 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                         int hrs = totalTime / 3600;
                         int mins = (totalTime % 3600) / 60;
                         int secs = totalTime % 60;
-                        taskLeft.setText("Total task left In Progress: " + inProgress);
-                        productiveTime.setText("Productive Time: " + String.format("%d hrs %d mins %d secs",hrs,mins,secs));;
+                        taskLeft.setText(String.valueOf(inProgress));
+                        productiveTime.setText(String.format("%d hrs %d mins %d secs",hrs,mins,secs));;
 
                         // after completing any task, gain 5 currency
                         // for every 30 minutes spent on the task, an additional 1 currency is added
