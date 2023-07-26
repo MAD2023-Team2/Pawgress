@@ -78,25 +78,6 @@ public class Analytics extends AppCompatActivity {
     }
 
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-
-        int count = 0;
-        int totalTime = 0;
-
-        for (Task task : taskList){
-            if (task.getStatus().equals("Completed")){
-                count++;
-                totalTime += task.getTimeSpent();
-            }
-        }
-
-        int hrs = totalTime / 3600;
-        int mins = (totalTime % 3600) / 60;
-        int secs = totalTime % 60;
-
-    }
     private void replaceFragment(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

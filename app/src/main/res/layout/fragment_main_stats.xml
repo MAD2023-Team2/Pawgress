@@ -17,7 +17,7 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:paddingTop="16dp"
-        android:text="New TextView below textView18"
+        android:text="Stats"
         android:textSize="18sp" />
 
 </FrameLayout>

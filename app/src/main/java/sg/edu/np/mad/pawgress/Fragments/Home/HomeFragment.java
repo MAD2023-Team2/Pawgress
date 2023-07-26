@@ -120,6 +120,7 @@ public class HomeFragment extends Fragment {
         int inProgress = 0;
         int totalTime = 0;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatterTime = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
 
         todaysDate = formatter.format(new Date());
 
@@ -129,24 +130,25 @@ public class HomeFragment extends Fragment {
             if (task.getStatus().equals("In Progress")){
                 inProgress++;
             }
-            else if (//task.getDateComplete().equals(todaysDate) &&
-                    //task.getDateComplete().equals(todaysDate) &&
-                    task.getStatus().equals("Completed")){
+            else if (checkDate != null){
+                try{
+                    Date completedDate;
+                    if (checkDate.contains(",")){
+                        completedDate = formatterTime.parse(checkDate);
+                    }
+                    else{
+                        completedDate = formatterTime.parse(checkDate);
+                    }
 
-                // System.out.println(task.getTaskID());
-                System.out.println(task.getDateComplete());
-                System.out.println(task.getTimeSpent() + "Task ID" + task.getTaskID());
-                // totalTime += task.getTimeSpent();
-                /*
-                if (task.getDateComplete() == null){
-                    System.out.println(task.getTaskID() + "bbbbbbb");
-                    System.out.println(task.getTimeSpent());
+                    String completedDateString = formatter.format(completedDate);
+                    if (completedDateString.equals(todaysDate)){
+                        totalTime += task.getTimeSpent();
+                    }
                 }
-
-                 */
+                catch (ParseException e){
+                    e.printStackTrace();
+                }
             }
-
-
         }
 
         int hrs = totalTime / 3600;

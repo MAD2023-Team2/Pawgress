@@ -42,4 +42,6 @@
     <color name="inactive">#C4C4C4</color>
     <color name="active">#2196F3</color>
     <color name="defaultButtonText">#ff6750a4</color>
+
+    <color name="colorBar">#daa440</color>
 </resources>

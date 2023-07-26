@@ -35,7 +35,10 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:backgroundTint="#DA7F40"
-            android:text="Main" />
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Main"
+            android:textColor="@android:color/white"
+            android:textSize="20sp" />
 
         <Space
             android:layout_width="0dp"
@@ -49,7 +52,10 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:backgroundTint="#DA7F40"
-            android:text="Bar" />
+            android:text="Bar"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
 
         <Space
             android:layout_width="0dp"
@@ -63,7 +69,10 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:backgroundTint="#DA7F40"
-            android:text="Pie" />
+            android:text="Pie"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textColor="@android:color/white"
+            android:textSize="20sp"/>
 
         <Space
             android:layout_width="0dp"
