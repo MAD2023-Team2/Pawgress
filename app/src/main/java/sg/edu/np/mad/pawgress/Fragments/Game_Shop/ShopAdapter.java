@@ -2,6 +2,8 @@ package sg.edu.np.mad.pawgress.Fragments.Game_Shop;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,15 +57,31 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {
             shopItem2 = allProducts.get((position * 2) + 1);
         }
 
+        // handle first item, setting image and name etc.
         holder.itemName.setText(shopItem1.getName());
         holder.itemCost.setText(shopItem1.getPriceString() + " Paws");
-        holder.itemPic.setImageResource(R.drawable.grey_cat);
+        String pathName = myDBHandler.getImageURL(shopItem1.getName());
+        if (pathName.equals("")){
+            holder.itemPic.setImageResource(R.drawable.grey_cat);
+        }
+        else{
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
+            holder.itemPic.setImageBitmap(bitmap);
+        }
 
         // Check if the second item exists and set its data
         if (shopItem2 != null) {
+            // handle second item, setting image and name etc.
             holder.itemName2.setText(shopItem2.getName());
             holder.itemCost2.setText(shopItem2.getPriceString() + " Paws");
-            holder.itemPic2.setImageResource(R.drawable.grey_cat);
+            String pathName2 = myDBHandler.getImageURL(shopItem2.getName());
+            if (pathName2.equals("")){
+                holder.itemPic2.setImageResource(R.drawable.grey_cat);
+            }
+            else{
+                Bitmap bitmap = BitmapFactory.decodeFile(pathName2);
+                holder.itemPic2.setImageBitmap(bitmap);
+            }
 
         } else {
             // If there is no second item, hide the second Relative Card
