@@ -1,10 +1,10 @@
 package sg.edu.np.mad.pawgress.Fragments.Tasks;
 
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -125,7 +125,7 @@ public class TasksFragment extends Fragment{
             @Override
             public void onClick(View v) {
                 FilterAdapter fAdapter = new FilterAdapter(user,myDBHandler, getActivity(), TasksFragment.this);
-                GridLayoutManager fLayoutManager = new GridLayoutManager(getActivity(), 3);
+                GridLayoutManager fLayoutManager = new GridLayoutManager(getActivity(), 5);
                 filterCard.setLayoutManager(fLayoutManager);
                 fAdapter.clear = clear;
                 fAdapter.emptyCatText=emptyCatText;
@@ -164,171 +164,185 @@ public class TasksFragment extends Fragment{
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                createTask.setContentView(R.layout.task_create);
-                createTask.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                createTask.setCancelable(true);
-                createTask.setDismissWithAnimation(true);
-
-                ImageButton create = createTask.findViewById(R.id.create);
-                EditText taskName = createTask.findViewById(R.id.taskName);
-                TextView chooseDate = createTask.findViewById(R.id.dueDate);
-                TextView date = createTask.findViewById(R.id.date);
-                Spinner spinner = createTask.findViewById(R.id.priority);
-                Spinner chooseCat = createTask.findViewById(R.id.chooseCat);
-
-                NumberPicker ethr = (NumberPicker) createTask.findViewById(R.id.hourPicker);
-                ethr.setMaxValue(999);
-                ethr.setMinValue(0);
-                ethr.setValue(0);
-                ethr.setWrapSelectorWheel(true);
-
-                NumberPicker etmin = (NumberPicker) createTask.findViewById(R.id.minPicker);
-                etmin.setMaxValue(999);
-                etmin.setMinValue(0);
-                etmin.setValue(0);
-                etmin.setWrapSelectorWheel(true);
-
-                NumberPicker etsec = (NumberPicker) createTask.findViewById(R.id.secPicker);
-                etsec.setMaxValue(999);
-                etsec.setMinValue(0);
-                etsec.setValue(0);
-                etsec.setWrapSelectorWheel(true);
-
-                ethr.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                    @Override
-                    public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                        hr = i1;
+                int count = 0;
+                for (Task task : myDBHandler.findTaskList(user)) {
+                    if (task.getStatus().equals("In Progress") && task.getDailyChallenge() != 1) {
+                        count += 1;
                     }
-                });
+                }
+                if (count == 20) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setTitle("Maximum tasks reached");
+                    builder.setMessage("You cannot create another task. Please complete 1 first");
+                    builder.setCancelable(true);
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                    createTask.dismiss();
+                }
+                else {
+                    createTask.setContentView(R.layout.task_create);
+                    createTask.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    createTask.setCancelable(true);
+                    createTask.setDismissWithAnimation(true);
 
-                etmin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                    @Override
-                    public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                        min = i1;
-                    }
-                });
+                    ImageButton create = createTask.findViewById(R.id.create);
+                    EditText taskName = createTask.findViewById(R.id.taskName);
+                    TextView taskCat = createTask.findViewById(R.id.taskCategory);
+                    TextView chooseDate = createTask.findViewById(R.id.dueDate);
+                    TextView date = createTask.findViewById(R.id.date);
+                    Spinner spinner = createTask.findViewById(R.id.priority);
+                    Spinner chooseCat = createTask.findViewById(R.id.chooseCat);
 
-                etsec.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-                    @Override
-                    public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                        sec = i1;
-                    }
-                });
-                chooseDate.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Log.w(null, "ONCLICK DUE DATE");
-                        final Calendar c = Calendar.getInstance();
-                        int year = c.get(Calendar.YEAR);
-                        int month = c.get(Calendar.MONTH);
-                        int day = c.get(Calendar.DAY_OF_MONTH);
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,  new DatePickerDialog.OnDateSetListener() {
-                            @Override
-                            public void onDateSet(DatePicker view, int year,
-                                                  int monthOfYear, int dayOfMonth) {
-                                String day1 = String.valueOf(dayOfMonth);
-                                String month1 = String.valueOf(monthOfYear + 1);
-                                if (day1.length() != 2) {
-                                    day1 = "0" + day1;
+                    NumberPicker ethr = (NumberPicker) createTask.findViewById(R.id.hourPicker);
+                    ethr.setMaxValue(999);
+                    ethr.setMinValue(0);
+                    ethr.setValue(0);
+                    ethr.setWrapSelectorWheel(true);
+
+                    NumberPicker etmin = (NumberPicker) createTask.findViewById(R.id.minPicker);
+                    etmin.setMaxValue(999);
+                    etmin.setMinValue(0);
+                    etmin.setValue(0);
+                    etmin.setWrapSelectorWheel(true);
+
+                    NumberPicker etsec = (NumberPicker) createTask.findViewById(R.id.secPicker);
+                    etsec.setMaxValue(999);
+                    etsec.setMinValue(0);
+                    etsec.setValue(0);
+                    etsec.setWrapSelectorWheel(true);
+
+                    ethr.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        @Override
+                        public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                            hr = i1;
+                        }
+                    });
+
+                    etmin.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        @Override
+                        public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                            min = i1;
+                        }
+                    });
+
+                    etsec.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+                        @Override
+                        public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                            sec = i1;
+                        }
+                    });
+                    chooseDate.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.w(null, "ONCLICK DUE DATE");
+                            final Calendar c = Calendar.getInstance();
+                            int year = c.get(Calendar.YEAR);
+                            int month = c.get(Calendar.MONTH);
+                            int day = c.get(Calendar.DAY_OF_MONTH);
+                            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), R.style.DatePicker, new DatePickerDialog.OnDateSetListener() {
+                                @Override
+                                public void onDateSet(DatePicker view, int year,
+                                                      int monthOfYear, int dayOfMonth) {
+                                    String day1 = String.valueOf(dayOfMonth);
+                                    String month1 = String.valueOf(monthOfYear + 1);
+                                    if (day1.length() != 2) {
+                                        day1 = "0" + day1;
+                                    }
+                                    if (month1.length() != 2) {
+                                        month1 = "0" + month1;
+                                    }
+                                    date.setText(day1 + "/" + month1 + "/" + year);
+                                    dueDate = date.getText().toString();
                                 }
-                                if (month1.length() != 2) {
-                                    month1 = "0" + month1;
-                                }
-                                date.setText(day1 + "/" + month1 + "/" + year);
-                                dueDate = date.getText().toString();
-                            }
                             },
-                                year, month, day);
-                        datePickerDialog.show();}
-                });
-                dueDate = null;
-                ArrayList<String> priority = new ArrayList<>();
-                priority.add("Normal");
-                priority.add("Prioritised");
-                adapter = new SpinnerAdapter(getActivity(), priority);
-                spinner.setSelection(adapter.getPosition("Normal"));
-                spinner.setAdapter(adapter);
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        String priority = (String)parent.getItemAtPosition(position);
-                        if (priority.equals("Prioritised")){
-                            taskPriority = 1;
+                                    year, month, day);
+                            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+                            datePickerDialog.show();
                         }
-                        else taskPriority=0;
-                    }
+                    });
+                    dueDate = null;
+                    ArrayList<String> priority = new ArrayList<>();
+                    priority.add("Normal");
+                    priority.add("Prioritised");
+                    adapter = new SpinnerAdapter(getActivity(), priority);
+                    spinner.setSelection(adapter.getPosition("Normal"));
+                    spinner.setAdapter(adapter);
+                    spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            String priority = (String) parent.getItemAtPosition(position);
+                            if (priority.equals("Prioritised")) {
+                                taskPriority = 1;
+                            } else taskPriority = 0;
+                        }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        taskPriority=0;
-                    }
-                });
-                ArrayList<String> cats = new ArrayList<>();
-                cats.add("Others");
-                cats.add("School");
-                cats.add("Work");
-                cats.add("Lifestyle");
-                cats.add("Chores");
-                adapter1 = new SpinnerAdapter(getActivity(), cats);
-                chooseCat.setSelection(adapter1.getPosition("Others"));
-                chooseCat.setAdapter(adapter1);
-                chooseCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        String cat = (String)parent.getItemAtPosition(position);
-                        if (cat.equals("School")){
-                             category = "School";
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            taskPriority = 0;
                         }
-                        else if (cat.equals("Work")){
-                            category = "Work";
+                    });
+                    ArrayList<String> cats = new ArrayList<>();
+                    cats.add("Others");
+                    cats.add("School");
+                    cats.add("Work");
+                    cats.add("Lifestyle");
+                    cats.add("Chores");
+                    adapter1 = new SpinnerAdapter(getActivity(), cats);
+                    chooseCat.setSelection(adapter1.getPosition("Others"));
+                    chooseCat.setAdapter(adapter1);
+                    chooseCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                            String cat = (String) parent.getItemAtPosition(position);
+                            if (cat.equals("School")) {
+                                category = "School";
+                            } else if (cat.equals("Work")) {
+                                category = "Work";
+                            } else if (cat.equals("Lifestyle")) {
+                                category = "Lifestyle";
+                            } else if (cat.equals("Chores")) {
+                                category = "Chores";//CHANGE
+                            } else category = "Others";
                         }
-                        else if (cat.equals("Lifestyle")){
-                            category = "Lifestyle";
-                        }
-                        else if (cat.equals("Chores")){
-                            category = "Chores";//CHANGE
-                        }
-                        else category = "Others";
-                    }
 
-                    @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-                        chooseCat.setSelection(adapter1.getPosition("Others"));
-                        category = "Others";
-                    }
-                });
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            chooseCat.setSelection(adapter1.getPosition("Others"));
+                            category = "Others";
+                        }
+                    });
 
-                create.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String name = taskName.getText().toString();
-                        // do not accept blank task title or category
-                        int totalSeconds = (hr * 3600) + (min * 60) + sec;
-                        if (taskName.length() > 0 && taskName.getText().charAt(0) != ' ') {
-                            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                            String newDayDate = formatter.format(new Date());
-                            Log.w(null, "Task Category: " + category);
-                            Task task = new Task(1, name, "In Progress", category ,0, totalSeconds, dueDate, newDayDate, null, null, 0, taskPriority, null);
-                            myDBHandler.addTask(task, user);
-                            createTask.dismiss();
-                            refreshTaskRecyclerView();
-                            Toast.makeText(getActivity(), "Task created", Toast.LENGTH_SHORT).show();
-                            if (filterCard.getVisibility()==View.VISIBLE){
-                                FilterAdapter fAdapter = new FilterAdapter(user,myDBHandler, getActivity(), TasksFragment.this);
-                                GridLayoutManager fLayoutManager = new GridLayoutManager(getActivity(), 5);
-                                filterCard.setLayoutManager(fLayoutManager);
-                                fAdapter.clear = clear;
-                                fAdapter.emptyCatText=emptyCatText;
-                                fAdapter.updateEmptyView();
-                                filterCard.setAdapter(fAdapter);
+                    create.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            String name = taskName.getText().toString();
+                            // do not accept blank task title or category
+                            int totalSeconds = (hr * 3600) + (min * 60) + sec;
+                            if (taskName.length() > 0 && taskName.getText().charAt(0) != ' ') {
+                                SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+                                String newDayDate = formatter.format(new Date());
+                                Log.w(null, "Task Category: " + category);
+                                Task task = new Task(1, name, "In Progress", category, 0, totalSeconds, dueDate, newDayDate, null, null, 0, taskPriority, null);
+                                myDBHandler.addTask(task, user);
+                                createTask.dismiss();
+                                refreshTaskRecyclerView();
+                                Toast.makeText(getActivity(), "Task created", Toast.LENGTH_SHORT).show();
+                                if (filterCard.getVisibility() == View.VISIBLE) {
+                                    FilterAdapter fAdapter = new FilterAdapter(user, myDBHandler, getActivity(), TasksFragment.this);
+                                    GridLayoutManager fLayoutManager = new GridLayoutManager(getActivity(), 5);
+                                    filterCard.setLayoutManager(fLayoutManager);
+                                    fAdapter.clear = clear;
+                                    fAdapter.emptyCatText = emptyCatText;
+                                    fAdapter.updateEmptyView();
+                                    filterCard.setAdapter(fAdapter);
+                                }
+                            } else {
+                                Toast.makeText(getActivity(), "Invalid title", Toast.LENGTH_SHORT).show();
                             }
                         }
-                        else{
-                            Toast.makeText(getActivity(), "Invalid title", Toast.LENGTH_SHORT).show();
-                        }
-                    }});
-                createTask.show();
-
+                    });
+                    createTask.show();
+                }
             }
         });
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");

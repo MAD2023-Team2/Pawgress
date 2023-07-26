@@ -186,7 +186,7 @@
                 android:gravity="center|start"
                 android:text="Between 8-20 characters"
                 android:fontFamily="sans-serif-condensed-medium"
-                android:textColor="@android:color/black" />
+                android:theme="@style/TaskColour" />
 
         </LinearLayout>
 
@@ -222,7 +222,7 @@
                 android:gravity="center|start"
                 android:text="Minimum one uppercase and lowercase"
                 android:fontFamily="sans-serif-condensed-medium"
-                android:textColor="@android:color/black" />
+                android:theme="@style/TaskColour"  />
 
         </LinearLayout>
 
@@ -258,7 +258,7 @@
                 android:gravity="center|start"
                 android:text="Minimum one number"
                 android:fontFamily="sans-serif-condensed-medium"
-                android:textColor="@android:color/black" />
+                android:theme="@style/TaskColour" />
 
         </LinearLayout>
 

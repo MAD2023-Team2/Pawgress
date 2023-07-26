@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -13,6 +14,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:padding="16dp"
+        android:layout_marginTop="20dp"
         android:text="Select Icon"
         android:textSize="27sp"
         android:textStyle="bold"
@@ -23,11 +25,9 @@
         android:id="@+id/recyclerViewProfilePictures"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="68dp"
         android:paddingHorizontal="16dp"
         android:paddingVertical="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_below="@id/textView25" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -35,10 +35,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="12dp"
-        android:backgroundTint="#B9C498"
         android:src="?attr/actionModeCloseDrawable"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="39dp" />
+        android:layout_marginTop="45dp"
+        android:layout_marginStart="40dp"
+        android:background="@null"
+        android:theme="@style/Tint"/>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>

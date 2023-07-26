@@ -29,6 +29,7 @@ public class LandingPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
+        setTheme(R.style.Theme_Pawgress_FullScreenMode);
         setContentView(R.layout.activity_landing_page);
 
         textView = findViewById(R.id.textView9);

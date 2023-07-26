@@ -10,6 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -157,7 +159,7 @@ public class TaskView extends AppCompatActivity {
                         int year = c.get(Calendar.YEAR);
                         int month = c.get(Calendar.MONTH);
                         int day = c.get(Calendar.DAY_OF_MONTH);
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(TaskView.this, android.app.AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, new DatePickerDialog.OnDateSetListener() {
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(TaskView.this, R.style.DatePicker, new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
@@ -174,6 +176,7 @@ public class TaskView extends AppCompatActivity {
                             }
                         },
                                 year, month, day);
+                        datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
                         datePickerDialog.show();}
                 });
                 dueDate = null;
@@ -375,7 +378,6 @@ public class TaskView extends AppCompatActivity {
         //bottom sheet elements
         bottom = findViewById(R.id.bottom_sheet);
         behavior=BottomSheetBehavior.from(bottom);
-        bottom.setBackgroundColor(Color.parseColor("#FCFBFC"));
         TextView taskCategory = bottom.findViewById(R.id.category);
         taskCategory.setText(task.getCategory());
         description = bottom.findViewById(R.id.descText); // description(notes) for the task
@@ -407,6 +409,23 @@ public class TaskView extends AppCompatActivity {
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
+            }
+        });
+
+        description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                description.setMinLines(3);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }

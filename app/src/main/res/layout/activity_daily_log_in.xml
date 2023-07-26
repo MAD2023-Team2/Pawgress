@@ -32,7 +32,8 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.54" />
+        app:layout_constraintVertical_bias="0.54"
+        android:textColor="@color/textColour"/>
 
     <TextView
         android:id="@+id/streakText"
@@ -46,7 +47,8 @@
         android:background="@drawable/rounded_border_dailylogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logInStatus" />
+        app:layout_constraintTop_toBottomOf="@+id/logInStatus"
+        android:textColor="@color/textColour"/>
 
     <TextView
         android:id="@+id/rewardText"
@@ -60,7 +62,8 @@
         android:background="@drawable/rounded_border_dailylogin"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/streakText" />
+        app:layout_constraintTop_toBottomOf="@+id/streakText"
+        android:textColor="@color/textColour"/>
 
     <Button
         android:id="@+id/closeDaily"
