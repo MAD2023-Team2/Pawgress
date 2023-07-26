@@ -44,4 +44,5 @@
     <color name="defaultButtonText">#ff6750a4</color>
 
     <color name="colorBar">#daa440</color>
+    <color name="colorPrimary">#3F51B5</color>
 </resources>

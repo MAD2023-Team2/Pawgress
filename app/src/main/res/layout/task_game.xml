@@ -35,6 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+
         <TextView
             android:id="@+id/text_view_Countdown"
             android:layout_width="wrap_content"
@@ -64,6 +65,7 @@
         android:layout_below="@id/countDownContainer"
         android:layout_height="wrap_content">
 
+
         <Button
             android:id="@+id/finish_timer"
             style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
@@ -89,6 +91,21 @@
             android:layout_height="45dp"
             app:srcCompat="@mipmap/timer_play_round" />
 
+        <ToggleButton
+            android:id="@+id/power_saving_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Power Saving Mode"
+            android:textOn="Undim"
+            android:textOff="Dim"
+            style="@style/ToggleButtonStyle"
+            android:layout_toRightOf="@id/finish_timer"
+            android:layout_alignTop="@id/reset_timer_imagebutton"
+            android:layout_alignBottom="@id/start_timer_imagebutton"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/toggle_button_background"
+            />
 
     </RelativeLayout>
 

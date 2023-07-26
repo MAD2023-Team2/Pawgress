@@ -1,31 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF9800"
-    tools:context=".LandingPage">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="#FF9800">
 
+    <!-- Logo -->
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="151dp"
         android:layout_height="151dp"
-        android:layout_marginStart="130dp"
-        android:layout_marginTop="228dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/pawgress_icon_final_png" />
+        android:src="@drawable/pawgress_icon_final_png" />
+
 
     <TextSwitcher
         android:id="@+id/textView9"
-        android:layout_width="150dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="128dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Pawgress"
         android:textColor="#FACDB0"
-        android:textSize="34sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:textSize="34sp" />
+
+</LinearLayout>
