@@ -33,6 +33,25 @@
             android:src="@drawable/corgi"
             android:layout_alignBottom="@id/picBackground" />
 
+        <ImageView
+            android:id="@+id/replaceImage_topLeft"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignBottom="@id/picBackground"
+            android:layout_marginBottom="230dp"
+            android:visibility="gone"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/replaceImage_topRight"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignBottom="@id/picBackground"
+            android:layout_marginStart="190dp"
+            android:layout_marginBottom="230dp"
+            android:visibility="gone"
+            android:src="@android:drawable/ic_menu_add" />
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/openMenu"
             android:layout_width="wrap_content"

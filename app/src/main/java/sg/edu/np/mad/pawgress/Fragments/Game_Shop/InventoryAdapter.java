@@ -1,20 +1,25 @@
 package sg.edu.np.mad.pawgress.Fragments.Game_Shop;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -22,6 +27,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import sg.edu.np.mad.pawgress.LoginPage;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
@@ -31,12 +37,21 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder>{
     MyDBHandler myDBHandler;
     UserData user;
     Context context;
+    View gameView;
+    BottomSheetDialog shop;
+    Activity activity;
+    ImageView topLeftPic, topRightPic;
 
-    public InventoryAdapter(List<InventoryItem> inventoryItemList, UserData userData, MyDBHandler myDBHandler, Context context){
+    public InventoryAdapter(List<InventoryItem> inventoryItemList, UserData userData,
+                            MyDBHandler myDBHandler, Context context, View gameView, BottomSheetDialog shop,
+                            Activity activity){
         this.inventoryItemList = inventoryItemList;
         this.user = userData;
         this.myDBHandler = myDBHandler;
         this.context = context;
+        this.gameView = gameView;
+        this.shop = shop;
+        this.activity = activity;
     }
 
     @NonNull
@@ -90,6 +105,16 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder>{
             @Override
             public void onClick(View v) {
                 Log.v("InventoryAdapter", item1.getItemName() + " has been clicked");
+                if (!item1.getItemCategory().equals("Food")){ // as long as it is not a food, it can be added to the room
+                    // Goes to adding of item in room
+                    Intent intent = new Intent(activity, GameImage.class);
+                    String pathName = myDBHandler.getImageURL(item1.getItemName());
+                    intent.putExtra("bitmap",BitmapFactory.decodeFile(pathName));
+                    intent.putExtra("item", item1);
+                    intent.putExtra("user",user);
+                    activity.startActivity(intent);
+                    shop.cancel();
+                }
             }
         });
 
@@ -100,10 +125,31 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder>{
                 @Override
                 public void onClick(View v) {
                     Log.v("InventoryAdapter", finalItem.getItemName() + " has been clicked");
+                    if (!finalItem.getItemCategory().equals("Food")){ // as long as it is not a food, it can be added to the room
+                        // Goes to adding of item in room
+                        Intent intent = new Intent(activity, GameImage.class);
+                        String pathName = myDBHandler.getImageURL(finalItem.getItemName());
+                        intent.putExtra("bitmap",BitmapFactory.decodeFile(pathName));
+                        intent.putExtra("item", finalItem);
+                        intent.putExtra("user",user);
+                        activity.startActivity(intent);
+                        shop.cancel();
+                    }
                 }
             });
         }
+        Log.e("InventoryAdapter","make it automatically update the game view");
+        String topLeft = myDBHandler.getTopLeft(user.getUsername());
+        String topRight = myDBHandler.getTopRight(user.getUsername());
+        topLeftPic.setVisibility(View.VISIBLE);
+        String pathName2 = myDBHandler.getImageURL(topLeft);
+        Bitmap bitmap = BitmapFactory.decodeFile(pathName2);
+        topLeftPic.setImageBitmap(bitmap);
 
+        topRightPic.setVisibility(View.VISIBLE);
+        String pathName3 = myDBHandler.getImageURL(topRight);
+        Bitmap bitmap2 = BitmapFactory.decodeFile(pathName3);
+        topRightPic.setImageBitmap(bitmap2);
     }
 
     @Override

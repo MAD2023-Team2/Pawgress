@@ -141,7 +141,7 @@ public class DailyLogIn extends AppCompatActivity {
                 break;
         }
 
-        Task task = new Task(1, name, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,null,1, 0);
+        Task task = new Task(1, name, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,null,1, 0, null);
         myDBHandler.addTask(task, user);
         Log.w("Daily Log In", "Created Daily Challenge: " + task.getTaskName());
     }

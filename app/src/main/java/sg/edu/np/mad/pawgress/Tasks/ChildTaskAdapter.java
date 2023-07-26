@@ -4,8 +4,6 @@ import static android.view.View.INVISIBLE;
 
 import static java.lang.Integer.parseInt;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,26 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.NumberPicker;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import sg.edu.np.mad.pawgress.DailyLogIn;
@@ -108,7 +93,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
     @Override
     public ChildTaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         if (viewType == 1){
-            return new ChildTaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.challenge,parent, false));
+            return new ChildTaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task_daily_challenge,parent, false));
         }
         else{
             return new ChildTaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task,parent, false));
@@ -128,6 +113,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
         if (getItemViewType(position) == 1) {
             holder.card.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(0))));
             holder.name.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(1))));
+            holder.duedate.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(0))));
         }
         // if it is not daily challenge
         if (getItemViewType(position) == 0){
@@ -221,7 +207,6 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
             else if (currentMonth > month || currentYear > year){
                 holder.warn.setVisibility(View.VISIBLE);
             }
-            else Log.w(null, "TASK DATE ELSE IN CHILDADAPTER");
         }
         if (holder.warn != null){
             holder.warn.setOnClickListener(new View.OnClickListener() {

@@ -19,38 +19,25 @@
         android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="75dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="@string/taskName"
         android:textSize="30sp"
         android:textStyle="bold"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"/>
 
     <ImageButton
         android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
-        android:layout_marginTop="29dp"
-        android:backgroundTint="#C9DBB1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/actionModeCloseDrawable" />
-
-    <TextView
-        android:id="@+id/cat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@id/close"
-        android:layout_marginTop="8dp"
-        android:layout_toLeftOf="@id/editButton"
-        android:layout_toRightOf="@id/close"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:textSize="20sp"
-        android:text="@string/taskCategory"
-        android:textAlignment="viewStart"
-        android:paddingStart="5dp"/>
+        app:srcCompat="?attr/actionModeCloseDrawable"
+        android:layout_alignBottom="@id/editButton"
+        android:layout_alignTop="@id/editButton"
+        android:background="@null"/>
 
     <TextView
         android:id="@+id/timeSpent"
@@ -106,10 +93,10 @@
         android:id="@+id/editButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="11dp"
         android:layout_toLeftOf="@id/delete"
-        android:backgroundTint="#C9DBB1"
+        android:backgroundTint="#B9C498"
         app:srcCompat="@drawable/baseline_edit_24" />
 
     <ImageButton
@@ -117,10 +104,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="33dp"
-        android:backgroundTint="#C9DBB1"
+        android:backgroundTint="#B9C498"
         app:srcCompat="@drawable/baseline_delete_24" />
+
+    <Button
+        android:id="@+id/to_Game"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spendCard"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#B9C498"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="Start Timer"
+        android:textColor="@color/textColour"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/dialog"
@@ -129,18 +131,5 @@
 
         <include layout="@layout/task_view_bottom" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-
-
-    <Button
-        android:id="@+id/to_Game"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginTop="10dp"
-        android:backgroundTint="#88E473"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Start Timer"
-        android:layout_below="@id/spendCard" />
 
 </RelativeLayout>

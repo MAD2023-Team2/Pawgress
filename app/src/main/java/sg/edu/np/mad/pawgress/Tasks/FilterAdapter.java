@@ -85,7 +85,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder>{
             public void onClick(View v) {
                 // beginning of filter where none selected
                 if (select == false && positions.isEmpty()){
-                    background.setTint(Color.parseColor("#B4D8A5"));
+                    background.setTint(Color.parseColor("#B9C498"));
                     // not showing
                     holder.name.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.baseline_clear_24,0);
                     holder.name.setBackground(background);
@@ -105,7 +105,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder>{
                 }
                 // if this category has not been selected
                 else if(!positions.contains(holder.getAdapterPosition())){
-                    background.setTint(Color.parseColor("#B4D8A5"));
+                    background.setTint(Color.parseColor("#B9C498"));
                     // not showing
                     holder.name.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.baseline_clear_24,0);
                     holder.name.setBackground(background);

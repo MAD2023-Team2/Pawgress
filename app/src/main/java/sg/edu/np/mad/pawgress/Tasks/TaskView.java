@@ -10,6 +10,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,6 +48,7 @@ public class TaskView extends AppCompatActivity {
     String dueDate, category;
     Task task;
     TextView spend, spendHr, spendMin, spendSec, dateText, timeText;
+    EditText description;
     UserData user;
     int hr,min,sec;
     int taskPriority, finalTaskPriority;
@@ -66,8 +69,8 @@ public class TaskView extends AppCompatActivity {
 
         ImageButton editButton = findViewById(R.id.editButton);
         ImageButton deleteButton = findViewById(R.id.delete);
+        ImageButton backButton = findViewById(R.id.close);
         refreshView(task.getTaskID());
-
         gameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,7 +159,7 @@ public class TaskView extends AppCompatActivity {
                         int year = c.get(Calendar.YEAR);
                         int month = c.get(Calendar.MONTH);
                         int day = c.get(Calendar.DAY_OF_MONTH);
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(TaskView.this, android.app.AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, new DatePickerDialog.OnDateSetListener() {
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(TaskView.this, R.style.DatePicker, new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
@@ -173,6 +176,7 @@ public class TaskView extends AppCompatActivity {
                             }
                         },
                                 year, month, day);
+                        datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
                         datePickerDialog.show();}
                 });
                 dueDate = null;
@@ -308,6 +312,8 @@ public class TaskView extends AppCompatActivity {
                 alert.show();
             }
         });
+
+        Log.v(null , " Description " + description.getText().toString());
     }
 
     @Override
@@ -336,8 +342,6 @@ public class TaskView extends AppCompatActivity {
         // task details
         TextView taskName = findViewById(R.id.name); // name
         taskName.setText(task.getTaskName());
-        TextView taskCategory = findViewById(R.id.cat); // category
-        taskCategory.setText(task.getCategory());
         ImageView background = findViewById(R.id.wallpaper); // background image
         spendHr = findViewById(R.id.spendHours);
         spendMin = findViewById(R.id.spendMins);
@@ -374,7 +378,10 @@ public class TaskView extends AppCompatActivity {
         //bottom sheet elements
         bottom = findViewById(R.id.bottom_sheet);
         behavior=BottomSheetBehavior.from(bottom);
-        bottom.setBackgroundColor(Color.parseColor("#FCFBFC"));
+        TextView taskCategory = bottom.findViewById(R.id.category);
+        taskCategory.setText(task.getCategory());
+        description = bottom.findViewById(R.id.descText); // description(notes) for the task
+        description.setText(task.getDescription());
         dateText = bottom.findViewById(R.id.dateText); // due date
         timeText = bottom.findViewById(R.id.timeText); // target time
         // if no due date was set
@@ -394,6 +401,8 @@ public class TaskView extends AppCompatActivity {
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                task.setDescription(description.getText().toString());
+                myDBHandler.updateTask(task, user.getUsername());
                 Intent intent = new Intent(TaskView.this, MainMainMain.class);
                 intent.putExtra("User", user);
                 intent.putExtra("tab", "tasks_tab");
@@ -403,5 +412,21 @@ public class TaskView extends AppCompatActivity {
             }
         });
 
+        description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                description.setMinLines(3);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 }
