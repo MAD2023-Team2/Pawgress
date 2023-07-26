@@ -96,8 +96,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {
                 int currentCurrency = user.getCurrency();
                 int itemPrice = shopItem1.getPrice();
                 if (currentCurrency < itemPrice){ // user has insufficient funds to purchase item
-                    Log.v("ShopAdapter", "Unable to buy due to insufficient funds");
-                    // do smth
+                    Toast.makeText(v.getContext(), "Unable to buy due to insufficient funds", Toast.LENGTH_SHORT).show();
                 }
                 else{ // user has sufficient funds to purchase item
                     AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -118,13 +117,13 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {
                             ArrayList<InventoryItem> inventoryItems = myDBHandler.findInventoryList(user);
                             boolean hasItem = false;
                             for (InventoryItem item: inventoryItems){
-                                // if item exist in the current inventory, add 1 more of the item to inventory
+                                // if item exist in the current inventory, update quantity of item to +1
                                 if(item.getItemName().equals(shopItem1.getName())){
                                     hasItem = true;
                                     myDBHandler.updateInventoryQuantity(item, user, item.getQuantity()+1);
                                 }
                             }
-                            // if item dosent exist in the current inventory, add 1 to inventory
+                            // if item dosent exist in the current inventory, add item to inventory
                             if (!hasItem){
                                 InventoryItem inventoryItem1 = new InventoryItem(shopItem1.getName(), 1, shopItem1.getCategory());
                                 myDBHandler.addInventoryItem(inventoryItem1, user);
@@ -133,7 +132,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {
                     });
                     builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
                         public void onClick(DialogInterface dialog, int id){
-                            dialog.dismiss();
+                            dialog.dismiss(); // do nth
                         }
                     });
                     AlertDialog alert = builder.create();
@@ -153,8 +152,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {
                     int currentCurrency = user.getCurrency();
                     int itemPrice = finalShopItem.getPrice();
                     if (currentCurrency < itemPrice){ // user has insufficient funds to purchase item
-                        Log.v("ShopAdapter", "Unable to buy due to insufficient funds");
-                        // do smth
+                        Toast.makeText(v.getContext(), "Unable to buy due to insufficient funds", Toast.LENGTH_SHORT).show();
                     }
                     else{ // user has sufficient funds to purchase item
                         AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -175,13 +173,13 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {
                                 ArrayList<InventoryItem> inventoryItems = myDBHandler.findInventoryList(user);
                                 boolean hasItem = false;
                                 for (InventoryItem item: inventoryItems){
-                                    // if item exist in the current inventory, add 1 more of the item to inventory
+                                    // if item exist in the current inventory, update quantity of item to +1
                                     if(item.getItemName().equals(finalShopItem.getName())){
                                         hasItem = true;
                                         myDBHandler.updateInventoryQuantity(item, user, item.getQuantity()+1);
                                     }
                                 }
-                                // if item dosent exist in the current inventory, add 1 to inventory
+                                // if item dosent exist in the current inventory, add item to inventory
                                 if (!hasItem){
                                     InventoryItem inventoryItem1 = new InventoryItem(finalShopItem.getName(), 1, finalShopItem.getCategory());
                                     myDBHandler.addInventoryItem(inventoryItem1, user);
@@ -190,7 +188,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {
                         });
                         builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
                             public void onClick(DialogInterface dialog, int id){
-                                dialog.dismiss();
+                                dialog.dismiss(); // do nth
                             }
                         });
                         AlertDialog alert = builder.create();
