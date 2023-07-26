@@ -72,6 +72,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String IMAGE_URL = "Image_URL";
     public static String COLUMN_IMAGE_NAME = "ImageName";
     public static String COLUMN_IMAGE_URL = "ImageURL";
+    public static String COLUMN_TOP_LEFT = "TopLeft";
+    public static String COLUMN_TOP_RIGHT = "TopRight";
 
     public ArrayList<Task> taskList = new ArrayList<>();
 
@@ -92,7 +94,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_LOGIN + " TEXT," +
                 COLUMN_PET_TYPE + " TEXT," +
                 COLUMN_PET_DESIGN + " INTEGER," +
-                COLUMN_PROFILE_PICTURE + " TEXT)";
+                COLUMN_PROFILE_PICTURE + " TEXT," +
+                COLUMN_TOP_LEFT + " TEXT," +
+                COLUMN_TOP_RIGHT + " TEXT)";
         db.execSQL(CREATE_ACCOUNT_TABLE);
         Log.i(title, CREATE_ACCOUNT_TABLE);
 
@@ -178,6 +182,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_LOGIN, userData.getLoggedInTdy());
         values.put(COLUMN_PET_TYPE, userData.getPetType());
         values.put(COLUMN_PET_DESIGN, userData.getPetDesign());
+        values.put(COLUMN_TOP_LEFT, userData.getTopLeft());
+        values.put(COLUMN_TOP_RIGHT, userData.getTopRight());
 
         SQLiteDatabase db = this. getWritableDatabase();
         db.insert(ACCOUNTS, null, values);
@@ -255,6 +261,30 @@ public class MyDBHandler extends SQLiteOpenHelper{
 //        db.close();
     }
 
+    public void setTopLeft(String username, String topLeft) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TOP_LEFT, topLeft);
+        db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
+        Log.i(title, "Top Left Image updated");
+//        db.close();
+    }
+    public void setTopRight(String username, String topRight) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TOP_RIGHT, topRight);
+        db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
+        Log.i(title, "Top Left Image updated");
+//        db.close();
+    }
+
+    public void removeInventoryItem(InventoryItem inventoryItem, UserData userData){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(INVENTORY,COLUMN_USERNAME + "=? AND " + COLUMN_ITEM_NAME + "=?", new String[]{userData.getUsername(), inventoryItem.getItemName()});
+        Log.i(title, "Deleted Inventory Item");
+//        db.close();
+    }
+
     public UserData findUser(String username){
         String query = "SELECT * FROM " + ACCOUNTS + " WHERE " + COLUMN_USERNAME + "=\'" + username + "\'";
         Log.i(title, "Query :" + query);
@@ -274,6 +304,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setLoggedInTdy(cursor.getString(6));
             queryResult.setPetType(cursor.getString(7));
             queryResult.setPetDesign(cursor.getInt(8));
+            queryResult.setTopLeft(cursor.getString(10));
+            queryResult.setTopRight(cursor.getString(11));
             int profilePictureIndex = cursor.getColumnIndex(COLUMN_PROFILE_PICTURE);
             String profilePicturePath = cursor.getString(profilePictureIndex);
             queryResult.setProfilePicturePath(profilePicturePath);
@@ -433,6 +465,36 @@ public class MyDBHandler extends SQLiteOpenHelper{
         }
 
         return imageURL;
+    }
+    public String getTopLeft(String username) {
+        String query = "SELECT " + COLUMN_TOP_LEFT + " FROM " + ACCOUNTS + " WHERE " + COLUMN_USERNAME + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+
+        String topLeft = ""; // Default value if the URL is not found
+        if (cursor != null && cursor.moveToFirst()) {
+            int topLeftIndex = cursor.getColumnIndex(COLUMN_TOP_LEFT);
+            topLeft = cursor.getString(topLeftIndex);
+
+            cursor.close();
+        }
+
+        return topLeft;
+    }
+    public String getTopRight(String username) {
+        String query = "SELECT " + COLUMN_TOP_RIGHT + " FROM " + ACCOUNTS + " WHERE " + COLUMN_USERNAME + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+
+        String topRight = ""; // Default value if the URL is not found
+        if (cursor != null && cursor.moveToFirst()) {
+            int topRightIndex = cursor.getColumnIndex(COLUMN_TOP_RIGHT);
+            topRight = cursor.getString(topRightIndex);
+
+            cursor.close();
+        }
+
+        return topRight;
     }
 
     public int getTaskTargetSec(int taskId){

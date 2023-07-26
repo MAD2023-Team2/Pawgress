@@ -27,10 +27,13 @@ public class UserData implements Parcelable{
     private ArrayList<FriendData> friendList;
     private ArrayList<FriendRequest> friendReqList;
     private ArrayList<InventoryItem> inventoryList;
+    private String topLeft;
+    private String topRight;
+
 
     public UserData(int userId, String username, String password, ArrayList<Task> taskList, String lastLogInDate,
                     int streak, int currency, String loggedInTdy, String petType, int petDesign,
-                    ArrayList<FriendData> friendList, ArrayList<FriendRequest> friendReqList, ArrayList<InventoryItem> inventoryList){
+                    ArrayList<FriendData> friendList, ArrayList<FriendRequest> friendReqList, ArrayList<InventoryItem> inventoryList, String topLeft, String topRight){
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -44,6 +47,8 @@ public class UserData implements Parcelable{
         this.friendList = friendList;
         this.friendReqList = friendReqList;
         this.inventoryList = inventoryList;
+        this.topLeft = topLeft;
+        this.topRight = topRight;
     }
 
     public UserData(){
@@ -65,6 +70,8 @@ public class UserData implements Parcelable{
         dest.writeString(loggedInTdy);
         dest.writeString(petType);
         dest.writeInt(petDesign);
+        dest.writeString(topLeft);
+        dest.writeString(topRight);
     }
     public static final Creator<UserData> CREATOR = new Creator<UserData>() {
         @Override
@@ -88,6 +95,8 @@ public class UserData implements Parcelable{
         loggedInTdy = in.readString();
         petType = in.readString();
         petDesign = in.readInt();
+        topLeft = in.readString();
+        topRight = in.readString();
     }
 
     public int getUserId() { return userId; }
@@ -120,5 +129,10 @@ public class UserData implements Parcelable{
     public void setFriendReqList(ArrayList<FriendRequest> friendReqList) {this.friendReqList = friendReqList;}
     public ArrayList<InventoryItem> getInventoryList() { return inventoryList; }
     public void setInventoryList(ArrayList<InventoryItem> inventoryList) { this.inventoryList = inventoryList; }
+    public void setTopLeft(String topLeft){ this.topLeft = topLeft; }
+    public void setTopRight(String topRight){ this.topRight = topRight; }
+    public String getTopLeft(){ return topLeft; }
+    public String getTopRight(){ return topRight; }
+
 
 }

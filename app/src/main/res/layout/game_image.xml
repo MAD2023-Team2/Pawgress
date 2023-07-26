@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.Game_Shop.GameFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/picBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/room_not_studying"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <ImageView
+            android:id="@+id/replaceImage_topLeft"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignBottom="@id/picBackground"
+            android:layout_marginBottom="230dp"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/replaceImage_topRight"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignBottom="@id/picBackground"
+            android:layout_marginStart="190dp"
+            android:layout_marginBottom="230dp"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/replaceImage_topLeft_add"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:alpha="0.2"
+            android:layout_alignBottom="@id/picBackground"
+            android:layout_marginBottom="230dp"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/replaceImage_topRight_add"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:alpha="0.2"
+            android:layout_alignBottom="@id/picBackground"
+            android:layout_marginStart="190dp"
+            android:layout_marginBottom="230dp"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_marginTop="60dp"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/textTop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Select area to add item into the room"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_centerHorizontal="true"/>
+
+            <ImageButton
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_centerVertical="true"
+                android:background="@null"
+                android:src="?attr/actionModeCloseDrawable"/>
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+</FrameLayout>

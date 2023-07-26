@@ -67,14 +67,15 @@
 
     <Button
         android:id="@+id/closeDaily"
-        style="@style/Widget.AppCompat.Button.Borderless"
-        android:layout_width="72dp"
-        android:layout_height="53dp"
-        android:layout_marginLeft="-10dp"
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:layout_marginLeft="-32dp"
+        android:layout_marginTop="375dp"
+        android:background="@drawable/button_no_ripple_style"
         android:text="X"
         android:textColor="#000000"
         android:textSize="24sp"
-        app:layout_constraintTop_toTopOf="@id/logInStatus"
-        app:layout_constraintLeft_toRightOf="@id/logInStatus" />
+        app:layout_constraintLeft_toRightOf="@id/logInStatus"
+        app:layout_constraintTop_toTopOf="@+id/imageView8" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

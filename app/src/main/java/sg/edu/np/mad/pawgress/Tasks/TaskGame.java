@@ -5,15 +5,19 @@ import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +45,8 @@ public class TaskGame extends AppCompatActivity {
     private TextView timeView;
     private Handler handler;
     MyDBHandler myDBHandler = new MyDBHandler(this, null, null, 1);
+    private ToggleButton powerSavingToggle;
+    private float originalBrightness;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +111,23 @@ public class TaskGame extends AppCompatActivity {
                 }
 
                 return true;
+            }
+        });
+
+
+        powerSavingToggle = findViewById(R.id.power_saving_toggle);
+
+        powerSavingToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // Enable power saving mode (dim the screen)
+                    originalBrightness = getSystemBrightness();
+                    dimScreen();
+                } else {
+                    // Disable power saving mode (restore screen brightness)
+                    restoreBrightness();
+                }
             }
         });
 
@@ -314,4 +337,26 @@ public class TaskGame extends AppCompatActivity {
             buttonReset.setAlpha(1.0F);
         }
     }
+    private void dimScreen() {
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.screenBrightness = 0.1f; // Set brightness level (0.0f to 1.0f)
+        getWindow().setAttributes(layoutParams);
+    }
+
+    // Restore screen brightness to the default value
+    private void restoreBrightness() {
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.screenBrightness = originalBrightness;
+        getWindow().setAttributes(layoutParams);
+    }
+
+    private float getSystemBrightness(){
+        try {
+            return Settings.System.getFloat(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+            return 0.5f; // Default to 50% brightness if the system setting is not found
+        }
+    }
+
 }
