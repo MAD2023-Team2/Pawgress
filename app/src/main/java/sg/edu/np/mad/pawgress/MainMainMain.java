@@ -150,6 +150,7 @@ public class MainMainMain extends AppCompatActivity {
             fbUser.setTaskList(myDBHandler.findTaskList(user));
             fbUser.setFriendList(myDBHandler.findFriendList(user));
             fbUser.setFriendReqList(myDBHandler.findFriendReqList(user));
+            fbUser.setProfilePicturePath(String.valueOf(SaveSharedPreference.getProfilePic(MainMainMain.this)));
 
             // Set friends and friend request list based on Firebase, not SQLite
             Query query = myRef.orderByChild("username").equalTo(user.getUsername());

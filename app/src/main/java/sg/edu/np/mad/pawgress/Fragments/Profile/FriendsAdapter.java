@@ -63,15 +63,70 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
 
     @Override
     public void onBindViewHolder(FriendsViewHolder holder, int position) {
+        Query updateFriendsList = myRef.child(user.getUsername()).child("friendList");
+        updateFriendsList.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    FriendData friend = dataSnapshot.getValue(FriendData.class);
+                    if (friend.getStatus().equals("Friend")){
+                        found: {
+                            for (FriendData existingFriend: recyclerFriendList)
+                                if (existingFriend.getFriendName().equals(friend.getFriendName())) {
+                                    break found;
+                                }
+                            recyclerFriendList.add(friend);
+                            myDBHandler.addFriend(friend.getFriendName(), user, friend.getStatus());
+                            notifyDataSetChanged();
+                        }
+                    } else if (friend.getStatus().equals("Unfriended")) {
+                        for (FriendData existingFriend: recyclerFriendList){
+                            if (existingFriend.getFriendName().equals(friend.getFriendName())) {
+                                recyclerFriendList.remove(existingFriend);
+                                myDBHandler.removeFriend(friend.getFriendName(), user);
+                                notifyDataSetChanged();
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
         FriendData friend = recyclerFriendList.get(position);
         holder.friendName.setText(friend.getFriendName());
+
+        Query query3 = myRef.child(friend.getFriendName()).child("profilePicturePath");
+        query3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String profilePicturePath = dataSnapshot.getValue(String.class);
+                    holder.profilePic.setImageResource(Integer.parseInt(profilePicturePath));
+                }
+                else{
+                    int profilePicPath = 2131230856;
+                    holder.profilePic.setImageResource(profilePicPath);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+
+            }
+        });
+
         holder.removeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 friend.setStatus("Unfriend");
                 recyclerFriendList.remove(friend);
                 notifyDataSetChanged();
-                FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
                 DatabaseReference myRef = database.getReference("Users");
                 Query query = myRef.orderByChild("username").equalTo(friend.getFriendName());
                 query.addListenerForSingleValueEvent(new ValueEventListener() {

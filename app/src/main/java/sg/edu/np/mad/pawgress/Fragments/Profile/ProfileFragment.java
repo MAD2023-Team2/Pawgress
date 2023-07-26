@@ -257,8 +257,6 @@ public class ProfileFragment extends Fragment{
                                             });
                                         }
 
-
-
                                         for (FriendRequest friendRequest: dbData.getFriendReqList()){
                                             Query query = myRef.orderByChild("username").equalTo(friendRequest.getFriendReqName());
                                             query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -299,6 +297,21 @@ public class ProfileFragment extends Fragment{
                                         startActivity(intent);
                                     }
                                 }
+                                else{
+                                    // Remove user in firebase
+                                    myRef.child(dbData.getUsername()).removeValue();
+                                    myDBHandler.clearDatabase("ACCOUNTS");
+                                    myDBHandler.clearDatabase("TASKS");
+                                    myDBHandler.clearDatabase("FRIENDS");
+                                    myDBHandler.clearDatabase("FRIENDREQUEST");
+
+                                    // Clears shared preference so no auto login
+                                    SaveSharedPreference.clearUserName(getActivity());
+
+                                    // Goes to login page after logging out
+                                    Intent intent = new Intent(getActivity(), LandingPage.class);
+                                    startActivity(intent);
+                                }
                             }
                             @Override
                             public void onCancelled(@NonNull DatabaseError error) {
@@ -330,7 +343,8 @@ public class ProfileFragment extends Fragment{
     public void onResume() {
         super.onResume();
 
-        // Retrieve the updated profile picture path from SharedPreferences
+        profilePictureImageView.setImageResource(SaveSharedPreference.getProfilePic(getActivity()));
+        /*// Retrieve the updated profile picture path from SharedPreferences
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         String profilePicturePath = sharedPreferences.getString("profilePicturePath", "");
 
@@ -338,7 +352,7 @@ public class ProfileFragment extends Fragment{
         if (!profilePicturePath.isEmpty() && profilePictureImageView != null) {
             int profilePictureResId = Integer.parseInt(profilePicturePath);
             profilePictureImageView.setImageResource(profilePictureResId);
-        }
+        }*/
     }
 
     private boolean isNetworkAvailable() {
