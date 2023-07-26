@@ -69,13 +69,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_ITEM_NAME = "ItemName";
     public static String COLUMN_ITEM_QUANTITY = "Quantity";
     public static String COLUMN_ITEM_CATEGORY = "Category";
-
-
-
-
-
-
-    //public static String COLUMN_ACTUAL_USERNAME = "ActualUserName";
+    public static String IMAGE_URL = "Image_URL";
+    public static String COLUMN_IMAGE_NAME = "ImageName";
+    public static String COLUMN_IMAGE_URL = "ImageURL";
 
     public ArrayList<Task> taskList = new ArrayList<>();
 
@@ -130,6 +126,13 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.execSQL(CREATE_INVENTORY_TABLE);
         Log.i(title, CREATE_INVENTORY_TABLE);
 
+        String CREATE_IMAGE_URL_TABLE = "Create TABLE " + IMAGE_URL + "(" +
+                COLUMN_IMAGE_NAME + " TEXT," +
+                COLUMN_IMAGE_URL + " TEXT)";
+
+        db.execSQL(CREATE_IMAGE_URL_TABLE);
+        Log.i(title, CREATE_IMAGE_URL_TABLE);
+
         String CREATE_FRIENDS_TABLE = "Create TABLE " + FRIENDS + "(" +
                 COLUMN_FRIENDNAME + " TEXT," +
                 COLUMN_FRIEND_STATUS + " TEXT," +
@@ -160,6 +163,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + ACCOUNTS);
         db.execSQL("DROP TABLE IF EXISTS " + TASKS);
         db.execSQL("DROP TABLE IF EXISTS " + INVENTORY);
+        db.execSQL("DROP TABLE IF EXISTS " + IMAGE_URL);
         onCreate(db);
     }
 
@@ -282,37 +286,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 //        db.close();
         return queryResult;
     }
-    public UserData findUserID(int userID){
-        String query = "SELECT * FROM " + ACCOUNTS + " WHERE " + COLUMN_USERID + "=\'" + userID + "\'";
-        Log.i(title, "Query :" + query);
 
-        UserData queryResult = new UserData();
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        Log.i(title, "Cursor");
-        if (cursor.moveToFirst()){
-            queryResult.setUserId(cursor.getInt(0));
-            queryResult.setUsername(cursor.getString(1));
-            queryResult.setPassword(cursor.getString(2));
-            queryResult.setTaskList(taskList);
-            queryResult.setLastLogInDate(cursor.getString(3));
-            queryResult.setStreak(cursor.getInt(4));
-            queryResult.setCurrency(cursor.getInt(5));
-            queryResult.setLoggedInTdy(cursor.getString(6));
-            queryResult.setPetType(cursor.getString(7));
-            queryResult.setPetDesign(cursor.getInt(8));
-            int profilePictureIndex = cursor.getColumnIndex(COLUMN_PROFILE_PICTURE);
-            String profilePicturePath = cursor.getString(profilePictureIndex);
-            queryResult.setProfilePicturePath(profilePicturePath);
-            cursor.close();
-        }
-        else{
-            Log.i(title, "Null");
-            queryResult = null;
-        }
-//        db.close();
-        return queryResult;
-    }
 
     public Task findTask(int id, ArrayList<Task> newTaskList){ // uses task id to find
         for (Task task : newTaskList){
@@ -444,12 +418,29 @@ public class MyDBHandler extends SQLiteOpenHelper{
         // closes the cursor and database before returning the retrieved password
         return currentPassword;
     }
+
+    public String getImageURL(String imageName) {
+        String query = "SELECT " + COLUMN_IMAGE_URL + " FROM " + IMAGE_URL + " WHERE " + COLUMN_IMAGE_NAME + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{imageName});
+
+        String imageURL = ""; // Default value if the URL is not found
+        if (cursor != null && cursor.moveToFirst()) {
+            int imageURLIndex = cursor.getColumnIndex(COLUMN_IMAGE_URL);
+            imageURL = cursor.getString(imageURLIndex);
+
+            cursor.close();
+        }
+
+        return imageURL;
+    }
+
     public int getTaskTargetSec(int taskId){
         String query = "SELECT " + COLUMN_TARGET_SEC + " FROM " + TASKS + " WHERE " + COLUMN_TASK_ID + " = " + taskId;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        int targetSec = -1; // Default value if the task is not found
+        int targetSec = -1; // Default value if the targetSec is not found
         if (cursor != null && cursor.moveToFirst()) {
             int targetSecIndex = cursor.getColumnIndex(COLUMN_TARGET_SEC);
             targetSec = cursor.getInt(targetSecIndex);
@@ -662,9 +653,16 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.delete(FRIENDREQUEST, COLUMN_USERNAME + "=?", new String[]{String.valueOf(user.getUsername())});
     }
 
-    public void removeAllInventoryItems(UserData user) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.delete(INVENTORY, COLUMN_USERNAME + "=?", new String[]{String.valueOf(user.getUsername())});
+    public void addImageURL(String ImageName, String Image_URL){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_IMAGE_NAME, ImageName);
+        values.put(COLUMN_IMAGE_URL, Image_URL);
+
+        db.insert(IMAGE_URL, null, values);
+        Log.i(title, "Inserted ImageURL");
+        //        db.close();
     }
 
     public void addInventoryItem(InventoryItem inventoryItem, UserData userData){
