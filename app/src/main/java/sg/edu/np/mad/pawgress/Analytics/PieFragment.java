@@ -1,6 +1,7 @@
 package sg.edu.np.mad.pawgress.Analytics;
 
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.sql.Array;
@@ -174,7 +176,6 @@ public class PieFragment extends Fragment {
         recyclerView.setAdapter(tableAdapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
         List<Integer> indicesWithNonZeroValues = new ArrayList<>();
         List<PieEntry> pieEntries = new ArrayList<>();
         List<Integer> colors = new ArrayList<>();
@@ -192,17 +193,22 @@ public class PieFragment extends Fragment {
 
         PieDataSet pieDataSet = new PieDataSet(pieEntries, "Task Categories");
 
-        pieDataSet.setValueTextColor(Color.TRANSPARENT);
-        pieDataSet.setValueTextSize(12f);
+        pieDataSet.setValueTextColor(Color.WHITE);
+        pieDataSet.setValueTextSize(20f);
         pieDataSet.setColors(colors);
-        //pieDataSet.setDrawValues(true);
+        IntegerValueFormatter valueFormatter = new IntegerValueFormatter();
+        pieDataSet.setValueFormatter(valueFormatter);
+        Typeface customTypeface = Typeface.create("sans-serif-condensed-medium", Typeface.BOLD);
+        pieDataSet.setValueTypeface(customTypeface);
+
+
 
         PieData pieData = new PieData(pieDataSet);
         pieChart.setData(pieData);
         Legend legend = pieChart.getLegend();
         legend.setEnabled(false);
         pieChart.getDescription().setEnabled(false);
-        pieChart.setEntryLabelColor(Color.BLACK);
+        // pieChart.setEntryLabelColor(Color.BLACK);
         pieChart.setEntryLabelTextSize(0f);
         pieChart.setDrawEntryLabels(false);
         pieChart.setDrawSlicesUnderHole(false);
@@ -211,5 +217,12 @@ public class PieFragment extends Fragment {
         pieChart.invalidate();
 
         return view;
+    }
+
+    public class IntegerValueFormatter extends ValueFormatter {
+        @Override
+        public String getFormattedValue(float value) {
+            return String.valueOf((int) value); // Format the value as an integer (without decimal places)
+        }
     }
 }

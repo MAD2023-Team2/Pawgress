@@ -68,9 +68,9 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
 
         if (position == 0){
             holder.textCategory.setText("       Category");
-            holder.textCompletedTasks.setText("No. of\n Task");
-            holder.textTimeSpent.setText("Time\nSpent");
-            holder.textAvgTime.setText(" Avg\nTime");
+            holder.textCompletedTasks.setText("  No. of\n   Task");
+            holder.textTimeSpent.setText("    Time\n    Spent");
+            holder.textAvgTime.setText("   Avg\n   Time");
             holder.colorCircle.setVisibility(View.GONE);
         }
         else{
@@ -110,22 +110,6 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
             textTimeSpent = itemView.findViewById(R.id.textTimeSpent);
             textAvgTime = itemView.findViewById(R.id.textAvgTime);
             colorCircle = itemView.findViewById(R.id.colorCircle);
-/*
-            // Set text gravity to center for all TextViews
-            textCategory.setGravity(Gravity.CENTER);
-            textCompletedTasks.setGravity(Gravity.CENTER);
-            textTimeSpent.setGravity(Gravity.CENTER);
-            textAvgTime.setGravity(Gravity.CENTER);
-
-
- */
-            // Set text size and typeface for header row (position == 0)
-            if (getAdapterPosition() == 0) {
-                textCategory.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                textTimeSpent.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                textCompletedTasks.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-                textAvgTime.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-            }
 
             Typeface typeface = Typeface.create("sans-serif-condensed-medium", Typeface.NORMAL);
             textCategory.setTypeface(typeface);
@@ -139,7 +123,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
         int hrs = secs/3600;
         int mins = (secs % 3600) / 60;
 
-        return String.format("%d hrs\n%d mins",hrs,mins);
+        return String.format(" %d hrs\n%d mins",hrs,mins);
     }
 
 }
