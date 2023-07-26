@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.components.Legend;
@@ -216,6 +217,25 @@ public class PieFragment extends Fragment {
         pieChart.animateY(250);
         pieChart.invalidate();
 
+        boolean noValuesRecorded = true;
+        for (int count:completedTaskCounts){
+            if (count > 0){
+                noValuesRecorded = false;
+                break;
+            }
+        }
+
+        if (noValuesRecorded){
+            pieChart.setVisibility(View.GONE);
+            TextView noDataText = view.findViewById(R.id.no_data_text);
+            noDataText.setVisibility(View.VISIBLE);
+            return view;
+        }
+        else {
+            pieChart.setVisibility(View.VISIBLE);
+            TextView noDataText = view.findViewById(R.id.no_data_text);
+            noDataText.setVisibility(View.GONE);
+        }
         return view;
     }
 
