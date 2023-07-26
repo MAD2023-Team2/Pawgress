@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import sg.edu.np.mad.pawgress.Fragments.Game_Shop.InventoryItem;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.tutorials.Tutorial_Page;
 
@@ -114,6 +115,10 @@ public class CreateAccount extends AppCompatActivity {
                                         FriendRequest friendReq = new FriendRequest("admin", "Rejected");
                                         friendRequests.add(friendReq);
 
+                                        ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
+                                        InventoryItem inventoryItem1 = new InventoryItem("Banana", 1, "Food");
+                                        inventoryItems.add(inventoryItem1);
+
                                         final int[] newID = new int[1];
                                         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
                                         DatabaseReference myRef = database.getReference("Users");
@@ -134,12 +139,13 @@ public class CreateAccount extends AppCompatActivity {
                                                             newID[0] = highestUniqueId;
                                                         }
                                                     }
-                                                    UserData dbUserData = new UserData(newID[0], dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests);
+                                                    UserData dbUserData = new UserData(newID[0], dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests, inventoryItems);
                                                     System.out.println(dbUsername + dbPassword + taskList + accCreateDate + dbUserData.getStreak() + dbUserData.getCurrency() + dbUserData.getLoggedInTdy());
                                                     myDBHandler.clearDatabase("ACCOUNTS");
                                                     myDBHandler.clearDatabase("TASKS");
                                                     myDBHandler.clearDatabase("FRIENDS");
                                                     myDBHandler.clearDatabase("FRIENDREQUEST");
+                                                    myDBHandler.clearDatabase("INVENTORY");
                                                     for (Task task : dbUserData.getTaskList()) {
                                                         myDBHandler.addTask(task, dbUserData);
                                                     }
@@ -148,6 +154,9 @@ public class CreateAccount extends AppCompatActivity {
                                                     }
                                                     for (FriendRequest friendRequest : dbUserData.getFriendReqList()) {
                                                         myDBHandler.addFriendReq(friendRequest.getFriendReqName(), dbUserData, friendRequest.getReqStatus());
+                                                    }
+                                                    for (InventoryItem inventoryItem : dbUserData.getInventoryList()) {
+                                                        myDBHandler.addInventoryItem(inventoryItem, dbUserData);
                                                     }
                                                     // Adding user to database
                                                     myDBHandler.addUser(dbUserData);
@@ -167,12 +176,13 @@ public class CreateAccount extends AppCompatActivity {
                                                     finish();
                                                 } else {
                                                     // Handle the case when there are no users in the database
-                                                    UserData dbUserData = new UserData(1, dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests);
+                                                    UserData dbUserData = new UserData(1, dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests, inventoryItems);
                                                     System.out.println(dbUsername + dbPassword + taskList + accCreateDate + dbUserData.getStreak() + dbUserData.getCurrency() + dbUserData.getLoggedInTdy());
                                                     myDBHandler.clearDatabase("ACCOUNTS");
                                                     myDBHandler.clearDatabase("TASKS");
                                                     myDBHandler.clearDatabase("FRIENDS");
                                                     myDBHandler.clearDatabase("FRIENDREQUEST");
+                                                    myDBHandler.clearDatabase("INVENTORY");
                                                     for (Task task : dbUserData.getTaskList()) {
                                                         myDBHandler.addTask(task, dbUserData);
                                                     }
@@ -181,6 +191,9 @@ public class CreateAccount extends AppCompatActivity {
                                                     }
                                                     for (FriendRequest friendRequest : dbUserData.getFriendReqList()) {
                                                         myDBHandler.addFriendReq(friendRequest.getFriendReqName(), dbUserData, friendRequest.getReqStatus());
+                                                    }
+                                                    for (InventoryItem inventoryItem : dbUserData.getInventoryList()) {
+                                                        myDBHandler.addInventoryItem(inventoryItem, dbUserData);
                                                     }
                                                     // Adding user to database
                                                     myDBHandler.addUser(dbUserData);

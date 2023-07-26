@@ -1,5 +1,6 @@
 package sg.edu.np.mad.pawgress.Fragments.Tasks;
 
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -222,7 +223,7 @@ public class TasksFragment extends Fragment{
                         int year = c.get(Calendar.YEAR);
                         int month = c.get(Calendar.MONTH);
                         int day = c.get(Calendar.DAY_OF_MONTH);
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), AlertDialog.THEME_DEVICE_DEFAULT_LIGHT,  new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {

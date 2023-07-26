@@ -156,7 +156,7 @@ public class TaskView extends AppCompatActivity {
                         int year = c.get(Calendar.YEAR);
                         int month = c.get(Calendar.MONTH);
                         int day = c.get(Calendar.DAY_OF_MONTH);
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(TaskView.this, new DatePickerDialog.OnDateSetListener() {
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(TaskView.this, android.app.AlertDialog.THEME_DEVICE_DEFAULT_LIGHT, new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {

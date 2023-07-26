@@ -14,6 +14,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -94,6 +95,22 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {
 
                             // update shop of current final currency left
                             currentCurrencyText.setText(finalCurrency +" Paws");
+
+                            // add bought item into user inventory
+                            ArrayList<InventoryItem> inventoryItems = myDBHandler.findInventoryList(user);
+                            boolean hasItem = false;
+                            for (InventoryItem item: inventoryItems){
+                                // if item exist in the current inventory, add 1 more of the item to inventory
+                                if(item.getItemName().equals(shopItem1.getName())){
+                                    hasItem = true;
+                                    myDBHandler.updateInventoryQuantity(item, user, item.getQuantity()+1);
+                                }
+                            }
+                            // if item dosent exist in the current inventory, add 1 to inventory
+                            if (!hasItem){
+                                InventoryItem inventoryItem1 = new InventoryItem(shopItem1.getName(), 1, shopItem1.getCategory());
+                                myDBHandler.addInventoryItem(inventoryItem1, user);
+                            }
                         }
                     });
                     builder.setNegativeButton("No", new DialogInterface.OnClickListener(){
@@ -135,6 +152,22 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {
 
                                 // update shop of current final currency left
                                 currentCurrencyText.setText(finalCurrency +" Paws");
+
+                                // add bought item into user inventory
+                                ArrayList<InventoryItem> inventoryItems = myDBHandler.findInventoryList(user);
+                                boolean hasItem = false;
+                                for (InventoryItem item: inventoryItems){
+                                    // if item exist in the current inventory, add 1 more of the item to inventory
+                                    if(item.getItemName().equals(finalShopItem.getName())){
+                                        hasItem = true;
+                                        myDBHandler.updateInventoryQuantity(item, user, item.getQuantity()+1);
+                                    }
+                                }
+                                // if item dosent exist in the current inventory, add 1 to inventory
+                                if (!hasItem){
+                                    InventoryItem inventoryItem1 = new InventoryItem(finalShopItem.getName(), 1, finalShopItem.getCategory());
+                                    myDBHandler.addInventoryItem(inventoryItem1, user);
+                                }
                             }
                         });
                         builder.setNegativeButton("No", new DialogInterface.OnClickListener(){

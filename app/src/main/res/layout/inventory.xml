@@ -12,7 +12,7 @@
         android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/shopText"
+            android:id="@+id/inventoryText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="sans-serif-condensed-medium"
@@ -20,22 +20,12 @@
             android:text="INVENTORY"
             android:textSize="35sp"/>
 
-        <TextView
-            android:id="@+id/currentCurrency"
-            android:layout_toEndOf="@id/shopText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif-condensed-medium"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="50dp"
-            android:text="0 Items"
-            android:textSize="15sp"/>
 
     </RelativeLayout>
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/shopRecyclerView"
+        android:id="@+id/inventoryRecyclerView"
         android:layout_below="@id/buttonScroll"
         android:layout_marginEnd="30dp"
         android:layout_marginStart="30dp"

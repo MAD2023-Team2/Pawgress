@@ -23,7 +23,8 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:text="Task Title"/>
+        android:text="Task Title"
+        android:background="@drawable/rounded_border_beige"/>
 
     <TextView
         android:id="@+id/textView21"
@@ -37,7 +38,8 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:paddingStart="5dp"
         android:text="DueDate"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:background="@drawable/rounded_border_beige"/>
 
     <ImageView
         android:id="@+id/warn"
