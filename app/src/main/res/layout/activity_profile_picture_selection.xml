@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FCFBFC">
+    android:theme="@style/AppBackgroundColour">
 
 
     <TextView
@@ -29,14 +29,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/return_button"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
+    <ImageButton
+        android:id="@+id/imageButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
+        android:backgroundTint="#B9C498"
+        android:src="?attr/actionModeCloseDrawable"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/actionModeCloseDrawable" />
+        tools:layout_editor_absoluteX="39dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -48,6 +49,7 @@ public class HomeFragment extends Fragment {
     private TextView emptySpaceTextView;
     private ArrayList<Task> taskList;
     String todaysDate;
+    String checkDate;
 
 
     // TODO: Rename and change types of parameters
@@ -118,15 +120,34 @@ public class HomeFragment extends Fragment {
         int inProgress = 0;
         int totalTime = 0;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatterTime = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
 
         todaysDate = formatter.format(new Date());
 
         for (Task task:taskList){
+            checkDate = task.getDateComplete();
+            System.out.println(checkDate);
             if (task.getStatus().equals("In Progress")){
                 inProgress++;
             }
-            else if (task.getDateCreated().equals(todaysDate) && task.getStatus().equals("Completed")){
-                totalTime += task.getTimeSpent();
+            else if (checkDate != null){
+                try{
+                    Date completedDate;
+                    if (checkDate.contains(",")){
+                        completedDate = formatterTime.parse(checkDate);
+                    }
+                    else{
+                        completedDate = formatterTime.parse(checkDate);
+                    }
+
+                    String completedDateString = formatter.format(completedDate);
+                    if (completedDateString.equals(todaysDate)){
+                        totalTime += task.getTimeSpent();
+                    }
+                }
+                catch (ParseException e){
+                    e.printStackTrace();
+                }
             }
         }
 

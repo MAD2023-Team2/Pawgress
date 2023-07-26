@@ -22,6 +22,7 @@ import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -136,23 +137,38 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                         int totalTime = 0;
                         int inProgress = 0;
                         SimpleDateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formatter3 = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
 
                         String todaysDate = formatter2.format(new Date());
+                        String checkDate;
                         for (Task task:updatedList){
+                            checkDate = task.getDateComplete();
                             if (task.getStatus().equals("In Progress")){
                                 inProgress++;
                             }
-                            else if (task.getDateCreated().equals(todaysDate) && task.getStatus().equals("Completed")){
-                                totalTime += task.getTimeSpent();
+                            else if (checkDate != null){
+                                try{
+                                    Date completedDate;
+                                    if (checkDate.contains(",")){
+                                        completedDate = formatter3.parse(checkDate);
+                                    }
+                                    else{
+                                        completedDate = formatter3.parse(checkDate);
+                                    }
+
+                                    String completedDateString = formatter2.format(completedDate);
+                                    if (completedDateString.equals(todaysDate)){
+                                        totalTime += task.getTimeSpent();
+                                    }
+                                }
+                                catch (ParseException e){
+                                    e.printStackTrace();
+                                }
                             }
                         }
-
-                        totalTime+=task.getTimeSpent();
-
                         int hrs = totalTime / 3600;
                         int mins = (totalTime % 3600) / 60;
                         int secs = totalTime % 60;
-                        int size = updatedList.size() - 1;
                         taskLeft.setText("Total task left In Progress: " + inProgress);
                         productiveTime.setText("Productive Time: " + String.format("%d hrs %d mins %d secs",hrs,mins,secs));;
 

@@ -2,12 +2,22 @@ package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.Analytics.BarFragment;
+import sg.edu.np.mad.pawgress.Analytics.MainStats;
+import sg.edu.np.mad.pawgress.Analytics.PieFragment;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.SaveSharedPreference;
@@ -19,6 +29,7 @@ public class Analytics extends AppCompatActivity {
     private MyDBHandler dbHandler;
     UserData user;
     private ArrayList<Task> taskList;
+    private ImageView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,33 +42,47 @@ public class Analytics extends AppCompatActivity {
         taskList = dbHandler.findTaskList(user);
         System.out.println(user.getUsername());
         System.out.println(taskList.size());
-    }
-
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        System.out.println(taskList.size());
-        int count = 0;
-        int totalTime = 0;
-
-        for (Task task : taskList){
-            if (task.getStatus().equals("Completed")){
-                count++;
-                totalTime += task.getTimeSpent();
+        back = findViewById(R.id.backButton);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
             }
-        }
+        });
+        // Main Stat Fragment
+        Button mainBtn = findViewById(R.id.mainBut);
+        mainBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                replaceFragment(new MainStats());
+            }
+        });
 
-        int mins = totalTime/60;
-        int secs = totalTime - (mins*60);
-        int hrs = mins / 60;
-        mins = mins - (hrs*60);
+        // Bar Fragment
+        Button barBtn = findViewById(R.id.barBut);
+        barBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                replaceFragment(new BarFragment());
+            }
+        });
 
-
-        TextView totalCompletedText = findViewById(R.id.totalComplete);
-        TextView totalTimeSpent = findViewById(R.id.totalTime);
-
-        totalCompletedText.setText("Total number of completed task:" + count);
-        totalTimeSpent.setText(String.format("%d hrs %d mins %d secs",hrs,mins,secs));
+        // Pie Chart Fragment
+        Button pieBtn = findViewById(R.id.pieBut);
+        pieBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                replaceFragment(new PieFragment());
+            }
+        });
     }
+
+
+    private void replaceFragment(Fragment fragment){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragment);
+        fragmentTransaction.commit();
+    }
+
 }
