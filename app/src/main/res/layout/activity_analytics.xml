@@ -52,8 +52,8 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:backgroundTint="#DA7F40"
-            android:text="Bar"
             android:fontFamily="sans-serif-condensed-medium"
+            android:text="Bar"
             android:textColor="@android:color/white"
             android:textSize="20sp"/>
 
@@ -69,8 +69,8 @@
             android:layout_height="50dp"
             android:layout_weight="1"
             android:backgroundTint="#DA7F40"
-            android:text="Pie"
             android:fontFamily="sans-serif-condensed-medium"
+            android:text="Pie"
             android:textColor="@android:color/white"
             android:textSize="20sp"/>
 

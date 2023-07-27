@@ -17,37 +17,37 @@
         android:id="@+id/textCategory"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:layout_weight="2"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
-        android:layout_gravity="center_vertical|center_horizontal"/>
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/textCompletedTasks"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:layout_weight="1"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
-        android:layout_gravity="center_vertical|center_horizontal"/>
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/textTimeSpent"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:layout_weight="1"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
-        android:layout_gravity="center_vertical|center_horizontal"/>
+        android:textSize="14sp"/>
 
     <TextView
         android:id="@+id/textAvgTime"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical|center_horizontal"
         android:layout_weight="1"
         android:textColor="@android:color/black"
-        android:textSize="14sp"
-        android:layout_gravity="center_vertical|center_horizontal"/>
+        android:textSize="14sp"/>
 
 </LinearLayout>
 

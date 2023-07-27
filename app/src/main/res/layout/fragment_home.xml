@@ -63,16 +63,16 @@
         <TextView
             android:id="@+id/emptyTextView"
             android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginStart="30dp"
             android:layout_marginEnd="30dp"
             android:layout_marginBottom="15dp"
+            android:background="@drawable/rounded_border_tasklist"
             android:clickable="true"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
-            android:layout_height="0dp"
             android:text="No tasks to work on for now :)"
             android:visibility="visible"
-            android:background="@drawable/rounded_border_tasklist"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
@@ -85,14 +85,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
+            android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
             android:text="TextView"
             android:textSize="17dp"
-            android:fontFamily="sans-serif-condensed-medium"
+            app:layout_constraintBottom_toTopOf="@id/linearLayout"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/greeting"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toTopOf="@id/linearLayout"
             app:layout_constraintVertical_bias="0.0"/>
 
 
@@ -100,29 +100,29 @@
             android:id="@+id/prioritizedTaskTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
             android:text="Prioritised Task"
             android:textSize="20sp"
-            android:fontFamily="sans-serif-condensed-medium"
             app:layout_constraintBottom_toTopOf="@+id/emptyspace_home"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:layout_marginBottom="15dp"
-            app:layout_constraintStart_toStartOf="parent"
+            android:background="@android:color/transparent"
+            android:orientation="vertical"
             app:layout_constraintBottom_toTopOf="@id/prioritizedTaskTextView"
             app:layout_constraintEnd_toEndOf="parent"
-            android:background="@android:color/transparent">
+            app:layout_constraintStart_toStartOf="parent">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
                 <!-- CardView for taskLeft statistics -->
                 <androidx.cardview.widget.CardView
@@ -130,8 +130,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="0dp"
-                    app:cardBackgroundColor="#F3DFCD">
+                    app:cardBackgroundColor="#F3DFCD"
+                    app:cardCornerRadius="0dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
@@ -169,8 +169,8 @@
                     android:id="@+id/timeSpentCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="0dp"
-                    app:cardBackgroundColor="#F3DFCD">
+                    app:cardBackgroundColor="#F3DFCD"
+                    app:cardCornerRadius="0dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
@@ -181,24 +181,24 @@
                             android:id="@+id/productiveToday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textSize="25dp"
                             android:fontFamily="sans-serif-condensed-medium"
                             android:gravity="center"
-                            app:layout_constraintTop_toTopOf="parent"
+                            android:text="0"
+                            android:textSize="25dp"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Time Spent"
                             android:fontFamily="sans-serif-condensed-medium"
                             android:gravity="center"
-                            app:layout_constraintTop_toBottomOf="@+id/productiveToday"
+                            android:text="Time Spent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                            app:layout_constraintTop_toBottomOf="@+id/productiveToday" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
