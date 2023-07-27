@@ -83,52 +83,92 @@
             android:src="@drawable/menu_close"/>
 
         <RelativeLayout
+            android:id="@+id/secondMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignEnd="@id/menu"
+            android:layout_alignBottom="@id/menu"
+            android:background="@drawable/rounded_corners_challenge"
+            android:backgroundTint="@color/fieldColour"
+            android:visibility="gone">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/close_menu_inv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/editRoom"
+                android:backgroundTint="#B9C498"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="5dp"
+                android:visibility="invisible"
+                android:clickable="false"
+                android:src="@drawable/baseline_add_circle_outline_24" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/editRoom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@id/close_menu_inv"
+                android:backgroundTint="#B9C498"
+                android:layout_marginEnd="10dp"
+                android:layout_marginStart="5dp"
+                android:clickable="false"
+                android:src="@drawable/baseline_edit_24" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
             android:id="@+id/menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="gone"
+            android:layout_alignEnd="@id/picBackground"
+            android:layout_alignBottom="@id/picBackground"
             android:layout_marginEnd="35dp"
             android:layout_marginBottom="35dp"
             android:background="@drawable/rounded_corners_challenge"
             android:backgroundTint="@color/fieldColour"
-            android:layout_alignBottom="@id/picBackground"
-            android:layout_alignEnd="@id/picBackground" >
+            android:visibility="gone">
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/goShop"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
-                android:layout_marginTop="5dp"
                 android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
                 android:layout_marginEnd="5dp"
-                android:clickable="true"
+                android:layout_marginBottom="10dp"
                 android:backgroundTint="#B9C498"
+                android:clickable="true"
                 android:src="@drawable/shopping_icon" />
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/goInventory"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/goShop"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="10dp"
-                android:layout_below="@id/goShop"
-                android:clickable="true"
                 android:backgroundTint="#B9C498"
+                android:clickable="true"
                 android:src="@drawable/backpack" />
+
 
             <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/close_menu"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:clickable="false"
+                android:layout_below="@id/goInventory"
                 android:layout_marginStart="5dp"
                 android:layout_marginEnd="5dp"
                 android:layout_marginBottom="5dp"
-                android:layout_below="@id/goInventory"
                 android:backgroundTint="#B9C498"
-                android:src="@drawable/menu_open"/>
+                android:layout_centerHorizontal="true"
+                android:clickable="false"
+                android:src="@drawable/menu_open" />
+
 
         </RelativeLayout>
 
