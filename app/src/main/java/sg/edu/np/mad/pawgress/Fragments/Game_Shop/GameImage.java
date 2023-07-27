@@ -21,16 +21,18 @@ public class GameImage extends AppCompatActivity {
     MyDBHandler myDBHandler;
     ImageView replaceImage_topLeft;
     ImageView replaceImage_topRight;
+    ImageView replaceImage_topMiddle;
     ImageButton backButton;
     Bitmap bitmap;
     InventoryItem inventoryItem;
     UserData user;
+    boolean topOnly;
 
     @SuppressLint("MissingInflatedId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.game_image);
 
         myDBHandler = new MyDBHandler(this,null,null,1);
@@ -39,15 +41,34 @@ public class GameImage extends AppCompatActivity {
         backButton = findViewById(R.id.backButton);
 
         Intent receivingEnd = getIntent();
-        bitmap = receivingEnd.getParcelableExtra("bitmap");
+        String pathName = receivingEnd.getStringExtra("pathName");
+        topOnly = receivingEnd.getBooleanExtra("topOnly",false);
+        bitmap = BitmapFactory.decodeFile(pathName);
         inventoryItem = receivingEnd.getParcelableExtra("item");
         user = receivingEnd.getParcelableExtra("user");
 
         // set image to image clicked previously and make it transparent
-        replaceImage_topLeft.setImageBitmap(bitmap);
-        replaceImage_topRight.setImageBitmap(bitmap);
-        replaceImage_topLeft.setAlpha(0.5F);
-        replaceImage_topRight.setAlpha(0.5F);
+        if (topOnly){ // check if it can only be placed on ceiling
+            replaceImage_topMiddle = findViewById(R.id.replaceImage_topMiddle);
+            ImageView replaceImage_topMiddle_add = findViewById(R.id.replaceImage_topMiddle_add);
+            replaceImage_topMiddle_add.setVisibility(View.VISIBLE);
+            replaceImage_topMiddle.setVisibility(View.VISIBLE);
+            replaceImage_topMiddle.setImageBitmap(bitmap);
+            replaceImage_topMiddle.setAlpha(0.5F);
+
+            ImageView replaceImage_topRight_add = findViewById(R.id.replaceImage_topRight_add);
+            ImageView replaceImage_topLeft_add = findViewById(R.id.replaceImage_topLeft_add);
+            replaceImage_topLeft.setVisibility(View.GONE);
+            replaceImage_topRight.setVisibility(View.GONE);
+            replaceImage_topRight_add.setVisibility(View.GONE);
+            replaceImage_topLeft_add.setVisibility(View.GONE);
+        }
+        else{
+            replaceImage_topLeft.setImageBitmap(bitmap);
+            replaceImage_topRight.setImageBitmap(bitmap);
+            replaceImage_topLeft.setAlpha(0.5F);
+            replaceImage_topRight.setAlpha(0.5F);
+        }
     }
 
     @Override
@@ -84,6 +105,24 @@ public class GameImage extends AppCompatActivity {
                 finish();
             }
         });
+
+        if (topOnly){
+            replaceImage_topMiddle.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    myDBHandler.setTopMiddle(user.getUsername(),inventoryItem.getItemName());
+
+                    int inventoryQuantity = inventoryItem.getQuantity();
+                    if (inventoryQuantity == 1){ // if used all of the item, remove from the inventory
+                        myDBHandler.removeInventoryItem(inventoryItem,user);
+                    }
+                    else{ // there is still at least 1 item of the same item in the inventory, update the new quantity of the item
+                        myDBHandler.updateInventoryQuantity(inventoryItem, user, inventoryQuantity-1);
+                    }
+                    finish();
+                }
+            });
+        }
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

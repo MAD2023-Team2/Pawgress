@@ -85,7 +85,7 @@ public class GameFragment extends Fragment {
     List<InventoryItem> inventoryItemList, foodItems, furnitureItems, plantsItems, toysItems;
     MyDBHandler myDBHandler;
     BottomSheetDialog shop;
-    public ImageView topLeftPic, topRightPic;
+    public ImageView topLeftPic, topRightPic, topMiddlePic;
     private int queryMode; // 0 is unfiltered, 1 is descending, 2 is ascending
     public GameFragment() {
         // Required empty public constructor
@@ -120,6 +120,12 @@ public class GameFragment extends Fragment {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        updateImage();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -145,6 +151,7 @@ public class GameFragment extends Fragment {
 
         topLeftPic = view.findViewById(R.id.replaceImage_topLeft);
         topRightPic = view.findViewById(R.id.replaceImage_topRight);
+        topMiddlePic = view.findViewById(R.id.replaceImage_topMiddle);
         updateImage();
         shop = new BottomSheetDialog(getActivity());
 
@@ -218,8 +225,6 @@ public class GameFragment extends Fragment {
                             }
                         }
                         inventoryAdapter = new InventoryAdapter(foodItems, user, myDBHandler, getContext(), view, shop, getActivity());
-                        inventoryAdapter.topLeftPic = topLeftPic;
-                        inventoryAdapter.topRightPic = topRightPic;
                         recyclerViewInventory.setAdapter(inventoryAdapter);
                     }
                 });
@@ -241,8 +246,6 @@ public class GameFragment extends Fragment {
                             }
                         }
                         inventoryAdapter = new InventoryAdapter(furnitureItems, user, myDBHandler, getContext(), view, shop, getActivity());
-                        inventoryAdapter.topLeftPic = topLeftPic;
-                        inventoryAdapter.topRightPic = topRightPic;
                         recyclerViewInventory.setAdapter(inventoryAdapter);
                     }
                 });
@@ -264,8 +267,6 @@ public class GameFragment extends Fragment {
                             }
                         }
                         inventoryAdapter = new InventoryAdapter(plantsItems, user, myDBHandler, getContext(), view, shop, getActivity());
-                        inventoryAdapter.topLeftPic = topLeftPic;
-                        inventoryAdapter.topRightPic = topRightPic;
                         recyclerViewInventory.setAdapter(inventoryAdapter);
                     }
                 });
@@ -287,8 +288,6 @@ public class GameFragment extends Fragment {
                             }
                         }
                         inventoryAdapter = new InventoryAdapter(toysItems, user, myDBHandler, getContext(), view, shop, getActivity());
-                        inventoryAdapter.topLeftPic = topLeftPic;
-                        inventoryAdapter.topRightPic = topRightPic;
                         recyclerViewInventory.setAdapter(inventoryAdapter);
                     }
                 });
@@ -313,6 +312,7 @@ public class GameFragment extends Fragment {
                 filterButton = shop.findViewById(R.id.filterButton);
                 // when first open shop recycler view, show all shop items in all categories, unsorted
                 generateUnfiltered();
+                updateImage();
                 filterButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -504,6 +504,7 @@ public class GameFragment extends Fragment {
                 });
 
                 shop.show();
+                updateImage();
             }
         });
 
@@ -576,8 +577,6 @@ public class GameFragment extends Fragment {
     private void generateAllCat() {
         inventoryItemList = myDBHandler.findInventoryList(user);
         inventoryAdapter = new InventoryAdapter(inventoryItemList, user, myDBHandler, getContext(), getView(), shop, getActivity());
-        inventoryAdapter.topLeftPic = topLeftPic;
-        inventoryAdapter.topRightPic = topRightPic;
         recyclerViewInventory.setAdapter(inventoryAdapter);
     }
 
@@ -607,8 +606,10 @@ public class GameFragment extends Fragment {
     }
 
     private void updateImage(){
+        Log.v("GameFragment","Updating the game view");
         String topLeft = myDBHandler.getTopLeft(user.getUsername());
         String topRight = myDBHandler.getTopRight(user.getUsername());
+        String topMiddle = myDBHandler.getTopMiddle(user.getUsername());
         if (!topLeft.equals(" ")){
             topLeftPic.setVisibility(View.VISIBLE);
             String pathName = myDBHandler.getImageURL(topLeft);
@@ -621,6 +622,13 @@ public class GameFragment extends Fragment {
             String pathName = myDBHandler.getImageURL(topRight);
             Bitmap bitmap = BitmapFactory.decodeFile(pathName);
             topRightPic.setImageBitmap(bitmap);
+        }
+
+        if (!topMiddle.equals(" ")){
+            topMiddlePic.setVisibility(View.VISIBLE);
+            String pathName = myDBHandler.getImageURL(topMiddle);
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
+            topMiddlePic.setImageBitmap(bitmap);
         }
     }
 }

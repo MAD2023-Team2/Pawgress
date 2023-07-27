@@ -7,7 +7,7 @@
     tools:context=".Tasks.TaskView">
 
     <ImageView
-        android:id="@+id/imageView13"
+        android:id="@+id/picBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
@@ -26,11 +26,47 @@
         android:layout_marginStart="72dp"
         android:layout_marginBottom="184dp"
         android:src="@drawable/corgi"
-        android:layout_alignBottom="@+id/imageView13" />
+        android:layout_alignBottom="@+id/picBackground" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/middle"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/replaceImage_topLeft"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignTop="@id/middle"
+        android:visibility="gone"
+        android:src="@android:drawable/ic_menu_add" />
+
+    <ImageView
+        android:id="@+id/replaceImage_topRight"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignTop="@id/middle"
+        android:layout_marginStart="190dp"
+        android:visibility="gone"
+        android:src="@android:drawable/ic_menu_add" />
+
+    <ImageView
+        android:id="@+id/replaceImage_topMiddle"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignTop="@id/picBackground"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:src="@android:drawable/ic_menu_add" />
+
 
     <RelativeLayout
         android:id="@+id/countDownContainer"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -61,7 +97,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="-10dp"
         android:layout_below="@id/countDownContainer"
         android:layout_height="wrap_content">
 

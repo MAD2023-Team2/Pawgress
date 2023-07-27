@@ -2,6 +2,8 @@ package sg.edu.np.mad.pawgress.Tasks;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
@@ -61,6 +63,33 @@ public class TaskGame extends AppCompatActivity {
         else if (user1.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
         else if (user1.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
+
+        ImageView topLeftPic = findViewById(R.id.replaceImage_topLeft);
+        ImageView topRightPic = findViewById(R.id.replaceImage_topRight);
+        ImageView topMiddlePic = findViewById(R.id.replaceImage_topMiddle);
+        String topLeft = myDBHandler.getTopLeft(user1.getUsername());
+        String topRight = myDBHandler.getTopRight(user1.getUsername());
+        String topMiddle = myDBHandler.getTopMiddle(user1.getUsername());
+        if (!topLeft.equals(" ")){
+            topLeftPic.setVisibility(View.VISIBLE);
+            String pathName = myDBHandler.getImageURL(topLeft);
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
+            topLeftPic.setImageBitmap(bitmap);
+        }
+
+        if (!topRight.equals(" ")){
+            topRightPic.setVisibility(View.VISIBLE);
+            String pathName = myDBHandler.getImageURL(topRight);
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
+            topRightPic.setImageBitmap(bitmap);
+        }
+
+        if (!topMiddle.equals(" ")){
+            topMiddlePic.setVisibility(View.VISIBLE);
+            String pathName = myDBHandler.getImageURL(topMiddle);
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
+            topMiddlePic.setImageBitmap(bitmap);
+        }
         pet_picture.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {

@@ -24,11 +24,20 @@
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="1.0" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/middle"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible">
+        </TextView>
+
         <ImageView
             android:id="@+id/replaceImage_topLeft"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:layout_alignBottom="@id/picBackground"
+            android:layout_alignTop="@id/middle"
             android:layout_marginBottom="230dp"
             android:src="@android:drawable/ic_menu_add" />
 
@@ -36,9 +45,17 @@
             android:id="@+id/replaceImage_topRight"
             android:layout_width="130dp"
             android:layout_height="130dp"
-            android:layout_alignBottom="@id/picBackground"
+            android:layout_alignTop="@id/middle"
             android:layout_marginStart="190dp"
-            android:layout_marginBottom="230dp"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/replaceImage_topMiddle"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignTop="@id/picBackground"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
             android:src="@android:drawable/ic_menu_add" />
 
         <ImageView
@@ -46,8 +63,7 @@
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:alpha="0.2"
-            android:layout_alignBottom="@id/picBackground"
-            android:layout_marginBottom="230dp"
+            android:layout_alignTop="@id/middle"
             android:src="@android:drawable/ic_menu_add" />
 
         <ImageView
@@ -55,14 +71,23 @@
             android:layout_width="130dp"
             android:layout_height="130dp"
             android:alpha="0.2"
-            android:layout_alignBottom="@id/picBackground"
+            android:layout_alignTop="@id/middle"
             android:layout_marginStart="190dp"
-            android:layout_marginBottom="230dp"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/replaceImage_topMiddle_add"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:alpha="0.2"
+            android:layout_alignTop="@id/picBackground"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
             android:src="@android:drawable/ic_menu_add" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="130dp"
             android:layout_height="wrap_content">
 
             <TextView

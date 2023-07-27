@@ -29,11 +29,13 @@ public class UserData implements Parcelable{
     private ArrayList<InventoryItem> inventoryList;
     private String topLeft;
     private String topRight;
+    private String topMiddle;
 
 
     public UserData(int userId, String username, String password, ArrayList<Task> taskList, String lastLogInDate,
                     int streak, int currency, String loggedInTdy, String petType, int petDesign,
-                    ArrayList<FriendData> friendList, ArrayList<FriendRequest> friendReqList, ArrayList<InventoryItem> inventoryList, String topLeft, String topRight){
+                    ArrayList<FriendData> friendList, ArrayList<FriendRequest> friendReqList, ArrayList<InventoryItem> inventoryList,
+                    String topLeft, String topRight, String topMiddle){
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -49,6 +51,7 @@ public class UserData implements Parcelable{
         this.inventoryList = inventoryList;
         this.topLeft = topLeft;
         this.topRight = topRight;
+        this.topMiddle = topMiddle;
     }
 
     public UserData(){
@@ -72,6 +75,7 @@ public class UserData implements Parcelable{
         dest.writeInt(petDesign);
         dest.writeString(topLeft);
         dest.writeString(topRight);
+        dest.writeString(topMiddle);
     }
     public static final Creator<UserData> CREATOR = new Creator<UserData>() {
         @Override
@@ -97,6 +101,7 @@ public class UserData implements Parcelable{
         petDesign = in.readInt();
         topLeft = in.readString();
         topRight = in.readString();
+        topMiddle = in.readString();
     }
 
     public int getUserId() { return userId; }
@@ -131,8 +136,8 @@ public class UserData implements Parcelable{
     public void setInventoryList(ArrayList<InventoryItem> inventoryList) { this.inventoryList = inventoryList; }
     public void setTopLeft(String topLeft){ this.topLeft = topLeft; }
     public void setTopRight(String topRight){ this.topRight = topRight; }
+    public void setTopMiddle(String topMiddle){ this.topMiddle = topMiddle; }
     public String getTopLeft(){ return topLeft; }
     public String getTopRight(){ return topRight; }
-
-
+    public String getTopMiddle(){ return topMiddle; }
 }
