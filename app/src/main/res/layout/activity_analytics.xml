@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    tools:context=".Fragments.Profile.Analytics">
+    tools:context=".Fragments.Profile.Analytics"
+    android:theme="@style/AppBackgroundColour">
 
     <ImageButton
         android:id="@+id/backButton"
@@ -14,9 +15,13 @@
         android:layout_marginStart="30dp"
         android:layout_marginTop="50dp"
         android:layout_marginEnd="28dp"
-        android:src="?attr/actionModeCloseDrawable" />
+        android:src="?attr/actionModeCloseDrawable"
+        android:background="@null"
+        android:theme="@style/Tint"/>
 
     <LinearLayout
+        android:id="@+id/navigate"
+        android:layout_below="@id/backButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -80,10 +85,13 @@
             android:layout_weight="1" />
     </LinearLayout>
 
-    <LinearLayout
+    <RelativeLayout
+        android:id="@+id/stats"
         android:layout_width="match_parent"
-        android:layout_height="573dp"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/navigate"
+        android:orientation="vertical"
+        android:layout_alignParentBottom="true">
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fragmentContainerView"
@@ -91,5 +99,5 @@
             android:layout_width="match_parent"
             android:layout_height="600dp"
             tools:layout="@layout/fragment_main_stats" />
-    </LinearLayout>
-</LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>

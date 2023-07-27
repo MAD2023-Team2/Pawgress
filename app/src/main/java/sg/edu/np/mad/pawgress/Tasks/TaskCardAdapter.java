@@ -1,9 +1,5 @@
 package sg.edu.np.mad.pawgress.Tasks;
 
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
-
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,15 +7,12 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,8 +22,6 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import sg.edu.np.mad.pawgress.DailyLogIn;
-import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
-import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
@@ -45,6 +36,8 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
     RecyclerView recyclerView;
     ArrayList<Task> taskList;
     ArrayList<Task> updatedList;
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+    String today = formatter.format(new Date());
 
     public TaskCardAdapter(UserData userData, MyDBHandler mDatabase, Context context, RecyclerView recyclerView){
         this.user = userData;
@@ -80,6 +73,12 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                     recyclerTaskList.add(task);
                 }
             }
+            for (Task task : taskList){
+                if(task.getStatus().equals("In Progress") && task.getDueDate()!=null && task.getDueDate().equals(today) && !recyclerTaskList.contains(task)){
+                    count+=1;
+                    recyclerTaskList.add(task);
+                }
+            }
         }
         if (count > 0){ emptyTasktext.setText(""); }
         else emptyTasktext.setText("No tasks to work on for now :)");
@@ -87,13 +86,17 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
 
     @Override
     public TaskCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        return new TaskCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.taskcard,parent, false));
+        return new TaskCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task_home,parent, false));
     }
 
     @Override
     public void onBindViewHolder(TaskCardViewHolder holder, int position){
         Task task = recyclerTaskList.get(position);
-        holder.name.setText(task.getTaskName());
+        if (task.getDueDate()!=null && task.getDueDate().equals(today)){
+            holder.name.setText(task.getTaskName() );
+            holder.urgent.setVisibility(View.VISIBLE);
+        }
+        else holder.name.setText(task.getTaskName());
         // view individual task
         if (task.getDailyChallenge() == 0){
             holder.card2.setOnClickListener(new View.OnClickListener() {

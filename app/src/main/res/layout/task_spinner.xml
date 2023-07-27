@@ -16,6 +16,7 @@
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
         android:text="Priority"
+        android:theme="@style/TaskColour"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

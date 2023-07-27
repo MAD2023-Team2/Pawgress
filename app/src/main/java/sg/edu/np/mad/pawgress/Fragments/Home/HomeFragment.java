@@ -207,29 +207,12 @@ public class HomeFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.taskcardlist);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
         emptySpaceTextView = view.findViewById(R.id.emptyspace_home);
-
-        try {
-            // Try retrieving the user from the intent with new task list
-            Intent receivingEnd_2 = getActivity().getIntent();
-            UserData user_2 = receivingEnd_2.getParcelableExtra("New Task List");
-            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity(),recyclerView);
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-            recyclerView.setLayoutManager(mLayoutManager);
-            mAdapter.emptyTasktext = emptyTaskText;
-            mAdapter.updateEmptyView();
-            recyclerView.setAdapter(mAdapter);
-
-        } catch (RuntimeException e) {
-            // if there is no new task list, get intent from user
-            Intent receivingEnd_2 = getActivity().getIntent();
-            UserData user_2 = receivingEnd_2.getParcelableExtra("User");
-            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity(),recyclerView);
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-            recyclerView.setLayoutManager(mLayoutManager);
-            mAdapter.emptyTasktext = emptyTaskText;
-            mAdapter.updateEmptyView();
-            recyclerView.setAdapter(mAdapter);
-        }
+        TaskCardAdapter mAdapter = new TaskCardAdapter(user,myDBHandler, getActivity(),recyclerView);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        mAdapter.emptyTasktext = emptyTaskText;
+        mAdapter.updateEmptyView();
+        recyclerView.setAdapter(mAdapter);
 
         emptyTaskText.setOnClickListener(new View.OnClickListener() {
             @Override

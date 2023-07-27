@@ -20,7 +20,9 @@
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:src="?attr/actionModeCloseDrawable" />
+            android:src="?attr/actionModeCloseDrawable"
+            android:background="@null"
+            android:theme="@style/Tint"/>
 
         <TextView
             android:id="@+id/tvWeekInfo"
@@ -30,7 +32,8 @@
             android:gravity="center"
             android:text="WeekText"
             android:fontFamily="sans-serif-condensed-medium"
-            android:textSize="18sp" />
+            android:textSize="18sp"
+            android:theme="@style/TaskColour"/>
 
 
         <ImageButton
@@ -39,6 +42,8 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:src="?attr/actionModeCloseDrawable"
+            android:background="@null"
+            android:theme="@style/Tint"
             android:scaleX="-1"/>
 
     </LinearLayout>
@@ -60,6 +65,6 @@
         android:text="Time"
         android:fontFamily="sans-serif-condensed-medium"
         android:textSize="18sp"
-        android:textColor="@android:color/black" />
+        android:theme="@style/TaskColour"/>
 
 </FrameLayout>

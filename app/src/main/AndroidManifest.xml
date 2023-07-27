@@ -88,10 +88,6 @@
             android:exported="false"
             android:screenOrientation="portrait"/>
         <activity
-            android:name=".Fragments.Profile.ProfilePage"
-            android:exported="false"
-            android:screenOrientation="portrait"/>
-        <activity
             android:name=".EditProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait"/>
