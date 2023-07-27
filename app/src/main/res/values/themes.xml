@@ -7,6 +7,8 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+
+        <!-- Nav Bar -->
         <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
         <item name="colorPrimary">@color/darkModeBlack</item>
         <item name="colorOnPrimary">@color/darkModeBlack</item>

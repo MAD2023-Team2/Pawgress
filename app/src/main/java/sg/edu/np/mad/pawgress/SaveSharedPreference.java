@@ -9,11 +9,14 @@ public class SaveSharedPreference {
     static final String PREF_PROFILE_PIC = "profilePic";
     static final String PREF_SEEN_FRIENDREQ = "seenFriendReq";
     static final String PREF_OLD_REQLISTSIZE = "oldReqListSize";
+    static final String PREF_QUOTE = "quote";
+    static final String PREF_AUTHOR = "author";
 
     static SharedPreferences getSharedPreferences(Context ctx) {
         return PreferenceManager.getDefaultSharedPreferences(ctx);
     }
 
+    //-----------------------------Setters-----------------------------//
     public static void setOldReqlistsize(Context ctx, int size)
     {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
@@ -42,6 +45,22 @@ public class SaveSharedPreference {
         editor.commit();
     }
 
+    public static void setQuote(Context ctx, String quote)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString(PREF_QUOTE, quote);
+        editor.commit();
+    }
+
+    public static void setAuthor(Context ctx, String author)
+    {
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString(PREF_AUTHOR, author);
+        editor.commit();
+    }
+    //-----------------------------Setters-----------------------------//
+
+    //-----------------------------Getters-----------------------------//
     public static int getOldReqlistsize(Context ctx) {
         return getSharedPreferences(ctx).getInt(PREF_OLD_REQLISTSIZE, 0);
     }
@@ -58,6 +77,16 @@ public class SaveSharedPreference {
         return getSharedPreferences(ctx).getString(PREF_USER_NAME, "");
     }
 
+    public static String getQuote(Context ctx) {
+        return getSharedPreferences(ctx).getString(PREF_QUOTE, "null");
+    }
+
+    public static String getAuthor(Context ctx) {
+        return getSharedPreferences(ctx).getString(PREF_AUTHOR, "null");
+    }
+    //-----------------------------Getters-----------------------------//
+
+    //------------------------------Clear------------------------------//
     public static void clearUserName(Context ctx)
     {
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
@@ -71,4 +100,5 @@ public class SaveSharedPreference {
         editor.remove(PREF_SEEN_FRIENDREQ); //clear seen friend request stored data
         editor.commit();
     }
+    //------------------------------Clear------------------------------//
 }

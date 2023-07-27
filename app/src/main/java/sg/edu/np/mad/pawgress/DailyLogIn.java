@@ -48,8 +48,6 @@ import sg.edu.np.mad.pawgress.Tasks.Task;
 public class DailyLogIn extends AppCompatActivity {
     MyDBHandler myDBHandler = new MyDBHandler(this, null, null, 1);
     UserData user;
-    String quoteText;
-    String author;
     String newDayDate;
 
     @Override
@@ -57,6 +55,11 @@ public class DailyLogIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.activity_daily_log_in);
+
+        // Getting user info via intent
+        Intent receivingEnd = getIntent();
+        user = receivingEnd.getParcelableExtra("User");
+
         myDBHandler.clearDatabase("IMAGE_URL");
         // Initialize Firebase Storage
         FirebaseStorage storage = FirebaseStorage.getInstance();
@@ -151,12 +154,6 @@ public class DailyLogIn extends AppCompatActivity {
 
         super.onStart();
         Log.i(null, "Starting Daily LogIn Page");
-
-        Intent receivingEnd = getIntent();
-        user = receivingEnd.getParcelableExtra("User");
-
-        fetchRandomQuote();
-        myDBHandler.updateQuoteAndAuthor(quoteText, author, user);
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -304,47 +301,5 @@ public class DailyLogIn extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    public interface ProductivityQuoteApi {
-        @GET("random") // Replace with the actual API endpoint
-        Call<List<InspirationalQuote>> getRandomQuote();
-    }
-
-    private void fetchRandomQuote() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://zenquotes.io/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ProductivityQuoteApi apiService = retrofit.create(ProductivityQuoteApi.class);
-
-        Call<List<InspirationalQuote>> call = apiService.getRandomQuote();
-        call.enqueue(new Callback<List<InspirationalQuote>>() {
-            @Override
-            public void onResponse(Call<List<InspirationalQuote>> call, Response<List<InspirationalQuote>> response) {
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    InspirationalQuote quote = response.body().get(0);
-                    quoteText = quote.getQuote();
-                    author = quote.getAuthor();
-
-                    onQuoteFetched(quoteText, author);
-                } else {
-                    // Handle API error or empty response
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<InspirationalQuote>> call, Throwable t) {
-                // Handle network error
-                Toast.makeText(DailyLogIn.this, "No internet access. Unable to load motivational message.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void onQuoteFetched(String quoteText, String author) {
-        this.quoteText = quoteText;
-        this.author = author;
-        myDBHandler.updateQuoteAndAuthor(quoteText, author, user);
     }
 }

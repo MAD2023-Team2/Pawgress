@@ -9,6 +9,12 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:windowActionBar">false</item>
+
+        <!-- Nav Bar -->
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
+        <item name="colorPrimary">@color/darkModeBlack</item>
+        <item name="colorOnPrimary">@color/darkModeBlack</item>
+        <item name="itemIconPadding">100dp</item>
     </style>
 
     <!-- Modal Bottom Sheet -->
