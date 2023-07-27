@@ -1,6 +1,7 @@
 package sg.edu.np.mad.pawgress.Fragments.Game_Shop;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -122,6 +123,7 @@ public class GameFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        Log.v("GameFragment","OnResume");
         updateImage();
     }
 
@@ -147,7 +149,9 @@ public class GameFragment extends Fragment {
         FloatingActionButton goInventory = view.findViewById(R.id.goInventory);
         FloatingActionButton openMenu = view.findViewById(R.id.openMenu);
         FloatingActionButton closeMenu = view.findViewById(R.id.close_menu);
+        FloatingActionButton editRoom = view.findViewById(R.id.editRoom);
         RelativeLayout menu = view.findViewById(R.id.menu);
+        RelativeLayout secondMenu = view.findViewById(R.id.secondMenu);
 
         topLeftPic = view.findViewById(R.id.replaceImage_topLeft);
         topRightPic = view.findViewById(R.id.replaceImage_topRight);
@@ -160,6 +164,7 @@ public class GameFragment extends Fragment {
             public void onClick(View view) {
                 openMenu.setVisibility(View.GONE);
                 menu.setVisibility(View.VISIBLE);
+                secondMenu.setVisibility(View.VISIBLE);
             }
         });
 
@@ -167,7 +172,18 @@ public class GameFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                secondMenu.setVisibility(View.GONE);
                 openMenu.setVisibility(View.VISIBLE);
+            }
+        });
+
+        editRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Goes to adding of item in room
+                Intent intent = new Intent(getActivity(), RemoveRoomItem.class);
+                intent.putExtra("user",user);
+                startActivity(intent);
             }
         });
 
@@ -293,7 +309,6 @@ public class GameFragment extends Fragment {
                 });
 
                 shop.show();
-                updateImage();
             }
         });
         goShop.setOnClickListener(new View.OnClickListener() {
@@ -312,7 +327,6 @@ public class GameFragment extends Fragment {
                 filterButton = shop.findViewById(R.id.filterButton);
                 // when first open shop recycler view, show all shop items in all categories, unsorted
                 generateUnfiltered();
-                updateImage();
                 filterButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -504,7 +518,6 @@ public class GameFragment extends Fragment {
                 });
 
                 shop.show();
-                updateImage();
             }
         });
 
@@ -643,28 +656,37 @@ public class GameFragment extends Fragment {
 
     private void updateImage(){
         Log.v("GameFragment","Updating the game view");
+        user = myDBHandler.findUser(SaveSharedPreference.getUserName(getActivity()));
         String topLeft = myDBHandler.getTopLeft(user.getUsername());
         String topRight = myDBHandler.getTopRight(user.getUsername());
         String topMiddle = myDBHandler.getTopMiddle(user.getUsername());
-        if (!topLeft.equals(" ")){
+        if (!topLeft.equals("")){
             topLeftPic.setVisibility(View.VISIBLE);
             String pathName = myDBHandler.getImageURL(topLeft);
             Bitmap bitmap = BitmapFactory.decodeFile(pathName);
             topLeftPic.setImageBitmap(bitmap);
         }
-
-        if (!topRight.equals(" ")){
+        else{
+            topLeftPic.setImageResource(0);
+        }
+        if (!topRight.equals("")){
             topRightPic.setVisibility(View.VISIBLE);
             String pathName = myDBHandler.getImageURL(topRight);
             Bitmap bitmap = BitmapFactory.decodeFile(pathName);
             topRightPic.setImageBitmap(bitmap);
+            Log.e("12345678",topRight);
         }
-
-        if (!topMiddle.equals(" ")){
+        else{
+            topRightPic.setImageResource(0);
+        }
+        if (!topMiddle.equals("")){
             topMiddlePic.setVisibility(View.VISIBLE);
             String pathName = myDBHandler.getImageURL(topMiddle);
             Bitmap bitmap = BitmapFactory.decodeFile(pathName);
             topMiddlePic.setImageBitmap(bitmap);
+        }
+        else{
+            topMiddlePic.setImageResource(0);
         }
     }
 }

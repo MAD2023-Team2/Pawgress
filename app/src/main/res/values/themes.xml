@@ -5,7 +5,12 @@
     <style name="Base.Theme.Pawgress" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+
         <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
+        <item name="colorPrimary">@color/darkModeBlack</item>
+        <item name="colorOnPrimary">@color/darkModeBlack</item>
+        <item name="itemIconPadding">100dp</item>
     </style>
 
 
