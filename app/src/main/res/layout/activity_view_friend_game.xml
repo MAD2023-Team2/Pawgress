@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.Game_Shop.GameFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/picBackgroundFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@drawable/room_not_studying"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/middleFriend"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/replaceImage_topLeft_Friend"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignTop="@id/middleFriend"
+            android:layout_marginTop="-20dp"
+            android:visibility="gone"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/replaceImage_topRight_Friend"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignTop="@id/middleFriend"
+            android:layout_marginStart="190dp"
+            android:layout_marginTop="-20dp"
+            android:visibility="gone"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/replaceImage_topMiddle_Friend"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignTop="@id/picBackgroundFriend"
+            android:layout_centerHorizontal="true"
+            android:visibility="gone"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/corgi_1_friend"
+            android:layout_width="98dp"
+            android:layout_height="116dp"
+            android:layout_marginStart="72dp"
+            android:layout_marginBottom="160dp"
+            android:src="@drawable/corgi"
+            android:layout_alignBottom="@id/picBackgroundFriend" />
+
+        <RelativeLayout
+            android:id="@+id/menuFriend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="35dp"
+            android:background="@drawable/rounded_corners_challenge"
+            android:backgroundTint="@color/fieldColour"
+            android:layout_alignBottom="@id/picBackgroundFriend"
+            android:layout_alignEnd="@id/picBackgroundFriend" >
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/goShopFriend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:clickable="true"
+                android:backgroundTint="#B9C498"
+                android:src="@drawable/shopping_icon" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/goInventoryFriend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="10dp"
+                android:layout_below="@id/goShopFriend"
+                android:clickable="true"
+                android:backgroundTint="#B9C498"
+                android:src="@drawable/backpack" />
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/close_menuFriend"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:clickable="false"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginBottom="5dp"
+                android:layout_below="@id/goInventoryFriend"
+                android:backgroundTint="#B9C498"
+                android:src="@drawable/menu_open"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/viewFriendReturn"
+            android:layout_width="39dp"
+            android:layout_height="34dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="35dp"
+            app:srcCompat="@drawable/baseline_arrow_back_24" />
+
+        <TextView
+            android:id="@+id/viewFriendName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="23dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="#B8C397"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="center|center_horizontal"
+            android:text="TextView"
+            android:textSize="24sp" />
+
+    </RelativeLayout>
+
+</FrameLayout>

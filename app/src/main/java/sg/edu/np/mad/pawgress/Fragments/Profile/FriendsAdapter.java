@@ -1,6 +1,7 @@
 package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,10 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.DailyLogIn;
 import sg.edu.np.mad.pawgress.FriendData;
 import sg.edu.np.mad.pawgress.FriendRequest;
+import sg.edu.np.mad.pawgress.LoginPage;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.Tasks.Task;
@@ -248,7 +251,26 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
         holder.viewFriend .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                DatabaseReference myRef = database.getReference("Users");
+                Query query = myRef.orderByChild("username").equalTo(friend.getFriendName());
+                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.exists()) {
+                            // Friend already exists, update its status
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                UserData receivingUser = snapshot.getValue(UserData.class);
+                                Intent intent = new Intent(context, ViewFriendGame.class);
+                                intent.putExtra("User", receivingUser);
+                                context.startActivity(intent);
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
+                    }
+                });
             }
         });
     }
