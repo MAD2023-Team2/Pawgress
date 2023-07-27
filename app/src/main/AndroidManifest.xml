@@ -25,6 +25,9 @@
             android:name=".Fragments.Profile.ViewFriendGame"
             android:exported="false" />
         <activity
+            android:name=".Fragments.Game_Shop.RemoveRoomItem"
+            android:exported="false" />
+        <activity
             android:name=".Fragments.Game_Shop.GameImage"
             android:exported="false"
             android:screenOrientation="portrait" />
