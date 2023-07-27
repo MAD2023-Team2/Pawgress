@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -28,8 +29,11 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
+import sg.edu.np.mad.pawgress.DailyLogIn;
 import sg.edu.np.mad.pawgress.FriendData;
 import sg.edu.np.mad.pawgress.FriendRequest;
+import sg.edu.np.mad.pawgress.LandingPage;
+import sg.edu.np.mad.pawgress.LoginPage;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.SaveSharedPreference;
@@ -40,6 +44,8 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
     UserData user;
     Button addFriend;
     Button friendRequest;
+    ImageView refreshButton;
+    ImageView returnButtonFriends;
     SearchView searchView;
     SearchAdapter searchAdapter;
     FriendRequestAdapter friendRequestAdapter;
@@ -51,13 +57,21 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
-        MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
+        MyDBHandler myDBHandler = new MyDBHandler(friends.this, null, null, 1);
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
         DatabaseReference myRef = database.getReference("Users");
         Query query = myRef.orderByChild("username").equalTo(user.getUsername());
+
+        returnButtonFriends = findViewById(R.id.returnButtonFriends);
+        returnButtonFriends.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -70,7 +84,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                         //ArrayList<FriendRequest> friendRequests = myDBHandler.findFriendReqList(user);
                         //user.setFriendReqList(friendRequests);
 
-                        setContentView(R.layout.activity_friends);
+                        //setContentView(R.layout.activity_friends);
 
                         RecyclerView recyclerView = findViewById(R.id.friendsRecycler);
                         friendsAdapter =
@@ -204,6 +218,40 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                             }
                         });
 
+                        refreshButton = findViewById(R.id.refreshButton);
+                        refreshButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+                                DatabaseReference myRef = database.getReference("Users");
+                                Query query = myRef.orderByChild("username").equalTo(user.getUsername());
+                                query.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot2) {
+                                        if (dataSnapshot2.exists()) {
+                                            for (DataSnapshot snapshot : dataSnapshot2.getChildren()) {
+                                                UserData tempUser = snapshot.getValue(UserData.class);
+                                                ArrayList<FriendData> friendList = tempUser.getFriendList();
+                                                ArrayList<FriendData> recyclerFriendList = new ArrayList<FriendData>();
+                                                for (FriendData friend: friendList){
+                                                    if (friend.getStatus().equals("Friend")){
+                                                        recyclerFriendList.add(friend);
+                                                    }
+                                                }
+                                                friendsAdapter.setData(recyclerFriendList);
+                                                Toast.makeText(friends.this, "Refreshed",Toast.LENGTH_LONG).show();
+                                                //this will reset recyclerView's data set and notify the change
+                                                //and reload the list
+                                            }
+                                        }
+                                    }
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                        });
                     }
                 }
             }
@@ -325,4 +373,6 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
     public void onFriendRequestAccepted(String friendName) {
         friendsAdapter.updateFriendList(); // Call a method in the FriendsAdapter to update its data
     }
+
+
 }

@@ -63,30 +63,76 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
 
     @Override
     public void onBindViewHolder(FriendsViewHolder holder, int position) {
-        Query updateFriendsList = myRef.child(user.getUsername()).child("friendList");
+        /*Query updateFriendsList = myRef.child(user.getUsername()).child("friendList");
         updateFriendsList.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                boolean friendFound = false;
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
                     FriendData friend = dataSnapshot.getValue(FriendData.class);
-                    if (friend.getStatus().equals("Friend")){
-                        found: {
-                            for (FriendData existingFriend: recyclerFriendList)
-                                if (existingFriend.getFriendName().equals(friend.getFriendName())) {
-                                    break found;
+                    Log.v("REALTIMEUPDATE", "BIG LOOP----------------1" +friend.getFriendName() +friend.getStatus() + "!");
+                    if (friend.getStatus().equals("Friend Incoming")) {
+                        Log.v("REALTIMEUPDATE", "FRIEND INCOMING----------------1");
+                        found1:{
+                            for(FriendData recyclerFriend: recyclerFriendList){
+                                if(recyclerFriend.getFriendName().equals(friend.getFriendName())){
+                                    friendFound = true;
+                                    break found1;
                                 }
-                            recyclerFriendList.add(friend);
-                            myDBHandler.addFriend(friend.getFriendName(), user, friend.getStatus());
-                            notifyDataSetChanged();
-                        }
-                    } else if (friend.getStatus().equals("Unfriended")) {
-                        for (FriendData existingFriend: recyclerFriendList){
-                            if (existingFriend.getFriendName().equals(friend.getFriendName())) {
-                                recyclerFriendList.remove(existingFriend);
-                                myDBHandler.removeFriend(friend.getFriendName(), user);
+                            }
+                            ArrayList<FriendData> dbList = myDBHandler.findFriendList(user);
+                            found: {
+                                Log.v("REALTIMEUPDATE", "FOUND----------------1");
+                                for (FriendData existingFriend : dbList) {
+                                    if (existingFriend.getFriendName().equals(friend.getFriendName())) {
+                                        existingFriend.setStatus("Friend");
+                                        myDBHandler.removeAllFriends(user);
+                                        for (FriendData frienddb : dbList) {
+                                            myDBHandler.addFriend(frienddb.getFriendName(), user, frienddb.getStatus());
+                                            Log.v("REALTIMEUPDATE", "FRIEND-------------" + frienddb.getFriendName() + frienddb.getStatus());
+                                        }
+                                        recyclerFriendList.add(friend);
+                                        Log.v("REALTIMEUPDATE", "---------------------1");
+                                        notifyDataSetChanged();
+                                        myRef.child(user.getUsername()).child("friendList").setValue(myDBHandler.findFriendList(user));
+                                        Log.v("REALTIMEUPDATE", "BREAK-FOUND-------------1");
+                                        friendFound = true;
+                                        break found;
+                                    }
+                                }
+                                friend.setStatus("Friend");
+                                myDBHandler.addFriend(friend.getFriendName(), user, friend.getStatus());
+                                recyclerFriendList.add(friend);
+                                Log.v("REALTIMEUPDATE", "---------------------2");
                                 notifyDataSetChanged();
+                                myRef.child(user.getUsername()).child("friendList").setValue(myDBHandler.findFriendList(user));
+                            }
+                            Log.v("REALTIMEUPDATE", "BREAK-FOUND-------------2");
+                            friendFound = true;
+                        }
+                    } else if (friend.getStatus().equals("Unfriended Incoming")) {
+                        ArrayList<FriendData> dbList = myDBHandler.findFriendList(user);
+                        for (FriendData existingFriend : dbList) {
+                            if (existingFriend.getFriendName().equals(friend.getFriendName())) {
+                                existingFriend.setStatus("Unfriended");
+                                myDBHandler.removeAllFriends(user);
+                                for (FriendData frienddb : dbList) {
+                                    myDBHandler.addFriend(frienddb.getFriendName(), user, frienddb.getStatus());
+                                    Log.v("REALTIMEUPDATE", "FRIEND-------------" + frienddb.getFriendName() + frienddb.getStatus());
+                                }
+                                recyclerFriendList.remove(existingFriend);
+                                notifyDataSetChanged();
+                                Log.v("REALTIMEUPDATE", "---------------------3");
+                                myRef.child(user.getUsername()).child("friendList").setValue(myDBHandler.findFriendList(user));
+                                friendFound = true;
+                                break;
                             }
                         }
+                        Log.v("REALTIMEUPDATE", "BREAK-FOUND---------3");
+                        break;
+                    }
+                    if (friendFound) {
+                        break; // Break out of the outer loop if a friend is found or unfriended
                     }
                 }
             }
@@ -95,7 +141,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        });*/
 
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
         FriendData friend = recyclerFriendList.get(position);
@@ -223,7 +269,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
         notifyDataSetChanged();
     }
 
-    public void updateCurrentUserInFB(UserData user){
-
+    public void setData(ArrayList<FriendData> firebaseList){
+        this.recyclerFriendList = firebaseList;
+        notifyDataSetChanged();
+        // where this.data is the recyclerView's dataset you are
+        // setting in adapter=new Adapter(this,db.getData());
     }
 }
