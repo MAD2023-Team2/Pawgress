@@ -122,13 +122,6 @@ public class MainStats extends Fragment {
                 "\n\nDaily Challenges Completed: \n" + countDaily +
                 "\n\nDaily Challenges Missed: \n" + countMissedDaily +
                 "\n\nTask Completion Rate: \n" + completionRate + "%");
-
-
-
-
-
-
-
         return view;
 
     }

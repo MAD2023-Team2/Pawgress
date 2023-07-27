@@ -61,7 +61,7 @@ public class TaskGame extends AppCompatActivity {
         ImageView pet_picture = findViewById(R.id.corgi_1);
         if (user1.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
         else if (user1.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
-        else if (user1.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
+        else if (user1.getPetDesign() == R.drawable.corgi){pet_picture.setImageResource(R.drawable.corgi);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
 
         ImageView topLeftPic = findViewById(R.id.replaceImage_topLeft);
@@ -100,14 +100,52 @@ public class TaskGame extends AppCompatActivity {
                         int random = new Random().nextInt(3);
                         MediaPlayer mediaPlayer;
 
-                        if (random == 0){
-                            mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi_down_sound);
-                        } else if (random == 1) {
-                            mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi_up_sound);
+                        if (user1.getPetDesign() == R.drawable.grey_cat){
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat1_1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat1_2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat1_3);
+                            }
+                            mediaPlayer.start();
                         }
-                        else {
-                            mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi_3_sound);
+                        else if (user1.getPetDesign() == R.drawable.orange_cat){
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat2_1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat2_2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat2_3);
+                            }
+                            mediaPlayer.start();
                         }
+
+                        else if (user1.getPetDesign() == R.drawable.corgi){
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi3);
+                            }
+                            mediaPlayer.start();
+                        }
+                        else{
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.gr1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.gr2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.gr3);
+                            }
+                            mediaPlayer.start();
+                        }
+
 
                         mediaPlayer.start();
                         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
