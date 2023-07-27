@@ -4,47 +4,91 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Fragments.Tasks.TasksFragment">
+    tools:context=".Fragments.Tasks.TasksFragment"
+    android:theme="@style/AppBackgroundColour">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:backgroundTint="#FAF5F0">
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/filter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"
+            android:drawableEnd="@drawable/baseline_filter_alt_24"
+            android:drawablePadding="5dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:paddingStart="5dp"
+            android:paddingEnd="5dp"
+            android:text="Filter"
+            android:theme="@style/DrawableTint"/>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/filterCard"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/filter"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="33dp"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/filterCard" />
+
+        <TextView
+            android:id="@+id/emptyCatText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/filter"
+            android:layout_alignBottom="@id/filterCard"
+            android:layout_marginTop="-1dp"
             android:background="#FCFBFC"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="center"
+            android:text="No categories to show"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/filterCard"
+            android:layout_alignParentEnd="true"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:paddingStart="5dp"
+            android:paddingTop="5dp"
+            android:paddingEnd="5dp"
+            android:paddingBottom="5dp"
+            android:text="Clear"
+            android:visibility="gone" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="35dp"
-            android:layout_marginBottom="35dp"
-            android:clickable="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"
             android:backgroundTint="#B9C498"
-            android:src="@drawable/baseline_add_circle_outline_24"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:clickable="true"
+            android:src="@drawable/baseline_add_circle_outline_24" />
 
         <TextView
             android:id="@+id/emptyTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/filterCard"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
             android:text="No tasks to work on for now :)"
-            android:visibility="visible"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            android:visibility="visible" />
+
+    </RelativeLayout>
 </FrameLayout>

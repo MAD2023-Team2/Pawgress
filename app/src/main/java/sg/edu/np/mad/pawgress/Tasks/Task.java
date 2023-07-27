@@ -12,24 +12,13 @@ import java.util.Date;
 import java.util.List;
 
 public class Task implements Parcelable {
-    private int dailyChallenge;
-    private int taskID;
-    private String taskName;
-    private String status;
-    private String category;
-    private int timeSpent;
-    private int targetSec;
-    private String dueDate;
-    private String dateCreated;
-    private String dateStart;
-    private String dateComplete;
-    private int priority;
+    private int taskID, dailyChallenge, timeSpent, targetSec, priority;
+    private String taskName, status, category, dueDate, dateCreated, dateStart, dateComplete, description;
 
     public Task() {
     }
 
-    // add in date of creation and duedate(can accept null)
-    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec, String dueDate, String dateCreated, String dateStart, String dateComplete, int dailyChallenge, int priority) {
+    public Task(int taskID, String taskName, String status, String category, int timeSpent, int targetSec, String dueDate, String dateCreated, String dateStart, String dateComplete, int dailyChallenge, int priority, String description) {
         this.taskID = taskID;
         this.taskName = taskName;
         this.status = status;
@@ -42,6 +31,7 @@ public class Task implements Parcelable {
         this.dateComplete = dateComplete;
         this.dailyChallenge = dailyChallenge;
         this.priority = priority;
+        this.description = description;
     }
 
     protected Task(Parcel in) {
@@ -57,6 +47,7 @@ public class Task implements Parcelable {
         dateComplete = in.readString();
         dailyChallenge = in.readInt();
         priority = in.readInt();
+        description = in.readString();
     }
 
     public static final Creator<Task> CREATOR = new Creator<Task>() {
@@ -90,6 +81,7 @@ public class Task implements Parcelable {
         dest.writeString(dateComplete);
         dest.writeInt(dailyChallenge);
         dest.writeInt(priority);
+        dest.writeString(description);
     }
     public int getTaskID() {
         return taskID;
@@ -129,15 +121,8 @@ public class Task implements Parcelable {
     public void setPriority(int priority) { this.priority = priority;}
     public String getDateStart() { return dateStart; }
     public void setDateStart(String dateStart) { this.dateStart = dateStart; }
-    public static int countTasksLeft(List<Task> tasks) {
-        int count = 0;
-        for (Task task : tasks) {
-            if (task.getStatus().equals("In Progress")) {
-                count++;
-            }
-        }
-        return count;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 
     public List<String> getColorCode() {
         List<String> colorCodes = new ArrayList<>();

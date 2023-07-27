@@ -23,7 +23,12 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:text="Task Title"/>
+        android:text="Task Title"
+        android:textColor="@color/textColour"
+        android:background="@drawable/rounded_border_beige"
+        android:ellipsize="end"
+        android:maxWidth="100dp"
+        android:maxLines="1"/>
 
     <TextView
         android:id="@+id/textView21"
@@ -37,7 +42,20 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:paddingStart="5dp"
         android:text="DueDate"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:textColor="@color/textColour"
+        android:background="@drawable/rounded_border_beige"/>
+
+    <ImageView
+        android:id="@+id/warn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/textView4"
+        android:layout_alignBottom="@id/textView4"
+        android:layout_marginEnd="5dp"
+        android:layout_toRightOf="@id/textView4"
+        app:srcCompat="@drawable/baseline_priority_high_24"
+        android:visibility="gone"/>
 
     <CheckBox
         android:id="@+id/checkBox"

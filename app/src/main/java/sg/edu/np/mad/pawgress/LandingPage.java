@@ -1,6 +1,7 @@
 package sg.edu.np.mad.pawgress;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 
 import android.animation.ObjectAnimator;
 import android.content.Intent;
@@ -27,6 +28,8 @@ public class LandingPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
+        setTheme(R.style.Theme_Pawgress_FullScreenMode);
         setContentView(R.layout.activity_landing_page);
 
         textView = findViewById(R.id.textView9);

@@ -7,7 +7,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -17,9 +19,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,6 +44,8 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
     MyDBHandler mDataBase;
     RecyclerView recyclerView;
     ArrayList<Task> taskList;
+    ArrayList<Task> updatedList;
+
     public TaskCardAdapter(UserData userData, MyDBHandler mDatabase, Context context, RecyclerView recyclerView){
         this.user = userData;
         this.mDataBase = mDatabase;
@@ -63,7 +69,13 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
         }
         else{
             for (Task task : taskList){
-                if(task.getStatus().equals("In Progress") && (task.getPriority()==1 || task.getDailyChallenge()==1)){
+                if(task.getStatus().equals("In Progress") && task.getDailyChallenge() == 1){
+                    count+=1;
+                    recyclerTaskList.add(task);
+                }
+            }
+            for (Task task : taskList){
+                if(task.getStatus().equals("In Progress") && task.getPriority() == 1 && !recyclerTaskList.contains(task)){
                     count+=1;
                     recyclerTaskList.add(task);
                 }
@@ -80,7 +92,6 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
 
     @Override
     public void onBindViewHolder(TaskCardViewHolder holder, int position){
-        Log.i(THIS, "onbind");
         Task task = recyclerTaskList.get(position);
         holder.name.setText(task.getTaskName());
         // view individual task
@@ -99,7 +110,10 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
             });
         }
         else if (task.getDailyChallenge() == 1) {
-            holder.card2.setBackgroundColor(Color.parseColor(task.getColorCode().get(0)));
+            Drawable background = context.getDrawable(R.drawable.rounded_corners_challenge);
+            background.setTint(Color.parseColor(task.getColorCode().get(0)));
+            holder.card2.setBackground(background);
+            holder.name.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(0))));
         }
 
         // complete task
@@ -114,13 +128,57 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                 builder.setMessage("Is it really completed?");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
-                        Log.v(THIS, "Completed task " + task.getTaskName());
                         task.setStatus("Completed");
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                        String newDayDate = formatter.format(new Date());
+                        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy, h:mm");
+                        String newDayDate = formatter.format(new Date().getTime());
                         task.setDateComplete(newDayDate);
                         mDataBase.updateTask(task, user.getUsername());
                         recyclerTaskList.remove(task);
+
+                        // updating stats at homepage
+                        // hardcoded in case database not updated in time
+
+                        TextView taskLeft = v.getRootView().findViewById(R.id.taskLeft);
+                        TextView productiveTime = v.getRootView().findViewById(R.id.productiveToday);
+                        updatedList = mDataBase.findTaskList(user);
+
+                        int totalTime = 0;
+                        int inProgress = 0;
+                        SimpleDateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formatter3 = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
+
+                        String todaysDate = formatter2.format(new Date());
+                        String checkDate;
+                        for (Task task:updatedList){
+                            checkDate = task.getDateComplete();
+                            if (task.getStatus().equals("In Progress")){
+                                inProgress++;
+                            }
+                            else if (checkDate != null){
+                                try{
+                                    Date completedDate;
+                                    if (checkDate.contains(",")){
+                                        completedDate = formatter3.parse(checkDate);
+                                    }
+                                    else{
+                                        completedDate = formatter3.parse(checkDate);
+                                    }
+
+                                    String completedDateString = formatter2.format(completedDate);
+                                    if (completedDateString.equals(todaysDate)){
+                                        totalTime += task.getTimeSpent();
+                                    }
+                                }
+                                catch (ParseException e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        }
+                        int hrs = totalTime / 3600;
+                        int mins = (totalTime % 3600) / 60;
+                        int secs = totalTime % 60;
+                        taskLeft.setText(String.valueOf(inProgress));
+                        productiveTime.setText(String.format("%d hrs %d mins %d secs",hrs,mins,secs));;
 
                         // after completing any task, gain 5 currency
                         // for every 30 minutes spent on the task, an additional 1 currency is added

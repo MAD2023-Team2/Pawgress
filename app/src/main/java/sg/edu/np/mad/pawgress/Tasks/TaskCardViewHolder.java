@@ -4,6 +4,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -13,7 +14,7 @@ import sg.edu.np.mad.pawgress.R;
 
 public class TaskCardViewHolder extends RecyclerView.ViewHolder{
     TextView name;
-    ConstraintLayout card2;
+    RelativeLayout card2;
     CheckBox complete;
 
     public TaskCardViewHolder(View itemView){

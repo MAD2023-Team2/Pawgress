@@ -1,108 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FCFBFC"
     tools:context=".Tasks.TaskView">
 
+    <ImageView
+        android:id="@+id/wallpaper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:alpha="0.4"
+        android:scaleType="matrix"
+        app:srcCompat="@drawable/others_background" />
+
     <TextView
-        android:id="@+id/textView11"
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:background="#EFDFCE"
+        android:layout_marginTop="75dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="@string/taskName"
-        android:textSize="24sp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textAlignment="center"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="30dp"/>
 
     <ImageButton
-        android:id="@+id/backButton"
+        android:id="@+id/close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="33dp"
-        android:layout_marginTop="29dp"
-        android:backgroundTint="#B9C498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/actionModeCloseDrawable" />
+        app:srcCompat="?attr/actionModeCloseDrawable"
+        android:layout_alignBottom="@id/editButton"
+        android:layout_alignTop="@id/editButton"
+        android:background="@null"/>
 
     <TextView
-        android:id="@+id/textView10"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="@string/taskCategory"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView11" />
-
-    <TextView
-        android:id="@+id/textView15"
+        android:id="@+id/timeSpent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="TextView"
+        android:text="Current Time Spent"
+        android:layout_below="@id/name"
         android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/targettime" />
-
-    <Button
-        android:id="@+id/to_Game"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:backgroundTint="#88E473"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Start Timer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/targettime"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:gravity="center"
-        android:text="TextView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-    <ImageButton
-        android:id="@+id/imageButton3"
+        android:textSize="20sp"/>
+    <RelativeLayout
+        android:id="@+id/spendCard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="50dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="50dp"
+        android:layout_below="@id/timeSpent">
+        <TextView
+            android:id="@+id/spendHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00 h"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="20dp"
+            android:textSize="40dp"/>
+        <TextView
+            android:id="@+id/spendMins"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00 m"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_toEndOf="@id/spendHours"
+            android:layout_toStartOf="@id/spendSecs"
+            android:textAlignment="center"
+            android:textSize="40dp" />
+        <TextView
+            android:id="@+id/spendSecs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="00 s"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="20dp"
+            android:textSize="40dp"/>
+
+    </RelativeLayout>
+
+    <ImageButton
+        android:id="@+id/editButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="11dp"
-        app:layout_constraintEnd_toStartOf="@+id/imageButton4"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_toLeftOf="@id/delete"
+        android:backgroundTint="#B9C498"
         app:srcCompat="@drawable/baseline_edit_24" />
 
     <ImageButton
-        android:id="@+id/imageButton4"
+        android:id="@+id/delete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="29dp"
-        android:layout_marginEnd="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="33dp"
+        android:backgroundTint="#B9C498"
         app:srcCompat="@drawable/baseline_delete_24" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <Button
+        android:id="@+id/to_Game"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/spendCard"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="16dp"
+        android:backgroundTint="#B9C498"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:text="Start Timer"
+        android:textColor="@color/textColour"/>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/dialog"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include layout="@layout/task_view_bottom" />
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</RelativeLayout>

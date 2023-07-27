@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/AppBackgroundColour">
 
     <TextView
         android:id="@+id/spinnerText"
@@ -12,7 +13,8 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:paddingStart="8dp"
         android:paddingEnd="10dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         android:text="Priority"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

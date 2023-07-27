@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,7 +7,7 @@
     tools:context=".Tasks.TaskView">
 
     <ImageView
-        android:id="@+id/imageView13"
+        android:id="@+id/picBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
@@ -26,60 +26,125 @@
         android:layout_marginStart="72dp"
         android:layout_marginBottom="184dp"
         android:src="@drawable/corgi"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView13"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_alignBottom="@+id/picBackground" />
 
     <TextView
-        android:id="@+id/text_view_Countdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="@string/mainTimer"
-        android:textSize="60sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:id="@+id/middle"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible">
+    </TextView>
 
-    <ImageButton
-        android:id="@+id/backButton"
+    <ImageView
+        android:id="@+id/replaceImage_topLeft"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignTop="@id/middle"
+        android:visibility="gone"
+        android:src="@android:drawable/ic_menu_add" />
+
+    <ImageView
+        android:id="@+id/replaceImage_topRight"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignTop="@id/middle"
+        android:layout_marginStart="190dp"
+        android:visibility="gone"
+        android:src="@android:drawable/ic_menu_add" />
+
+    <ImageView
+        android:id="@+id/replaceImage_topMiddle"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignTop="@id/picBackground"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:src="@android:drawable/ic_menu_add" />
+
+
+    <RelativeLayout
+        android:id="@+id/countDownContainer"
+        android:layout_marginTop="80dp"
+        android:layout_centerHorizontal="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/text_view_Countdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="@string/mainTimer"
+            android:textSize="60sp" />
+
+        <ImageButton
+            android:id="@+id/close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:background="@null"
+            android:layout_marginEnd="50dp"
+            android:layout_toStartOf="@id/text_view_Countdown"
+            app:srcCompat="?attr/actionModeCloseDrawable" />
+    </RelativeLayout>
+
+
+
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="33dp"
-        android:layout_marginTop="29dp"
-        android:backgroundTint="#B7B7A4"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/actionModeCloseDrawable" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-10dp"
+        android:layout_below="@id/countDownContainer"
+        android:layout_height="wrap_content">
 
-    <Button
-        android:id="@+id/finish_timer"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
-        android:layout_width="80dp"
-        android:layout_height="45dp"
-        android:layout_marginEnd="100dp"
-        android:backgroundTint="#4169E1"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="Finish Task?"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown" />
 
-    <ImageView
-        android:id="@+id/start_timer_imagebutton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="104dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown"
-        app:srcCompat="@mipmap/timer_play_round" />
+        <Button
+            android:id="@+id/finish_timer"
+            style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
+            android:layout_width="80dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:backgroundTint="#4169E1"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Finish Task?"
+            android:layout_toRightOf="@id/reset_timer_imagebutton"/>
 
-    <ImageView
-        android:id="@+id/reset_timer_imagebutton"
-        android:layout_width="45dp"
-        android:layout_height="45dp"
-        app:layout_constraintEnd_toStartOf="@+id/finish_timer"
-        app:layout_constraintStart_toEndOf="@+id/start_timer_imagebutton"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_Countdown"
-        app:srcCompat="@mipmap/timer_restart_round" />
+        <ImageView
+            android:id="@+id/reset_timer_imagebutton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_toRightOf="@id/start_timer_imagebutton"
+            app:srcCompat="@mipmap/timer_restart_round" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/start_timer_imagebutton"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            app:srcCompat="@mipmap/timer_play_round" />
+
+        <ToggleButton
+            android:id="@+id/power_saving_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Power Saving Mode"
+            android:textOn="Undim"
+            android:textOff="Dim"
+            style="@style/ToggleButtonStyle"
+            android:layout_toRightOf="@id/finish_timer"
+            android:layout_alignTop="@id/reset_timer_imagebutton"
+            android:layout_alignBottom="@id/start_timer_imagebutton"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/toggle_button_background"
+            />
+
+    </RelativeLayout>
+
+
+
+</RelativeLayout>

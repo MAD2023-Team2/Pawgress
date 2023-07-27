@@ -2,6 +2,7 @@ package sg.edu.np.mad.pawgress.Fragments.Profile;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -58,6 +59,8 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friends);
         MyDBHandler myDBHandler = new MyDBHandler(friends.this, null, null, 1);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
+
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
 

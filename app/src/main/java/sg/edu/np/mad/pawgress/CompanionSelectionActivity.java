@@ -1,6 +1,7 @@
 package sg.edu.np.mad.pawgress;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,7 @@ public class CompanionSelectionActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.activity_companion_selection);
 
         //  Intent is received from the previous activity, and the user data is extracted using the key "User".

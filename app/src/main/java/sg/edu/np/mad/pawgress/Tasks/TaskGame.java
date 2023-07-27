@@ -2,21 +2,28 @@ package sg.edu.np.mad.pawgress.Tasks;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 
 import java.util.Locale;
 import java.util.Random;
@@ -40,10 +47,13 @@ public class TaskGame extends AppCompatActivity {
     private TextView timeView;
     private Handler handler;
     MyDBHandler myDBHandler = new MyDBHandler(this, null, null, 1);
+    private ToggleButton powerSavingToggle;
+    private float originalBrightness;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.task_game);
 
         MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
@@ -53,6 +63,33 @@ public class TaskGame extends AppCompatActivity {
         else if (user1.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
         else if (user1.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
+
+        ImageView topLeftPic = findViewById(R.id.replaceImage_topLeft);
+        ImageView topRightPic = findViewById(R.id.replaceImage_topRight);
+        ImageView topMiddlePic = findViewById(R.id.replaceImage_topMiddle);
+        String topLeft = myDBHandler.getTopLeft(user1.getUsername());
+        String topRight = myDBHandler.getTopRight(user1.getUsername());
+        String topMiddle = myDBHandler.getTopMiddle(user1.getUsername());
+        if (!topLeft.equals(" ")){
+            topLeftPic.setVisibility(View.VISIBLE);
+            String pathName = myDBHandler.getImageURL(topLeft);
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
+            topLeftPic.setImageBitmap(bitmap);
+        }
+
+        if (!topRight.equals(" ")){
+            topRightPic.setVisibility(View.VISIBLE);
+            String pathName = myDBHandler.getImageURL(topRight);
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
+            topRightPic.setImageBitmap(bitmap);
+        }
+
+        if (!topMiddle.equals(" ")){
+            topMiddlePic.setVisibility(View.VISIBLE);
+            String pathName = myDBHandler.getImageURL(topMiddle);
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
+            topMiddlePic.setImageBitmap(bitmap);
+        }
         pet_picture.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -106,11 +143,28 @@ public class TaskGame extends AppCompatActivity {
             }
         });
 
+
+        powerSavingToggle = findViewById(R.id.power_saving_toggle);
+
+        powerSavingToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // Enable power saving mode (dim the screen)
+                    originalBrightness = getSystemBrightness();
+                    dimScreen();
+                } else {
+                    // Disable power saving mode (restore screen brightness)
+                    restoreBrightness();
+                }
+            }
+        });
+
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
         task = receivingEnd.getParcelableExtra("Task");
 
-        ImageButton backButton = findViewById(R.id.backButton);
+        ImageButton backButton = findViewById(R.id.close);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -312,4 +366,26 @@ public class TaskGame extends AppCompatActivity {
             buttonReset.setAlpha(1.0F);
         }
     }
+    private void dimScreen() {
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.screenBrightness = 0.1f; // Set brightness level (0.0f to 1.0f)
+        getWindow().setAttributes(layoutParams);
+    }
+
+    // Restore screen brightness to the default value
+    private void restoreBrightness() {
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.screenBrightness = originalBrightness;
+        getWindow().setAttributes(layoutParams);
+    }
+
+    private float getSystemBrightness(){
+        try {
+            return Settings.System.getFloat(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+            return 0.5f; // Default to 50% brightness if the system setting is not found
+        }
+    }
+
 }

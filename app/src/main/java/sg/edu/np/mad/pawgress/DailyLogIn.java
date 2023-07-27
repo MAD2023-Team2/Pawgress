@@ -1,7 +1,12 @@
 package sg.edu.np.mad.pawgress;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import android.content.Intent;
@@ -12,6 +17,16 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -27,6 +42,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import sg.edu.np.mad.pawgress.Fragments.Game_Shop.Product;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 
 public class DailyLogIn extends AppCompatActivity {
@@ -39,7 +55,51 @@ public class DailyLogIn extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.activity_daily_log_in);
+        myDBHandler.clearDatabase("IMAGE_URL");
+        // Initialize Firebase Storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+
+        DatabaseReference database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("ShopItems");
+
+        database.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    Product product = dataSnapshot.getValue(Product.class);
+
+                    // Get a reference to the image file in Firebase Storage
+                    String imageName = product.getName();
+                    String imageURL = imageName + ".png";
+                    StorageReference imageRef = storage.getReference("InventoryImages/" + imageURL );
+
+                    // Get the path for local storage
+                    File localFile = null;
+                    try {
+                        localFile = File.createTempFile(imageName, ".png");
+                    } catch (IOException e) {
+                        // do nth
+                    }
+
+                    // Download the image to local storage
+                    File finalLocalFile = localFile;
+                    imageRef.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                        // Image download success
+                        myDBHandler.addImageURL(imageName, finalLocalFile.getAbsolutePath());
+                        Log.e("DailyLogIn", "Downloaded image: " + imageName);
+                    }).addOnFailureListener(exception -> {
+                        // Handle any errors that occurred during the download
+                        Log.e("DailyLogIn", "Error downloading image: " + imageName);
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // do nth
+            }
+        });
     }
 
     public void createDeleteChallenge(){
@@ -81,7 +141,7 @@ public class DailyLogIn extends AppCompatActivity {
                 break;
         }
 
-        Task task = new Task(1, name, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,null,1, 0);
+        Task task = new Task(1, name, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,null,1, 0, null);
         myDBHandler.addTask(task, user);
         Log.w("Daily Log In", "Created Daily Challenge: " + task.getTaskName());
     }

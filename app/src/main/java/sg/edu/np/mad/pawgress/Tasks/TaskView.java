@@ -2,12 +2,16 @@ package sg.edu.np.mad.pawgress.Tasks;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +20,14 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.NumberPicker;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.SimpleDateFormat;
@@ -29,7 +36,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -39,18 +45,21 @@ public class TaskView extends AppCompatActivity {
 
     private Button gameButton;
     String View = "Task View";
-    String dueDate;
+    String dueDate, category;
     Task task;
-    TextView time;
-    TextView targettime;
+    TextView spend, spendHr, spendMin, spendSec, dateText, timeText;
+    EditText description;
     UserData user;
     int hr,min,sec;
     int taskPriority, finalTaskPriority;
-    SpinnerAdapter adapter;
+    RelativeLayout bottom;
+    BottomSheetBehavior behavior;
+    SpinnerAdapter adapter, adapter1;
     MyDBHandler myDBHandler = new MyDBHandler(this, null,null,1);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.task_view);
 
         Log.v(View, "In Task View");
@@ -58,17 +67,10 @@ public class TaskView extends AppCompatActivity {
         user = receivingEnd.getParcelableExtra("User");
         task = receivingEnd.getParcelableExtra("Task");
 
-        ImageButton backButton = findViewById(R.id.backButton);
-        ImageButton editButton = findViewById(R.id.imageButton3);
-        ImageButton deleteButton = findViewById(R.id.imageButton4);
+        ImageButton editButton = findViewById(R.id.editButton);
+        ImageButton deleteButton = findViewById(R.id.delete);
+        ImageButton backButton = findViewById(R.id.close);
         refreshView(task.getTaskID());
-        backButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
         gameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,20 +90,20 @@ public class TaskView extends AppCompatActivity {
             @Override
             public void onClick(android.view.View v) {
                 BottomSheetDialog editTask = new BottomSheetDialog(TaskView.this);
-                editTask.setContentView(R.layout.edit_task);
+                editTask.setContentView(R.layout.task_edit);
                 editTask.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 editTask.setCancelable(true);
                 editTask.setDismissWithAnimation(true);
                 ImageButton edit = editTask.findViewById(R.id.edit);
                 EditText taskName = editTask.findViewById(R.id.taskName);
-                EditText taskCat = editTask.findViewById(R.id.taskCategory);
+                TextView taskCat = editTask.findViewById(R.id.taskCategory);
                 taskName.setText(task.getTaskName());
-                taskCat.setText(task.getCategory());
                 TextView chooseDate = editTask.findViewById(R.id.dueDate);
                 TextView date = editTask.findViewById(R.id.date);
                 date.setText(task.getDueDate());
                 dueDate = date.getText().toString();
                 Spinner spinner = editTask.findViewById(R.id.priority);
+                Spinner chooseCat = editTask.findViewById(R.id.chooseCat);
 
 
                 int seconds = task.getTargetSec();
@@ -157,7 +159,7 @@ public class TaskView extends AppCompatActivity {
                         int year = c.get(Calendar.YEAR);
                         int month = c.get(Calendar.MONTH);
                         int day = c.get(Calendar.DAY_OF_MONTH);
-                        DatePickerDialog datePickerDialog = new DatePickerDialog(TaskView.this, new DatePickerDialog.OnDateSetListener() {
+                        DatePickerDialog datePickerDialog = new DatePickerDialog(TaskView.this, R.style.DatePicker, new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker view, int year,
                                                   int monthOfYear, int dayOfMonth) {
@@ -174,8 +176,10 @@ public class TaskView extends AppCompatActivity {
                             }
                         },
                                 year, month, day);
+                        datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
                         datePickerDialog.show();}
                 });
+                dueDate = null;
                 ArrayList<String> priority = new ArrayList<>();
                 priority.add("Normal");
                 priority.add("Prioritised");
@@ -201,6 +205,55 @@ public class TaskView extends AppCompatActivity {
                     }
                 });
 
+                ArrayList<String> cats = new ArrayList<>();
+                cats.add("Others");
+                cats.add("School");
+                cats.add("Work");
+                cats.add("Lifestyle");
+                cats.add("TBC");//CHANGE
+                adapter1 = new SpinnerAdapter(TaskView.this, cats);
+                chooseCat.setSelection(adapter1.getPosition("Others"));
+                chooseCat.setAdapter(adapter1);
+                if (task.getCategory().equals("School")){
+                    chooseCat.setSelection(adapter1.getPosition("School"));
+                }
+                else if (task.getCategory().equals("Work")){
+                    chooseCat.setSelection(adapter1.getPosition("Work"));
+                }
+                else if (task.getCategory().equals("Lifestyle")){
+                    chooseCat.setSelection(adapter1.getPosition("Lifestyle"));
+                }
+                else if (task.getCategory().equals("Chores")){
+                    chooseCat.setSelection(adapter1.getPosition("Chores"));
+                }
+                else chooseCat.setSelection(adapter1.getPosition("Others"));;
+                chooseCat.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        String cat = (String)parent.getItemAtPosition(position);
+                        if (cat.equals("School")){
+                            category = "School";
+                        }
+                        else if (cat.equals("Work")){
+                            category = "Work";
+                        }
+                        else if (cat.equals("Lifestyle")){
+                            category = "Lifestyle";
+                        }
+                        else if (cat.equals("Chores")){
+                            category = "Chores";
+                        }
+                        else category = "Others";
+                        Log.w(null, category);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+                        chooseCat.setSelection(adapter1.getPosition("Others"));
+                        category = "Others";
+                    }
+                });
+
                 edit.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -208,13 +261,10 @@ public class TaskView extends AppCompatActivity {
                         // do not accept blank task title or category
                         if (taskName.length() > 0 && taskName.getText().charAt(0) != ' ') {
                             task.setTaskName(taskName.getText().toString());
-                            task.setCategory(taskCat.getText().toString());
+                            task.setCategory(category);
                             task.setDueDate(dueDate);
                             task.setPriority(finalTaskPriority);
                             task.setTargetSec(totalSeconds);
-                            if (taskCat.length()==0 || taskCat.getText().charAt(0) == ' '){
-                                task.setCategory("Uncategorised");
-                            }
                             myDBHandler.updateTask(task, user.getUsername());
                             editTask.dismiss();
                             refreshView(task.getTaskID());
@@ -238,7 +288,12 @@ public class TaskView extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int id){
                         task.setStatus("Deleted");
                         myDBHandler.updateTask(task, user.getUsername());
-                        refreshView(task.getTaskID());
+                        dialog.dismiss();
+                        Intent intent = new Intent(TaskView.this, MainMainMain.class);
+                        intent.putExtra("User", user);
+                        intent.putExtra("tab", "tasks_tab");
+                        startActivity(intent);
+                        finish();
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener(){
@@ -250,13 +305,15 @@ public class TaskView extends AppCompatActivity {
                 builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
                     @Override
                     public void onDismiss(DialogInterface dialog) {
-                        overridePendingTransition(android.R.anim.fade_out, android.R.anim.fade_in);
+                        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_in);
                     }
                 });
                 AlertDialog alert = builder.create();
                 alert.show();
             }
         });
+
+        Log.v(null , " Description " + description.getText().toString());
     }
 
     @Override
@@ -268,44 +325,107 @@ public class TaskView extends AppCompatActivity {
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
         int secs = seconds % 60;
-        time.setText("Current Time Spent: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
+        spendHr = findViewById(R.id.spendHours);
+        spendMin = findViewById(R.id.spendMins);
+        spendSec = findViewById(R.id.spendSecs);
+        spendHr.setText(String.format(Locale.getDefault(), "%02d h",hours));
+        spendMin.setText(String.format(Locale.getDefault(), "%02d m",minutes));
+        spendSec.setText(String.format(Locale.getDefault(), "%02d s",secs));
         if (task.getTimeSpent() > 0) { gameButton.setText("Resume Timer");}
 
     }
 
     public void refreshView(int id){
+        // reflect task details and subsequent updates
         task = myDBHandler.findTask(id, myDBHandler.findTaskList(user));
-        gameButton = findViewById(R.id.to_Game);
-        TextView taskName = findViewById(R.id.textView11);
+
+        // task details
+        TextView taskName = findViewById(R.id.name); // name
         taskName.setText(task.getTaskName());
-        TextView taskCategory = findViewById(R.id.textView10);
-        taskCategory.setText(task.getCategory());
-        targettime = findViewById(R.id.targettime);
-        ImageButton backButton = findViewById(R.id.backButton);
-
-        int tseconds = myDBHandler.getTaskTargetSec(task.getTaskID());
-        int thours = tseconds / 3600;
-        int tminutes = (tseconds % 3600) / 60;
-        int tsecs = tseconds % 60;
-
-        targettime.setText("Target Time: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",thours, tminutes, tsecs));
-        time = findViewById(R.id.textView15);
+        ImageView background = findViewById(R.id.wallpaper); // background image
+        spendHr = findViewById(R.id.spendHours);
+        spendMin = findViewById(R.id.spendMins);
+        spendSec = findViewById(R.id.spendSecs);
+        // setting background depending on task category
+        if (task.getCategory().equals("School")){
+            background.setImageDrawable(getDrawable(R.drawable.study_background));
+        }
+        else if (task.getCategory().equals("Work")){
+            background.setImageDrawable(getDrawable(R.drawable.work_background));
+        }
+        else if (task.getCategory().equals("Lifestyle")){
+            background.setImageDrawable(getDrawable(R.drawable.lifestyle_background));
+            background.setAlpha(0.3f);
+        }
+        else if (task.getCategory().equals("Chores")){
+            background.setImageDrawable(getDrawable(R.drawable.chores_background));
+            background.setAlpha(0.2f);
+        }
+        // getting time spent on this task
         int seconds = task.getTimeSpent();
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
         int secs = seconds % 60;
-        time.setText("Current Time Spent: " + String.format(Locale.getDefault(), "%d Hours %02d Mins %02d Secs",hours, minutes, secs));
+        spendHr.setText(String.format(Locale.getDefault(), "%02d h",hours));
+        spendMin.setText(String.format(Locale.getDefault(), "%02d m",minutes));
+        spendSec.setText(String.format(Locale.getDefault(), "%02d s",secs));
+
+
+        // start timer button
+        gameButton = findViewById(R.id.to_Game);
         if (task.getTimeSpent() > 0) { gameButton.setText("Resume Timer");}
 
+        //bottom sheet elements
+        bottom = findViewById(R.id.bottom_sheet);
+        behavior=BottomSheetBehavior.from(bottom);
+        TextView taskCategory = bottom.findViewById(R.id.category);
+        taskCategory.setText(task.getCategory());
+        description = bottom.findViewById(R.id.descText); // description(notes) for the task
+        description.setText(task.getDescription());
+        dateText = bottom.findViewById(R.id.dateText); // due date
+        timeText = bottom.findViewById(R.id.timeText); // target time
+        // if no due date was set
+        if (task.getDueDate() == null){
+            dateText.setText("No due date");
+        }
+        else dateText.setText(task.getDueDate());
+        // get target time set
+        int tseconds = myDBHandler.getTaskTargetSec(task.getTaskID());
+        int thours = tseconds / 3600;
+        int tminutes = (tseconds % 3600) / 60;
+        int tsecs = tseconds % 60;
+        timeText.setText(String.format(Locale.getDefault(), "%02d h %02d m %02d s",thours,tminutes,tsecs));
+
+        // back button
+        ImageButton backButton = findViewById(R.id.close);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                task.setDescription(description.getText().toString());
+                myDBHandler.updateTask(task, user.getUsername());
                 Intent intent = new Intent(TaskView.this, MainMainMain.class);
                 intent.putExtra("User", user);
                 intent.putExtra("tab", "tasks_tab");
                 startActivity(intent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 finish();
+            }
+        });
+
+        description.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                description.setMinLines(3);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
             }
         });
     }

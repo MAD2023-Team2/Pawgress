@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:theme="@style/AppBackgroundColour"
+    tools:context=".Tasks.TaskCompletion">
+
+    <TextView
+        android:id="@+id/congrats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="200dp"
+        android:fontFamily="sans-serif"
+        android:gravity="center"
+        android:text="GOOD JOB"
+        android:textSize="40sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/close"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="33dp"
+        android:layout_marginEnd="33dp"
+        android:backgroundTint="#B9C498"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_below="@id/completeDialog"
+        android:text="Complete" />
+
+    <RelativeLayout
+        android:id="@+id/completeDialog"
+        android:background="@drawable/rounded_border_green"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/congrats"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="33dp"
+        android:layout_marginEnd="33dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:elevation="5dp">
+
+        <TextView
+            android:id="@+id/catText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:text="Category"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textSize="18sp"/>
+
+        <TextView
+            android:id="@+id/nameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/catText"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="Task Name Testing"
+            android:textSize="32sp"
+            android:maxWidth="320dp"/>
+
+        <TextView
+            android:id="@+id/dateLength"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/nameText"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:text="21/07/2023 ~ 25/07/2023"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:drawablePadding="10dp"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:theme="@style/Calendar"
+            />
+
+        <TextView
+            android:id="@+id/duration"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dateLength"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="2dp"
+            android:layout_marginEnd="2dp"
+            android:layout_marginBottom="12dp"
+            android:text="10 hours 10 minutes 10 seconds"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:drawablePadding="10dp"
+            android:padding="10dp"
+            android:gravity="center_vertical"
+            android:theme="@style/Time"
+            />
+
+    </RelativeLayout>
+</RelativeLayout>

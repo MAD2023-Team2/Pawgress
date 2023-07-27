@@ -35,10 +35,7 @@ android {
 dependencies {
     // Import the BoM for the Firebase platform
     implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
-
-    // Add the dependency for the Realtime Database library
-    // When using the BoM, you don't specify versions in Firebase library dependencies
-    implementation("com.google.firebase:firebase-database")
+    implementation 'com.google.firebase:firebase-storage:20.1.0'
 
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.5.0'
@@ -49,6 +46,7 @@ dependencies {
     // Retrofit for api
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.google.firebase:firebase-database:20.2.2'
 
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
@@ -57,4 +55,7 @@ dependencies {
     // for tutorial pages
     implementation 'androidx.viewpager2:viewpager2:1.0.0'
     implementation 'me.relex:circleindicator:2.1.6'
+
+    // bar chart chat
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

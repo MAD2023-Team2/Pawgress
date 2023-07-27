@@ -5,17 +5,46 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <Spinner
+        android:id="@+id/chooseCat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@id/taskCategory"
+        android:layout_marginStart="36dp"
+        android:layout_alignTop="@id/taskCategory"
+        android:layout_marginTop="19dp"
+        android:layout_alignBottom="@id/taskCategory"
+        android:layout_alignEnd="@id/taskCategory"
+        style="@style/Dropdown"/>
+
+    <Spinner
+        android:id="@+id/priority"
+        android:layout_width="149dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/taskCategory"
+        android:layout_alignEnd="@id/taskCategory"
+        android:layout_marginStart="13dp"
+        android:layout_marginLeft="11dp"
+        android:layout_marginTop="22dp"
+        android:layout_marginEnd="0dp"
+        android:layout_toRightOf="@id/dueDate"
+        android:paddingStart="10dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="10dp"
+        android:spinnerMode="dropdown"
+        style="@style/Dropdown"/>
+
     <EditText
         android:id="@+id/taskName"
         style="@style/Widget.AppCompat.AutoCompleteTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_marginStart="55dp"
         android:layout_marginTop="33dp"
-        android:layout_toLeftOf="@id/create"
-        android:background="@drawable/field_background"
-        android:backgroundTint="#FCFBFC"
+        android:layout_toLeftOf="@id/edit"
         android:elevation="1dp"
+        android:layout_marginEnd="10dp"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
         android:hint="Task Name"
@@ -23,36 +52,37 @@
         android:paddingStart="5dp"
         android:singleLine="false"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-        android:textSize="26sp" />
+        android:textSize="26sp"
+        android:theme="@style/TaskNameCreate"/>
 
     <ImageButton
-        android:id="@+id/create"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/edit"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_alignParentEnd="true"
         android:layout_marginLeft="33dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="55dp"
         android:backgroundTint="#CACFB4"
+        android:background="@drawable/rounded_corners"
         app:srcCompat="@drawable/baseline_add_task_24" />
 
-    <EditText
+    <TextView
         android:id="@+id/taskCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_below="@id/taskName"
         android:layout_alignStart="@id/taskName"
-        android:layout_alignEnd="@id/create"
-        android:background="@drawable/rounded_border"
-        android:drawableStart="@android:drawable/ic_menu_sort_by_size"
+        android:layout_alignEnd="@id/edit"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/rounded_border_green"
+        android:drawableStart="@drawable/outline_category_24"
         android:drawablePadding="10dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:gravity="center_vertical"
         android:hint="Add Category"
         android:paddingStart="10dp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:layout_below="@id/taskName" />
+        android:paddingBottom="10dp" />
 
     <TextView
         android:id="@+id/dueDate"
@@ -62,17 +92,17 @@
         android:layout_alignStart="@id/taskCategory"
         android:layout_marginTop="14dp"
         android:layout_marginEnd="5dp"
-        android:background="@drawable/rounded_border"
-        android:drawableStart="@android:drawable/ic_menu_today"
+        android:background="@drawable/rounded_border_green"
+        android:drawableStart="@drawable/outline_edit_calendar_24"
         android:drawablePadding="5dp"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
         android:hint="Due date"
+        android:includeFontPadding="false"
         android:inputType="text"
         android:paddingStart="10dp"
         android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:textColor="@color/black"
         android:textSize="13sp" />
 
     <TextView
@@ -81,8 +111,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/taskCategory"
         android:layout_alignStart="@id/dueDate"
-        android:layout_marginStart="47dp"
-        android:layout_marginTop="38dp"
+        android:layout_marginStart="39dp"
+        android:layout_marginTop="35dp"
         android:fontFamily="sans-serif-condensed-medium" />
 
     <TextView
@@ -94,33 +124,17 @@
         android:layout_alignBottom="@id/dueDate"
         android:layout_marginTop="14dp"
         android:layout_toRightOf="@id/dueDate"
-        android:background="@drawable/rounded_border"
+        android:background="@drawable/rounded_border_green"
         android:drawableStart="@android:drawable/presence_invisible"
         android:drawablePadding="5dp"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
         android:hint="Priority"
         android:paddingStart="10dp"
-        android:paddingTop="10dp"
+        android:paddingTop="11dp"
         android:paddingBottom="10dp"
         android:textSize="13sp" />
 
-
-    <Spinner
-        android:id="@+id/priority"
-        android:layout_width="149dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/taskCategory"
-        android:layout_alignEnd="@id/taskCategory"
-        android:layout_marginStart="13dp"
-        android:layout_marginLeft="11dp"
-        android:layout_marginTop="27dp"
-        android:layout_marginEnd="0dp"
-        android:layout_toRightOf="@id/dueDate"
-        android:paddingStart="10dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:spinnerMode="dropdown" />
 
     <TextView
         android:id="@+id/selectTime"
@@ -133,7 +147,7 @@
         android:layout_marginTop="14dp"
         android:layout_marginEnd="-2dp"
         android:layout_marginBottom="33dp"
-        android:background="@drawable/rounded_border"
+        android:background="@drawable/rounded_border_green"
         android:fontFamily="sans-serif-condensed-medium"
         android:hint="Target Time"
         android:paddingTop="7dp"
@@ -151,7 +165,8 @@
         android:layout_marginBottom="10dp"
         android:layout_marginStart="23dp"
         android:layout_alignTop="@id/selectTime"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        android:theme="@style/NumberPicker"/>
 
     <TextView
         android:id="@+id/Hours"
@@ -174,7 +189,8 @@
         android:layout_marginBottom="10dp"
         android:layout_marginStart="23dp"
         android:layout_alignTop="@id/selectTime"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        android:theme="@style/NumberPicker"/>
 
     <TextView
         android:id="@+id/Minutes"
@@ -197,7 +213,8 @@
         android:layout_marginBottom="10dp"
         android:layout_marginStart="23dp"
         android:layout_alignTop="@id/selectTime"
-        android:layout_marginTop="50dp"/>
+        android:layout_marginTop="50dp"
+        android:theme="@style/NumberPicker"/>
 
     <TextView
         android:id="@+id/Seconds"

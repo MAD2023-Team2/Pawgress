@@ -12,22 +12,123 @@
         <item name="colorOnPrimary">@color/darkModeBlack</item>
         <item name="itemIconPadding">100dp</item>
     </style>
-    <style name="AppBottomSheetDialogTheme"
-        parent="Theme.Design.Light.BottomSheetDialog">
-        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+
+
+    <!-- Persistent Bottom Sheet -->
+    <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/PersistentBottomSheet</item>
     </style>
+    <style name="PersistentBottomSheet" parent="">
+        <item name="android:background">@drawable/rounded_dialog</item>
+    </style>
+
+    <!-- Rounded Dialog -->
     <style name="CustomDialog" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:windowBackground">@drawable/rounded_dialog </item>
     </style>
 
+    <!-- Modal Bottom Sheet -->
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
     <style name="AppModalStyle"
         parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_dialog</item>
     </style>
 
+    <!-- Create Task -->
+    <style name="TaskNameCreate">
+        <item name="android:editTextBackground">@drawable/rounded_dialog</item>
+        <item name="hintTextColor">@color/textColour</item>
+    </style>
+
+    <!-- Number Picker -->
+    <style name="NumberPicker">
+        <item name="android:textColorPrimary">@color/textColour</item>
+    </style>
+
+    <!-- Dropdown Arrow in Spinner -->
+    <style name="Dropdown" parent="Widget.AppCompat.Spinner">
+        <item name="android:backgroundTint">@color/textColour</item>
+    </style>
+
+    <!-- Drawables -->
+    <style name="Calendar">
+        <item name="android:drawableStart">@drawable/outline_calendar_month_24</item>
+    </style>
+    <style name="Time">
+        <item name="android:drawableStart">@drawable/baseline_access_time_24</item>
+    </style>
+
+
     <style name="Theme.Pawgress" parent="Base.Theme.Pawgress" />
     <style name="Theme.Pawgress.LightBeigeMode" parent="Theme.Pawgress">
         // should contain colour hex
         <item name="backgroundColor">#FF00FF</item>
+        <item name="android:statusBarColor">#FCFBFC</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowActionBar">false</item>
     </style>
+
+    <!-- Sets the App Background Colour -->
+
+    <style name="AppBackgroundColour">
+        <item name="android:background">#FCFBFC</item>
+        <item name="android:textColor">@color/textColour</item>
+    </style>
+
+    <!-- Sets the Pop Up Background Colours -->
+
+    <style name="PopUpColour">
+        <item name="android:background">#FCFBFC</item>
+    </style>
+
+    <style name="TaskColour">
+        <item name="android:textColor">#000000</item>
+    </style>
+
+    <style name="ReturnButtonStyle">
+        <item name="android:tint">#FFFFFF</item>
+    </style>
+
+    <style name="AppTaskViewBottomStyle">
+        <item name="android:background">#FFFFFF</item>
+    </style>
+
+    <style name="EditTextColor">
+        <item name="android:editTextColor">@color/textColour</item>
+        <item name="hintTextColor">@color/textColour</item>
+    </style>
+
+    <style name="Tint">
+        <item name="tint">#000000</item>
+    </style>
+
+    <style name="DrawableTint">
+        <item name="drawableTint">#000000</item>
+    </style>
+
+    <style name="Theme.Pawgress.FullScreenMode" parent="Theme.Pawgress">
+        // should contain colour hex
+        <item name="backgroundColor">#FF00FF</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
+    <style name="DatePicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColorPrimary">@color/textColour</item>
+        <item name="colorControlActivated">#6D855C</item>
+        <item name="colorAccent">#92A584</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerButton</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerButton</item>
+    </style>
+    <style name="DatePickerButton" parent = "Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">@color/textColour</item>
+    </style>
+
+
 </resources>

@@ -35,6 +35,7 @@ public class MyNotificationPublisher extends BroadcastReceiver {
                 }
 
                 int id = intent.getIntExtra(NOTIFICATIONID, 0);
+                Log.i("MyNotificationPublisher", "Notification ID: " + id);
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
                 if (notificationManager != null) {
                     notificationManager.notify(id, notification);

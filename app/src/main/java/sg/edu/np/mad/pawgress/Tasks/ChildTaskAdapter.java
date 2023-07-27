@@ -2,7 +2,8 @@ package sg.edu.np.mad.pawgress.Tasks;
 
 import static android.view.View.INVISIBLE;
 
-import android.app.DatePickerDialog;
+import static java.lang.Integer.parseInt;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,26 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.NumberPicker;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import sg.edu.np.mad.pawgress.DailyLogIn;
@@ -49,11 +37,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
     UserData user;
     MyDBHandler mDataBase;
     String category;
-    int hr, min, sec;
-    int taskPriority, finalTaskPriority;
-    String dueDate;
     TasksFragment fragment;
-    SpinnerAdapter adapter;
     public ChildTaskAdapter(UserData userData, MyDBHandler mDatabase, Context context, String category, TasksFragment fragment){
         this.user = userData;
         this.mDataBase = mDatabase;
@@ -109,7 +93,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
     @Override
     public ChildTaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         if (viewType == 1){
-            return new ChildTaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.challenge,parent, false));
+            return new ChildTaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task_daily_challenge,parent, false));
         }
         else{
             return new ChildTaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task,parent, false));
@@ -118,9 +102,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
 
     @Override
     public void onBindViewHolder(ChildTaskViewHolder holder, int position){
-        Log.i(THIS, "onbind");
         Task task = recyclerTaskList.get(position);
-        //Log.v("taskadapter", String.valueOf(task.getDailyChallenge()));
         holder.name.setText(task.getTaskName());
         if (task.getDueDate() != null){
             holder.duedate.setText("Due on: " + task.getDueDate());
@@ -131,6 +113,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
         if (getItemViewType(position) == 1) {
             holder.card.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(0))));
             holder.name.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(1))));
+            holder.duedate.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(0))));
         }
         // if it is not daily challenge
         if (getItemViewType(position) == 0){
@@ -156,10 +139,8 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
                 builder.setMessage("Is it really completed?");
                 builder.setPositiveButton("Yes", new DialogInterface.OnClickListener(){
                     public void onClick(DialogInterface dialog, int id){
-                        Log.v(THIS, "Completed task " + task.getTaskName());
                         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy, h:mm");
                         String newDayDate = formatter.format(new Date().getTime());
-                        Log.w(THIS, "Task Completed at " + newDayDate);
                         task.setStatus("Completed");
                         task.setDateComplete(newDayDate);
                         mDataBase.updateTask(task, user.getUsername());
@@ -167,7 +148,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
                         // notify adapter about changes to list
                         notifyDataSetChanged();
                         if (recyclerTaskList.size() == 0) {
-                            fragment.refreshRecyclerView();
+                            fragment.refreshTaskRecyclerView();
                         }
 
                         // after completing any task, gain 5 currency
@@ -212,6 +193,33 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
             intent.putExtra("User", user);
             intent.putExtra("tab", "home_tab");
             context.startActivity(intent);
+        }
+        int currentDay = Integer.parseInt(newDayDate.substring(0,2));
+        int currentMonth = Integer.parseInt(newDayDate.substring(3,5));
+        int currentYear = Integer.parseInt(newDayDate.substring(6));
+        if (task.getDueDate()!=null){
+            int day = Integer.parseInt(task.getDueDate().substring(0,2));
+            int month = Integer.parseInt(task.getDueDate().substring(3,5));
+            int year = Integer.parseInt(task.getDueDate().substring(6));
+            if (currentDay > day && currentMonth <= month && currentYear<=year){
+                holder.warn.setVisibility(View.VISIBLE);
+            }
+            else if (currentMonth > month || currentYear > year){
+                holder.warn.setVisibility(View.VISIBLE);
+            }
+        }
+        if (holder.warn != null){
+            holder.warn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                    builder.setTitle("Warning");
+                    builder.setMessage("This task is overdue. Currency will be deducted.");
+                    builder.setCancelable(true);
+                    AlertDialog alert = builder.create();
+                    alert.show();
+                }
+            });
         }
     }
 }

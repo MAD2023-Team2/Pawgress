@@ -3,6 +3,7 @@ package sg.edu.np.mad.pawgress;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.WindowCompat;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,6 +15,8 @@ import android.os.Handler;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -30,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import sg.edu.np.mad.pawgress.Fragments.Game_Shop.InventoryItem;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 
 public class LoginPage extends AppCompatActivity {
@@ -51,6 +55,7 @@ public class LoginPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+//        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
         DatabaseReference myRef = database.getReference("Users");
 
@@ -163,6 +168,7 @@ public class LoginPage extends AppCompatActivity {
                                                     myDBHandler.clearDatabase("TASKS");
                                                     myDBHandler.clearDatabase("FRIENDS");
                                                     myDBHandler.clearDatabase("FRIENDREQUEST");
+                                                    myDBHandler.clearDatabase("INVENTORY");
                                                     Log.v(null, "ON LOGIN ---------------------" + SaveSharedPreference.getProfilePic(LoginPage.this) + user.getProfilePicturePath());
                                                     myDBHandler.addUser(user);
                                                     for (Task task: user.getTaskList()){
@@ -173,6 +179,9 @@ public class LoginPage extends AppCompatActivity {
                                                     }
                                                     for (FriendRequest friendRequest: user.getFriendReqList()){
                                                         myDBHandler.addFriendReq(friendRequest.getFriendReqName(), user, friendRequest.getReqStatus());
+                                                    }
+                                                    for (InventoryItem inventoryItem : user.getInventoryList()) {
+                                                        myDBHandler.addInventoryItem(inventoryItem, user);
                                                     }
                                                     Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
                                                     intent.putExtra("User", user);

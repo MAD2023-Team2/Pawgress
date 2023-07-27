@@ -13,6 +13,7 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -32,6 +33,7 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 import sg.edu.np.mad.pawgress.FriendData;
 import sg.edu.np.mad.pawgress.FriendRequest;
@@ -288,13 +290,6 @@ public class ProfileFragment extends Fragment{
                                         myDBHandler.clearDatabase("TASKS");
                                         myDBHandler.clearDatabase("FRIENDS");
                                         myDBHandler.clearDatabase("FRIENDREQUEST");
-
-                                        // Clears shared preference so no auto login
-                                        SaveSharedPreference.clearUserName(getActivity());
-
-                                        // Goes to login page after logging out
-                                        Intent intent = new Intent(getActivity(), LandingPage.class);
-                                        startActivity(intent);
                                     }
                                 }
                                 else{
@@ -318,6 +313,12 @@ public class ProfileFragment extends Fragment{
                                 // Handle error
                             }
                         });
+                        // Clears shared preference so no auto login
+                        SaveSharedPreference.clearUserName(getActivity());
+
+                        // Goes to login page after logging out
+                        Intent intent = new Intent(getActivity(), LandingPage.class);
+                        startActivity(intent);
                     }
                 });
 
