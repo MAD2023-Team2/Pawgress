@@ -55,7 +55,7 @@ public class CreateAccount extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
+//        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.create_account);
     }
 
@@ -139,7 +139,7 @@ public class CreateAccount extends AppCompatActivity {
                                                             newID[0] = highestUniqueId;
                                                         }
                                                     }
-                                                    UserData dbUserData = new UserData(newID[0], dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests, inventoryItems,"","");
+                                                    UserData dbUserData = new UserData(newID[0], dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests, inventoryItems,"","","");
                                                     System.out.println(dbUsername + dbPassword + taskList + accCreateDate + dbUserData.getStreak() + dbUserData.getCurrency() + dbUserData.getLoggedInTdy());
                                                     myDBHandler.clearDatabase("ACCOUNTS");
                                                     myDBHandler.clearDatabase("TASKS");
@@ -176,7 +176,7 @@ public class CreateAccount extends AppCompatActivity {
                                                     finish();
                                                 } else {
                                                     // Handle the case when there are no users in the database
-                                                    UserData dbUserData = new UserData(1, dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests, inventoryItems," "," ");
+                                                    UserData dbUserData = new UserData(1, dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests, inventoryItems,"","","");
                                                     System.out.println(dbUsername + dbPassword + taskList + accCreateDate + dbUserData.getStreak() + dbUserData.getCurrency() + dbUserData.getLoggedInTdy());
                                                     myDBHandler.clearDatabase("ACCOUNTS");
                                                     myDBHandler.clearDatabase("TASKS");

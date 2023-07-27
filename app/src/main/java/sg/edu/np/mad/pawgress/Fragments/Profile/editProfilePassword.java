@@ -61,7 +61,7 @@ public class editProfilePassword extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
+//        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.activity_edit_profile_password);
         System.out.println("IN EDIT PROFILE");
         etUsername = findViewById(R.id.editTextText5);
