@@ -34,18 +34,21 @@ public class RemoveRoomItem extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_remove_room_item);
 
-        myDBHandler = new MyDBHandler(this,null,null,1);
+        // Initialize the database handler and UI elements
+        myDBHandler = new MyDBHandler(this, null, null, 1);
         replaceImage_topLeft = findViewById(R.id.replaceImage_topLeft);
         replaceImage_topRight = findViewById(R.id.replaceImage_topRight);
         replaceImage_topMiddle = findViewById(R.id.replaceImage_topMiddle);
         backButton = findViewById(R.id.backButton);
 
+        // Retrieve the user object from the previous activity
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("user");
 
+        // Update the images displayed in the room
         updateImage();
     }
 
@@ -58,6 +61,7 @@ public class RemoveRoomItem extends AppCompatActivity {
             replaceImage_topLeft.setImageBitmap(bitmap);
         }
         else{
+            // If the respective items are not available, set the corresponding ImageView to be invisible (GONE)
             replaceImage_topLeft.setVisibility(View.GONE);
         }
 
@@ -69,6 +73,7 @@ public class RemoveRoomItem extends AppCompatActivity {
             replaceImage_topRight.setImageBitmap(bitmap2);
         }
         else{
+            // If the respective items are not available, set the corresponding ImageView to be invisible (GONE)
             replaceImage_topRight.setVisibility(View.GONE);
         }
 
@@ -80,6 +85,7 @@ public class RemoveRoomItem extends AppCompatActivity {
             replaceImage_topMiddle.setImageBitmap(bitmap3);
         }
         else{
+            // If the respective items are not available, set the corresponding ImageView to be invisible (GONE)
             replaceImage_topMiddle.setVisibility(View.GONE);
         }
     }
@@ -89,9 +95,13 @@ public class RemoveRoomItem extends AppCompatActivity {
         super.onStart();
         Context context = this;
 
+        // Set click listeners for the image views of the top-right items
         replaceImage_topRight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Display an alert dialog to confirm removing the top-right item from the room
+                // If confirmed, update the database and user object, and then update the images displayed
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Remove item from room: " );
                 builder.setMessage(user.getTopRight());
@@ -112,9 +122,14 @@ public class RemoveRoomItem extends AppCompatActivity {
                 alert.show();
             }
         });
+
+        // Set click listeners for the image views of the top-left items
         replaceImage_topLeft.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Display an alert dialog to confirm removing the top-left item from the room
+                // If confirmed, update the database and user object, and then update the images displayed
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Remove item from room: " );
                 builder.setMessage(user.getTopLeft());
@@ -136,9 +151,13 @@ public class RemoveRoomItem extends AppCompatActivity {
             }
         });
 
+        // Set click listeners for the image views of the top-middle items
         replaceImage_topMiddle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Display an alert dialog to confirm removing the top-middle item from the room
+                // If confirmed, update the database and user object, and then update the images displayed
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle("Remove item from room: " );
                 builder.setMessage(user.getTopMiddle());
@@ -160,6 +179,7 @@ public class RemoveRoomItem extends AppCompatActivity {
             }
         });
 
+        // Set click listener for the back button to finish the activity and return to the previous one
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

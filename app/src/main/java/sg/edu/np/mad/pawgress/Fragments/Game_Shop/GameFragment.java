@@ -314,19 +314,25 @@ public class GameFragment extends Fragment {
         goShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Set the reference to the "ShopItems" node in the Firebase database
                 database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("ShopItems");
 
+                // Inflate the shop layout and set its size and attributes
                 shop.setContentView(R.layout.shop);
                 shop.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 shop.setCancelable(true);
                 shop.setDismissWithAnimation(true);
 
+                // Initialize UI elements for the shop view
                 currentCurrencyText = shop.findViewById(R.id.currentCurrency);
                 currentCurrencyText.setText(user.getCurrency() +" Paws");
-
                 filterButton = shop.findViewById(R.id.filterButton);
+
                 // when first open shop recycler view, show all shop items in all categories, unsorted
+                // Display all shop items in all categories, unsorted
                 generateUnfiltered();
+
+                // Set click listener for the filter button to toggle between different filter modes
                 filterButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -406,6 +412,7 @@ public class GameFragment extends Fragment {
                     }
                 });
 
+                // Set click listeners for category buttons to filter products by category
                 cat1 = shop.findViewById(R.id.cat1);
                 cat2 = shop.findViewById(R.id.cat2);
                 cat3 = shop.findViewById(R.id.cat3);
@@ -624,68 +631,85 @@ public class GameFragment extends Fragment {
     }
 
     private void generateAllCat() {
+        // Retrieve the inventory items for the user from the database
         inventoryItemList = myDBHandler.findInventoryList(user);
+
+        // Create an adapter to display the inventory items in the RecyclerView
         inventoryAdapter = new InventoryAdapter(inventoryItemList, user, myDBHandler, getContext(), getView(), shop, getActivity());
+
+        // Set the adapter for the RecyclerView that displays the inventory
         recyclerViewInventory.setAdapter(inventoryAdapter);
     }
 
-    private void generateUnfiltered(){
-        // Use unsorted way to generate the list
-        Log.v("GameFragment","not sorted");
+
+    private void generateUnfiltered() {
+        Log.v("GameFragment", "not sorted");
+
+        // Add a ValueEventListener to the Firebase database to retrieve all products
         database.addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 allProducts = new ArrayList<>();
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                // Loop through the database snapshot to retrieve Product objects and add them to the allProducts list
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     Product product = dataSnapshot.getValue(Product.class);
                     allProducts.add(product);
                 }
-                shopAdapter = new ShopAdapter(allProducts,user,myDBHandler,getContext());
+
+                // Create a ShopAdapter with allProducts list and set it as the adapter for the RecyclerView
+                shopAdapter = new ShopAdapter(allProducts, user, myDBHandler, getContext());
                 shopAdapter.currentCurrencyText = currentCurrencyText;
                 recyclerView.setAdapter(shopAdapter);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // do nth
             }
         });
 
+        // Set the image resource of the filter button to off
         filterButton.setImageResource(R.drawable.filter_off);
     }
 
-    private void updateImage(){
-        Log.v("GameFragment","Updating the game view");
+
+    private void updateImage() {
+        Log.v("GameFragment", "Updating the game view");
+
+        // Retrieve the user's data from the database
         user = myDBHandler.findUser(SaveSharedPreference.getUserName(getActivity()));
+
+        // Get the paths of the top-left, top-right, and top-middle images for the user from the database
         String topLeft = myDBHandler.getTopLeft(user.getUsername());
         String topRight = myDBHandler.getTopRight(user.getUsername());
         String topMiddle = myDBHandler.getTopMiddle(user.getUsername());
-        if (!topLeft.equals("")){
+
+        // Update the ImageViews for the top-left, top-right, and top-middle images if they exist
+        if (!topLeft.equals("")) {
             topLeftPic.setVisibility(View.VISIBLE);
             String pathName = myDBHandler.getImageURL(topLeft);
             Bitmap bitmap = BitmapFactory.decodeFile(pathName);
             topLeftPic.setImageBitmap(bitmap);
-        }
-        else{
+        } else {
             topLeftPic.setImageResource(0);
         }
-        if (!topRight.equals("")){
+
+        if (!topRight.equals("")) {
             topRightPic.setVisibility(View.VISIBLE);
             String pathName = myDBHandler.getImageURL(topRight);
             Bitmap bitmap = BitmapFactory.decodeFile(pathName);
             topRightPic.setImageBitmap(bitmap);
-            Log.e("12345678",topRight);
-        }
-        else{
+        } else {
             topRightPic.setImageResource(0);
         }
-        if (!topMiddle.equals("")){
+
+        if (!topMiddle.equals("")) {
             topMiddlePic.setVisibility(View.VISIBLE);
             String pathName = myDBHandler.getImageURL(topMiddle);
             Bitmap bitmap = BitmapFactory.decodeFile(pathName);
             topMiddlePic.setImageBitmap(bitmap);
-        }
-        else{
+        } else {
             topMiddlePic.setImageResource(0);
         }
     }
