@@ -29,6 +29,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 
 import sg.edu.np.mad.pawgress.CreateAccount;
@@ -47,7 +49,7 @@ public class editProfilePassword extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
     private Button btnSave;
-    private ImageButton back;
+    private TextView back;
     private MyDBHandler dbHandler;
     UserData user;
 
@@ -67,7 +69,7 @@ public class editProfilePassword extends AppCompatActivity {
         etUsername = findViewById(R.id.editTextText5);
         etPassword = findViewById(R.id.editTextText6);
         btnSave = findViewById(R.id.button7);
-        back = findViewById(R.id.imageButton);
+        back = findViewById(R.id.backButton);
         dbHandler = new MyDBHandler(this, null, null, 1);
         database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
         myRef = database.getReference("Users");

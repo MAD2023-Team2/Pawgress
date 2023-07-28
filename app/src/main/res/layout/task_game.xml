@@ -81,15 +81,25 @@
             android:text="@string/mainTimer"
             android:textSize="60sp" />
 
-        <ImageButton
+
+        <TextView
             android:id="@+id/close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
             android:background="@null"
-            android:layout_marginEnd="50dp"
-            android:layout_toStartOf="@id/text_view_Countdown"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
+            android:drawableStart="@drawable/arrow_back"
+            android:layout_centerVertical="true"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/black" />
     </RelativeLayout>
 
 
@@ -97,7 +107,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="-10dp"
+        android:layout_marginTop="0dp"
         android:layout_below="@id/countDownContainer"
         android:layout_height="wrap_content">
 

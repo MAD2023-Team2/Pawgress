@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -53,7 +54,7 @@ public class ProfilePictureSelection extends AppCompatActivity implements Profil
         recyclerView.setAdapter(profilePictureAdapter);
 
         // Set the Return Button
-        ImageView returnButton = findViewById(R.id.imageButton);
+        TextView returnButton = findViewById(R.id.backButton);
         returnButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

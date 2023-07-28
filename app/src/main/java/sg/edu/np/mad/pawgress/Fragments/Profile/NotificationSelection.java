@@ -6,7 +6,9 @@ import androidx.core.view.WindowCompat;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import sg.edu.np.mad.pawgress.R;
 
@@ -32,6 +34,14 @@ public class NotificationSelection extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("notification_preference", isChecked);
             editor.apply();
+        });
+
+        TextView backbutton = findViewById(R.id.backButton);
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
         });
     }
 }

@@ -69,7 +69,6 @@ public class TaskView extends AppCompatActivity {
 
         ImageButton editButton = findViewById(R.id.editButton);
         ImageButton deleteButton = findViewById(R.id.delete);
-        ImageButton backButton = findViewById(R.id.close);
         refreshView(task.getTaskID());
         gameButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -397,7 +396,7 @@ public class TaskView extends AppCompatActivity {
         timeText.setText(String.format(Locale.getDefault(), "%02d h %02d m %02d s",thours,tminutes,tsecs));
 
         // back button
-        ImageButton backButton = findViewById(R.id.close);
+        TextView backButton = findViewById(R.id.backButton);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

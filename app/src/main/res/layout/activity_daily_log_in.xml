@@ -9,68 +9,73 @@
 
     <ImageView
         android:id="@+id/imageView8"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginStart="16dp"
-        android:layout_marginBottom="165dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/daily_corgi" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/daily_corgi_v2" />
 
-    <TextView
-        android:id="@+id/logInStatus"
-        android:layout_width="168dp"
-        android:layout_height="110dp"
-
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:background="@drawable/rounded_border_dailylogin"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:gravity="center"
-        android:text="TextView"
-        android:textAlignment="center"
-        android:textColor="@color/textColour"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView8"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.54" />
+        android:background="@android:color/transparent">
 
-    <TextView
-        android:id="@+id/streakText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="TextView"
-        android:layout_marginTop="5dp"
-        android:background="@drawable/rounded_border_dailylogin"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/logInStatus"
-        android:textColor="@color/textColour"/>
+        <TextView
+            android:id="@+id/logInStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rounded_border_dailylogin"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="center"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="@color/black" />
 
-    <TextView
-        android:id="@+id/rewardText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="TextView"
-        android:background="@drawable/rounded_border_dailylogin"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/streakText"
-        android:textColor="@color/textColour"/>
+        <TextView
+            android:id="@+id/streakText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/logInStatus"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rounded_border_dailylogin"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="TextView"
+            android:textColor="@color/black" />
 
-    <Button
-        android:id="@+id/closeDaily"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:background="@drawable/button_no_ripple_style"
-        android:layout_marginStart="-8dp"
-        android:layout_toRightOf="@id/logInStatus"
-        android:layout_alignTop="@id/logInStatus"
-        android:text="X"
-        android:textColor="#000000"
-        android:textSize="24sp" />
+        <TextView
+            android:id="@+id/rewardText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/streakText"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/rounded_border_dailylogin"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="TextView"
+            android:textColor="@color/black" />
+
+        <TextView
+            android:id="@+id/closeDaily"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rewardText"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="#CACFB4"
+            android:drawableEnd="@drawable/baseline_clear_24"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="center_vertical"
+            android:paddingStart="15dp"
+            android:paddingTop="15dp"
+            android:paddingEnd="15dp"
+            android:paddingBottom="15dp"
+            android:text="Close"
+            android:textColor="@color/black" />
+
+
+    </RelativeLayout>
+
 
 </RelativeLayout>

@@ -46,7 +46,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
     Button addFriend;
     Button friendRequest;
     ImageView refreshButton;
-    ImageView returnButtonFriends;
+    TextView returnButtonFriends;
     SearchView searchView;
     SearchAdapter searchAdapter;
     FriendRequestAdapter friendRequestAdapter;
@@ -69,7 +69,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
         DatabaseReference myRef = database.getReference("Users");
         Query query = myRef.orderByChild("username").equalTo(user.getUsername());
 
-        returnButtonFriends = findViewById(R.id.returnButtonFriends);
+        returnButtonFriends = findViewById(R.id.backButton);
         returnButtonFriends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -182,7 +182,7 @@ public class DailyLogIn extends AppCompatActivity {
         TextView statusText = findViewById(R.id.logInStatus);
         TextView streakText = findViewById(R.id.streakText);
         TextView rewardText = findViewById(R.id.rewardText);
-        Button closeButton = findViewById(R.id.closeDaily);
+        TextView closeButton = findViewById(R.id.closeDaily);
 
         if (lastInDate.equals(newDayDate)) {
             Log.w("Daily Log In", "Last log in date equal to today's date.");

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
@@ -29,12 +30,14 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         Button profilePictureButton = findViewById(R.id.editProfilePicture);
         Button notificationsButton = findViewById(R.id.Notifs);
         Button appModesButton = findViewById(R.id.appMode);
+        TextView backButton = findViewById(R.id.backButton);
 
         themeButton.setOnClickListener(this);
         fontButton.setOnClickListener(this);
         profilePictureButton.setOnClickListener(this);
         notificationsButton.setOnClickListener(this);
         appModesButton.setOnClickListener(this);
+        backButton.setOnClickListener(this);
     }
 
     @Override
@@ -50,6 +53,9 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
             // Open profile picture settings
             Intent intent = new Intent(UserSettingsActivity.this, NotificationSelection.class);
             startActivity(intent);
+        }
+        if (view.getId() == R.id.backButton) {
+            finish();
         }
     }
 }
