@@ -221,8 +221,8 @@ public class DailyLogIn extends AppCompatActivity {
             // scenario where user logs in on the same day but alrdy claimed their reward
             else{
                 // text will change to "you've logged in today, let's get productive!"
-                statusText.setText("You've logged in today, keep up with the Pawgress!");
-                streakText.setText(" ");
+                statusText.setText(" ");
+                streakText.setText("You've logged in today, keep up with the Pawgress!");
                 rewardText.setText(" ");
                 closeButton.setOnClickListener(new View.OnClickListener() {
                     @Override

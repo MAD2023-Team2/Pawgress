@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -228,6 +229,8 @@ public class PieFragment extends Fragment {
         if (noValuesRecorded){
             pieChart.setVisibility(View.GONE);
             TextView noDataText = view.findViewById(R.id.no_data_text);
+            noDataText.setText("No Pie Chart Available");
+            noDataText.setGravity(Gravity.CENTER);
             noDataText.setVisibility(View.VISIBLE);
             return view;
         }
@@ -242,7 +245,7 @@ public class PieFragment extends Fragment {
     public class IntegerValueFormatter extends ValueFormatter {
         @Override
         public String getFormattedValue(float value) {
-            return String.valueOf((int) value); // Format the value as an integer (without decimal places)
+            return String.valueOf((int) value); // Format the value as an integer (without  the 2 decimal places [0.00])
         }
     }
 }
