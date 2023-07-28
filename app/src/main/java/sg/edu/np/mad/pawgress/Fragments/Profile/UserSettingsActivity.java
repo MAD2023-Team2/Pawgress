@@ -7,11 +7,14 @@ import androidx.core.view.WindowCompat;
 import android.app.Notification;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -20,7 +23,9 @@ import sg.edu.np.mad.pawgress.UserData;
 public class UserSettingsActivity extends AppCompatActivity implements View.OnClickListener {
     private UserData user;
     private MyDBHandler myDBHandler;
-    private static final String CAPY = "CAPY";
+    private ToggleButton capyMode;
+    int initialPetDesign;
+    String initialPetType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +37,10 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
 
+        initialPetDesign = user.getPetDesignInitial();
+        initialPetType = user.getPetType();
+
+
         // Set click listeners for the feature buttons
         Button themeButton = findViewById(R.id.findTheme);
         Button fontButton = findViewById(R.id.editFonts);
@@ -39,7 +48,7 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         Button notificationsButton = findViewById(R.id.Notifs);
         Button appModesButton = findViewById(R.id.appMode);
         TextView backButton = findViewById(R.id.backButton);
-        Button capyModeButton = findViewById(R.id.capyMode);
+        capyMode = findViewById(R.id.capyMode);
 
         themeButton.setOnClickListener(this);
         fontButton.setOnClickListener(this);
@@ -47,7 +56,39 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         notificationsButton.setOnClickListener(this);
         appModesButton.setOnClickListener(this);
         backButton.setOnClickListener(this);
-        capyModeButton.setOnClickListener(this);
+        capyMode.setOnClickListener(this);
+        System.out.println(user.getCapyMode());
+
+        if (user.getCapyMode() == "OFF"){
+            capyMode.setBackgroundResource(R.color.toggleRed);
+            capyMode.setText("  Capymode : OFF");
+        }
+        else{
+            capyMode.setBackgroundResource(R.color.toggleGreen);
+            capyMode.setText("  Capymode : ON");
+        }
+
+        capyMode.setChecked(isCapyModeON());
+
+        capyMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    capyMode.setText("  Capymode : ON");
+                    capyMode.setBackgroundResource(R.color.toggleGreen);
+                    user.setPetDesign(R.drawable.capybara);
+                    myDBHandler.savePetDesign(user.getUsername(), initialPetType, R.drawable.capybara);
+                    myDBHandler.updateCapyMode(user.getUsername(), "ON");
+                }
+                else{
+                    capyMode.setText("  Capymode : OFF");
+                    capyMode.setBackgroundResource(R.color.toggleRed);
+                    user.setPetDesign(initialPetDesign);
+                    myDBHandler.savePetDesign(user.getUsername(), initialPetType, initialPetDesign);
+                    myDBHandler.updateCapyMode(user.getUsername(), "OFF");
+                }
+            }
+        });
     }
 
     @Override
@@ -67,41 +108,14 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         if (view.getId() == R.id.backButton) {
             finish();
         }
-        if (view.getId() == R.id.capyMode) {
-            showCapyModeConfirmationDialog();
-        }
     }
 
-    private void showCapyModeConfirmationDialog() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Capymode Confirmation");
-        builder.setMessage("Do you want to change your pet design to a capybara? (Your pet will be a capybara forever)");
-        if (user.getPetDesign() == R.drawable.capybara){
-            builder.setMessage("Capymode is ON. Your pet is already a capybara.");
-            builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+    private boolean isCapyModeON(){
+        if (user.getCapyMode().equals("OFF")){
+            return true;
         }
         else{
-            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    // Set the pet design to capybara
-                    user.setPetDesign(R.drawable.capybara);
-                    myDBHandler.savePetDesign(user.getUsername(), CAPY, R.drawable.capybara);
-                }
-            });
-            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
+            return false;
         }
-
-        builder.show();
     }
 }
