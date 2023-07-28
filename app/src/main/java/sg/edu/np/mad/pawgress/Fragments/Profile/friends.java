@@ -53,6 +53,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
     FriendsAdapter friendsAdapter;
     TextView requestCountText;
     TextView noFriendReqText;
+    TextView noFriendsText;
     int reqCount;
 
     @Override
@@ -98,6 +99,19 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                         recyclerView.setLayoutManager(mLayoutManager);
                         recyclerView.setItemAnimator(new DefaultItemAnimator());
                         recyclerView.setAdapter(friendsAdapter);
+
+                        // Count the number of friends in friend list
+                        int numFriend = 0;
+                        for (FriendData friend: user.getFriendList()){
+                            if (friend.getStatus().equals("Friend")){
+                                numFriend += 1;
+                            }
+                        }
+                        noFriendsText = findViewById(R.id.noFriendsText);
+                        if (numFriend == 0){
+                            noFriendsText.setVisibility(View.VISIBLE);
+                            noFriendsText.setText("No friends for now :(");
+                        }
                     }
                 }
             }
@@ -176,7 +190,6 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                         if (firebaseRequestList.size() == 0){
                             noFriendReqText.setVisibility(View.VISIBLE);
                             noFriendReqText.setText("No incoming friend requests :(");
-
                         }
 
                         SaveSharedPreference.setSeenFriendReq(friends.this, "seen");
@@ -257,8 +270,21 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                                     }
                                     friendsAdapter.setData(recyclerFriendList);
                                     Toast.makeText(friends.this, "Refreshed",Toast.LENGTH_LONG).show();
-                                    //this will reset recyclerView's data set and notify the change
-                                    //and reload the list
+                                    // This will reset recyclerView's data set and notify the change
+                                    // and reload the list
+
+                                    // Count the number of friends in friend list
+                                    int numFriend = 0;
+                                    for (FriendData friend: user.getFriendList()){
+                                        if (friend.getStatus().equals("Friend")){
+                                            numFriend += 1;
+                                        }
+                                    }
+                                    noFriendsText = findViewById(R.id.noFriendsText);
+                                    if (numFriend == 0){
+                                        noFriendsText.setVisibility(View.VISIBLE);
+                                        noFriendsText.setText("No friends for now :(");
+                                    }
                                 }
                             }
                             catch (Exception e){
@@ -287,6 +313,19 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                                                 recyclerView.setLayoutManager(mLayoutManager);
                                                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                                                 recyclerView.setAdapter(friendsAdapter);
+
+                                                // Count the number of friends in friend list
+                                                int numFriend = 0;
+                                                for (FriendData friend: user.getFriendList()){
+                                                    if (friend.getStatus().equals("Friend")){
+                                                        numFriend += 1;
+                                                    }
+                                                }
+                                                noFriendsText = findViewById(R.id.noFriendsText);
+                                                if (numFriend == 0){
+                                                    noFriendsText.setVisibility(View.VISIBLE);
+                                                    noFriendsText.setText("No friends for now :(");
+                                                }
                                             }
                                         }
                                     }
@@ -420,6 +459,4 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
     public void onFriendRequestAccepted(String friendName) {
         friendsAdapter.updateFriendList(); // Call a method in the FriendsAdapter to update its data
     }
-
-
 }
