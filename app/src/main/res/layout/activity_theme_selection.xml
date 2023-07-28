@@ -14,7 +14,7 @@
         android:layout_marginStart="112dp"
         android:layout_marginTop="40dp"
         android:fontFamily="sans-serif-condensed-medium"
-        android:text="@string/themeSelectionTitle"
+        android:text="Themes Options"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,7 +33,7 @@
         android:gravity="fill_vertical"
         android:text="@string/darkTheme"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/titleTextView" />
 
@@ -47,43 +47,11 @@
         android:layout_marginEnd="29dp"
         android:backgroundTint="#EFDFCE"
         android:gravity="fill_vertical"
-        android:text="@string/lightTheme"
+        android:text="Light Theme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/darkButton" />
-
-    <Button
-        android:id="@+id/patternButton"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="29dp"
-        android:backgroundTint="#EFDFCE"
-        android:gravity="fill_vertical"
-        android:text="@string/patternTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lightButton" />
-
-    <Button
-        android:id="@+id/defaultButton"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="29dp"
-        android:backgroundTint="#EFDFCE"
-        android:gravity="fill_vertical"
-        android:text="@string/defaultTheme"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/patternButton" />
 
     <ImageButton
         android:id="@+id/imageButton"
@@ -96,5 +64,14 @@
         android:src="?attr/actionModeCloseDrawable"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="39dp" />
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="NOTE: Configure App Theme using Light and Dark Mode of the device. The above simply shows the options we have for our app themes, thank you."
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="325dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

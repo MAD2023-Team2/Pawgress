@@ -70,6 +70,15 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
         DatabaseReference myRef = database.getReference("Users");
         Query query = myRef.orderByChild("username").equalTo(user.getUsername());
 
+        RecyclerView recyclerView = findViewById(R.id.friendsRecycler);
+        friendsAdapter =
+                new FriendsAdapter(friends.this, user, myDBHandler);
+        LinearLayoutManager mLayoutManager =
+                new LinearLayoutManager(friends.this);
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(friendsAdapter);
+
         returnButtonFriends = findViewById(R.id.backButton);
         returnButtonFriends.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,18 +97,15 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
 
                         //ArrayList<FriendRequest> friendRequests = myDBHandler.findFriendReqList(user);
                         //user.setFriendReqList(friendRequests);
-
                         //setContentView(R.layout.activity_friends);
-
-                        RecyclerView recyclerView = findViewById(R.id.friendsRecycler);
-                        friendsAdapter =
-                                new FriendsAdapter(friends.this, user, myDBHandler);
-                        LinearLayoutManager mLayoutManager =
-                                new LinearLayoutManager(friends.this);
-                        recyclerView.setLayoutManager(mLayoutManager);
-                        recyclerView.setItemAnimator(new DefaultItemAnimator());
-                        recyclerView.setAdapter(friendsAdapter);
-
+                        ArrayList<FriendData> friendList = tempUser.getFriendList();
+                        ArrayList<FriendData> recyclerFriendList = new ArrayList<FriendData>();
+                        for (FriendData friend: friendList){
+                            if (friend.getStatus().equals("Friend")){
+                                recyclerFriendList.add(friend);
+                            }
+                        }
+                        friendsAdapter.setData(recyclerFriendList);
                         // Count the number of friends in friend list
                         int numFriend = 0;
                         for (FriendData friend: user.getFriendList()){

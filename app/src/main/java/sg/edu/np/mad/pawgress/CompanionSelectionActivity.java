@@ -19,8 +19,8 @@ public class CompanionSelectionActivity extends AppCompatActivity {
     Button catButton;
     Button dogButton;
     // The catDesigns and dogDesigns arrays store the resource IDs of cat and dog designs respectively
-    int[] catDesigns = {R.drawable.grey_cat, R.drawable.orange_cat};
-    int[] dogDesigns = {R.drawable.corgi, R.drawable.golden_retriever};
+    int[] catDesigns = {1, 2};
+    int[] dogDesigns = {3, 5};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

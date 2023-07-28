@@ -81,18 +81,20 @@
             android:id="@+id/quoteTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="25dp"
-            android:gravity="center"
-            android:text="SENTENCE"
-            android:textSize="17dp"
-            android:fontFamily="sans-serif-condensed-medium"
             android:layout_below="@id/greeting"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="25dp"
             android:layout_marginEnd="30dp"
+            android:background="@drawable/rounded_corners"
+            android:backgroundTint="#B8C397"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="center"
+            android:text="SENTENCE"
             android:textAlignment="center"
-            />
+            android:textSize="17dp"
+            android:textColor="@color/textColour"/>
 
         <TextView
             android:id="@+id/prioritizedTaskTextView"
