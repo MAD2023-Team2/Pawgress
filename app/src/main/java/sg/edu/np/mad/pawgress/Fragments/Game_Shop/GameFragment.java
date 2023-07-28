@@ -544,7 +544,7 @@ public class GameFragment extends Fragment {
                         MediaPlayer mediaPlayer;
 
                         // Randomly plays 1 out of 3 sounds for each petType
-                        if (user.getPetDesign() == R.drawable.grey_cat){
+                        if (user.getPetDesign() == 1){
                             if (random == 0){
                                 mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat1_1);
                             } else if (random == 1) {
@@ -555,7 +555,7 @@ public class GameFragment extends Fragment {
                             }
                             mediaPlayer.start();
                         }
-                        else if (user.getPetDesign() == R.drawable.orange_cat){
+                        else if (user.getPetDesign() == 2){
                             if (random == 0){
                                 mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat2_1);
                             } else if (random == 1) {
@@ -567,7 +567,7 @@ public class GameFragment extends Fragment {
                             mediaPlayer.start();
                         }
 
-                        else if (user.getPetDesign() == R.drawable.corgi){
+                        else if (user.getPetDesign() == 3){
                             if (random == 0){
                                 mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi1);
                             } else if (random == 1) {
@@ -578,7 +578,7 @@ public class GameFragment extends Fragment {
                             }
                             mediaPlayer.start();
                         }
-                        else if (user.getPetDesign() == R.drawable.capybara){
+                        else if (user.getPetDesign() == 4){
                             mediaPlayer = MediaPlayer.create(getActivity(), R.raw.capybara);
                             mediaPlayer.start();
                         }

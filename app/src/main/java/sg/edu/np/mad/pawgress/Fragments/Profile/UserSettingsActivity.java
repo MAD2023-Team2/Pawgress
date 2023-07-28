@@ -41,6 +41,8 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         initialPetType = user.getPetType();
 
 
+
+
         // Set click listeners for the feature buttons
         Button themeButton = findViewById(R.id.findTheme);
         Button profilePictureButton = findViewById(R.id.editProfilePicture);
@@ -57,13 +59,13 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         capyMode.setOnClickListener(this);
         System.out.println(user.getCapyMode());
 
-        if (user.getCapyMode() == "OFF"){
+        if (user.getCapyMode().equals("OFF")){
             capyMode.setBackgroundResource(R.color.toggleRed);
-            capyMode.setText("  Capymode : OFF");
+            capyMode.setChecked(false);
         }
         else{
             capyMode.setBackgroundResource(R.color.toggleGreen);
-            capyMode.setText("  Capymode : ON");
+            capyMode.setChecked(true);
         }
 
         capyMode.setChecked(isCapyModeON());
@@ -71,19 +73,17 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         capyMode.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked){
-                    capyMode.setText("  Capymode : ON");
-                    capyMode.setBackgroundResource(R.color.toggleGreen);
-                    user.setPetDesign(R.drawable.capybara);
-                    myDBHandler.savePetDesign(user.getUsername(), initialPetType, R.drawable.capybara);
-                    myDBHandler.updateCapyMode(user.getUsername(), "ON");
-                }
-                else{
-                    capyMode.setText("  Capymode : OFF");
+                if (!isChecked){
                     capyMode.setBackgroundResource(R.color.toggleRed);
                     user.setPetDesign(initialPetDesign);
                     myDBHandler.savePetDesign(user.getUsername(), initialPetType, initialPetDesign);
                     myDBHandler.updateCapyMode(user.getUsername(), "OFF");
+                }
+                else{
+                    capyMode.setBackgroundResource(R.color.toggleGreen);
+                    user.setPetDesign(R.drawable.capybara);
+                    myDBHandler.savePetDesign(user.getUsername(), initialPetType, 4);
+                    myDBHandler.updateCapyMode(user.getUsername(), "ON");
                 }
             }
         });
@@ -116,10 +116,10 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
 
     private boolean isCapyModeON(){
         if (user.getCapyMode().equals("OFF")){
-            return true;
+            return false;
         }
         else{
-            return false;
+            return true;
         }
     }
 }

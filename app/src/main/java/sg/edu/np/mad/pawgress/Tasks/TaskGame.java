@@ -59,10 +59,10 @@ public class TaskGame extends AppCompatActivity {
         MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
         UserData user1 = myDBHandler.findUser(SaveSharedPreference.getUserName(this));
         ImageView pet_picture = findViewById(R.id.corgi_1);
-        if (user1.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
-        else if (user1.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
-        else if (user1.getPetDesign() == R.drawable.corgi){pet_picture.setImageResource(R.drawable.corgi);}
-        else if (user1.getPetDesign() == R.drawable.capybara){pet_picture.setImageResource(R.drawable.capybara);}
+        if (user1.getPetDesign() == 1){pet_picture.setImageResource(R.drawable.grey_cat);}
+        else if (user1.getPetDesign() == 2){pet_picture.setImageResource(R.drawable.orange_cat);}
+        else if (user1.getPetDesign() == 3){pet_picture.setImageResource(R.drawable.corgi);}
+        else if (user1.getPetDesign() == 4){pet_picture.setImageResource(R.drawable.capybara);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
 
         // Retrieving references to the ImageViews from the XML file
@@ -109,7 +109,7 @@ public class TaskGame extends AppCompatActivity {
                         int random = new Random().nextInt(3);
                         MediaPlayer mediaPlayer;
 
-                        if (user1.getPetDesign() == R.drawable.grey_cat){
+                        if (user1.getPetDesign() == 1){
                             if (random == 0){
                                 mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat1_1);
                             } else if (random == 1) {
@@ -120,7 +120,7 @@ public class TaskGame extends AppCompatActivity {
                             }
                             mediaPlayer.start();
                         }
-                        else if (user1.getPetDesign() == R.drawable.orange_cat){
+                        else if (user1.getPetDesign() == 2){
                             if (random == 0){
                                 mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat2_1);
                             } else if (random == 1) {
@@ -132,7 +132,7 @@ public class TaskGame extends AppCompatActivity {
                             mediaPlayer.start();
                         }
 
-                        else if (user1.getPetDesign() == R.drawable.corgi){
+                        else if (user1.getPetDesign() == 3){
                             if (random == 0){
                                 mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi1);
                             } else if (random == 1) {
@@ -143,7 +143,7 @@ public class TaskGame extends AppCompatActivity {
                             }
                             mediaPlayer.start();
                         }
-                        else if (user.getPetDesign() == R.drawable.capybara){
+                        else if (user.getPetDesign() == 4){
                             mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.capybara);
                             mediaPlayer.start();
                         }
