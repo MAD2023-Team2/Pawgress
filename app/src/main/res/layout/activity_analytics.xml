@@ -65,10 +65,9 @@
             style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_weight="1"
             android:backgroundTint="#DA7F40"
             android:fontFamily="sans-serif-condensed-medium"
-            android:text="Main"
+            app:icon="@drawable/baseline_person_24"
             android:textColor="@android:color/white"
             android:textSize="20sp" />
 
@@ -82,10 +81,10 @@
             style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_weight="1"
             android:backgroundTint="#DA7F40"
             android:fontFamily="sans-serif-condensed-medium"
-            android:text="Bar"
+            app:icon="@drawable/baseline_bar_chart_24"
+            android:layout_gravity="center"
             android:textColor="@android:color/white"
             android:textSize="20sp"/>
 
@@ -99,10 +98,10 @@
             style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Secondary"
             android:layout_width="60dp"
             android:layout_height="50dp"
-            android:layout_weight="1"
             android:backgroundTint="#DA7F40"
             android:fontFamily="sans-serif-condensed-medium"
-            android:text="Pie"
+            app:icon="@drawable/baseline_pie_chart_24"
+            android:layout_gravity="center"
             android:textColor="@android:color/white"
             android:textSize="20sp"/>
 
