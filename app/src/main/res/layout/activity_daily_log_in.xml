@@ -12,14 +12,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginStart="16dp"
+        android:layout_marginBottom="165dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/dailylogin" />
+        app:srcCompat="@drawable/daily_corgi" />
 
     <TextView
         android:id="@+id/logInStatus"
         android:layout_width="168dp"
-        android:layout_height="124dp"
+        android:layout_height="110dp"
+
         android:layout_centerInParent="true"
         android:background="@drawable/rounded_border_dailylogin"
         android:fontFamily="sans-serif-condensed-medium"

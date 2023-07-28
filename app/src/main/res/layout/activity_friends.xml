@@ -7,13 +7,33 @@
     tools:context=".Fragments.Profile.friends"
     android:theme="@style/AppBackgroundColour">
 
+    <Button
+        android:id="@+id/addFriend"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="#EFDFCE"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:gravity="fill"
+        android:text="@string/friendSearch"
+        app:icon="@drawable/baseline_person_search_24"
+        app:iconGravity="start"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/friendRequest"
+        app:layout_constraintTop_toBottomOf="@+id/textView25" />
+
     <TextView
         android:id="@+id/textView25"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="52dp"
+        android:layout_marginTop="36dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:text="Friends"
+        android:textSize="34sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -24,30 +44,29 @@
         style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginEnd="29dp"
+        android:layout_marginStart="25dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="5dp"
         android:backgroundTint="#EFDFCE"
         android:fontFamily="sans-serif-condensed-medium"
-        android:gravity="fill_vertical"
+        android:gravity="fill"
         android:text="@string/friendRequest"
-        app:icon="@drawable/baseline_arrow_forward_ios_24"
-        app:iconGravity="end"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:icon="@drawable/baseline_person_add_alt_1_24"
+        app:iconGravity="start"
+        app:layout_constraintEnd_toStartOf="@+id/addFriend"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView25" />
 
-    <ImageButton
-        android:id="@+id/imageButton2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/returnButtonFriends"
+        android:layout_width="39dp"
+        android:layout_height="34dp"
+        android:layout_marginStart="17dp"
         android:layout_marginTop="40dp"
-        app:layout_constraintEnd_toStartOf="@+id/textView25"
-        app:layout_constraintHorizontal_bias="0.343"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="?attr/actionModeCloseDrawable" />
+        app:srcCompat="?attr/actionModeCloseDrawable"
+        android:theme="@style/Tint"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/friendsRecycler"
@@ -56,19 +75,37 @@
         android:layout_marginTop="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/friendRequest" />
+        app:layout_constraintTop_toBottomOf="@+id/friendRequest"
+        app:layout_constraintVertical_bias="0.0" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addFriend"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <TextView
+        android:id="@+id/requestCountText"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginBottom="36dp"
+        android:background="@drawable/decline_fr_bg"
+        android:backgroundTint="#FF0000"
+        android:elevation="100dp"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="#FEFAFD"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/friendRequest"
+        app:layout_constraintEnd_toStartOf="@+id/addFriend"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/friendRequest" />
+
+    <ImageView
+        android:id="@+id/refreshButton"
+        android:layout_width="39dp"
+        android:layout_height="39dp"
         android:layout_marginTop="40dp"
-        android:backgroundTint="#B9C498"
-        android:clickable="true"
-        android:src="@drawable/baseline_person_add_alt_1_24"
+        android:layout_marginEnd="19dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.677"
-        app:layout_constraintStart_toEndOf="@+id/textView25"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/baseline_autorenew_24"
+        android:theme="@style/Tint"/>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

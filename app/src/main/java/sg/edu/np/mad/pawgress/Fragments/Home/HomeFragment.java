@@ -31,6 +31,7 @@ import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.SaveSharedPreference;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.Tasks.TaskCardAdapter;
 import sg.edu.np.mad.pawgress.UserData;
@@ -109,12 +110,13 @@ public class HomeFragment extends Fragment {
 
         TextView quoteTextView = view.findViewById(R.id.quoteTextView);
         // TextView authorTextView = view.findViewById(R.id.authorTextView);
-        Log.i(null, ""+ myDBHandler.getQuote(user) + myDBHandler.getAuthor(user));
+        Log.i(null, ""+ SaveSharedPreference.getQuote(getActivity()) + SaveSharedPreference.getAuthor(getActivity()));
 
-        String quote = myDBHandler.getQuote(user);
-        String author = myDBHandler.getAuthor(user);
+        // Getting quote and author from shared preferences
+        String quote = SaveSharedPreference.getQuote(getActivity());
+        String author = SaveSharedPreference.getAuthor(getActivity());
 
-        quoteTextView.setText("\t\t" +quote + "\t\t\n\n" + author);
+        quoteTextView.setText("\t\t" +quote + "\t\t\n\n" + "-" + author + "-");
         // authorTextView.setText(myDBHandler.getAuthor(user));
 
         TextView taskLeft = view.findViewById(R.id.taskLeft);

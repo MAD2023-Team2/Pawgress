@@ -54,7 +54,6 @@ public class GameImage extends AppCompatActivity {
             replaceImage_topMiddle_add.setVisibility(View.VISIBLE);
             replaceImage_topMiddle.setVisibility(View.VISIBLE);
             replaceImage_topMiddle.setImageBitmap(bitmap);
-            replaceImage_topMiddle.setAlpha(0.5F);
 
             ImageView replaceImage_topRight_add = findViewById(R.id.replaceImage_topRight_add);
             ImageView replaceImage_topLeft_add = findViewById(R.id.replaceImage_topLeft_add);
@@ -66,8 +65,6 @@ public class GameImage extends AppCompatActivity {
         else{
             replaceImage_topLeft.setImageBitmap(bitmap);
             replaceImage_topRight.setImageBitmap(bitmap);
-            replaceImage_topLeft.setAlpha(0.5F);
-            replaceImage_topRight.setAlpha(0.5F);
         }
     }
 
@@ -80,12 +77,18 @@ public class GameImage extends AppCompatActivity {
             public void onClick(View view) {
                 myDBHandler.setTopRight(user.getUsername(),inventoryItem.getItemName());
 
-                int inventoryQuantity = inventoryItem.getQuantity();
-                if (inventoryQuantity == 1){ // if used all of the item, remove from the inventory
-                    myDBHandler.removeInventoryItem(inventoryItem,user);
+                if( user.getTopRight().equals(inventoryItem.getItemName()) ){
+                    Toast.makeText(view.getContext(), "The same item is placed there", Toast.LENGTH_SHORT).show();
                 }
-                else{ // there is still at least 1 item of the same item in the inventory, update the new quantity of the item
-                    myDBHandler.updateInventoryQuantity(inventoryItem, user, inventoryQuantity-1);
+                else{
+                    user.setTopRight(inventoryItem.getItemName());
+                    int inventoryQuantity = inventoryItem.getQuantity();
+                    if (inventoryQuantity == 1){ // if used all of the item, remove from the inventory
+                        myDBHandler.removeInventoryItem(inventoryItem,user);
+                    }
+                    else{ // there is still at least 1 item of the same item in the inventory, update the new quantity of the item
+                        myDBHandler.updateInventoryQuantity(inventoryItem, user, inventoryQuantity-1);
+                    }
                 }
                 finish();
             }
@@ -95,12 +98,18 @@ public class GameImage extends AppCompatActivity {
             public void onClick(View view) {
                 myDBHandler.setTopLeft(user.getUsername(),inventoryItem.getItemName());
 
-                int inventoryQuantity = inventoryItem.getQuantity();
-                if (inventoryQuantity == 1){ // if used all of the item, remove from the inventory
-                    myDBHandler.removeInventoryItem(inventoryItem,user);
+                if( user.getTopLeft().equals(inventoryItem.getItemName()) ){
+                    Toast.makeText(view.getContext(), "The same item is placed there", Toast.LENGTH_SHORT).show();
                 }
-                else{ // there is still at least 1 item of the same item in the inventory, update the new quantity of the item
-                    myDBHandler.updateInventoryQuantity(inventoryItem, user, inventoryQuantity-1);
+                else{
+                    user.setTopLeft(inventoryItem.getItemName());
+                    int inventoryQuantity = inventoryItem.getQuantity();
+                    if (inventoryQuantity == 1){ // if used all of the item, remove from the inventory
+                        myDBHandler.removeInventoryItem(inventoryItem,user);
+                    }
+                    else{ // there is still at least 1 item of the same item in the inventory, update the new quantity of the item
+                        myDBHandler.updateInventoryQuantity(inventoryItem, user, inventoryQuantity-1);
+                    }
                 }
                 finish();
             }
@@ -112,12 +121,18 @@ public class GameImage extends AppCompatActivity {
                 public void onClick(View view) {
                     myDBHandler.setTopMiddle(user.getUsername(),inventoryItem.getItemName());
 
-                    int inventoryQuantity = inventoryItem.getQuantity();
-                    if (inventoryQuantity == 1){ // if used all of the item, remove from the inventory
-                        myDBHandler.removeInventoryItem(inventoryItem,user);
+                    if( user.getTopMiddle().equals(inventoryItem.getItemName()) ){
+                        Toast.makeText(view.getContext(), "The same item is placed there", Toast.LENGTH_SHORT).show();
                     }
-                    else{ // there is still at least 1 item of the same item in the inventory, update the new quantity of the item
-                        myDBHandler.updateInventoryQuantity(inventoryItem, user, inventoryQuantity-1);
+                    else{
+                        user.setTopMiddle(inventoryItem.getItemName());
+                        int inventoryQuantity = inventoryItem.getQuantity();
+                        if (inventoryQuantity == 1){ // if used all of the item, remove from the inventory
+                            myDBHandler.removeInventoryItem(inventoryItem,user);
+                        }
+                        else{ // there is still at least 1 item of the same item in the inventory, update the new quantity of the item
+                            myDBHandler.updateInventoryQuantity(inventoryItem, user, inventoryQuantity-1);
+                        }
                     }
                     finish();
                 }

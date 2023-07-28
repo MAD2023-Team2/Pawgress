@@ -101,7 +101,7 @@ public class TableAdapter extends RecyclerView.Adapter<TableAdapter.ViewHolder> 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView textCategory, textTimeSpent, textCompletedTasks, textAvgTime;
-        ImageView colorCircle; // Add the ImageView for the color circle
+        ImageView colorCircle;
 
         ViewHolder(View itemView) {
             super(itemView);

@@ -15,7 +15,17 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.TextSwitcher;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewSwitcher;
+
+import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
+import retrofit2.http.GET;
 
 public class LandingPage extends AppCompatActivity {
     private TextSwitcher textView;
@@ -24,6 +34,8 @@ public class LandingPage extends AppCompatActivity {
     private Handler handler = new Handler();
     // 3 seconds delay
     private static final int SPLASH_DELAY_MILLIS = 3000;
+    String quoteText;
+    String author;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,7 +61,10 @@ public class LandingPage extends AppCompatActivity {
                 textView.setTypeface(Typeface.create("sans-serif-condensed-medium", Typeface.NORMAL));
                 return textView;
             }
-    });
+        });
+
+        // Getting motivational message from api
+        fetchRandomQuote();
     }
 
     @Override
@@ -91,5 +106,49 @@ public class LandingPage extends AppCompatActivity {
         Intent intent = new Intent(LandingPage.this, LoginPage.class);
         startActivity(intent);
         finish();
+    }
+
+    public interface ProductivityQuoteApi {
+        @GET("random") // Replace with the actual API endpoint
+        Call<List<InspirationalQuote>> getRandomQuote();
+    }
+
+    private void fetchRandomQuote() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://zenquotes.io/api/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        ProductivityQuoteApi apiService = retrofit.create(ProductivityQuoteApi.class);
+
+        Call<List<InspirationalQuote>> call = apiService.getRandomQuote();
+        call.enqueue(new Callback<List<InspirationalQuote>>() {
+            @Override
+            public void onResponse(Call<List<InspirationalQuote>> call, Response<List<InspirationalQuote>> response) {
+                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
+                    InspirationalQuote quote = response.body().get(0);
+                    quoteText = quote.getQuote();
+                    author = quote.getAuthor();
+
+                    onQuoteFetched(quoteText, author);
+                } else {
+                    // Handle API error or empty response
+                }
+            }
+            @Override
+            public void onFailure(Call<List<InspirationalQuote>> call, Throwable t) {
+                // Handle network error
+                Toast.makeText(LandingPage.this, "No internet access. Unable to load motivational message.", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void onQuoteFetched(String quoteText, String author) {
+        this.quoteText = quoteText;
+        this.author = author;
+
+        // Save quote and author to shared preferences
+        SaveSharedPreference.setQuote(LandingPage.this, quoteText);
+        SaveSharedPreference.setAuthor(LandingPage.this, author);
     }
 }

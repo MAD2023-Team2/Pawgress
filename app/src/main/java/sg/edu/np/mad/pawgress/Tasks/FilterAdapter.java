@@ -15,6 +15,7 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
 import sg.edu.np.mad.pawgress.MyDBHandler;
@@ -29,13 +30,14 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder>{
     UserData user;
     MyDBHandler mDataBase;
     TasksFragment fragment;
-    ArrayList<Integer> positions;
-    public FilterAdapter(UserData userData, MyDBHandler mDatabase, Context context, TasksFragment fragment){
+    public ArrayList<Integer> positions;
+    public FilterAdapter(UserData userData, MyDBHandler mDatabase, Context context, TasksFragment fragment, ArrayList<Integer> positions){
         this.user = userData;
         this.mDataBase = mDatabase;
         this.context = context;
         this.taskList = mDataBase.findTaskList(user);
         this.fragment = fragment;
+        this.positions = positions;
     }
     @Override
     public int getItemCount() {
@@ -74,19 +76,27 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder>{
 
     @Override
     public void onBindViewHolder(FilterViewHolder holder, int position) {
-        positions = new ArrayList<>();
-        fragment.categories = new ArrayList<>();
         String category = categoryList.get(position);
         select = false;
         holder.name.setText(category);
         Drawable background = context.getDrawable(R.drawable.field_background);
+        for (int i : positions){
+            if (i == holder.getAdapterPosition()){
+                background.setTint(Color.parseColor("#B9C498"));
+                holder.name.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.baseline_clear_24,0);
+                holder.name.setBackground(background);
+                select = true;
+                if (!fragment.categories.contains(category)){
+                    fragment.categories.add(category);
+                }
+            }
+        }
         holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // beginning of filter where none selected
                 if (select == false && positions.isEmpty()){
                     background.setTint(Color.parseColor("#B9C498"));
-                    // not showing
                     holder.name.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.baseline_clear_24,0);
                     holder.name.setBackground(background);
                     fragment.categories.add(category);
@@ -114,6 +124,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder>{
                     positions.add(holder.getAdapterPosition());
                     fragment.refreshTaskRecyclerView();
                 }
+                else Log.w("this", "Else");
             }
         });
     }

@@ -22,6 +22,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".Fragments.Profile.ViewFriendGame"
+            android:exported="false" />
+        <activity
+            android:name=".Fragments.Game_Shop.RemoveRoomItem"
+            android:exported="false" />
+        <activity
             android:name=".Fragments.Game_Shop.GameImage"
             android:exported="false"
             android:screenOrientation="portrait"/>
@@ -42,75 +48,75 @@
         <activity
             android:name=".Fragments.Profile.NotificationSelection"
             android:exported="false"
-            android:screenOrientation="portrait"/> <!-- <activity -->
+            android:screenOrientation="portrait" /> <!-- <activity -->
         <!-- android:name=".Fragments.Profile.ThemeSelectionActivity" -->
         <!-- android:exported="false" /> -->
         <activity
             android:name=".Fragments.Profile.ProfilePictureSelection"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Fragments.Profile.UserSettingsActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".tutorials.Tutorial_Page"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CompanionSelectionActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainMainMain"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Tasks.TaskCompletion"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Fragments.Profile.editProfilePassword"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".Tasks.TaskView"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".CreateAccount"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Pawgress.LightBeigeMode"
-            android:screenOrientation="portrait"/>
+            android:windowSoftInputMode="adjustResize" />
         <activity
             android:name=".DailyLogIn"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".EditProfileActivity"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".Fragments.Profile.friends"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".LoginPage"
             android:exported="true"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Pawgress.LightBeigeMode"
-            android:windowSoftInputMode="adjustResize"
-            android:screenOrientation="portrait"/>
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".Tasks.TaskGame"
             android:exported="false"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".MyNotificationPublisher"

@@ -1,6 +1,7 @@
 package sg.edu.np.mad.pawgress.Fragments.Game_Shop;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -122,6 +123,7 @@ public class GameFragment extends Fragment {
     @Override
     public void onResume(){
         super.onResume();
+        Log.v("GameFragment","OnResume");
         updateImage();
     }
 
@@ -140,14 +142,16 @@ public class GameFragment extends Fragment {
         ImageView pet_picture = view.findViewById(R.id.corgi_1);
         if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
         else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
-        else if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
+        else if (user.getPetDesign() == R.drawable.corgi){pet_picture.setImageResource(R.drawable.corgi);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
 
         FloatingActionButton goShop = view.findViewById(R.id.goShop);
         FloatingActionButton goInventory = view.findViewById(R.id.goInventory);
         FloatingActionButton openMenu = view.findViewById(R.id.openMenu);
         FloatingActionButton closeMenu = view.findViewById(R.id.close_menu);
+        FloatingActionButton editRoom = view.findViewById(R.id.editRoom);
         RelativeLayout menu = view.findViewById(R.id.menu);
+        RelativeLayout secondMenu = view.findViewById(R.id.secondMenu);
 
         topLeftPic = view.findViewById(R.id.replaceImage_topLeft);
         topRightPic = view.findViewById(R.id.replaceImage_topRight);
@@ -160,6 +164,7 @@ public class GameFragment extends Fragment {
             public void onClick(View view) {
                 openMenu.setVisibility(View.GONE);
                 menu.setVisibility(View.VISIBLE);
+                secondMenu.setVisibility(View.VISIBLE);
             }
         });
 
@@ -167,7 +172,18 @@ public class GameFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                secondMenu.setVisibility(View.GONE);
                 openMenu.setVisibility(View.VISIBLE);
+            }
+        });
+
+        editRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Goes to adding of item in room
+                Intent intent = new Intent(getActivity(), RemoveRoomItem.class);
+                intent.putExtra("user",user);
+                startActivity(intent);
             }
         });
 
@@ -293,7 +309,6 @@ public class GameFragment extends Fragment {
                 });
 
                 shop.show();
-                updateImage();
             }
         });
         goShop.setOnClickListener(new View.OnClickListener() {
@@ -312,7 +327,6 @@ public class GameFragment extends Fragment {
                 filterButton = shop.findViewById(R.id.filterButton);
                 // when first open shop recycler view, show all shop items in all categories, unsorted
                 generateUnfiltered();
-                updateImage();
                 filterButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -504,7 +518,6 @@ public class GameFragment extends Fragment {
                 });
 
                 shop.show();
-                updateImage();
             }
         });
 
@@ -522,16 +535,52 @@ public class GameFragment extends Fragment {
                         int random = new Random().nextInt(3);
                         MediaPlayer mediaPlayer;
 
-                        // Randomly plays 1 out of 3 sounds
-                        if (random == 0){
-                            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi_down_sound);
-                        } else if (random == 1) {
-                            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi_up_sound);
+                        // Randomly plays 1 out of 3 sounds for each petType
+                        if (user.getPetDesign() == R.drawable.grey_cat){
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat1_1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat1_2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat1_3);
+                            }
+                            mediaPlayer.start();
                         }
-                        else {
-                            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi_3_sound);
+                        else if (user.getPetDesign() == R.drawable.orange_cat){
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat2_1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat2_2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat2_3);
+                            }
+                            mediaPlayer.start();
                         }
-                        mediaPlayer.start();
+
+                        else if (user.getPetDesign() == R.drawable.corgi){
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi3);
+                            }
+                            mediaPlayer.start();
+                        }
+                        else{
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.gr1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.gr2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.gr3);
+                            }
+                            mediaPlayer.start();
+                        }
 
                         // Listener for when audio finishing playing, releases and resets media player to prevent overuse of resources
                         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -607,28 +656,37 @@ public class GameFragment extends Fragment {
 
     private void updateImage(){
         Log.v("GameFragment","Updating the game view");
+        user = myDBHandler.findUser(SaveSharedPreference.getUserName(getActivity()));
         String topLeft = myDBHandler.getTopLeft(user.getUsername());
         String topRight = myDBHandler.getTopRight(user.getUsername());
         String topMiddle = myDBHandler.getTopMiddle(user.getUsername());
-        if (!topLeft.equals(" ")){
+        if (!topLeft.equals("")){
             topLeftPic.setVisibility(View.VISIBLE);
             String pathName = myDBHandler.getImageURL(topLeft);
             Bitmap bitmap = BitmapFactory.decodeFile(pathName);
             topLeftPic.setImageBitmap(bitmap);
         }
-
-        if (!topRight.equals(" ")){
+        else{
+            topLeftPic.setImageResource(0);
+        }
+        if (!topRight.equals("")){
             topRightPic.setVisibility(View.VISIBLE);
             String pathName = myDBHandler.getImageURL(topRight);
             Bitmap bitmap = BitmapFactory.decodeFile(pathName);
             topRightPic.setImageBitmap(bitmap);
+            Log.e("12345678",topRight);
         }
-
-        if (!topMiddle.equals(" ")){
+        else{
+            topRightPic.setImageResource(0);
+        }
+        if (!topMiddle.equals("")){
             topMiddlePic.setVisibility(View.VISIBLE);
             String pathName = myDBHandler.getImageURL(topMiddle);
             Bitmap bitmap = BitmapFactory.decodeFile(pathName);
             topMiddlePic.setImageBitmap(bitmap);
+        }
+        else{
+            topMiddlePic.setImageResource(0);
         }
     }
 }

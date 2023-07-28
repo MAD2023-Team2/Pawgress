@@ -161,12 +161,15 @@ public class LoginPage extends AppCompatActivity {
                                                     }
                                                     user.setTaskList(taskList);
                                                        */
+                                                    SaveSharedPreference.clearSeenFriendReq(LoginPage.this);
                                                     SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
+                                                    SaveSharedPreference.setProfilePic(LoginPage.this, Integer.parseInt(user.getProfilePicturePath()));
                                                     myDBHandler.clearDatabase("ACCOUNTS");
                                                     myDBHandler.clearDatabase("TASKS");
                                                     myDBHandler.clearDatabase("FRIENDS");
                                                     myDBHandler.clearDatabase("FRIENDREQUEST");
                                                     myDBHandler.clearDatabase("INVENTORY");
+                                                    Log.v(null, "ON LOGIN ---------------------" + SaveSharedPreference.getProfilePic(LoginPage.this) + user.getProfilePicturePath());
                                                     myDBHandler.addUser(user);
                                                     for (Task task: user.getTaskList()){
                                                         myDBHandler.addTask(task, user);

@@ -118,8 +118,8 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_gravity="center">
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
                 <!-- CardView for taskLeft statistics -->
                 <androidx.cardview.widget.CardView
@@ -127,8 +127,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    app:cardCornerRadius="0dp"
-                    app:cardBackgroundColor="#F3DFCD">
+                    app:cardBackgroundColor="#F3DFCD"
+                    app:cardCornerRadius="0dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
@@ -166,8 +166,8 @@
                     android:id="@+id/timeSpentCard"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:cardCornerRadius="0dp"
-                    app:cardBackgroundColor="#F3DFCD">
+                    app:cardBackgroundColor="#F3DFCD"
+                    app:cardCornerRadius="0dp">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
@@ -178,24 +178,24 @@
                             android:id="@+id/productiveToday"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
-                            android:textSize="25dp"
                             android:fontFamily="sans-serif-condensed-medium"
                             android:gravity="center"
-                            app:layout_constraintTop_toTopOf="parent"
+                            android:text="0"
+                            android:textSize="25dp"
                             app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                            app:layout_constraintTop_toTopOf="parent" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Time Spent"
                             android:fontFamily="sans-serif-condensed-medium"
                             android:gravity="center"
-                            app:layout_constraintTop_toBottomOf="@+id/productiveToday"
+                            android:text="Time Spent"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent" />
+                            app:layout_constraintTop_toBottomOf="@+id/productiveToday" />
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>

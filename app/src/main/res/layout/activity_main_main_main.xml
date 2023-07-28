@@ -20,7 +20,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomNavigationView"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:background="#B8C397"
         android:outlineProvider="background"
         app:layout_constraintBottom_toBottomOf="parent"

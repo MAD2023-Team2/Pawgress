@@ -58,8 +58,30 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
 
     @Override
     public void onBindViewHolder(SearchViewHolder holder, int position) {
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("Users");
         String name = firebaseList.get(position);
         holder.searchFriendName.setText(name);
+
+        Query query3 = myRef.child(name).child("profilePicturePath");
+        query3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String profilePicturePath = dataSnapshot.getValue(String.class);
+                    holder.searchProfilePic.setImageResource(Integer.parseInt(profilePicturePath));
+                }
+                else{
+                    int profilePicPath = 2131230856;
+                    holder.searchProfilePic.setImageResource(profilePicPath);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+
+            }
+        });
 
         holder.searchAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,8 +98,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
                 friendRequestSent = true;
                 Toast.makeText(context, "Friend request sent to " + name, Toast.LENGTH_SHORT).show();
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
-                DatabaseReference myRef = database.getReference("Users");
                 Query query = myRef.orderByChild("username").equalTo(name);
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
