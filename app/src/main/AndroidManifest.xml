@@ -48,9 +48,11 @@
         <activity
             android:name=".Fragments.Profile.NotificationSelection"
             android:exported="false"
-            android:screenOrientation="portrait" /> <!-- <activity -->
-        <!-- android:name=".Fragments.Profile.ThemeSelectionActivity" -->
-        <!-- android:exported="false" /> -->
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".Fragments.Profile.ThemeSelectionActivity"
+            android:exported="false" />
         <activity
             android:name=".Fragments.Profile.ProfilePictureSelection"
             android:exported="false"
