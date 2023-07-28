@@ -48,11 +48,11 @@
             android:layout_below="@id/filter"
             android:layout_alignBottom="@id/filterCard"
             android:layout_marginTop="-1dp"
-            android:background="#FCFBFC"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
             android:text="No categories to show"
-            android:visibility="gone" />
+            android:visibility="gone"
+            android:theme="@style/TaskColour"/>
 
         <TextView
             android:id="@+id/clear"

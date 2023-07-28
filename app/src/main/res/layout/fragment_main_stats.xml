@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:textAlignment="center"
-    tools:context=".Analytics.MainStats">
+    tools:context=".Analytics.MainStats"
+    android:theme="@style/TaskColour">
 
     <!-- TODO: Update blank fragment layout -->
 

@@ -27,6 +27,7 @@
         android:gravity="center_vertical"
         android:paddingStart="10dp"
         android:text="Name"
+        android:textColor="@color/textColour"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/rejectFriendRequest"
         app:layout_constraintStart_toEndOf="@+id/requestProfilePic"

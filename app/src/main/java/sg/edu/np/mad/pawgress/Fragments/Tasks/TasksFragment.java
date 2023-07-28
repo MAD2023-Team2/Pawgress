@@ -63,7 +63,8 @@ public class TasksFragment extends Fragment{
     MyDBHandler myDBHandler;
     SpinnerAdapter adapter, adapter1;
     String category;
-    public ArrayList<String> categories;
+    public ArrayList<String> categories = new ArrayList<>();
+    ArrayList<Integer> positions = new ArrayList<>();
 
     public TasksFragment() {
         // Required empty public constructor
@@ -106,51 +107,61 @@ public class TasksFragment extends Fragment{
         View view;
         view = inflater.inflate(R.layout.fragment_tasks, container, false);
 
+        // Calling layout elements
         recyclerView = view.findViewById(R.id.list);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
         filter = view.findViewById(R.id.filter);
         filterCard = view.findViewById(R.id.filterCard);
         emptyCatText = view.findViewById(R.id.emptyCatText);
         clear = view.findViewById(R.id.clear);
+        FloatingActionButton add = view.findViewById(R.id.addTask); // button to create task
 
-
+        // Getting user data
         Intent receivingEnd = getActivity().getIntent();
         user = receivingEnd.getParcelableExtra("User");
 
+        // method to start and display recycler view
         refreshTaskRecyclerView();
-        FloatingActionButton button = view.findViewById(R.id.addTask);
-        BottomSheetDialog createTask = new BottomSheetDialog(getActivity());
 
+        // filter at the top right corner of the screen
         filter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FilterAdapter fAdapter = new FilterAdapter(user,myDBHandler, getActivity(), TasksFragment.this);
+                // set adapter and layout manager for category tags to filter the main recyclerview of tasks
+                FilterAdapter fAdapter = new FilterAdapter(user,myDBHandler, getActivity(), TasksFragment.this, positions);
                 GridLayoutManager fLayoutManager = new GridLayoutManager(getActivity(), 5);
                 filterCard.setLayoutManager(fLayoutManager);
+                fAdapter.positions = positions;
                 fAdapter.clear = clear;
                 fAdapter.emptyCatText=emptyCatText;
-                // if filter button pressed when filter is visible, filter view will be removed
+                Log.w("this", "Positions: "+ positions);
+                // if filter button pressed when filter is already visible, filter view will collapse
                 if (filterCard.getVisibility() == View.VISIBLE || (filterCard.getVisibility()==View.GONE && fAdapter.emptyCatText.getVisibility()==View.VISIBLE)){
                     filterCard.setVisibility(View.GONE);
                     clear.setVisibility(View.GONE);
                     fAdapter.emptyCatText.setVisibility(View.GONE);
                 }
-                // if filter button is pressed when filter is invisible, filter view will be shown
+                // if filter button is pressed when filter is collapsed, filter view will expanded and displayed
                 else{
-                    fAdapter.updateEmptyView();
                     filterCard.setAdapter(fAdapter);
+                    fAdapter.updateEmptyView();
+                    // if there are no categories to filter (no tasks created), textView will be shown to indicate
                     if (fAdapter.emptyCatText.getVisibility()==View.VISIBLE){
                         filterCard.setVisibility(View.GONE);
                     }
                     else filterCard.setVisibility(View.VISIBLE);
                 }
+                // clears the filtering
                 clear.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         categories.clear();
-                        FilterAdapter fAdapter = new FilterAdapter(user,myDBHandler, getActivity(), TasksFragment.this);
+                        positions.clear();
+                        categories.clear();
+                        FilterAdapter fAdapter = new FilterAdapter(user,myDBHandler, getActivity(), TasksFragment.this, positions);
                         GridLayoutManager fLayoutManager = new GridLayoutManager(getActivity(), 5);
                         filterCard.setLayoutManager(fLayoutManager);
+                        fAdapter.positions = positions;
                         fAdapter.clear = clear;
                         fAdapter.emptyCatText=emptyCatText;
                         fAdapter.updateEmptyView();
@@ -161,56 +172,65 @@ public class TasksFragment extends Fragment{
                 });
             }
         });
-        button.setOnClickListener(new View.OnClickListener() {
+        // creating task
+        BottomSheetDialog createTask = new BottomSheetDialog(getActivity());
+        add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 int count = 0;
+                // counting created tasks that are active (In Progress), excluding daily challenge
                 for (Task task : myDBHandler.findTaskList(user)) {
                     if (task.getStatus().equals("In Progress") && task.getDailyChallenge() != 1) {
                         count += 1;
                     }
                 }
+                // if there are 20 active tasks that have been created by user, restrict users from creating more
                 if (count == 20) {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                     builder.setTitle("Maximum tasks reached");
-                    builder.setMessage("You cannot create another task. Please complete 1 first");
+                    builder.setMessage("You cannot create another task. Please complete one task excluding daily challenge");
                     builder.setCancelable(true);
                     AlertDialog alert = builder.create();
                     alert.show();
                     createTask.dismiss();
                 }
+                // if there are lesser than 20 active tasks, users can proceed to enter details to create task
                 else {
                     createTask.setContentView(R.layout.task_create);
                     createTask.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                     createTask.setCancelable(true);
                     createTask.setDismissWithAnimation(true);
 
-                    ImageButton create = createTask.findViewById(R.id.create);
-                    EditText taskName = createTask.findViewById(R.id.taskName);
-                    TextView taskCat = createTask.findViewById(R.id.taskCategory);
-                    TextView chooseDate = createTask.findViewById(R.id.dueDate);
-                    TextView date = createTask.findViewById(R.id.date);
-                    Spinner spinner = createTask.findViewById(R.id.priority);
-                    Spinner chooseCat = createTask.findViewById(R.id.chooseCat);
+                    // Calling bottom sheet dialog elements
+                    ImageButton create = createTask.findViewById(R.id.create); // button to proceed with creating task
+                    EditText taskName = createTask.findViewById(R.id.taskName); // task name
+                    TextView chooseDate = createTask.findViewById(R.id.dueDate); // for users to select due date using DateDialogPicker(below)
+                    TextView date = createTask.findViewById(R.id.date); // text to set chosen due date
+                    Spinner spinner = createTask.findViewById(R.id.priority); // spinner to select priority type of the task (Normal/Prioritised)
+                    Spinner chooseCat = createTask.findViewById(R.id.chooseCat); // spinner to select category of task (Others by default)
 
+                    // Number Picker for target hour (scroll/input)
                     NumberPicker ethr = (NumberPicker) createTask.findViewById(R.id.hourPicker);
                     ethr.setMaxValue(999);
                     ethr.setMinValue(0);
                     ethr.setValue(0);
                     ethr.setWrapSelectorWheel(true);
 
+                    // Number Picker for target minutes (scroll/input)
                     NumberPicker etmin = (NumberPicker) createTask.findViewById(R.id.minPicker);
                     etmin.setMaxValue(999);
                     etmin.setMinValue(0);
                     etmin.setValue(0);
                     etmin.setWrapSelectorWheel(true);
 
+                    // Number Picker for target seconds (scroll/input)
                     NumberPicker etsec = (NumberPicker) createTask.findViewById(R.id.secPicker);
                     etsec.setMaxValue(999);
                     etsec.setMinValue(0);
                     etsec.setValue(0);
                     etsec.setWrapSelectorWheel(true);
 
+                    // Sets target time variable with hr, min and sec
                     ethr.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
                         @Override
                         public void onValueChange(NumberPicker numberPicker, int i, int i1) {
@@ -231,6 +251,8 @@ public class TasksFragment extends Fragment{
                             sec = i1;
                         }
                     });
+
+                    // Date Dialog Picker for selecting due date
                     chooseDate.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -251,16 +273,18 @@ public class TasksFragment extends Fragment{
                                     if (month1.length() != 2) {
                                         month1 = "0" + month1;
                                     }
-                                    date.setText(day1 + "/" + month1 + "/" + year);
-                                    dueDate = date.getText().toString();
+                                    date.setText(day1 + "/" + month1 + "/" + year); // sets the text to the chosen date
+                                    dueDate = date.getText().toString(); // setting the dueDate variable for the task object
                                 }
                             },
                                     year, month, day);
-                            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis());
+                            datePickerDialog.getDatePicker().setMinDate(c.getTimeInMillis()); // minimum date will be day of creation, selection of days before will be restricted
                             datePickerDialog.show();
                         }
                     });
-                    dueDate = null;
+                    dueDate = null; // sets dueDate null by default
+
+                    // Selecting task priority
                     ArrayList<String> priority = new ArrayList<>();
                     priority.add("Normal");
                     priority.add("Prioritised");
@@ -275,12 +299,13 @@ public class TasksFragment extends Fragment{
                                 taskPriority = 1;
                             } else taskPriority = 0;
                         }
-
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
                             taskPriority = 0;
                         }
                     });
+
+                    // Selecting task category
                     ArrayList<String> cats = new ArrayList<>();
                     cats.add("Others");
                     cats.add("School");
@@ -301,10 +326,9 @@ public class TasksFragment extends Fragment{
                             } else if (cat.equals("Lifestyle")) {
                                 category = "Lifestyle";
                             } else if (cat.equals("Chores")) {
-                                category = "Chores";//CHANGE
+                                category = "Chores";
                             } else category = "Others";
                         }
-
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
                             chooseCat.setSelection(adapter1.getPosition("Others"));
@@ -312,25 +336,31 @@ public class TasksFragment extends Fragment{
                         }
                     });
 
+                    // creates the task on click (basically a confirm button)
                     create.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            String name = taskName.getText().toString();
-                            // do not accept blank task title or category
-                            int totalSeconds = (hr * 3600) + (min * 60) + sec;
-                            if (taskName.length() > 0 && taskName.getText().charAt(0) != ' ') {
+                            int totalSeconds = (hr * 3600) + (min * 60) + sec; // target time for task in seconds
+
+                            // does not allow for task name to be null
+                            String name = taskName.getText().toString().trim(); // removes any space in front of input text
+                            if (name.length() > 0) {
+                                // getting date of current day
                                 SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
                                 String newDayDate = formatter.format(new Date());
-                                Log.w(null, "Task Category: " + category);
+                                // creating task object
                                 Task task = new Task(1, name, "In Progress", category, 0, totalSeconds, dueDate, newDayDate, null, null, 0, taskPriority, null);
+                                // adds the task object into the local database
                                 myDBHandler.addTask(task, user);
                                 createTask.dismiss();
                                 refreshTaskRecyclerView();
                                 Toast.makeText(getActivity(), "Task created", Toast.LENGTH_SHORT).show();
+                                // if filter is currently expanded, adds new category if there are
                                 if (filterCard.getVisibility() == View.VISIBLE) {
-                                    FilterAdapter fAdapter = new FilterAdapter(user, myDBHandler, getActivity(), TasksFragment.this);
+                                    FilterAdapter fAdapter = new FilterAdapter(user, myDBHandler, getActivity(), TasksFragment.this, positions);
                                     GridLayoutManager fLayoutManager = new GridLayoutManager(getActivity(), 5);
                                     filterCard.setLayoutManager(fLayoutManager);
+                                    fAdapter.positions = positions;
                                     fAdapter.clear = clear;
                                     fAdapter.emptyCatText = emptyCatText;
                                     fAdapter.updateEmptyView();

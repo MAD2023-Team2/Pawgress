@@ -15,6 +15,10 @@
         <item name="colorPrimary">@color/darkModeBlack</item>
         <item name="colorOnPrimary">@color/darkModeBlack</item>
         <item name="itemIconPadding">100dp</item>
+
+        <!-- Alert Dialogs -->
+        <item name="alertDialogTheme">@style/AlertDialog</item>
+
     </style>
 
     <!-- Modal Bottom Sheet -->
@@ -27,6 +31,22 @@
     <style name="AppModalStyle"
         parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/rounded_half_dialog_dark</item>
+    </style>
+
+    <!-- Alert Dialog -->
+    <style name="AlertDialog" parent="Theme.Material3.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/rounded_dialog_dark</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="buttonBarButtonStyle">@style/AlertDialogButton</item>
+    </style>
+    <style name="AlertDialogButton" parent = "@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <!-- Rounded Dialog -->
+    <style name="CustomDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@drawable/rounded_dialog_dark</item>
+        <item name="android:textColor">#FFFFFF</item>
     </style>
 
     <!-- Create Task -->
@@ -107,11 +127,19 @@
         <item name="colorControlActivated">#11161C</item>
         <item name="colorAccent">#11161C</item>
         <item name="android:windowBackground">#1D2530</item>
-        <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerButton</item>
-        <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerButton</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DialogButton</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DialogButton</item>
     </style>
-    <style name="DatePickerButton" parent = "Widget.MaterialComponents.Button.TextButton">
+    <style name="DialogButton" parent = "Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <!-- Search View -->
+    <style name="Search" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColorHint">#FFFFFF</item>
+        <item name="tint">#FFFFFF</item>
+        <item name="fontFamily">sans-serif-condensed-medium</item>
     </style>
 
 

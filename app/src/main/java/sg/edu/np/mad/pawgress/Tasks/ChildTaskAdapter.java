@@ -33,17 +33,18 @@ import sg.edu.np.mad.pawgress.UserData;
 public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
     ArrayList<Task> taskList, recyclerTaskList;
     Context context;
-    String THIS = "Adapter";
     UserData user;
     MyDBHandler mDataBase;
     String category;
     TasksFragment fragment;
-    public ChildTaskAdapter(UserData userData, MyDBHandler mDatabase, Context context, String category, TasksFragment fragment){
+    ArrayList<String> categoryList;
+    public ChildTaskAdapter(UserData userData, MyDBHandler mDatabase, Context context, String category, ArrayList<String> categoryList, TasksFragment fragment){
         this.user = userData;
         this.mDataBase = mDatabase;
         this.context = context;
         this.taskList = mDataBase.findTaskList(user);
         this.category = category;
+        this.categoryList = categoryList;
         this.fragment = fragment;
     }
     @NonNull
@@ -61,6 +62,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
 
     // shows that there are currently no tasks to work on if there are no tasks in progress found in the database for this user
     public void updateList(){
+        Log.w("child", "category " + category);
         // list of the tasks that are to be shown for each category
         recyclerTaskList = new ArrayList<>();
         ArrayList<Task> removeList = new ArrayList<>();
@@ -68,7 +70,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
             // if task is in progress +
             // if task category is the same as the category passed from the parent recyclerview or
             // if the task is prioritised
-            // because prioritised tasks still have their own category
+            // adds into list to show in recyclerView
             if(task.getStatus().equals("In Progress") && (task.getCategory().equals(category) || task.getPriority() == 1)){
                 recyclerTaskList.add(task);
             }
@@ -82,6 +84,13 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
         for (Task task : recyclerTaskList){
             if(!category.equals("Prioritised Tasks") && task.getPriority() == 1){
                 removeList.add(task);
+            }
+            Log.v("remove", "task cat " + task.getCategory());
+        }
+        for (Task task : recyclerTaskList){
+            if(!categoryList.contains(task.getCategory())){
+                removeList.add(task);
+                Log.v("remove", "task cat " + task.getCategory());
             }
         }
         // remove tasks that are not meant to be under the category (if it is prioritised but in another category)

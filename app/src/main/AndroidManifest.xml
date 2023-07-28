@@ -30,11 +30,11 @@
         <activity
             android:name=".Fragments.Game_Shop.GameImage"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".Fragments.Profile.Analytics"
             android:exported="false"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".LandingPage"
             android:exported="true"
@@ -95,10 +95,6 @@
             android:exported="false"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".Fragments.Profile.ProfilePage"
-            android:exported="false"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".EditProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait" />
@@ -111,7 +107,7 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.Pawgress.LightBeigeMode"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".Tasks.TaskGame"
             android:exported="false"

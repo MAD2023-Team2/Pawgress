@@ -11,26 +11,29 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:layout_marginTop="5dp"
-        android:gravity="center"
         android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="8dp"
+        android:gravity="center">
 
         <ImageButton
             android:id="@+id/btnPrevWeek"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:src="?attr/actionModeCloseDrawable" />
+            android:src="?attr/actionModeCloseDrawable"
+            android:background="@null"
+            android:theme="@style/Tint"/>
 
         <TextView
             android:id="@+id/tvWeekInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
             android:text="WeekText"
-            android:textSize="18sp" />
+            android:fontFamily="sans-serif-condensed-medium"
+            android:textSize="18sp"
+            android:theme="@style/TaskColour"/>
 
 
         <ImageButton
@@ -38,8 +41,10 @@
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:scaleX="-1"
-            android:src="?attr/actionModeCloseDrawable"/>
+            android:src="?attr/actionModeCloseDrawable"
+            android:background="@null"
+            android:theme="@style/Tint"
+            android:scaleX="-1"/>
 
     </LinearLayout>
 
@@ -57,9 +62,9 @@
         android:layout_gravity="top|start"
         android:layout_marginStart="30dp"
         android:layout_marginTop="75dp"
-        android:fontFamily="sans-serif-condensed-medium"
         android:text="Time"
-        android:textColor="@android:color/black"
-        android:textSize="18sp" />
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="18sp"
+        android:theme="@style/TaskColour"/>
 
 </FrameLayout>

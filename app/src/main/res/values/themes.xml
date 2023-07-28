@@ -13,6 +13,9 @@
         <item name="colorPrimary">@color/darkModeBlack</item>
         <item name="colorOnPrimary">@color/darkModeBlack</item>
         <item name="itemIconPadding">100dp</item>
+
+        <!-- Alert Dialogs -->
+        <item name="alertDialogTheme">@style/AlertDialog</item>
     </style>
 
 
@@ -22,6 +25,16 @@
     </style>
     <style name="PersistentBottomSheet" parent="">
         <item name="android:background">@drawable/rounded_dialog</item>
+    </style>
+
+    <!-- Alert Dialog -->
+    <style name="AlertDialog" parent="Theme.MaterialComponents.DayNight.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/rounded_dialog</item>
+        <item name="android:textColorPrimary">@color/textColour</item>
+        <item name="buttonBarButtonStyle">@style/AlertDialogButton</item>
+    </style>
+    <style name="AlertDialogButton" parent = "@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">@color/textColour</item>
     </style>
 
     <!-- Rounded Dialog -->
@@ -125,11 +138,19 @@
         <item name="android:textColorPrimary">@color/textColour</item>
         <item name="colorControlActivated">#6D855C</item>
         <item name="colorAccent">#92A584</item>
-        <item name="android:buttonBarPositiveButtonStyle">@style/DatePickerButton</item>
-        <item name="android:buttonBarNegativeButtonStyle">@style/DatePickerButton</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/Button</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/Button</item>
     </style>
-    <style name="DatePickerButton" parent = "Widget.MaterialComponents.Button.TextButton">
+    <style name="Button" parent = "Widget.MaterialComponents.Button.TextButton">
         <item name="android:textColor">@color/textColour</item>
+    </style>
+
+    <!-- Search View -->
+    <style name="Search" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColorPrimary">@color/textColour</item>
+        <item name="android:textColorHint">@color/textColour</item>
+        <item name="tint">@color/textColour</item>
+        <item name="fontFamily">sans-serif-condensed-medium</item>
     </style>
 
 

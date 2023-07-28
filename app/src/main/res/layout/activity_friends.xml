@@ -41,7 +41,7 @@
             android:paddingTop="10dp"
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
-            android:textColor="@color/black" />
+            android:theme="@style/DrawableTint" />
 
         <ImageView
             android:id="@+id/refreshButton"
@@ -49,7 +49,8 @@
             android:layout_height="39dp"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="20dp"
-            app:srcCompat="@drawable/baseline_autorenew_24" />
+            app:srcCompat="@drawable/baseline_autorenew_24"
+            android:theme="@style/Tint"/>
 
     </RelativeLayout>
 
