@@ -41,7 +41,8 @@
             android:paddingTop="10dp"
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
-            android:textColor="@color/black" />
+            android:textColor="@color/black"
+            android:theme="@style/DrawableTint"/>
     </RelativeLayout>
 
 

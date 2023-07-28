@@ -42,13 +42,13 @@
             android:paddingTop="10dp"
             android:paddingEnd="10dp"
             android:paddingBottom="10dp"
-            android:textColor="@color/black" />
+            android:theme="@style/DrawableTint" />
 
     </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/navigate"
-        android:layout_below="@id/backButton"
+        android:layout_below="@id/anaText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
