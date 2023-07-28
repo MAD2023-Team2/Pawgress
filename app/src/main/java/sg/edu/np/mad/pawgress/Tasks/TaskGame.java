@@ -64,32 +64,40 @@ public class TaskGame extends AppCompatActivity {
         else if (user1.getPetDesign() == R.drawable.corgi){pet_picture.setImageResource(R.drawable.corgi);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
 
+        // Retrieving references to the ImageViews from the XML file
         ImageView topLeftPic = findViewById(R.id.replaceImage_topLeft);
         ImageView topRightPic = findViewById(R.id.replaceImage_topRight);
         ImageView topMiddlePic = findViewById(R.id.replaceImage_topMiddle);
+
+        // Getting image paths from the database for the user
         String topLeft = myDBHandler.getTopLeft(user1.getUsername());
         String topRight = myDBHandler.getTopRight(user1.getUsername());
         String topMiddle = myDBHandler.getTopMiddle(user1.getUsername());
-        if (!topLeft.equals(" ")){
-            topLeftPic.setVisibility(View.VISIBLE);
-            String pathName = myDBHandler.getImageURL(topLeft);
-            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
-            topLeftPic.setImageBitmap(bitmap);
+
+        // Displaying the top-left image if it exists
+        if (!topLeft.equals("")) {
+            topLeftPic.setVisibility(View.VISIBLE); // Make the ImageView visible
+            String pathName = myDBHandler.getImageURL(topLeft); // Get the file path of the image
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName); // Decode the file path into a Bitmap
+            topLeftPic.setImageBitmap(bitmap); // Set the Bitmap as the source for the ImageView
         }
 
-        if (!topRight.equals(" ")){
-            topRightPic.setVisibility(View.VISIBLE);
-            String pathName = myDBHandler.getImageURL(topRight);
-            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
-            topRightPic.setImageBitmap(bitmap);
+        // Displaying the top-right image if it exists
+        if (!topRight.equals("")) {
+            topRightPic.setVisibility(View.VISIBLE); // Make the ImageView visible
+            String pathName = myDBHandler.getImageURL(topRight); // Get the file path of the image
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName); // Decode the file path into a Bitmap
+            topRightPic.setImageBitmap(bitmap); // Set the Bitmap as the source for the ImageView
         }
 
-        if (!topMiddle.equals(" ")){
-            topMiddlePic.setVisibility(View.VISIBLE);
-            String pathName = myDBHandler.getImageURL(topMiddle);
-            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
-            topMiddlePic.setImageBitmap(bitmap);
+        // Displaying the top-middle image if it exists
+        if (!topMiddle.equals("")) {
+            topMiddlePic.setVisibility(View.VISIBLE); // Make the ImageView visible
+            String pathName = myDBHandler.getImageURL(topMiddle); // Get the file path of the image
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName); // Decode the file path into a Bitmap
+            topMiddlePic.setImageBitmap(bitmap); // Set the Bitmap as the source for the ImageView
         }
+
         pet_picture.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -198,34 +206,40 @@ public class TaskGame extends AppCompatActivity {
             }
         });
 
+        // Getting data from the intent (previous activity)
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
         task = receivingEnd.getParcelableExtra("Task");
 
+        // Set up the "Back" button to save the current timer state and update the task
         TextView backButton = findViewById(R.id.close);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 wasRunning = running;
                 pauseTimer();
+                // update task current time spent, as well as task database
                 task.setTimeSpent(seconds);
-                myDBHandler.updateTask(task,user.getUsername());
-                finish();
+                myDBHandler.updateTask(task, user.getUsername());
+                finish(); // Close the current activity and return to the previous one
             }
         });
+
+        // Initializing UI elements and restoring the timer state if there is a saved instance
         buttonStart = findViewById(R.id.start_timer_imagebutton);
         buttonReset = findViewById(R.id.reset_timer_imagebutton);
         buttonFinish = findViewById(R.id.finish_timer);
         timeView = findViewById(R.id.text_view_Countdown);
-        seconds = task.getTimeSpent();
-        updateTimerText();
+        seconds = task.getTimeSpent(); // Get the previously saved time for the task
+        updateTimerText(); // Update and display the time spent
+
         if (savedInstanceState != null) {
             seconds = savedInstanceState.getInt("seconds");
             running = savedInstanceState.getBoolean("running");
             wasRunning = savedInstanceState.getBoolean("wasRunning");
         }
         handler = new Handler();
-        runTimer();
+        runTimer(); // Start or resume the timer based on the saved state
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -236,16 +250,15 @@ public class TaskGame extends AppCompatActivity {
                 } else {
                     startTimer();
                 }
-                updateButtonUI();
+                updateButtonUI(); // Update UI elements based on the timer state
             }
         });
 
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("TIMER", "Reset button has been pressed!");
-                if (!running){
-                    showResetConfirmationDialog();
+                if (!running) {
+                    showResetConfirmationDialog(); // Display a confirmation dialog before resetting the timer
                 }
             }
         });
@@ -253,8 +266,10 @@ public class TaskGame extends AppCompatActivity {
         buttonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (running) { pauseTimer(); }
-                showFinishConfirmationDialog(user, task);
+                if (running) {
+                    pauseTimer();
+                }
+                showFinishConfirmationDialog(user, task); // Display a confirmation dialog before finishing the task
             }
         });
 

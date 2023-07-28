@@ -35,6 +35,7 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.pawgress.CreateAccount;
 import sg.edu.np.mad.pawgress.DailyLogIn;
+import sg.edu.np.mad.pawgress.Fragments.Game_Shop.InventoryItem;
 import sg.edu.np.mad.pawgress.FriendData;
 import sg.edu.np.mad.pawgress.FriendRequest;
 import sg.edu.np.mad.pawgress.LoginPage;
@@ -51,9 +52,9 @@ public class editProfilePassword extends AppCompatActivity {
     private Button btnSave;
     private TextView back;
     private MyDBHandler dbHandler;
-    UserData user;
+    UserData user, orginalUser;
 
-    private TextView noPass, noName;
+    private TextView noPass, noName, sameAccount;
 
     private CardView frameOne, frameTwo, frameThree;
     private boolean passChar8 = false, passUpper = false, passNum = false, isRegistrationClickable = false;
@@ -79,9 +80,11 @@ public class editProfilePassword extends AppCompatActivity {
         frameThree = findViewById(R.id.frameThree);
         noName = findViewById(R.id.noName);
         noPass = findViewById(R.id.noPass);
+        sameAccount = findViewById(R.id.sameAccount);
 
         // Getting user data
         UserData user = dbHandler.findUser(SaveSharedPreference.getUserName(editProfilePassword.this));
+        orginalUser = dbHandler.findUser(SaveSharedPreference.getUserName(editProfilePassword.this));
 
         // Setting texts for current username and password
         etUsername.setText(user.getUsername());
@@ -131,7 +134,6 @@ public class editProfilePassword extends AppCompatActivity {
                                                 // Get most recent friend and inventory items, request list from firebase
                                                 user.setFriendList(tempUser.getFriendList());
                                                 user.setFriendReqList(tempUser.getFriendReqList());
-                                                user.setInventoryList(tempUser.getInventoryList());
                                                 for (FriendData friend: user.getFriendList()){
                                                     Log.i(null, "Clear and Update---------------------------------" + friend.getFriendName());
                                                 }
@@ -151,6 +153,9 @@ public class editProfilePassword extends AppCompatActivity {
                                                 dbHandler.addUser(user);
                                                 for (Task task: user.getTaskList()){
                                                     dbHandler.addTask(task, user);
+                                                }
+                                                for (InventoryItem item: user.getInventoryList()){
+                                                    dbHandler.addInventoryItem(item, user);
                                                 }
                                                 for (FriendData friend: user.getFriendList()){
                                                     dbHandler.addFriend(friend.getFriendName(), user, friend.getStatus());
@@ -238,7 +243,31 @@ public class editProfilePassword extends AppCompatActivity {
                 }
             }
         });
-        inputChange();
+        // Add a TextWatcher to the username field
+        etUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { } // do nth
+            @Override
+            public void afterTextChanged(Editable editable) { } // do nth
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // When name input changes, validate registration data
+                registrationDataCheck();
+            }
+        });
+
+        // Add a TextWatcher to the password field
+        etPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { } // do nth
+            @Override
+            public void afterTextChanged(Editable s) { } // do nth
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // When password input changes, validate registration data
+                registrationDataCheck();
+            }
+        });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -263,88 +292,71 @@ public class editProfilePassword extends AppCompatActivity {
         }
     }
 
-    private void checkEmpty(String name, String password) {
-        if (name.length() > 0 && noName.getVisibility() == View.VISIBLE) {
-            noName.setVisibility(View.GONE);
-        }
-        if (password.length() > 0 && noPass.getVisibility() == View.VISIBLE) {
-            noPass.setVisibility(View.GONE);
-        }
-    }
-    @SuppressLint("ResourceType")
-    private void checkAllData() {
-        if (passChar8 && passUpper && passNum) {
-            isRegistrationClickable = true;
-            btnSave.setBackgroundColor(Color.parseColor("#88E473"));
-        }
-        else {
-            isRegistrationClickable = false;
-            btnSave.setBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
-        }
-    }
+    // Method to validate registration data and update UI
     @SuppressLint("ResourceType")
     private void registrationDataCheck() {
-        String password = etPassword.getText().toString(), name = etUsername.getText().toString();
+        String password = etPassword.getText().toString();
+        String name = etUsername.getText().toString();
 
-        checkEmpty(name, password);
+        // Check for empty name and password fields and display error messages if empty
+        if (!name.isEmpty() && noName.getVisibility() == View.VISIBLE) {
+            noName.setVisibility(View.GONE);
+        }
+        if (!password.isEmpty() && noPass.getVisibility() == View.VISIBLE) {
+            noPass.setVisibility(View.GONE);
+        }
 
+        // Check if password contains at least 8 characters and less than 20
         if (password.length() >= 8 && password.length() <= 20) {
             passChar8 = true;
-            frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+            frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent))); // Set frameOne background to accent color
         } else {
             passChar8 = false;
-            frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
+            frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault))); // Set frameOne background to default color
         }
+
+        // Check if password contains at least one uppercase letter and one lowercase letter
         if (password.matches("(?=.*[A-Z])(?=.*[a-z]).+")) {
             passUpper = true;
-            frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+            frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent))); // Set frameTwo background to accent color
         } else {
             passUpper = false;
-            frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
+            frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault))); // Set frameTwo background to default color
         }
+
+        // Check if password contains at least one numeric digit
         if (password.matches("(.*[0-9].*)")) {
             passNum = true;
-            frameThree.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+            frameThree.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent))); // Set frameThree background to accent color
         } else {
             passNum = false;
-            frameThree.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
+            frameThree.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault))); // Set frameThree background to default color
         }
-        checkAllData();
-    }
-    private void inputChange() {
-        etUsername.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
+
+
+        // Check all password requirements and update UI
+        if (passChar8 && passUpper && passNum) {
+            // Validate that user has change at least the password or username
+            if(password.equals(orginalUser.getPassword()) && name.equals(orginalUser.getUsername())){
+                isRegistrationClickable = false;
+                btnSave.setBackgroundColor(Color.parseColor(getString(R.color.colorDefault))); // Set default background color
+                sameAccount.setVisibility(View.VISIBLE);
+            }
+            else{
+                // If all password requirements are met, enable save button and change background color
+                isRegistrationClickable = true;
+                btnSave.setBackgroundColor(Color.parseColor("#88E473")); // Set background color to light green
+                sameAccount.setVisibility(View.GONE);
             }
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                registrationDataCheck();
-            }
+        } else {
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        etPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                registrationDataCheck();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+            // If any password requirement is not met, disable registration button and change background color
+            isRegistrationClickable = false;
+            btnSave.setBackgroundColor(Color.parseColor(getString(R.color.colorDefault))); // Set default background color
+            sameAccount.setVisibility(View.GONE);
+        }
     }
 
     private boolean isNetworkAvailable() {
