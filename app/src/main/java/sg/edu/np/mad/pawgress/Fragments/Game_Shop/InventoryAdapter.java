@@ -1,5 +1,6 @@
 package sg.edu.np.mad.pawgress.Fragments.Game_Shop;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,11 +15,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -138,6 +142,65 @@ public class InventoryAdapter extends RecyclerView.Adapter<InventoryViewHolder>{
             intent.putExtra("topOnly", (finalItem.getItemName().equals("Chandelier")||finalItem.getItemName().equals("Disco Ball")));
             activity.startActivity(intent);
             shop.cancel();
+        }
+        else{ // do some cool trick
+
+            Toast.makeText(context, finalItem.getItemName() + " has been consumed.", Toast.LENGTH_SHORT).show();
+            int inventoryQuantity = finalItem.getQuantity();
+            if (inventoryQuantity == 1){ // if used all of the item, remove from the inventory
+                myDBHandler.removeInventoryItem(finalItem,user);
+            }
+            else{ // there is still at least 1 item of the same item in the inventory, update the new quantity of the item
+                myDBHandler.updateInventoryQuantity(finalItem, user, inventoryQuantity-1);
+            }
+
+            // make pet do cool back to back dancing animation trick
+            shop.cancel();
+            ImageView pet_picture = gameView.findViewById(R.id.corgi_1);
+            YoYo.with(Techniques.Swing)
+                    .duration(1000)
+                    .repeat(2)
+                    .onEnd(new YoYo.AnimatorCallback() {
+                        @Override
+                        public void call(Animator animator) {
+                            // The first animation (RotateIn) has ended, start the second animation (Tada)
+                            YoYo.with(Techniques.Tada)
+                                    .duration(1000)
+                                    .repeat(1)
+                                    .onEnd(new YoYo.AnimatorCallback() {
+                                        @Override
+                                        public void call(Animator animator) {
+                                            // The second animation (Tada) has ended, start the third animation (ZoomIn)
+                                            YoYo.with(Techniques.Wave)
+                                                    .duration(1000)
+                                                    .repeat(1)
+                                                    .onEnd(new YoYo.AnimatorCallback() {
+                                                        @Override
+                                                        public void call(Animator animator) {
+                                                            // The third animation (ZoomIn) has ended, start the fourth animation (Shake)
+                                                            YoYo.with(Techniques.Shake)
+                                                                    .duration(1000)
+                                                                    .repeat(1)
+                                                                    .onEnd(new YoYo.AnimatorCallback() {
+                                                                        @Override
+                                                                        public void call(Animator animator) {
+                                                                            // The fourth animation (Shake) has ended, start the fifth animation (FadeIn)
+                                                                            YoYo.with(Techniques.Bounce)
+                                                                                    .duration(1000)
+                                                                                    .repeat(1)
+                                                                                    .playOn(pet_picture);
+                                                                        }
+                                                                    })
+                                                                    .playOn(pet_picture);
+                                                        }
+                                                    })
+                                                    .playOn(pet_picture);
+                                        }
+                                    })
+                                    .playOn(pet_picture);
+                        }
+                    })
+                    .playOn(pet_picture);
         }
     }
 }
