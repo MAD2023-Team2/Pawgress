@@ -4,15 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.Switch;
+import android.widget.TextView;
 
-import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.R;
 
 public class NotificationSelection extends AppCompatActivity {
@@ -24,7 +21,6 @@ public class NotificationSelection extends AppCompatActivity {
         setContentView(R.layout.activity_notification_selection);
 
         Switch notificationSwitch = findViewById(R.id.switch1);
-        ImageButton back = findViewById(R.id.imageButton);
 
         // Load the current preference from SharedPreferences
         SharedPreferences sharedPreferences = getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
@@ -39,9 +35,11 @@ public class NotificationSelection extends AppCompatActivity {
             editor.putBoolean("notification_preference", isChecked);
             editor.apply();
         });
-        back.setOnClickListener(new View.OnClickListener() {
+
+        TextView backbutton = findViewById(R.id.backButton);
+        backbutton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 finish();
             }
         });

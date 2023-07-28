@@ -9,11 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageButton;
+import android.widget.TextView;
 
-import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.R;
-import sg.edu.np.mad.pawgress.Tasks.TaskView;
 import sg.edu.np.mad.pawgress.UserData;
 
 public class UserSettingsActivity extends AppCompatActivity implements View.OnClickListener {
@@ -26,29 +24,20 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         setContentView(R.layout.activity_user_settings);
         Log.i("UserSettingsPage", "User Settings page opened");
 
-        Intent receivingEnd = getIntent();
-        userData = receivingEnd.getParcelableExtra("User");
-
         // Set click listeners for the feature buttons
         Button themeButton = findViewById(R.id.findTheme);
         Button fontButton = findViewById(R.id.editFonts);
         Button profilePictureButton = findViewById(R.id.editProfilePicture);
         Button notificationsButton = findViewById(R.id.Notifs);
         Button appModesButton = findViewById(R.id.appMode);
-        ImageButton back = findViewById(R.id.imageButton);
+        TextView backButton = findViewById(R.id.backButton);
 
         themeButton.setOnClickListener(this);
         fontButton.setOnClickListener(this);
         profilePictureButton.setOnClickListener(this);
         notificationsButton.setOnClickListener(this);
         appModesButton.setOnClickListener(this);
-
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        backButton.setOnClickListener(this);
     }
 
     @Override
@@ -57,15 +46,16 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         if (view.getId() == R.id.editProfilePicture) {
             // Open profile picture settings
             Intent intent = new Intent(UserSettingsActivity.this, ProfilePictureSelection.class);
-            intent.putExtra("User", userData);
             startActivity(intent);
         }
 
         if (view.getId() == R.id.Notifs) {
             // Open profile picture settings
             Intent intent = new Intent(UserSettingsActivity.this, NotificationSelection.class);
-            intent.putExtra("User", userData);
             startActivity(intent);
+        }
+        if (view.getId() == R.id.backButton) {
+            finish();
         }
     }
 }

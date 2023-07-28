@@ -29,7 +29,7 @@ public class Analytics extends AppCompatActivity {
     private MyDBHandler dbHandler;
     UserData user;
     private ArrayList<Task> taskList;
-    private ImageView back;
+    private TextView back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

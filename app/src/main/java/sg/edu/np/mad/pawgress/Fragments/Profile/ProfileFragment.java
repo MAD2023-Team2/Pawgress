@@ -206,6 +206,8 @@ public class ProfileFragment extends Fragment{
                     public void onClick(DialogInterface dialog, int which) {
                         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
                         DatabaseReference myRef = database.getReference("Users");
+
+                        String userName = dbData.getUsername();
                         Toast.makeText(getContext(), "Account has been deleted!", Toast.LENGTH_SHORT).show();
 
 
@@ -285,16 +287,23 @@ public class ProfileFragment extends Fragment{
                                         }
 
                                         // Remove user in firebase
-                                        myRef.child(dbData.getUsername()).removeValue();
+                                        myRef.child(userName).removeValue();
                                         myDBHandler.clearDatabase("ACCOUNTS");
                                         myDBHandler.clearDatabase("TASKS");
                                         myDBHandler.clearDatabase("FRIENDS");
                                         myDBHandler.clearDatabase("FRIENDREQUEST");
+
+                                        // Clears shared preference so no auto login
+                                        SaveSharedPreference.clearUserName(getActivity());
+
+                                        // Goes to login page after logging out
+                                        Intent intent = new Intent(getActivity(), LandingPage.class);
+                                        startActivity(intent);
                                     }
                                 }
                                 else{
                                     // Remove user in firebase
-                                    myRef.child(dbData.getUsername()).removeValue();
+                                    myRef.child(userName).removeValue();
                                     myDBHandler.clearDatabase("ACCOUNTS");
                                     myDBHandler.clearDatabase("TASKS");
                                     myDBHandler.clearDatabase("FRIENDS");

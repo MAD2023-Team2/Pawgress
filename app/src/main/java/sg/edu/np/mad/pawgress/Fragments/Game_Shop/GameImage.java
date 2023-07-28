@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import sg.edu.np.mad.pawgress.MyDBHandler;
@@ -22,7 +23,7 @@ public class GameImage extends AppCompatActivity {
     ImageView replaceImage_topLeft;
     ImageView replaceImage_topRight;
     ImageView replaceImage_topMiddle;
-    ImageButton backButton;
+    TextView backButton;
     Bitmap bitmap;
     InventoryItem inventoryItem;
     UserData user;

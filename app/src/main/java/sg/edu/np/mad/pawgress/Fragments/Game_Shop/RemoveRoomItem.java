@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -27,7 +28,7 @@ public class RemoveRoomItem extends AppCompatActivity {
     ImageView replaceImage_topLeft;
     ImageView replaceImage_topRight;
     ImageView replaceImage_topMiddle;
-    ImageButton backButton;
+    TextView backButton;
     UserData user;
 
     @Override
