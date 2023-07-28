@@ -1,9 +1,11 @@
 package sg.edu.np.mad.pawgress.Fragments.Profile;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 
 import android.app.Notification;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,18 +13,24 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
 
 public class UserSettingsActivity extends AppCompatActivity implements View.OnClickListener {
-    private UserData userData;
+    private UserData user;
+    private MyDBHandler myDBHandler;
+    private static final String CAPY = "CAPY";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.activity_user_settings);
+        myDBHandler = new MyDBHandler(this, null, null, 1);
         Log.i("UserSettingsPage", "User Settings page opened");
+        Intent receivingEnd = getIntent();
+        user = receivingEnd.getParcelableExtra("User");
 
         // Set click listeners for the feature buttons
         Button themeButton = findViewById(R.id.findTheme);
@@ -31,6 +39,7 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         Button notificationsButton = findViewById(R.id.Notifs);
         Button appModesButton = findViewById(R.id.appMode);
         TextView backButton = findViewById(R.id.backButton);
+        Button capyModeButton = findViewById(R.id.capyMode);
 
         themeButton.setOnClickListener(this);
         fontButton.setOnClickListener(this);
@@ -38,6 +47,7 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         notificationsButton.setOnClickListener(this);
         appModesButton.setOnClickListener(this);
         backButton.setOnClickListener(this);
+        capyModeButton.setOnClickListener(this);
     }
 
     @Override
@@ -57,5 +67,29 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         if (view.getId() == R.id.backButton) {
             finish();
         }
+        if (view.getId() == R.id.capyMode) {
+            showCapyModeConfirmationDialog();
+        }
+    }
+
+    private void showCapyModeConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Capymode Confirmation");
+        builder.setMessage("Do you want to change your pet design to a capybara? (Your pet will be a capybara forever)");
+        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Set the pet design to capybara
+                user.setPetDesign(R.drawable.capybara);
+                myDBHandler.savePetDesign(user.getUsername(), CAPY, R.drawable.capybara);
+            }
+        });
+        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.show();
     }
 }
