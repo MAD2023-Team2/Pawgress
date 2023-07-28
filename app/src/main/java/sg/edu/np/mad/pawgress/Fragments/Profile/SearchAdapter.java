@@ -69,11 +69,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     String profilePicturePath = dataSnapshot.getValue(String.class);
-                    holder.searchProfilePic.setImageResource(Integer.parseInt(profilePicturePath));
+                    if (Integer.parseInt(profilePicturePath) == R.drawable.corgi){
+                        holder.searchProfilePic.setImageResource(R.drawable.corgi);
+                    }
+                    else{
+                        holder.searchProfilePic.setImageResource(R.drawable.corgi_sunglasses);
+                    }
                 }
                 else{
-                    int profilePicPath = 2131230856;
-                    holder.searchProfilePic.setImageResource(profilePicPath);
+                    holder.searchProfilePic.setImageResource(R.drawable.corgi_sunglasses);
                 }
             }
             @Override
@@ -82,7 +86,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
 
             }
         });
-
         holder.searchAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

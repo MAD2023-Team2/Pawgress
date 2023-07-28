@@ -70,7 +70,7 @@ public class SaveSharedPreference {
     }
 
     public static int getProfilePic(Context ctx) {
-        return getSharedPreferences(ctx).getInt(PREF_PROFILE_PIC, 2131230856);
+        return getSharedPreferences(ctx).getInt(PREF_PROFILE_PIC, R.drawable.corgi_sunglasses);
     }
 
     public static String getUserName(Context ctx) {
