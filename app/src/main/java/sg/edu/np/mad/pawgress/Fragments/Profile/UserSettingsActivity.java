@@ -76,20 +76,32 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Capymode Confirmation");
         builder.setMessage("Do you want to change your pet design to a capybara? (Your pet will be a capybara forever)");
-        builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                // Set the pet design to capybara
-                user.setPetDesign(R.drawable.capybara);
-                myDBHandler.savePetDesign(user.getUsername(), CAPY, R.drawable.capybara);
-            }
-        });
-        builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
+        if (user.getPetDesign() == R.drawable.capybara){
+            builder.setMessage("Capymode is ON. Your pet is already a capybara.");
+            builder.setPositiveButton("Close", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
+        else{
+            builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    // Set the pet design to capybara
+                    user.setPetDesign(R.drawable.capybara);
+                    myDBHandler.savePetDesign(user.getUsername(), CAPY, R.drawable.capybara);
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+        }
+
         builder.show();
     }
 }
