@@ -54,7 +54,42 @@ public class ProfilePictureAdapter extends RecyclerView.Adapter<ProfilePictureAd
                     return;
                 }
 
+                /*
+                ----- Dictionary -----
+                1 = corgi_sunglasses
+                2 = corgi
+                3 = corgi_bone_toy
+                4 = golden_retriever
+                5 = retriever_sunglasses
+                6 = retriever_bone_toy
+                7 = grey_cat
+                8 = grey_sunglasses_cat
+                9 = grey_fish_cat
+                10 = orange_cat
+                11 = orange_sunglasses_cat
+                12 = orange_fish_cat
+                */
+
                 int selectedProfilePicture = profilePictures.get(holder.getAdapterPosition());
+
+                // Converting each image to an id
+                if (selectedProfilePicture == R.drawable.corgi_sunglasses){selectedProfilePicture = 1;}
+                else if (selectedProfilePicture == R.drawable.corgi) {selectedProfilePicture = 2;}
+                else if (selectedProfilePicture == R.drawable.corgi_bone_toy) {selectedProfilePicture = 3;}
+                else if (selectedProfilePicture == R.drawable.golden_retriever) {selectedProfilePicture = 4;}
+                else if (selectedProfilePicture == R.drawable.retriever_sunglasses) {selectedProfilePicture = 5;}
+                else if (selectedProfilePicture == R.drawable.retriever_bone_toy) {selectedProfilePicture = 6;}
+                else if (selectedProfilePicture == R.drawable.grey_cat) {selectedProfilePicture = 7;}
+                else if (selectedProfilePicture == R.drawable.grey_sunglasses_cat) {selectedProfilePicture = 8;}
+                else if (selectedProfilePicture == R.drawable.grey_fish_cat) {selectedProfilePicture = 9;}
+                else if (selectedProfilePicture == R.drawable.orange_cat) {selectedProfilePicture = 10;}
+                else if (selectedProfilePicture == R.drawable.orange_sunglasses_cat) {selectedProfilePicture = 11;}
+                else if (selectedProfilePicture == R.drawable.orange_fish_cat) {selectedProfilePicture = 12;}
+                else{
+                    // Adding this here in case we add more profile pics, follow above if statements accordingly
+                    selectedProfilePicture = 1;
+                }
+
                 String profilePicturePath = userData.getProfilePicturePath();
 
                 if (profilePicturePath != null && profilePicturePath.equals(String.valueOf(selectedProfilePicture))) {
@@ -63,10 +98,30 @@ public class ProfilePictureAdapter extends RecyclerView.Adapter<ProfilePictureAd
                 } else {
                     Log.i("ProfilePictureAdapter", "Updating profile picture...");
                     userData.setProfilePicturePath(String.valueOf(selectedProfilePicture));
+
+                    // Saving profile pic id number
                     MyDBHandler dbHandler = new MyDBHandler(context, null, null, 1);
-                    dbHandler.saveProfilePicture(userData.getUsername(), String.valueOf(selectedProfilePicture));
-                    listener.onProfilePictureSelected(selectedProfilePicture);
                     SaveSharedPreference.setProfilePic(context, selectedProfilePicture);
+                    dbHandler.saveProfilePicture(userData.getUsername(), String.valueOf(selectedProfilePicture));
+
+                    // Converting back to R.drawable path
+                    switch (selectedProfilePicture) {
+                        case 1: selectedProfilePicture = R.drawable.corgi_sunglasses; break;
+                        case 2: selectedProfilePicture = R.drawable.corgi; break;
+                        case 3: selectedProfilePicture = R.drawable.corgi_bone_toy; break;
+                        case 4: selectedProfilePicture = R.drawable.golden_retriever; break;
+                        case 5: selectedProfilePicture = R.drawable.retriever_sunglasses; break;
+                        case 6: selectedProfilePicture = R.drawable.retriever_bone_toy; break;
+                        case 7: selectedProfilePicture = R.drawable.grey_cat; break;
+                        case 8: selectedProfilePicture = R.drawable.grey_sunglasses_cat; break;
+                        case 9: selectedProfilePicture = R.drawable.grey_fish_cat; break;
+                        case 10: selectedProfilePicture = R.drawable.orange_cat; break;
+                        case 11: selectedProfilePicture = R.drawable.orange_sunglasses_cat; break;
+                        case 12: selectedProfilePicture = R.drawable.orange_fish_cat; break;
+                        default: selectedProfilePicture = R.drawable.corgi_sunglasses; break;
+                    }
+
+                    listener.onProfilePictureSelected(selectedProfilePicture);
                     Log.i("SaveSharedPref", "----------------" + SaveSharedPreference.getProfilePic(context));
                     Toast.makeText(context, "Profile picture set!", Toast.LENGTH_SHORT).show();
                 }

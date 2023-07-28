@@ -68,11 +68,22 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     String profilePicturePath = dataSnapshot.getValue(String.class);
-                    if (Integer.parseInt(profilePicturePath) == R.drawable.corgi){
-                        holder.profilePic.setImageResource(R.drawable.corgi);
-                    }
-                    else{
-                        holder.profilePic.setImageResource(R.drawable.corgi_sunglasses);
+                    int profilePicturePathInt = Integer.parseInt(profilePicturePath);
+
+                    switch (profilePicturePathInt) {
+                        case 1: holder.profilePic.setImageResource(R.drawable.corgi_sunglasses); break;
+                        case 2: holder.profilePic.setImageResource(R.drawable.corgi); break;
+                        case 3: holder.profilePic.setImageResource(R.drawable.corgi_bone_toy); break;
+                        case 4: holder.profilePic.setImageResource(R.drawable.golden_retriever); break;
+                        case 5: holder.profilePic.setImageResource(R.drawable.retriever_sunglasses); break;
+                        case 6: holder.profilePic.setImageResource(R.drawable.retriever_bone_toy); break;
+                        case 7: holder.profilePic.setImageResource(R.drawable.grey_cat); break;
+                        case 8: holder.profilePic.setImageResource(R.drawable.grey_sunglasses_cat); break;
+                        case 9: holder.profilePic.setImageResource(R.drawable.grey_fish_cat); break;
+                        case 10: holder.profilePic.setImageResource(R.drawable.orange_cat); break;
+                        case 11: holder.profilePic.setImageResource(R.drawable.orange_sunglasses_cat); break;
+                        case 12: holder.profilePic.setImageResource(R.drawable.orange_fish_cat); break;
+                        default: holder.profilePic.setImageResource(R.drawable.corgi_sunglasses); break;
                     }
 
                 }

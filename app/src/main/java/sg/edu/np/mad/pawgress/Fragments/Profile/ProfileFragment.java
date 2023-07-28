@@ -362,7 +362,22 @@ public class ProfileFragment extends Fragment{
     public void onResume() {
         super.onResume();
 
-        profilePictureImageView.setImageResource(SaveSharedPreference.getProfilePic(getActivity()));
+        switch (SaveSharedPreference.getProfilePic(getActivity())) {
+            case 1: profilePictureImageView.setImageResource(R.drawable.corgi_sunglasses); break;
+            case 2: profilePictureImageView.setImageResource(R.drawable.corgi); break;
+            case 3: profilePictureImageView.setImageResource(R.drawable.corgi_bone_toy); break;
+            case 4: profilePictureImageView.setImageResource(R.drawable.golden_retriever); break;
+            case 5: profilePictureImageView.setImageResource(R.drawable.retriever_sunglasses); break;
+            case 6: profilePictureImageView.setImageResource(R.drawable.retriever_bone_toy); break;
+            case 7: profilePictureImageView.setImageResource(R.drawable.grey_cat); break;
+            case 8: profilePictureImageView.setImageResource(R.drawable.grey_sunglasses_cat); break;
+            case 9: profilePictureImageView.setImageResource(R.drawable.grey_fish_cat); break;
+            case 10: profilePictureImageView.setImageResource(R.drawable.orange_cat); break;
+            case 11: profilePictureImageView.setImageResource(R.drawable.orange_sunglasses_cat); break;
+            case 12: profilePictureImageView.setImageResource(R.drawable.orange_fish_cat); break;
+            default: profilePictureImageView.setImageResource(R.drawable.corgi_sunglasses); break;
+        }
+
         /*// Retrieve the updated profile picture path from SharedPreferences
         SharedPreferences sharedPreferences = requireActivity().getSharedPreferences("MyPrefs", MODE_PRIVATE);
         String profilePicturePath = sharedPreferences.getString("profilePicturePath", "");

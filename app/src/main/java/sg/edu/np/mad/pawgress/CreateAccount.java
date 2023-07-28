@@ -162,7 +162,7 @@ public class CreateAccount extends AppCompatActivity {
                                                     myDBHandler.addUser(dbUserData);
                                                     // Setting shared preference for auto login
                                                     SaveSharedPreference.setUserName(CreateAccount.this, etUsername.getText().toString());
-                                                    SaveSharedPreference.setProfilePic(CreateAccount.this, SaveSharedPreference.getProfilePic(CreateAccount.this));
+                                                    SaveSharedPreference.setProfilePic(CreateAccount.this, 1);
                                                     SaveSharedPreference.clearSeenFriendReq(CreateAccount.this);
                                                     Intent intent = new Intent(CreateAccount.this, Tutorial_Page.class);
                                                     intent.putExtra("User", dbUserData);
