@@ -48,4 +48,3 @@ public class MyNotificationPublisher extends BroadcastReceiver {
         }
     }
 }
-
