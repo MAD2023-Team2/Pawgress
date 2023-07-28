@@ -277,6 +277,13 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
     }
 
+    public void updatePetInitial(String username, int petDesign){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_PET_DESIGN_INITIAL, petDesign);
+        db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
+    }
+
     public void setTopLeft(String username, String topLeft) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

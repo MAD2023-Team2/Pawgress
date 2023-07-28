@@ -75,6 +75,7 @@
         android:gravity="fill_vertical"
         android:text="@string/notifwidgetText"
         app:icon="@android:drawable/stat_notify_chat"
+        android:fontFamily="sans-serif-condensed-medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -89,15 +90,16 @@
         android:layout_marginStart="29dp"
         android:layout_marginTop="30dp"
         android:layout_marginEnd="29dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:textSize="17dp"
         android:autoText="false"
-        android:textOff = "  CapyMode : OFF"
-        android:textOn = "  CapyMode : ON"
+        android:textOff = "      CapyMode : OFF"
+        android:textOn = "      CapyMode : ON"
         android:gravity="fill_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Notifs"
-        android:background="@drawable/toggle_button_background"/>
+        app:layout_constraintTop_toBottomOf="@+id/Notifs" />
 
 
     <Button
@@ -112,6 +114,7 @@
         android:gravity="fill_vertical"
         android:text="@string/themeText"
         app:icon="@drawable/theme_icons"
+        android:fontFamily="sans-serif-condensed-medium"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
