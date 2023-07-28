@@ -185,11 +185,11 @@ public class LoginPage extends AppCompatActivity {
                                                     }
                                                     Log.v(null, "LOGIN PET DESIGN ----------------------"+ user.getPetDesign());
 
-                                                    if (user.getPetDesign() == 1){user.setPetDesign(R.drawable.grey_cat);}
+                                                    /*if (user.getPetDesign() == 1){user.setPetDesign(R.drawable.grey_cat);}
                                                     else if (user.getPetDesign() == 2){user.setPetDesign(R.drawable.orange_cat);}
                                                     else if (user.getPetDesign() == 3){user.setPetDesign(R.drawable.corgi);}
                                                     else if (user.getPetDesign() == 4){user.setPetDesign(R.drawable.capybara);}
-                                                    else{user.setPetDesign(R.drawable.golden_retriever);}
+                                                    else{user.setPetDesign(R.drawable.golden_retriever);}*/
                                                     Log.v(null, "LOGIN PET DESIGN ----------------------"+ user.getPetDesign());
                                                     Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
                                                     intent.putExtra("User", user);
