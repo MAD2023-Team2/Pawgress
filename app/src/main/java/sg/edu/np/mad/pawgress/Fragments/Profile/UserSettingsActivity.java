@@ -36,14 +36,12 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         Button themeButton = findViewById(R.id.findTheme);
         Button profilePictureButton = findViewById(R.id.editProfilePicture);
         Button notificationsButton = findViewById(R.id.Notifs);
-        Button appModesButton = findViewById(R.id.appMode);
         TextView backButton = findViewById(R.id.backButton);
         Button capyModeButton = findViewById(R.id.capyMode);
 
         themeButton.setOnClickListener(this);
         profilePictureButton.setOnClickListener(this);
         notificationsButton.setOnClickListener(this);
-        appModesButton.setOnClickListener(this);
         backButton.setOnClickListener(this);
         capyModeButton.setOnClickListener(this);
     }
