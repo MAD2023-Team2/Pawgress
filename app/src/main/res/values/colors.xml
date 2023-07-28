@@ -47,4 +47,7 @@
     <color name="colorBar">#daa440</color>
     <!-- color for dim button aka power saving mode -->
     <color name="colorPrimary">#3F51B5</color>
+
+    <color name="toggleGreen">#00FF00</color>
+    <color name="toggleRed">#FF0000</color>
 </resources>

@@ -20,6 +20,8 @@ public class UserData implements Parcelable{
     private String loggedInTdy;
     private String petType;
     private int petDesign;
+    private int petDesignInitial;
+    private String capyMode;
     private String actualUserName;
     private int userId;
     private String profilePicturePath;
@@ -35,7 +37,7 @@ public class UserData implements Parcelable{
     public UserData(int userId, String username, String password, ArrayList<Task> taskList, String lastLogInDate,
                     int streak, int currency, String loggedInTdy, String petType, int petDesign,
                     ArrayList<FriendData> friendList, ArrayList<FriendRequest> friendReqList, ArrayList<InventoryItem> inventoryList,
-                    String topLeft, String topRight, String topMiddle){
+                    String topLeft, String topRight, String topMiddle, int petDesignInitial, String capyMode){
         this.userId = userId;
         this.username = username;
         this.password = password;
@@ -52,6 +54,8 @@ public class UserData implements Parcelable{
         this.topLeft = topLeft;
         this.topRight = topRight;
         this.topMiddle = topMiddle;
+        this.petDesignInitial = petDesignInitial;
+        this.capyMode = capyMode;
     }
 
     public UserData(){
@@ -76,6 +80,8 @@ public class UserData implements Parcelable{
         dest.writeString(topLeft);
         dest.writeString(topRight);
         dest.writeString(topMiddle);
+        dest.writeInt(petDesignInitial);
+        dest.writeString(capyMode);
     }
     public static final Creator<UserData> CREATOR = new Creator<UserData>() {
         @Override
@@ -102,6 +108,8 @@ public class UserData implements Parcelable{
         topLeft = in.readString();
         topRight = in.readString();
         topMiddle = in.readString();
+        petDesignInitial = in.readInt();
+        capyMode = in.readString();
     }
 
     public int getUserId() { return userId; }
@@ -140,4 +148,8 @@ public class UserData implements Parcelable{
     public String getTopLeft(){ return topLeft; }
     public String getTopRight(){ return topRight; }
     public String getTopMiddle(){ return topMiddle; }
+    public int getPetDesignInitial(){ return petDesignInitial; }
+    public void setPetDesignInitial(int petDesignInitial) { this.petDesignInitial = petDesignInitial; }
+    public String getCapyMode(){ return capyMode; }
+    public void setCapyMode(String capyMode){ this.capyMode = capyMode; }
 }

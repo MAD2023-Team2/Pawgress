@@ -75,6 +75,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_TOP_LEFT = "TopLeft";
     public static String COLUMN_TOP_RIGHT = "TopRight";
     public static String COLUMN_TOP_MIDDLE = "TopMiddle";
+    public static String COLUMN_PET_DESIGN_INITIAL = "PetDesignInitial";
+    public static String COLUMN_CAPY_MODE = "CapyMode";
 
     public ArrayList<Task> taskList = new ArrayList<>();
 
@@ -98,7 +100,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_PROFILE_PICTURE + " TEXT," +
                 COLUMN_TOP_LEFT + " TEXT," +
                 COLUMN_TOP_RIGHT + " TEXT," +
-                COLUMN_TOP_MIDDLE + " TEXT)";
+                COLUMN_TOP_MIDDLE + " TEXT," +
+                COLUMN_PET_DESIGN_INITIAL + " INTEGER," +
+                COLUMN_CAPY_MODE + " TEXT)";
         db.execSQL(CREATE_ACCOUNT_TABLE);
         Log.i(title, CREATE_ACCOUNT_TABLE);
 
@@ -187,6 +191,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_TOP_LEFT, userData.getTopLeft());
         values.put(COLUMN_TOP_RIGHT, userData.getTopRight());
         values.put(COLUMN_TOP_MIDDLE, userData.getTopMiddle());
+        values.put(COLUMN_PET_DESIGN_INITIAL, userData.getPetDesignInitial());
+        values.put(COLUMN_CAPY_MODE, userData.getCapyMode());
 
         SQLiteDatabase db = this. getWritableDatabase();
         db.insert(ACCOUNTS, null, values);
@@ -264,6 +270,13 @@ public class MyDBHandler extends SQLiteOpenHelper{
 //        db.close();
     }
 
+    public void updateCapyMode(String username, String capyMode) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_CAPY_MODE, capyMode);
+        db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
+    }
+
     public void setTopLeft(String username, String topLeft) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -317,6 +330,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setTopLeft(cursor.getString(10));
             queryResult.setTopRight(cursor.getString(11));
             queryResult.setTopMiddle(cursor.getString(12));
+            queryResult.setPetDesignInitial(cursor.getInt(13));
+            queryResult.setCapyMode(cursor.getString(14));
             int profilePictureIndex = cursor.getColumnIndex(COLUMN_PROFILE_PICTURE);
             String profilePicturePath = cursor.getString(profilePictureIndex);
             queryResult.setProfilePicturePath(profilePicturePath);

@@ -466,7 +466,7 @@ public class MainMainMain extends AppCompatActivity {
 
         builder.setContentTitle(notificationTitle);
         builder.setContentText(content);
-        builder.setSmallIcon(R.drawable.ic_launcher_foreground);
+        builder.setSmallIcon(R.drawable.app_icon);
         builder.setAutoCancel(true);
         builder.setChannelId(NOTIFICATION_CHANNEL_ID);
 

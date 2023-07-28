@@ -67,6 +67,9 @@ public class CompanionSelectionActivity extends AppCompatActivity {
             dbHandler.savePetDesign(user.getUsername(), CAT, selectedDesign);
             user.setPetDesign(selectedDesign);
             user.setPetType(CAT);
+            user.setPetDesignInitial(selectedDesign);
+            user.setCapyMode("OFF");
+            dbHandler.updateCapyMode(user.getUsername(), "OFF");
 
 
         } else {
@@ -76,6 +79,9 @@ public class CompanionSelectionActivity extends AppCompatActivity {
             dbHandler.savePetDesign(user.getUsername(), DOG, selectedDesign);
             user.setPetDesign(selectedDesign);
             user.setPetType(DOG);
+            user.setPetDesignInitial(selectedDesign);
+            user.setCapyMode("OFF");
+            dbHandler.updateCapyMode(user.getUsername(), "OFF");
         }
 
         // Create an Intent to launch the "MainMainMain" activity
