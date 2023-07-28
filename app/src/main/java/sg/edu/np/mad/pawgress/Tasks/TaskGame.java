@@ -62,6 +62,7 @@ public class TaskGame extends AppCompatActivity {
         if (user1.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
         else if (user1.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
         else if (user1.getPetDesign() == R.drawable.corgi){pet_picture.setImageResource(R.drawable.corgi);}
+        else if (user1.getPetDesign() == R.drawable.capybara){pet_picture.setImageResource(R.drawable.capybara);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
 
         // Retrieving references to the ImageViews from the XML file
@@ -140,6 +141,10 @@ public class TaskGame extends AppCompatActivity {
                             else {
                                 mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi3);
                             }
+                            mediaPlayer.start();
+                        }
+                        else if (user.getPetDesign() == R.drawable.capybara){
+                            mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.capybara);
                             mediaPlayer.start();
                         }
                         else{

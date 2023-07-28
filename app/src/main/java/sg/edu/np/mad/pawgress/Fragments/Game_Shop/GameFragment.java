@@ -143,6 +143,7 @@ public class GameFragment extends Fragment {
         if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
         else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
         else if (user.getPetDesign() == R.drawable.corgi){pet_picture.setImageResource(R.drawable.corgi);}
+        else if (user.getPetDesign() == R.drawable.capybara){pet_picture.setImageResource(R.drawable.capybara);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
 
         FloatingActionButton goShop = view.findViewById(R.id.goShop);
@@ -575,6 +576,10 @@ public class GameFragment extends Fragment {
                             else {
                                 mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi3);
                             }
+                            mediaPlayer.start();
+                        }
+                        else if (user.getPetDesign() == R.drawable.capybara){
+                            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.capybara);
                             mediaPlayer.start();
                         }
                         else{
