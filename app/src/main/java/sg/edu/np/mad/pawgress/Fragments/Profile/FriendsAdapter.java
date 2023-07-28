@@ -156,11 +156,15 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     String profilePicturePath = dataSnapshot.getValue(String.class);
-                    holder.profilePic.setImageResource(Integer.parseInt(profilePicturePath));
+                    if (Integer.parseInt(profilePicturePath) == R.drawable.corgi){
+                        holder.profilePic.setImageResource(R.drawable.corgi);
+                    }
+                    else{
+                        holder.profilePic.setImageResource(R.drawable.corgi_sunglasses);
+                    }
                 }
                 else{
-                    int profilePicPath = 2131230856;
-                    holder.profilePic.setImageResource(profilePicPath);
+                    holder.profilePic.setImageResource(R.drawable.corgi_sunglasses);
                 }
             }
             @Override
