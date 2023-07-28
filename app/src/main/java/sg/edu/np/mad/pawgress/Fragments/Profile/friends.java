@@ -53,7 +53,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
     FriendsAdapter friendsAdapter;
     TextView requestCountText;
     TextView noFriendReqText;
-    TextView noFriendsText;
+    //TextView noFriendsText;
     int reqCount;
 
     @Override
@@ -107,11 +107,11 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                                 numFriend += 1;
                             }
                         }
-                        noFriendsText = findViewById(R.id.noFriendsText);
+                        /*noFriendsText = findViewById(R.id.noFriendsText);
                         if (numFriend == 0){
                             noFriendsText.setVisibility(View.VISIBLE);
                             noFriendsText.setText("No friends for now :(");
-                        }
+                        }*/
                     }
                 }
             }
@@ -280,11 +280,11 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                                             numFriend += 1;
                                         }
                                     }
-                                    noFriendsText = findViewById(R.id.noFriendsText);
+                                    /*noFriendsText = findViewById(R.id.noFriendsText);
                                     if (numFriend == 0){
                                         noFriendsText.setVisibility(View.VISIBLE);
                                         noFriendsText.setText("No friends for now :(");
-                                    }
+                                    }*/
                                 }
                             }
                             catch (Exception e){
@@ -321,11 +321,11 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                                                         numFriend += 1;
                                                     }
                                                 }
-                                                noFriendsText = findViewById(R.id.noFriendsText);
+                                                /*noFriendsText = findViewById(R.id.noFriendsText);
                                                 if (numFriend == 0){
                                                     noFriendsText.setVisibility(View.VISIBLE);
                                                     noFriendsText.setText("No friends for now :(");
-                                                }
+                                                }*/
                                             }
                                         }
                                     }
