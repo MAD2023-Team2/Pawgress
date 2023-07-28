@@ -30,6 +30,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.DataSnapshot;
@@ -535,6 +537,10 @@ public class GameFragment extends Fragment {
         pet_picture.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                YoYo.with(Techniques.Bounce)
+                        .duration(1000)
+                        .repeat(0)
+                        .playOn(pet_picture);
                 switch (event.getAction()) {
 
                     // When pressing down on pet
