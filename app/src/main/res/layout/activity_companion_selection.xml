@@ -15,7 +15,7 @@
         android:layout_marginBottom="18dp"
         android:layout_below="@id/textView14"
         app:srcCompat="@drawable/corgi"
-        android:layout_alignStart="@id/textView14"/>
+        android:layout_alignStart="@id/textView13"/>
 
     <ImageView
         android:id="@+id/imageView7"
@@ -24,7 +24,7 @@
         android:layout_marginTop="33dp"
         android:layout_marginBottom="18dp"
         android:layout_below="@id/textView14"
-        android:layout_alignEnd="@+id/textView14"
+        android:layout_alignEnd="@+id/imageView9"
         app:srcCompat="@drawable/grey_cat" />
 
     <ImageView
@@ -45,7 +45,7 @@
         android:textSize="34sp"
         android:textStyle="bold"
         android:layout_alignStart="@id/textView14"
-        android:layout_marginStart="-10dp"
+        android:layout_marginStart="-14dp"
         android:layout_marginTop="70dp"/>
 
     <TextView
