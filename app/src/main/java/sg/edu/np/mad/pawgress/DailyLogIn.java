@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,10 +61,16 @@ public class DailyLogIn extends AppCompatActivity {
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
 
+        // change user pet design on daily log in
+        ImageView pet_picture = findViewById(R.id.petPic);
+        if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat_daily);}
+        else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.grey_cat_daily);}
+        else if (user.getPetDesign() == R.drawable.corgi){pet_picture.setImageResource(R.drawable.daily_corgi_v2);}
+        else{pet_picture.setImageResource(R.drawable.daily_corgi_v2);}
+
         myDBHandler.clearDatabase("IMAGE_URL");
         // Initialize Firebase Storage
         FirebaseStorage storage = FirebaseStorage.getInstance();
-
         DatabaseReference database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("ShopItems");
 
         database.addValueEventListener(new ValueEventListener() {
