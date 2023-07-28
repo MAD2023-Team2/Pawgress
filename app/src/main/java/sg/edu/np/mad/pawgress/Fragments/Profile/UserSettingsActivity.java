@@ -25,16 +25,12 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
 
         // Set click listeners for the feature buttons
         Button themeButton = findViewById(R.id.findTheme);
-        Button fontButton = findViewById(R.id.editFonts);
         Button profilePictureButton = findViewById(R.id.editProfilePicture);
         Button notificationsButton = findViewById(R.id.Notifs);
-        Button appModesButton = findViewById(R.id.appMode);
 
         themeButton.setOnClickListener(this);
-        fontButton.setOnClickListener(this);
         profilePictureButton.setOnClickListener(this);
         notificationsButton.setOnClickListener(this);
-        appModesButton.setOnClickListener(this);
     }
 
     @Override
@@ -49,6 +45,12 @@ public class UserSettingsActivity extends AppCompatActivity implements View.OnCl
         if (view.getId() == R.id.Notifs) {
             // Open profile picture settings
             Intent intent = new Intent(UserSettingsActivity.this, NotificationSelection.class);
+            startActivity(intent);
+        }
+
+        if (view.getId() == R.id.findTheme) {
+            // Open profile picture settings
+            Intent intent = new Intent(UserSettingsActivity.this, ThemeSelectionActivity.class);
             startActivity(intent);
         }
     }

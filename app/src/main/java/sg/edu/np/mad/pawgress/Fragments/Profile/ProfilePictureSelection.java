@@ -67,7 +67,17 @@ public class ProfilePictureSelection extends AppCompatActivity implements Profil
     private ArrayList<Integer> getProfilePictureIcons() {
         ArrayList<Integer> profilePictureIcons = new ArrayList<>();
         profilePictureIcons.add(R.drawable.corgi);
+        profilePictureIcons.add(R.drawable.corgi_bone_toy);
         profilePictureIcons.add(R.drawable.corgi_sunglasses);
+        profilePictureIcons.add(R.drawable.golden_retriever);
+        profilePictureIcons.add(R.drawable.retriever_sunglasses);
+        profilePictureIcons.add(R.drawable.retriever_bone_toy);
+        profilePictureIcons.add(R.drawable.grey_cat);
+        profilePictureIcons.add(R.drawable.grey_sunglasses_cat);
+        profilePictureIcons.add(R.drawable.grey_fish_cat);
+        profilePictureIcons.add(R.drawable.orange_cat);
+        profilePictureIcons.add(R.drawable.orange_sunglasses_cat);
+        profilePictureIcons.add(R.drawable.orange_fish_cat);
         // Add more profile picture icons as needed
         return profilePictureIcons;
     }

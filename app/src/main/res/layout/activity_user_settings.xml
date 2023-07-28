@@ -44,7 +44,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="29dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="33dp"
         android:layout_marginEnd="29dp"
         android:backgroundTint="#EFDFCE"
         android:gravity="fill_vertical"
@@ -53,42 +53,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editFonts" />
-
-    <Button
-        android:id="@+id/editFonts"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="29dp"
-        android:backgroundTint="#EFDFCE"
-        android:gravity="fill_vertical"
-        android:text="@string/fontTheme"
-        app:icon="@android:drawable/ic_menu_preferences"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/findTheme" />
-
-    <Button
-        android:id="@+id/appMode"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="29dp"
-        android:layout_marginTop="30dp"
-        android:layout_marginEnd="29dp"
-        android:autoText="false"
-        android:backgroundTint="#EFDFCE"
-        android:gravity="fill_vertical"
-        android:text="@string/modeText"
-        app:icon="?attr/homeAsUpIndicator"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/Notifs" />
 
     <Button
         android:id="@+id/findTheme"

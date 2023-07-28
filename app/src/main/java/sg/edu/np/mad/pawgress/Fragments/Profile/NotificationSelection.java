@@ -15,7 +15,7 @@ public class NotificationSelection extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
+        WindowCompat.setDecorFitsSystemWindows(getWindow(), false);
         setContentView(R.layout.activity_notification_selection);
 
         Switch notificationSwitch = findViewById(R.id.switch1);
@@ -32,6 +32,10 @@ public class NotificationSelection extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putBoolean("notification_preference", isChecked);
             editor.apply();
+
+            // Set the result to indicate the user's preference has changed
+            setResult(RESULT_OK);
+            finish(); // Finish the activity and go back to MainMainMain activity
         });
     }
 }
