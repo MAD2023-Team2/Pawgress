@@ -1,34 +1,27 @@
 package sg.edu.np.mad.pawgress.Tasks;
 
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
-
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.DrawableRes;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import sg.edu.np.mad.pawgress.DailyLogIn;
-import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
-import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
@@ -43,6 +36,8 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
     RecyclerView recyclerView;
     ArrayList<Task> taskList;
     ArrayList<Task> updatedList;
+    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+    String today = formatter.format(new Date());
 
     public TaskCardAdapter(UserData userData, MyDBHandler mDatabase, Context context, RecyclerView recyclerView){
         this.user = userData;
@@ -67,7 +62,19 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
         }
         else{
             for (Task task : taskList){
-                if(task.getStatus().equals("In Progress") && (task.getPriority()==1 || task.getDailyChallenge()==1)){
+                if(task.getStatus().equals("In Progress") && task.getDailyChallenge() == 1){
+                    count+=1;
+                    recyclerTaskList.add(task);
+                }
+            }
+            for (Task task : taskList){
+                if(task.getStatus().equals("In Progress") && task.getPriority() == 1 && !recyclerTaskList.contains(task)){
+                    count+=1;
+                    recyclerTaskList.add(task);
+                }
+            }
+            for (Task task : taskList){
+                if(task.getStatus().equals("In Progress") && task.getDueDate()!=null && task.getDueDate().equals(today) && !recyclerTaskList.contains(task)){
                     count+=1;
                     recyclerTaskList.add(task);
                 }
@@ -79,13 +86,17 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
 
     @Override
     public TaskCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        return new TaskCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.taskcard,parent, false));
+        return new TaskCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task_home,parent, false));
     }
 
     @Override
     public void onBindViewHolder(TaskCardViewHolder holder, int position){
         Task task = recyclerTaskList.get(position);
-        holder.name.setText(task.getTaskName());
+        if (task.getDueDate()!=null && task.getDueDate().equals(today)){
+            holder.name.setText(task.getTaskName() );
+            holder.urgent.setVisibility(View.VISIBLE);
+        }
+        else holder.name.setText(task.getTaskName());
         // view individual task
         if (task.getDailyChallenge() == 0){
             holder.card2.setOnClickListener(new View.OnClickListener() {
@@ -105,6 +116,7 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
             Drawable background = context.getDrawable(R.drawable.rounded_corners_challenge);
             background.setTint(Color.parseColor(task.getColorCode().get(0)));
             holder.card2.setBackground(background);
+            holder.name.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(0))));
         }
 
         // complete task
@@ -136,25 +148,40 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
                         int totalTime = 0;
                         int inProgress = 0;
                         SimpleDateFormat formatter2 = new SimpleDateFormat("dd/MM/yyyy");
+                        SimpleDateFormat formatter3 = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
 
                         String todaysDate = formatter2.format(new Date());
+                        String checkDate;
                         for (Task task:updatedList){
+                            checkDate = task.getDateComplete();
                             if (task.getStatus().equals("In Progress")){
                                 inProgress++;
                             }
-                            else if (task.getDateCreated().equals(todaysDate) && task.getStatus().equals("Completed")){
-                                totalTime += task.getTimeSpent();
+                            else if (checkDate != null){
+                                try{
+                                    Date completedDate;
+                                    if (checkDate.contains(",")){
+                                        completedDate = formatter3.parse(checkDate);
+                                    }
+                                    else{
+                                        completedDate = formatter3.parse(checkDate);
+                                    }
+
+                                    String completedDateString = formatter2.format(completedDate);
+                                    if (completedDateString.equals(todaysDate)){
+                                        totalTime += task.getTimeSpent();
+                                    }
+                                }
+                                catch (ParseException e){
+                                    e.printStackTrace();
+                                }
                             }
                         }
-
-                        totalTime+=task.getTimeSpent();
-
                         int hrs = totalTime / 3600;
                         int mins = (totalTime % 3600) / 60;
                         int secs = totalTime % 60;
-                        int size = updatedList.size() - 1;
-                        taskLeft.setText("Total task left In Progress: " + inProgress);
-                        productiveTime.setText("Productive Time: " + String.format("%d hrs %d mins %d secs",hrs,mins,secs));;
+                        taskLeft.setText(String.valueOf(inProgress));
+                        productiveTime.setText(String.format("%d hrs %d mins %d secs",hrs,mins,secs));;
 
                         // after completing any task, gain 5 currency
                         // for every 30 minutes spent on the task, an additional 1 currency is added

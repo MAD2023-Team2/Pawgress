@@ -22,7 +22,8 @@
     <string name="userSettingsText">User Settings</string>
     <string name="analyticsText">Analytics</string>
     <string name="logOutText">Log Out</string>
-    <string name="friendRequest">Friend Requests</string>
+    <string name="friendRequest">Friend Request</string>
+    <string name="friendSearch">Search Friend</string>
     <string name="filler">John Doe</string>
     <string name="accountText">ACCOUNTS</string>
     <string name="settingsText">SETTINGS</string>

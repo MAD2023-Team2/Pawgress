@@ -16,6 +16,7 @@ public class FriendsViewHolder extends RecyclerView.ViewHolder{
     TextView friendName;
     ImageButton removeFriend, viewFriend;
     ConstraintLayout friendCard;
+    ImageView profilePic;
 
     public FriendsViewHolder(View itemView) {
         super(itemView);
@@ -23,5 +24,6 @@ public class FriendsViewHolder extends RecyclerView.ViewHolder{
         removeFriend = itemView.findViewById(R.id.removeFriend);
         viewFriend = itemView.findViewById(R.id.viewFriend);
         friendCard = itemView.findViewById(R.id.friendCard);
+        profilePic = itemView.findViewById(R.id.profilePic);
     }
 }

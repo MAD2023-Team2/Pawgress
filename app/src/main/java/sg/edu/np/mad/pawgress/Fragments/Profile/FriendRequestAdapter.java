@@ -23,6 +23,7 @@ import sg.edu.np.mad.pawgress.FriendData;
 import sg.edu.np.mad.pawgress.FriendRequest;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.SaveSharedPreference;
 import sg.edu.np.mad.pawgress.UserData;
 
 public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestViewHolder>{
@@ -55,12 +56,36 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
 
     @Override
     public void onBindViewHolder(FriendRequestViewHolder holder, int position) {
-        String name = friendRequestList.get(position);
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("Users");
+
+        String name = friendRequestList.get(holder.getAdapterPosition());
         holder.friendRequestName.setText(name);
+
+        Query query3 = myRef.child(name).child("profilePicturePath");
+        query3.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    String profilePicturePath = dataSnapshot.getValue(String.class);
+                    holder.profilePic.setImageResource(Integer.parseInt(profilePicturePath));
+                }
+                else{
+                    int profilePicPath = 2131230856;
+                    holder.profilePic.setImageResource(profilePicPath);
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // Handle error
+            }
+        });
 
         holder.acceptFriendRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SaveSharedPreference.setOldReqlistsize(context, SaveSharedPreference.getOldReqlistsize(context)-1);
+
                 //add friend
                 myDBHandler.addFriend(name, user, "Friend");
                 user.setFriendList(myDBHandler.findFriendList(user));
@@ -70,14 +95,14 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                 user.setFriendReqList(myDBHandler.findFriendReqList(user));
 
                 friendRequestList.remove(name);
+                // Notify the RecyclerView about the item removal (after database update)
                 notifyDataSetChanged();
 
                 listener.onFriendRequestAccepted(name);
 
                 Toast.makeText(context, name+"'s friend request has been accepted", Toast.LENGTH_SHORT).show();
 
-                FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
-                DatabaseReference myRef = database.getReference("Users");
+
                 Query query = myRef.orderByChild("username").equalTo(name);
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -92,6 +117,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                         //remove friend request
                                         reqList.remove(req);
                                         receivingUser.setFriendReqList(reqList);
+                                        break;
                                     }
                                 }
                                 ArrayList<FriendData> friendList = receivingUser.getFriendList();
@@ -138,6 +164,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                                 for (FriendData friend: thisUserFriendList){
                                                     if (friend.getFriendName().equals(receivingUser.getUsername())){
                                                         thisUserFriendList.remove(friend);
+                                                        break;
                                                     }
                                                 }
                                                 thisUserFriendList.add(new FriendData(receivingUser.getUsername(), "Friend"));
@@ -146,6 +173,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                                 for (FriendRequest req: thisUserFriendReqList){
                                                     if (req.getFriendReqName().equals(receivingUser.getUsername())){
                                                         thisUserFriendReqList.remove(req);
+                                                        break;
                                                     }
                                                 }
 
@@ -180,12 +208,15 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
         holder.rejectFriendRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                SaveSharedPreference.setOldReqlistsize(context, SaveSharedPreference.getOldReqlistsize(context)-1);
+
+
                 //remove friend from friend request
                 myDBHandler.removeFriendReq(name, user);
                 user.setFriendReqList(myDBHandler.findFriendReqList(user));
 
                 friendRequestList.remove(name);
-                notifyDataSetChanged();
+                notifyItemRemoved(holder.getAdapterPosition());
 
                 Toast.makeText(context, name+"'s friend request has been rejected", Toast.LENGTH_SHORT).show();
 
@@ -205,6 +236,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                         //remove friend request
                                         reqList.remove(req);
                                         receivingUser.setFriendReqList(reqList);
+                                        break;
                                     }
                                 }
                                 ArrayList<FriendRequest> thisUserReqList = user.getFriendReqList();
@@ -212,6 +244,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                     if (req.getFriendReqName().equals(receivingUser.getUsername())){
                                         thisUserReqList.remove(req);
                                         user.setFriendReqList(reqList);
+                                        break;
                                     }
                                 }
                                 myRef.child(name).setValue(receivingUser);

@@ -2,18 +2,24 @@ package sg.edu.np.mad.pawgress.Tasks;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ToggleButton;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,6 +47,8 @@ public class TaskGame extends AppCompatActivity {
     private TextView timeView;
     private Handler handler;
     MyDBHandler myDBHandler = new MyDBHandler(this, null, null, 1);
+    private ToggleButton powerSavingToggle;
+    private float originalBrightness;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +61,44 @@ public class TaskGame extends AppCompatActivity {
         ImageView pet_picture = findViewById(R.id.corgi_1);
         if (user1.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
         else if (user1.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
-        else if (user1.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
+        else if (user1.getPetDesign() == R.drawable.corgi){pet_picture.setImageResource(R.drawable.corgi);}
+        else if (user1.getPetDesign() == R.drawable.capybara){pet_picture.setImageResource(R.drawable.capybara);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
+
+        // Retrieving references to the ImageViews from the XML file
+        ImageView topLeftPic = findViewById(R.id.replaceImage_topLeft);
+        ImageView topRightPic = findViewById(R.id.replaceImage_topRight);
+        ImageView topMiddlePic = findViewById(R.id.replaceImage_topMiddle);
+
+        // Getting image paths from the database for the user
+        String topLeft = myDBHandler.getTopLeft(user1.getUsername());
+        String topRight = myDBHandler.getTopRight(user1.getUsername());
+        String topMiddle = myDBHandler.getTopMiddle(user1.getUsername());
+
+        // Displaying the top-left image if it exists
+        if (!topLeft.equals("")) {
+            topLeftPic.setVisibility(View.VISIBLE); // Make the ImageView visible
+            String pathName = myDBHandler.getImageURL(topLeft); // Get the file path of the image
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName); // Decode the file path into a Bitmap
+            topLeftPic.setImageBitmap(bitmap); // Set the Bitmap as the source for the ImageView
+        }
+
+        // Displaying the top-right image if it exists
+        if (!topRight.equals("")) {
+            topRightPic.setVisibility(View.VISIBLE); // Make the ImageView visible
+            String pathName = myDBHandler.getImageURL(topRight); // Get the file path of the image
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName); // Decode the file path into a Bitmap
+            topRightPic.setImageBitmap(bitmap); // Set the Bitmap as the source for the ImageView
+        }
+
+        // Displaying the top-middle image if it exists
+        if (!topMiddle.equals("")) {
+            topMiddlePic.setVisibility(View.VISIBLE); // Make the ImageView visible
+            String pathName = myDBHandler.getImageURL(topMiddle); // Get the file path of the image
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName); // Decode the file path into a Bitmap
+            topMiddlePic.setImageBitmap(bitmap); // Set the Bitmap as the source for the ImageView
+        }
+
         pet_picture.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -65,14 +109,56 @@ public class TaskGame extends AppCompatActivity {
                         int random = new Random().nextInt(3);
                         MediaPlayer mediaPlayer;
 
-                        if (random == 0){
-                            mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi_down_sound);
-                        } else if (random == 1) {
-                            mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi_up_sound);
+                        if (user1.getPetDesign() == R.drawable.grey_cat){
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat1_1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat1_2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat1_3);
+                            }
+                            mediaPlayer.start();
                         }
-                        else {
-                            mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi_3_sound);
+                        else if (user1.getPetDesign() == R.drawable.orange_cat){
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat2_1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat2_2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.cat2_3);
+                            }
+                            mediaPlayer.start();
                         }
+
+                        else if (user1.getPetDesign() == R.drawable.corgi){
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.corgi3);
+                            }
+                            mediaPlayer.start();
+                        }
+                        else if (user.getPetDesign() == R.drawable.capybara){
+                            mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.capybara);
+                            mediaPlayer.start();
+                        }
+                        else{
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.gr1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.gr2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(TaskGame.this, R.raw.gr3);
+                            }
+                            mediaPlayer.start();
+                        }
+
 
                         mediaPlayer.start();
                         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -108,34 +194,57 @@ public class TaskGame extends AppCompatActivity {
             }
         });
 
+
+        powerSavingToggle = findViewById(R.id.power_saving_toggle);
+
+        powerSavingToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // Enable power saving mode (dim the screen)
+                    originalBrightness = getSystemBrightness();
+                    dimScreen();
+                } else {
+                    // Disable power saving mode (restore screen brightness)
+                    restoreBrightness();
+                }
+            }
+        });
+
+        // Getting data from the intent (previous activity)
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
         task = receivingEnd.getParcelableExtra("Task");
 
-        ImageButton backButton = findViewById(R.id.close);
+        // Set up the "Back" button to save the current timer state and update the task
+        TextView backButton = findViewById(R.id.close);
         backButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 wasRunning = running;
                 pauseTimer();
+                // update task current time spent, as well as task database
                 task.setTimeSpent(seconds);
-                myDBHandler.updateTask(task,user.getUsername());
-                finish();
+                myDBHandler.updateTask(task, user.getUsername());
+                finish(); // Close the current activity and return to the previous one
             }
         });
+
+        // Initializing UI elements and restoring the timer state if there is a saved instance
         buttonStart = findViewById(R.id.start_timer_imagebutton);
         buttonReset = findViewById(R.id.reset_timer_imagebutton);
         buttonFinish = findViewById(R.id.finish_timer);
         timeView = findViewById(R.id.text_view_Countdown);
-        seconds = task.getTimeSpent();
-        updateTimerText();
+        seconds = task.getTimeSpent(); // Get the previously saved time for the task
+        updateTimerText(); // Update and display the time spent
+
         if (savedInstanceState != null) {
             seconds = savedInstanceState.getInt("seconds");
             running = savedInstanceState.getBoolean("running");
             wasRunning = savedInstanceState.getBoolean("wasRunning");
         }
         handler = new Handler();
-        runTimer();
+        runTimer(); // Start or resume the timer based on the saved state
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -146,16 +255,15 @@ public class TaskGame extends AppCompatActivity {
                 } else {
                     startTimer();
                 }
-                updateButtonUI();
+                updateButtonUI(); // Update UI elements based on the timer state
             }
         });
 
         buttonReset.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.v("TIMER", "Reset button has been pressed!");
-                if (!running){
-                    showResetConfirmationDialog();
+                if (!running) {
+                    showResetConfirmationDialog(); // Display a confirmation dialog before resetting the timer
                 }
             }
         });
@@ -163,8 +271,10 @@ public class TaskGame extends AppCompatActivity {
         buttonFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (running) { pauseTimer(); }
-                showFinishConfirmationDialog(user, task);
+                if (running) {
+                    pauseTimer();
+                }
+                showFinishConfirmationDialog(user, task); // Display a confirmation dialog before finishing the task
             }
         });
 
@@ -314,4 +424,26 @@ public class TaskGame extends AppCompatActivity {
             buttonReset.setAlpha(1.0F);
         }
     }
+    private void dimScreen() {
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.screenBrightness = 0.1f; // Set brightness level (0.0f to 1.0f)
+        getWindow().setAttributes(layoutParams);
+    }
+
+    // Restore screen brightness to the default value
+    private void restoreBrightness() {
+        WindowManager.LayoutParams layoutParams = getWindow().getAttributes();
+        layoutParams.screenBrightness = originalBrightness;
+        getWindow().setAttributes(layoutParams);
+    }
+
+    private float getSystemBrightness(){
+        try {
+            return Settings.System.getFloat(getContentResolver(), Settings.System.SCREEN_BRIGHTNESS);
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+            return 0.5f; // Default to 50% brightness if the system setting is not found
+        }
+    }
+
 }

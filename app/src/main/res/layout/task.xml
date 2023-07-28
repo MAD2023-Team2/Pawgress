@@ -24,7 +24,11 @@
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
         android:text="Task Title"
-        android:background="@drawable/rounded_border_beige"/>
+        android:textColor="@color/textColour"
+        android:background="@drawable/rounded_border_beige"
+        android:ellipsize="end"
+        android:maxWidth="100dp"
+        android:maxLines="1"/>
 
     <TextView
         android:id="@+id/textView21"
@@ -39,6 +43,7 @@
         android:paddingStart="5dp"
         android:text="DueDate"
         app:layout_constraintVertical_bias="1.0"
+        android:textColor="@color/textColour"
         android:background="@drawable/rounded_border_beige"/>
 
     <ImageView

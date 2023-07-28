@@ -1,8 +1,11 @@
 package sg.edu.np.mad.pawgress.Fragments.Game_Shop;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class InventoryItem {
+public class InventoryItem implements Parcelable{
     private String itemName;
     private String itemCategory;
     private int quantity;
@@ -31,4 +34,32 @@ public class InventoryItem {
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(itemName);
+        dest.writeString(itemCategory);
+        dest.writeInt(quantity);
+    }
+
+    protected InventoryItem(Parcel in) {
+        itemName = in.readString();
+        itemCategory = in.readString();
+        quantity = in.readInt();
+    }
+
+    public static final Parcelable.Creator<InventoryItem> CREATOR = new Parcelable.Creator<InventoryItem>() {
+        @Override
+        public InventoryItem createFromParcel(Parcel in) {
+            return new InventoryItem(in);
+        }
+
+        @Override
+        public InventoryItem[] newArray(int size) {
+            return new InventoryItem[size];
+        }
+    };
 }

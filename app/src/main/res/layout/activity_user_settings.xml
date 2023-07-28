@@ -7,18 +7,44 @@
     android:theme="@style/AppBackgroundColour"
     tools:context=".Fragments.Profile.UserSettingsActivity">
 
-    <TextView
-        android:id="@+id/textView8"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/userText"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="112dp"
-        android:layout_marginTop="40dp"
-        android:fontFamily="sans-serif-condensed-medium"
-        android:text="User Settings"
-        android:textSize="34sp"
-        android:textStyle="bold"
+        android:layout_marginTop="60dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:text="User Settings"
+            android:layout_centerHorizontal="true"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/backButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
+            android:background="@null"
+            android:drawableStart="@drawable/arrow_back"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:theme="@style/DrawableTint" />
+    </RelativeLayout>
+
+
 
     <Button
         android:id="@+id/editProfilePicture"
@@ -36,7 +62,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/userText" />
 
     <Button
         android:id="@+id/Notifs"
@@ -54,6 +80,41 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/findTheme" />
+
+    <Button
+        android:id="@+id/appMode"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="29dp"
+        android:autoText="false"
+        android:backgroundTint="#EFDFCE"
+        android:gravity="fill_vertical"
+        android:text="@string/modeText"
+        app:icon="?attr/homeAsUpIndicator"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Notifs" />
+
+    <Button
+        android:id="@+id/capyMode"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Secondary"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginEnd="29dp"
+        android:autoText="false"
+        android:backgroundTint="#EFDFCE"
+        android:gravity="fill_vertical"
+        android:text="CAPYMODE"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appMode" />
 
     <Button
         android:id="@+id/findTheme"

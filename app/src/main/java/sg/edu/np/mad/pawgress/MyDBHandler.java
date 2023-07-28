@@ -54,6 +54,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_TARGET_SEC = "TargetSec";
     public static String COLUMN_DAILY_CHALLENGE = "DailyChallenge";
     public static String COLUMN_TASK_PRIORITY = "Priority";
+    public static String COLUMN_TASK_DESCRIPTION = "Description";
     public static String COLUMN_PROFILE_PICTURE = "ProfilePicture";
     public static String FRIENDS = "Friends";
     public static String COLUMN_FRIENDNAME = "FriendName";
@@ -68,13 +69,12 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public static String COLUMN_ITEM_NAME = "ItemName";
     public static String COLUMN_ITEM_QUANTITY = "Quantity";
     public static String COLUMN_ITEM_CATEGORY = "Category";
-
-
-
-
-
-
-    //public static String COLUMN_ACTUAL_USERNAME = "ActualUserName";
+    public static String IMAGE_URL = "Image_URL";
+    public static String COLUMN_IMAGE_NAME = "ImageName";
+    public static String COLUMN_IMAGE_URL = "ImageURL";
+    public static String COLUMN_TOP_LEFT = "TopLeft";
+    public static String COLUMN_TOP_RIGHT = "TopRight";
+    public static String COLUMN_TOP_MIDDLE = "TopMiddle";
 
     public ArrayList<Task> taskList = new ArrayList<>();
 
@@ -95,7 +95,10 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_LOGIN + " TEXT," +
                 COLUMN_PET_TYPE + " TEXT," +
                 COLUMN_PET_DESIGN + " INTEGER," +
-                COLUMN_PROFILE_PICTURE + " TEXT)";
+                COLUMN_PROFILE_PICTURE + " TEXT," +
+                COLUMN_TOP_LEFT + " TEXT," +
+                COLUMN_TOP_RIGHT + " TEXT," +
+                COLUMN_TOP_MIDDLE + " TEXT)";
         db.execSQL(CREATE_ACCOUNT_TABLE);
         Log.i(title, CREATE_ACCOUNT_TABLE);
 
@@ -113,7 +116,8 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 COLUMN_TASK_DATESTARTED + " TEXT, " +
                 COLUMN_TASK_DATECOMPLETED + " TEXT," +
                 COLUMN_DAILY_CHALLENGE + " INTEGER," +
-                COLUMN_TASK_PRIORITY + " INTEGER)";
+                COLUMN_TASK_PRIORITY + " INTEGER," +
+                COLUMN_TASK_DESCRIPTION + " TEXT)";
 
         db.execSQL(CREATE_TASK_TABLE);
         Log.i(title, CREATE_TASK_TABLE);
@@ -127,6 +131,13 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
         db.execSQL(CREATE_INVENTORY_TABLE);
         Log.i(title, CREATE_INVENTORY_TABLE);
+
+        String CREATE_IMAGE_URL_TABLE = "Create TABLE " + IMAGE_URL + "(" +
+                COLUMN_IMAGE_NAME + " TEXT," +
+                COLUMN_IMAGE_URL + " TEXT)";
+
+        db.execSQL(CREATE_IMAGE_URL_TABLE);
+        Log.i(title, CREATE_IMAGE_URL_TABLE);
 
         String CREATE_FRIENDS_TABLE = "Create TABLE " + FRIENDS + "(" +
                 COLUMN_FRIENDNAME + " TEXT," +
@@ -158,6 +169,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.execSQL("DROP TABLE IF EXISTS " + ACCOUNTS);
         db.execSQL("DROP TABLE IF EXISTS " + TASKS);
         db.execSQL("DROP TABLE IF EXISTS " + INVENTORY);
+        db.execSQL("DROP TABLE IF EXISTS " + IMAGE_URL);
         onCreate(db);
     }
 
@@ -172,6 +184,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_LOGIN, userData.getLoggedInTdy());
         values.put(COLUMN_PET_TYPE, userData.getPetType());
         values.put(COLUMN_PET_DESIGN, userData.getPetDesign());
+        values.put(COLUMN_TOP_LEFT, userData.getTopLeft());
+        values.put(COLUMN_TOP_RIGHT, userData.getTopRight());
+        values.put(COLUMN_TOP_MIDDLE, userData.getTopMiddle());
 
         SQLiteDatabase db = this. getWritableDatabase();
         db.insert(ACCOUNTS, null, values);
@@ -194,6 +209,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_TASK_DATECOMPLETED, task.getDateComplete());
         values.put(COLUMN_DAILY_CHALLENGE, task.getDailyChallenge());
         values.put(COLUMN_TASK_PRIORITY, task.getPriority());
+        values.put(COLUMN_TASK_DESCRIPTION, task.getDescription());
         db.insert(TASKS, null, values);
         taskList.add(task); // adds new task into task list
         userData.setTaskList(taskList); // new task list assigned to user that was passed in
@@ -216,6 +232,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_TASK_DATECOMPLETED, task.getDateComplete());
         values.put(COLUMN_DAILY_CHALLENGE, task.getDailyChallenge());
         values.put(COLUMN_TASK_PRIORITY, task.getPriority());
+        values.put(COLUMN_TASK_DESCRIPTION, task.getDescription());
 
         db.update(TASKS, values, COLUMN_TASK_ID + "=?", new String[]{String.valueOf(task.getTaskID())});
         Log.i(title, "Updated Task");
@@ -247,14 +264,45 @@ public class MyDBHandler extends SQLiteOpenHelper{
 //        db.close();
     }
 
+    public void setTopLeft(String username, String topLeft) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TOP_LEFT, topLeft);
+        db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
+        Log.i(title, "Top Left Image updated");
+//        db.close();
+    }
+    public void setTopRight(String username, String topRight) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TOP_RIGHT, topRight);
+        db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
+        Log.i(title, "Top Right Image updated");
+//        db.close();
+    }
+
+    public void setTopMiddle(String username, String topMiddle) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_TOP_MIDDLE, topMiddle);
+        db.update(ACCOUNTS, values, COLUMN_USERNAME + "=?", new String[]{username});
+        Log.i(title, "Top Middle Image updated");
+//        db.close();
+    }
+
+    public void removeInventoryItem(InventoryItem inventoryItem, UserData userData){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete(INVENTORY,COLUMN_USERNAME + "=? AND " + COLUMN_ITEM_NAME + "=?", new String[]{userData.getUsername(), inventoryItem.getItemName()});
+        Log.i(title, "Deleted Inventory Item");
+//        db.close();
+    }
+
     public UserData findUser(String username){
         String query = "SELECT * FROM " + ACCOUNTS + " WHERE " + COLUMN_USERNAME + "=\'" + username + "\'";
-        Log.i(title, "Query :" + query);
 
         UserData queryResult = new UserData();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
-        Log.i(title, "Cursor");
         if (cursor.moveToFirst()){
             queryResult.setUserId(cursor.getInt(0));
             queryResult.setUsername(cursor.getString(1));
@@ -266,6 +314,9 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setLoggedInTdy(cursor.getString(6));
             queryResult.setPetType(cursor.getString(7));
             queryResult.setPetDesign(cursor.getInt(8));
+            queryResult.setTopLeft(cursor.getString(10));
+            queryResult.setTopRight(cursor.getString(11));
+            queryResult.setTopMiddle(cursor.getString(12));
             int profilePictureIndex = cursor.getColumnIndex(COLUMN_PROFILE_PICTURE);
             String profilePicturePath = cursor.getString(profilePictureIndex);
             queryResult.setProfilePicturePath(profilePicturePath);
@@ -278,37 +329,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
 //        db.close();
         return queryResult;
     }
-    public UserData findUserID(int userID){
-        String query = "SELECT * FROM " + ACCOUNTS + " WHERE " + COLUMN_USERID + "=\'" + userID + "\'";
-        Log.i(title, "Query :" + query);
 
-        UserData queryResult = new UserData();
-        SQLiteDatabase db = this.getWritableDatabase();
-        Cursor cursor = db.rawQuery(query, null);
-        Log.i(title, "Cursor");
-        if (cursor.moveToFirst()){
-            queryResult.setUserId(cursor.getInt(0));
-            queryResult.setUsername(cursor.getString(1));
-            queryResult.setPassword(cursor.getString(2));
-            queryResult.setTaskList(taskList);
-            queryResult.setLastLogInDate(cursor.getString(3));
-            queryResult.setStreak(cursor.getInt(4));
-            queryResult.setCurrency(cursor.getInt(5));
-            queryResult.setLoggedInTdy(cursor.getString(6));
-            queryResult.setPetType(cursor.getString(7));
-            queryResult.setPetDesign(cursor.getInt(8));
-            int profilePictureIndex = cursor.getColumnIndex(COLUMN_PROFILE_PICTURE);
-            String profilePicturePath = cursor.getString(profilePictureIndex);
-            queryResult.setProfilePicturePath(profilePicturePath);
-            cursor.close();
-        }
-        else{
-            Log.i(title, "Null");
-            queryResult = null;
-        }
-//        db.close();
-        return queryResult;
-    }
 
     public Task findTask(int id, ArrayList<Task> newTaskList){ // uses task id to find
         for (Task task : newTaskList){
@@ -337,6 +358,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
             queryResult.setDateComplete(cursor.getString(10));
             queryResult.setDailyChallenge(cursor.getInt(11));
             queryResult.setPriority(cursor.getInt(12));
+            queryResult.setDescription(cursor.getString(13));
             NewtaskList.add(queryResult);
             while (cursor.moveToNext()) { // goes to 2nd row and continues all the way till end
                 Task task = new Task();
@@ -352,6 +374,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
                 task.setDateComplete(cursor.getString(10));
                 task.setDailyChallenge(cursor.getInt(11));
                 task.setPriority(cursor.getInt(12));
+                task.setDescription(cursor.getString(13));
                 NewtaskList.add(task);
             }
             cursor.close();
@@ -438,12 +461,75 @@ public class MyDBHandler extends SQLiteOpenHelper{
         // closes the cursor and database before returning the retrieved password
         return currentPassword;
     }
+
+    public String getImageURL(String imageName) {
+        String query = "SELECT " + COLUMN_IMAGE_URL + " FROM " + IMAGE_URL + " WHERE " + COLUMN_IMAGE_NAME + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{imageName});
+
+        String imageURL = ""; // Default value if the URL is not found
+        if (cursor != null && cursor.moveToFirst()) {
+            int imageURLIndex = cursor.getColumnIndex(COLUMN_IMAGE_URL);
+            imageURL = cursor.getString(imageURLIndex);
+
+            cursor.close();
+        }
+
+        return imageURL;
+    }
+    public String getTopLeft(String username) {
+        String query = "SELECT " + COLUMN_TOP_LEFT + " FROM " + ACCOUNTS + " WHERE " + COLUMN_USERNAME + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+
+        String topLeft = ""; // Default value if the URL is not found
+        if (cursor != null && cursor.moveToFirst()) {
+            int topLeftIndex = cursor.getColumnIndex(COLUMN_TOP_LEFT);
+            topLeft = cursor.getString(topLeftIndex);
+
+            cursor.close();
+        }
+
+        return topLeft;
+    }
+    public String getTopRight(String username) {
+        String query = "SELECT " + COLUMN_TOP_RIGHT + " FROM " + ACCOUNTS + " WHERE " + COLUMN_USERNAME + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+
+        String topRight = ""; // Default value if the URL is not found
+        if (cursor != null && cursor.moveToFirst()) {
+            int topRightIndex = cursor.getColumnIndex(COLUMN_TOP_RIGHT);
+            topRight = cursor.getString(topRightIndex);
+
+            cursor.close();
+        }
+
+        return topRight;
+    }
+
+    public String getTopMiddle(String username) {
+        String query = "SELECT " + COLUMN_TOP_MIDDLE + " FROM " + ACCOUNTS + " WHERE " + COLUMN_USERNAME + " = ?";
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery(query, new String[]{username});
+
+        String topMiddle = ""; // Default value if the URL is not found
+        if (cursor != null && cursor.moveToFirst()) {
+            int topMiddleIndex = cursor.getColumnIndex(COLUMN_TOP_MIDDLE);
+            topMiddle = cursor.getString(topMiddleIndex);
+
+            cursor.close();
+        }
+
+        return topMiddle;
+    }
+
     public int getTaskTargetSec(int taskId){
         String query = "SELECT " + COLUMN_TARGET_SEC + " FROM " + TASKS + " WHERE " + COLUMN_TASK_ID + " = " + taskId;
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.rawQuery(query, null);
 
-        int targetSec = -1; // Default value if the task is not found
+        int targetSec = -1; // Default value if the targetSec is not found
         if (cursor != null && cursor.moveToFirst()) {
             int targetSecIndex = cursor.getColumnIndex(COLUMN_TARGET_SEC);
             targetSec = cursor.getInt(targetSecIndex);
@@ -501,7 +587,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     public ArrayList<FriendData> findFriendList(UserData userData){
         String query = "SELECT * FROM " + FRIENDS + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
-        Log.i(title, "Query :" + query);
         ArrayList<FriendData> friendList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -529,7 +614,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
     public ArrayList<InventoryItem> findInventoryList(UserData userData){
         String query = "SELECT * FROM " + INVENTORY + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
 
-        Log.i(title, "Query :" + query);
         ArrayList<InventoryItem> inventoryItemList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -591,7 +675,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
 
     public ArrayList<FriendRequest> findFriendReqList(UserData userData){
         String query = "SELECT * FROM " + FRIENDREQUEST + " WHERE " + COLUMN_USERNAME + "=\'" + userData.getUsername() + "\'";
-        Log.i(title, "Query :" + query);
         ArrayList<FriendRequest> friendReqList = new ArrayList<>();
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor cursor = db.rawQuery(query, null);
@@ -656,9 +739,16 @@ public class MyDBHandler extends SQLiteOpenHelper{
         db.delete(FRIENDREQUEST, COLUMN_USERNAME + "=?", new String[]{String.valueOf(user.getUsername())});
     }
 
-    public void removeAllInventoryItems(UserData user) {
-        SQLiteDatabase db = getWritableDatabase();
-        db.delete(INVENTORY, COLUMN_USERNAME + "=?", new String[]{String.valueOf(user.getUsername())});
+    public void addImageURL(String ImageName, String Image_URL){
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COLUMN_IMAGE_NAME, ImageName);
+        values.put(COLUMN_IMAGE_URL, Image_URL);
+
+        db.insert(IMAGE_URL, null, values);
+        Log.i(title, "Inserted ImageURL into Database");
+        //        db.close();
     }
 
     public void addInventoryItem(InventoryItem inventoryItem, UserData userData){
@@ -671,7 +761,7 @@ public class MyDBHandler extends SQLiteOpenHelper{
         values.put(COLUMN_ITEM_CATEGORY, inventoryItem.getItemCategory());
 
         db.insert(INVENTORY, null, values);
-        Log.i(title, "Inserted InventoryItem");
+        Log.i(title, "Added new Item to Inventory: "+ inventoryItem.getItemName());
         //        db.close();
     }
 
@@ -679,8 +769,6 @@ public class MyDBHandler extends SQLiteOpenHelper{
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
 
-
-        Log.i(title, "Password has been updated");
         values.put(COLUMN_USERNAME, userData.getUsername());
         values.put(COLUMN_ITEM_NAME, inventoryItem.getItemName());
         values.put(COLUMN_ITEM_QUANTITY, newQuantity);

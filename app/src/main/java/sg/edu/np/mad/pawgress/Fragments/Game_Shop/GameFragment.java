@@ -1,6 +1,9 @@
 package sg.edu.np.mad.pawgress.Fragments.Game_Shop;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Environment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -24,6 +28,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -33,12 +38,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicMarkableReference;
 
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
@@ -76,6 +85,8 @@ public class GameFragment extends Fragment {
     List<Product> allProducts, foodProducts, furnitureProducts, plantsProducts, toysProducts;
     List<InventoryItem> inventoryItemList, foodItems, furnitureItems, plantsItems, toysItems;
     MyDBHandler myDBHandler;
+    BottomSheetDialog shop;
+    public ImageView topLeftPic, topRightPic, topMiddlePic;
     private int queryMode; // 0 is unfiltered, 1 is descending, 2 is ascending
     public GameFragment() {
         // Required empty public constructor
@@ -110,6 +121,13 @@ public class GameFragment extends Fragment {
     }
 
     @Override
+    public void onResume(){
+        super.onResume();
+        Log.v("GameFragment","OnResume");
+        updateImage();
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -124,22 +142,30 @@ public class GameFragment extends Fragment {
         ImageView pet_picture = view.findViewById(R.id.corgi_1);
         if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
         else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
-        else if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
+        else if (user.getPetDesign() == R.drawable.corgi){pet_picture.setImageResource(R.drawable.corgi);}
+        else if (user.getPetDesign() == R.drawable.capybara){pet_picture.setImageResource(R.drawable.capybara);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
 
         FloatingActionButton goShop = view.findViewById(R.id.goShop);
         FloatingActionButton goInventory = view.findViewById(R.id.goInventory);
         FloatingActionButton openMenu = view.findViewById(R.id.openMenu);
         FloatingActionButton closeMenu = view.findViewById(R.id.close_menu);
+        FloatingActionButton editRoom = view.findViewById(R.id.editRoom);
         RelativeLayout menu = view.findViewById(R.id.menu);
+        RelativeLayout secondMenu = view.findViewById(R.id.secondMenu);
 
-        BottomSheetDialog shop = new BottomSheetDialog(getActivity());
+        topLeftPic = view.findViewById(R.id.replaceImage_topLeft);
+        topRightPic = view.findViewById(R.id.replaceImage_topRight);
+        topMiddlePic = view.findViewById(R.id.replaceImage_topMiddle);
+        updateImage();
+        shop = new BottomSheetDialog(getActivity());
 
         openMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 openMenu.setVisibility(View.GONE);
                 menu.setVisibility(View.VISIBLE);
+                secondMenu.setVisibility(View.VISIBLE);
             }
         });
 
@@ -147,7 +173,18 @@ public class GameFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 menu.setVisibility(View.GONE);
+                secondMenu.setVisibility(View.GONE);
                 openMenu.setVisibility(View.VISIBLE);
+            }
+        });
+
+        editRoom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Goes to adding of item in room
+                Intent intent = new Intent(getActivity(), RemoveRoomItem.class);
+                intent.putExtra("user",user);
+                startActivity(intent);
             }
         });
 
@@ -204,7 +241,7 @@ public class GameFragment extends Fragment {
                                 foodItems.add(item);
                             }
                         }
-                        inventoryAdapter = new InventoryAdapter(foodItems, user, myDBHandler, getContext());
+                        inventoryAdapter = new InventoryAdapter(foodItems, user, myDBHandler, getContext(), view, shop, getActivity());
                         recyclerViewInventory.setAdapter(inventoryAdapter);
                     }
                 });
@@ -225,7 +262,7 @@ public class GameFragment extends Fragment {
                                 furnitureItems.add(item);
                             }
                         }
-                        inventoryAdapter = new InventoryAdapter(furnitureItems, user, myDBHandler, getContext());
+                        inventoryAdapter = new InventoryAdapter(furnitureItems, user, myDBHandler, getContext(), view, shop, getActivity());
                         recyclerViewInventory.setAdapter(inventoryAdapter);
                     }
                 });
@@ -246,7 +283,7 @@ public class GameFragment extends Fragment {
                                 plantsItems.add(item);
                             }
                         }
-                        inventoryAdapter = new InventoryAdapter(plantsItems, user, myDBHandler, getContext());
+                        inventoryAdapter = new InventoryAdapter(plantsItems, user, myDBHandler, getContext(), view, shop, getActivity());
                         recyclerViewInventory.setAdapter(inventoryAdapter);
                     }
                 });
@@ -267,7 +304,7 @@ public class GameFragment extends Fragment {
                                 toysItems.add(item);
                             }
                         }
-                        inventoryAdapter = new InventoryAdapter(toysItems, user, myDBHandler, getContext());
+                        inventoryAdapter = new InventoryAdapter(toysItems, user, myDBHandler, getContext(), view, shop, getActivity());
                         recyclerViewInventory.setAdapter(inventoryAdapter);
                     }
                 });
@@ -278,19 +315,25 @@ public class GameFragment extends Fragment {
         goShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // Set the reference to the "ShopItems" node in the Firebase database
                 database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("ShopItems");
 
+                // Inflate the shop layout and set its size and attributes
                 shop.setContentView(R.layout.shop);
                 shop.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 shop.setCancelable(true);
                 shop.setDismissWithAnimation(true);
 
+                // Initialize UI elements for the shop view
                 currentCurrencyText = shop.findViewById(R.id.currentCurrency);
                 currentCurrencyText.setText(user.getCurrency() +" Paws");
-
                 filterButton = shop.findViewById(R.id.filterButton);
+
                 // when first open shop recycler view, show all shop items in all categories, unsorted
+                // Display all shop items in all categories, unsorted
                 generateUnfiltered();
+
+                // Set click listener for the filter button to toggle between different filter modes
                 filterButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -370,6 +413,7 @@ public class GameFragment extends Fragment {
                     }
                 });
 
+                // Set click listeners for category buttons to filter products by category
                 cat1 = shop.findViewById(R.id.cat1);
                 cat2 = shop.findViewById(R.id.cat2);
                 cat3 = shop.findViewById(R.id.cat3);
@@ -499,16 +543,56 @@ public class GameFragment extends Fragment {
                         int random = new Random().nextInt(3);
                         MediaPlayer mediaPlayer;
 
-                        // Randomly plays 1 out of 3 sounds
-                        if (random == 0){
-                            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi_down_sound);
-                        } else if (random == 1) {
-                            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi_up_sound);
+                        // Randomly plays 1 out of 3 sounds for each petType
+                        if (user.getPetDesign() == R.drawable.grey_cat){
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat1_1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat1_2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat1_3);
+                            }
+                            mediaPlayer.start();
                         }
-                        else {
-                            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi_3_sound);
+                        else if (user.getPetDesign() == R.drawable.orange_cat){
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat2_1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat2_2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.cat2_3);
+                            }
+                            mediaPlayer.start();
                         }
-                        mediaPlayer.start();
+
+                        else if (user.getPetDesign() == R.drawable.corgi){
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.corgi3);
+                            }
+                            mediaPlayer.start();
+                        }
+                        else if (user.getPetDesign() == R.drawable.capybara){
+                            mediaPlayer = MediaPlayer.create(getActivity(), R.raw.capybara);
+                            mediaPlayer.start();
+                        }
+                        else{
+                            if (random == 0){
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.gr1);
+                            } else if (random == 1) {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.gr2);
+                            }
+                            else {
+                                mediaPlayer = MediaPlayer.create(getActivity(), R.raw.gr3);
+                            }
+                            mediaPlayer.start();
+                        }
 
                         // Listener for when audio finishing playing, releases and resets media player to prevent overuse of resources
                         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -552,33 +636,86 @@ public class GameFragment extends Fragment {
     }
 
     private void generateAllCat() {
+        // Retrieve the inventory items for the user from the database
         inventoryItemList = myDBHandler.findInventoryList(user);
-        inventoryAdapter = new InventoryAdapter(inventoryItemList, user, myDBHandler, getContext());
+
+        // Create an adapter to display the inventory items in the RecyclerView
+        inventoryAdapter = new InventoryAdapter(inventoryItemList, user, myDBHandler, getContext(), getView(), shop, getActivity());
+
+        // Set the adapter for the RecyclerView that displays the inventory
         recyclerViewInventory.setAdapter(inventoryAdapter);
     }
 
-    private void generateUnfiltered(){
-        // Use unsorted way to generate the list
-        Log.v("GameFragment","not sorted");
+
+    private void generateUnfiltered() {
+        Log.v("GameFragment", "not sorted");
+
+        // Add a ValueEventListener to the Firebase database to retrieve all products
         database.addValueEventListener(new ValueEventListener() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 allProducts = new ArrayList<>();
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                // Loop through the database snapshot to retrieve Product objects and add them to the allProducts list
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     Product product = dataSnapshot.getValue(Product.class);
                     allProducts.add(product);
                 }
-                shopAdapter = new ShopAdapter(allProducts,user,myDBHandler,getContext());
+
+                // Create a ShopAdapter with allProducts list and set it as the adapter for the RecyclerView
+                shopAdapter = new ShopAdapter(allProducts, user, myDBHandler, getContext());
                 shopAdapter.currentCurrencyText = currentCurrencyText;
                 recyclerView.setAdapter(shopAdapter);
             }
+
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 // do nth
             }
         });
 
+        // Set the image resource of the filter button to off
         filterButton.setImageResource(R.drawable.filter_off);
+    }
+
+
+    private void updateImage() {
+        Log.v("GameFragment", "Updating the game view");
+
+        // Retrieve the user's data from the database
+        user = myDBHandler.findUser(SaveSharedPreference.getUserName(getActivity()));
+
+        // Get the paths of the top-left, top-right, and top-middle images for the user from the database
+        String topLeft = myDBHandler.getTopLeft(user.getUsername());
+        String topRight = myDBHandler.getTopRight(user.getUsername());
+        String topMiddle = myDBHandler.getTopMiddle(user.getUsername());
+
+        // Update the ImageViews for the top-left, top-right, and top-middle images if they exist
+        if (!topLeft.equals("")) {
+            topLeftPic.setVisibility(View.VISIBLE);
+            String pathName = myDBHandler.getImageURL(topLeft);
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
+            topLeftPic.setImageBitmap(bitmap);
+        } else {
+            topLeftPic.setImageResource(0);
+        }
+
+        if (!topRight.equals("")) {
+            topRightPic.setVisibility(View.VISIBLE);
+            String pathName = myDBHandler.getImageURL(topRight);
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
+            topRightPic.setImageBitmap(bitmap);
+        } else {
+            topRightPic.setImageResource(0);
+        }
+
+        if (!topMiddle.equals("")) {
+            topMiddlePic.setVisibility(View.VISIBLE);
+            String pathName = myDBHandler.getImageURL(topMiddle);
+            Bitmap bitmap = BitmapFactory.decodeFile(pathName);
+            topMiddlePic.setImageBitmap(bitmap);
+        } else {
+            topMiddlePic.setImageResource(0);
+        }
     }
 }

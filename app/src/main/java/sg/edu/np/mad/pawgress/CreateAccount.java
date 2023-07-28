@@ -55,7 +55,7 @@ public class CreateAccount extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
+//        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.create_account);
     }
 
@@ -139,7 +139,7 @@ public class CreateAccount extends AppCompatActivity {
                                                             newID[0] = highestUniqueId;
                                                         }
                                                     }
-                                                    UserData dbUserData = new UserData(newID[0], dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests, inventoryItems);
+                                                    UserData dbUserData = new UserData(newID[0], dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests, inventoryItems,"","","");
                                                     System.out.println(dbUsername + dbPassword + taskList + accCreateDate + dbUserData.getStreak() + dbUserData.getCurrency() + dbUserData.getLoggedInTdy());
                                                     myDBHandler.clearDatabase("ACCOUNTS");
                                                     myDBHandler.clearDatabase("TASKS");
@@ -162,6 +162,8 @@ public class CreateAccount extends AppCompatActivity {
                                                     myDBHandler.addUser(dbUserData);
                                                     // Setting shared preference for auto login
                                                     SaveSharedPreference.setUserName(CreateAccount.this, etUsername.getText().toString());
+                                                    SaveSharedPreference.setProfilePic(CreateAccount.this, SaveSharedPreference.getProfilePic(CreateAccount.this));
+                                                    SaveSharedPreference.clearSeenFriendReq(CreateAccount.this);
                                                     Intent intent = new Intent(CreateAccount.this, Tutorial_Page.class);
                                                     intent.putExtra("User", dbUserData);
 
@@ -176,7 +178,7 @@ public class CreateAccount extends AppCompatActivity {
                                                     finish();
                                                 } else {
                                                     // Handle the case when there are no users in the database
-                                                    UserData dbUserData = new UserData(1, dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests, inventoryItems);
+                                                    UserData dbUserData = new UserData(1, dbUsername, dbPassword, taskList, accCreateDate, 1, 0, "No", "dog", 2354, friendList, friendRequests, inventoryItems,"","","");
                                                     System.out.println(dbUsername + dbPassword + taskList + accCreateDate + dbUserData.getStreak() + dbUserData.getCurrency() + dbUserData.getLoggedInTdy());
                                                     myDBHandler.clearDatabase("ACCOUNTS");
                                                     myDBHandler.clearDatabase("TASKS");
@@ -199,6 +201,8 @@ public class CreateAccount extends AppCompatActivity {
                                                     myDBHandler.addUser(dbUserData);
                                                     // Setting shared preference for auto login
                                                     SaveSharedPreference.setUserName(CreateAccount.this, etUsername.getText().toString());
+                                                    SaveSharedPreference.setProfilePic(CreateAccount.this, SaveSharedPreference.getProfilePic(CreateAccount.this));
+                                                    SaveSharedPreference.clearSeenFriendReq(CreateAccount.this);
                                                     Intent intent = new Intent(CreateAccount.this, Tutorial_Page.class);
                                                     intent.putExtra("User", dbUserData);
 
@@ -237,7 +241,31 @@ public class CreateAccount extends AppCompatActivity {
                 }
             }
         });
-        inputChange();
+        // Add a TextWatcher to the username field
+        etUsername.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { } // do nth
+            @Override
+            public void afterTextChanged(Editable editable) { } // do nth
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                // When name input changes, validate registration data
+                validateData();
+            }
+        });
+
+        // Add a TextWatcher to the password field
+        etPassword.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { } // do nth
+            @Override
+            public void afterTextChanged(Editable s) { } // do nth
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // When password input changes, validate registration data
+                validateData();
+            }
+        });
 
         cancelButton.setOnClickListener(new View.OnClickListener() { // Cancel button for create account page, goes back to login page
             @Override
@@ -247,91 +275,60 @@ public class CreateAccount extends AppCompatActivity {
             }
         });
     }
-    private void checkEmpty(String name, String password) {
-        if (name.length() > 0 && noName.getVisibility() == View.VISIBLE) {
+
+    // Method to validate registration data and update UI
+    @SuppressLint("ResourceType")
+    private void validateData() {
+        String password = etPassword.getText().toString();
+        String name = etUsername.getText().toString();
+
+        // Check for empty name and password fields and display error messages if empty
+        if (!name.isEmpty() && noName.getVisibility() == View.VISIBLE) {
             noName.setVisibility(View.GONE);
         }
-        if (password.length() > 0 && noPass.getVisibility() == View.VISIBLE) {
+        if (!password.isEmpty() && noPass.getVisibility() == View.VISIBLE) {
             noPass.setVisibility(View.GONE);
         }
-    }
-    @SuppressLint("ResourceType")
-    private void checkAllData() {
-        if (passChar8 && passUpper && passNum) {
-            isRegistrationClickable = true;
-            createButton.setBackgroundColor(Color.parseColor("#88E473"));
-        }
-        else {
-            isRegistrationClickable = false;
-            createButton.setBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
-        }
-    }
-    // Using Regular Expression for Password Validation
-    // Conditions : Password Length 8-20 characters, must have lower and upper case & digits
-    @SuppressLint("ResourceType")
-    private void registrationDataCheck() {
-        String password = etPassword.getText().toString(), name = etUsername.getText().toString();
 
-        checkEmpty(name, password);
-
+        // Check if password contains at least 8 characters and less than 20
         if (password.length() >= 8 && password.length() <= 20) {
             passChar8 = true;
-            frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+            frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent))); // Set frameOne background to accent color
         } else {
             passChar8 = false;
-            frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
+            frameOne.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault))); // Set frameOne background to default color
         }
+
+        // Check if password contains at least one uppercase letter and one lowercase letter
         if (password.matches("(?=.*[A-Z])(?=.*[a-z]).+")) {
             passUpper = true;
-            frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+            frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent))); // Set frameTwo background to accent color
         } else {
             passUpper = false;
-            frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
+            frameTwo.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault))); // Set frameTwo background to default color
         }
+
+        // Check if password contains at least one numeric digit
         if (password.matches("(.*[0-9].*)")) {
             passNum = true;
-            frameThree.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent)));
+            frameThree.setCardBackgroundColor(Color.parseColor(getString(R.color.colorAccent))); // Set frameThree background to accent color
         } else {
             passNum = false;
-            frameThree.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault)));
+            frameThree.setCardBackgroundColor(Color.parseColor(getString(R.color.colorDefault))); // Set frameThree background to default color
         }
-        checkAllData();
+
+        // Check all password requirements and update UI
+        if (passChar8 && passUpper && passNum) {
+            // If all password requirements are met, enable save button and change background color
+            isRegistrationClickable = true;
+            createButton.setBackgroundColor(Color.parseColor("#88E473")); // Set background color to light green
+        } else {
+            // If any password requirement is not met, disable registration button and change background color
+            isRegistrationClickable = false;
+            createButton.setBackgroundColor(Color.parseColor(getString(R.color.colorDefault))); // Set default background color
+        }
     }
-    private void inputChange() {
-        etUsername.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            }
-
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                registrationDataCheck();
-            }
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-
-            }
-        });
-
-        etPassword.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                registrationDataCheck();
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-    }
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {

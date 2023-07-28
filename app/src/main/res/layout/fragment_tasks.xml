@@ -9,8 +9,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:backgroundTint="#FAF5F0">
+        android:layout_height="match_parent">
 
         <TextView
             android:id="@+id/filter"
@@ -23,23 +22,24 @@
             android:fontFamily="sans-serif-condensed-medium"
             android:paddingStart="5dp"
             android:paddingEnd="5dp"
-            android:text="Filter" />
+            android:text="Filter"
+            android:theme="@style/DrawableTint"/>
 
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/filterCard"
-            android:layout_alignParentStart="true"
-            android:layout_marginStart="33dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/filter"
-            android:visibility="gone"/>
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="33dp"
+            android:visibility="gone" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
-            android:layout_below="@id/filterCard"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_below="@id/filterCard" />
 
         <TextView
             android:id="@+id/emptyCatText"
@@ -49,10 +49,10 @@
             android:layout_alignBottom="@id/filterCard"
             android:layout_marginTop="-1dp"
             android:fontFamily="sans-serif-condensed-medium"
-            android:visibility="gone"
             android:gravity="center"
             android:text="No categories to show"
-            android:background="#FCFBFC" />
+            android:visibility="gone"
+            android:theme="@style/TaskColour"/>
 
         <TextView
             android:id="@+id/clear"
@@ -60,33 +60,33 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/filterCard"
             android:layout_alignParentEnd="true"
-            android:text="Clear"
             android:fontFamily="sans-serif-condensed-medium"
             android:paddingStart="5dp"
-            android:paddingEnd="5dp"
             android:paddingTop="5dp"
+            android:paddingEnd="5dp"
             android:paddingBottom="5dp"
-            android:visibility="gone"/>
+            android:text="Clear"
+            android:visibility="gone" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/addTask"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="16dp"
-            android:clickable="true"
             android:backgroundTint="#B9C498"
-            android:src="@drawable/baseline_add_circle_outline_24"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"/>
+            android:clickable="true"
+            android:src="@drawable/baseline_add_circle_outline_24" />
 
         <TextView
             android:id="@+id/emptyTextView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_below="@id/filterCard"
             android:fontFamily="sans-serif-condensed-medium"
             android:gravity="center"
-            android:layout_below="@id/filterCard"
             android:text="No tasks to work on for now :)"
             android:visibility="visible" />
 

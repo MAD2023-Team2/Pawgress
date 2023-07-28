@@ -7,7 +7,7 @@
     tools:context=".Tasks.TaskView">
 
     <ImageView
-        android:id="@+id/imageView13"
+        android:id="@+id/picBackground"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:scaleType="fitXY"
@@ -26,14 +26,51 @@
         android:layout_marginStart="72dp"
         android:layout_marginBottom="184dp"
         android:src="@drawable/corgi"
-        android:layout_alignBottom="@+id/imageView13" />
+        android:layout_alignBottom="@+id/picBackground" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/middle"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
+        android:visibility="invisible">
+    </TextView>
+
+    <ImageView
+        android:id="@+id/replaceImage_topLeft"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignTop="@id/middle"
+        android:visibility="gone"
+        android:src="@android:drawable/ic_menu_add" />
+
+    <ImageView
+        android:id="@+id/replaceImage_topRight"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignTop="@id/middle"
+        android:layout_marginStart="190dp"
+        android:visibility="gone"
+        android:src="@android:drawable/ic_menu_add" />
+
+    <ImageView
+        android:id="@+id/replaceImage_topMiddle"
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        android:layout_alignTop="@id/picBackground"
+        android:layout_centerHorizontal="true"
+        android:visibility="gone"
+        android:src="@android:drawable/ic_menu_add" />
+
 
     <RelativeLayout
         android:id="@+id/countDownContainer"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:layout_centerHorizontal="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
 
         <TextView
             android:id="@+id/text_view_Countdown"
@@ -44,15 +81,25 @@
             android:text="@string/mainTimer"
             android:textSize="60sp" />
 
-        <ImageButton
+
+        <TextView
             android:id="@+id/close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="20dp"
             android:background="@null"
-            android:layout_marginEnd="50dp"
-            android:layout_toStartOf="@id/text_view_Countdown"
-            app:srcCompat="?attr/actionModeCloseDrawable" />
+            android:drawableStart="@drawable/arrow_back"
+            android:layout_centerVertical="true"
+            android:drawablePadding="10dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp"
+            android:paddingTop="10dp"
+            android:paddingEnd="10dp"
+            android:paddingBottom="10dp"
+            android:textColor="@color/black" />
     </RelativeLayout>
 
 
@@ -60,9 +107,10 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="0dp"
         android:layout_below="@id/countDownContainer"
         android:layout_height="wrap_content">
+
 
         <Button
             android:id="@+id/finish_timer"
@@ -89,6 +137,21 @@
             android:layout_height="45dp"
             app:srcCompat="@mipmap/timer_play_round" />
 
+        <ToggleButton
+            android:id="@+id/power_saving_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:text="Power Saving Mode"
+            android:textOn="Undim"
+            android:textOff="Dim"
+            style="@style/ToggleButtonStyle"
+            android:layout_toRightOf="@id/finish_timer"
+            android:layout_alignTop="@id/reset_timer_imagebutton"
+            android:layout_alignBottom="@id/start_timer_imagebutton"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/toggle_button_background"
+            />
 
     </RelativeLayout>
 

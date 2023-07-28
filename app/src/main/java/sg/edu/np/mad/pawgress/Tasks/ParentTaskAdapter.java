@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
 import sg.edu.np.mad.pawgress.MyDBHandler;
@@ -80,8 +81,8 @@ public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder
             // this is for the remaining task categories where it is not daily challenge or prioritised
             for (Task task : taskList){
                 if (!categoryList.contains(task.getCategory()) && task.getStatus().equals("In Progress") && task.getPriority()!=1) {
-                        categoryList.add(task.getCategory());
-                        count+=1;
+                    categoryList.add(task.getCategory());
+                    count+=1;
                 }
             }
         }
@@ -99,10 +100,17 @@ public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder
             for (Task task:taskList){
                 if (!categoryList.contains(task.getCategory()) && task.getStatus().equals("In Progress") && task.getDailyChallenge()==1){
                     categoryList.add("Daily Challenge");
+                    count += 1;
+                }
+            }
+            for (Task task:taskList){
+                if (task.getPriority()==1 && categories.contains(task.getCategory()) && !categoryList.contains("Prioritised Tasks")){
+                    categoryList.add(1,"Prioritised Tasks");
                 }
             }
             for (String s:categories){
                 categoryList.add(s);
+                count+=1;
             }
         }
     }
@@ -117,7 +125,7 @@ public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder
         String category = categoryList.get(position);
         holder.category.setText(category);
         // creates the child adapter that will show the tasks that belong to each category
-        ChildTaskAdapter mAdapter = new ChildTaskAdapter(user, mDataBase, context, category, fragment);
+        ChildTaskAdapter mAdapter = new ChildTaskAdapter(user, mDataBase, context, category, categoryList, fragment);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         mAdapter.updateList();
         holder.childList.setLayoutManager(mLayoutManager);

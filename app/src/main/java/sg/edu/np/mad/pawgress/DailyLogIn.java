@@ -1,8 +1,12 @@
 package sg.edu.np.mad.pawgress;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 
+import android.annotation.SuppressLint;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import android.content.Intent;
@@ -10,9 +14,20 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.io.File;
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,13 +43,12 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import sg.edu.np.mad.pawgress.Fragments.Game_Shop.Product;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 
 public class DailyLogIn extends AppCompatActivity {
     MyDBHandler myDBHandler = new MyDBHandler(this, null, null, 1);
     UserData user;
-    String quoteText;
-    String author;
     String newDayDate;
 
     @Override
@@ -42,6 +56,60 @@ public class DailyLogIn extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.activity_daily_log_in);
+
+        // Getting user info via intent
+        Intent receivingEnd = getIntent();
+        user = receivingEnd.getParcelableExtra("User");
+
+        // change user pet design on daily log in
+        ImageView pet_picture = findViewById(R.id.petPic);
+        if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat_daily);}
+        else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.grey_cat_daily);}
+        else if (user.getPetDesign() == R.drawable.corgi){pet_picture.setImageResource(R.drawable.daily_corgi_v2);}
+        else{pet_picture.setImageResource(R.drawable.daily_corgi_v2);}
+
+        myDBHandler.clearDatabase("IMAGE_URL");
+        // Initialize Firebase Storage
+        FirebaseStorage storage = FirebaseStorage.getInstance();
+        DatabaseReference database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app").getReference("ShopItems");
+
+        database.addValueEventListener(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    Product product = dataSnapshot.getValue(Product.class);
+
+                    // Get a reference to the image file in Firebase Storage
+                    String imageName = product.getName();
+                    String imageURL = imageName + ".png";
+                    StorageReference imageRef = storage.getReference("InventoryImages/" + imageURL );
+
+                    // Get the path for local storage
+                    File localFile = null;
+                    try {
+                        localFile = File.createTempFile(imageName, ".png");
+                    } catch (IOException e) {
+                        // do nth
+                    }
+
+                    // Download the image to local storage
+                    File finalLocalFile = localFile;
+                    imageRef.getFile(localFile).addOnSuccessListener(taskSnapshot -> {
+                        // Image download success
+                        myDBHandler.addImageURL(imageName, finalLocalFile.getAbsolutePath());
+                        Log.e("DailyLogIn", "Downloaded image: " + imageName);
+                    }).addOnFailureListener(exception -> {
+                        // Handle any errors that occurred during the download
+                        Log.e("DailyLogIn", "Error downloading image: " + imageName);
+                    });
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                // do nth
+            }
+        });
     }
 
     public void createDeleteChallenge(){
@@ -83,7 +151,7 @@ public class DailyLogIn extends AppCompatActivity {
                 break;
         }
 
-        Task task = new Task(1, name, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,null,1, 0);
+        Task task = new Task(1, name, "In Progress", "Daily Challenge" ,0, 60, newDayDate,newDayDate,null,null,1, 0, null);
         myDBHandler.addTask(task, user);
         Log.w("Daily Log In", "Created Daily Challenge: " + task.getTaskName());
     }
@@ -93,12 +161,6 @@ public class DailyLogIn extends AppCompatActivity {
 
         super.onStart();
         Log.i(null, "Starting Daily LogIn Page");
-
-        Intent receivingEnd = getIntent();
-        user = receivingEnd.getParcelableExtra("User");
-
-        fetchRandomQuote();
-        myDBHandler.updateQuoteAndAuthor(quoteText, author, user);
 
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -127,7 +189,7 @@ public class DailyLogIn extends AppCompatActivity {
         TextView statusText = findViewById(R.id.logInStatus);
         TextView streakText = findViewById(R.id.streakText);
         TextView rewardText = findViewById(R.id.rewardText);
-        Button closeButton = findViewById(R.id.closeDaily);
+        TextView closeButton = findViewById(R.id.closeDaily);
 
         if (lastInDate.equals(newDayDate)) {
             Log.w("Daily Log In", "Last log in date equal to today's date.");
@@ -159,8 +221,8 @@ public class DailyLogIn extends AppCompatActivity {
             // scenario where user logs in on the same day but alrdy claimed their reward
             else{
                 // text will change to "you've logged in today, let's get productive!"
-                statusText.setText("You've logged in today, keep up with the Pawgress!");
-                streakText.setText(" ");
+                statusText.setText(" ");
+                streakText.setText("You've logged in today, keep up with the Pawgress!");
                 rewardText.setText(" ");
                 closeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -246,47 +308,5 @@ public class DailyLogIn extends AppCompatActivity {
                 }
             }
         }
-    }
-
-    public interface ProductivityQuoteApi {
-        @GET("random") // Replace with the actual API endpoint
-        Call<List<InspirationalQuote>> getRandomQuote();
-    }
-
-    private void fetchRandomQuote() {
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://zenquotes.io/api/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-
-        ProductivityQuoteApi apiService = retrofit.create(ProductivityQuoteApi.class);
-
-        Call<List<InspirationalQuote>> call = apiService.getRandomQuote();
-        call.enqueue(new Callback<List<InspirationalQuote>>() {
-            @Override
-            public void onResponse(Call<List<InspirationalQuote>> call, Response<List<InspirationalQuote>> response) {
-                if (response.isSuccessful() && response.body() != null && !response.body().isEmpty()) {
-                    InspirationalQuote quote = response.body().get(0);
-                    quoteText = quote.getQuote();
-                    author = quote.getAuthor();
-
-                    onQuoteFetched(quoteText, author);
-                } else {
-                    // Handle API error or empty response
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<InspirationalQuote>> call, Throwable t) {
-                // Handle network error
-                Toast.makeText(DailyLogIn.this, "No internet access. Unable to load motivational message.", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    public void onQuoteFetched(String quoteText, String author) {
-        this.quoteText = quoteText;
-        this.author = author;
-        myDBHandler.updateQuoteAndAuthor(quoteText, author, user);
     }
 }

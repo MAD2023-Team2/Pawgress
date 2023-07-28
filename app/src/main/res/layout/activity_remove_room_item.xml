@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.Game_Shop.GameFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/picBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:alpha="0.5"
+            android:src="@drawable/room_not_studying"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/middle"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:visibility="invisible">
+        </TextView>
+
+        <ImageView
+            android:id="@+id/replaceImage_topLeft"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignTop="@id/middle"
+            android:layout_marginBottom="230dp"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/replaceImage_topRight"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignTop="@id/middle"
+            android:layout_marginStart="190dp"
+            android:src="@android:drawable/ic_menu_add" />
+
+        <ImageView
+            android:id="@+id/replaceImage_topMiddle"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
+            android:layout_alignTop="@id/picBackground"
+            android:layout_centerHorizontal="true"
+            android:src="@android:drawable/ic_menu_add" />
+
+
+        <RelativeLayout
+            android:id="@+id/textTop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="130dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textTop2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:text="Select area to remove item from the room"
+                android:textSize="20sp"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_toRightOf="@id/backButton"
+                android:textStyle="bold"
+                android:layout_centerVertical="true"/>
+
+            <TextView
+                android:id="@+id/backButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:layout_marginStart="20dp"
+                android:background="@null"
+                android:layout_centerVertical="true"
+                android:text="Back"
+                android:drawableStart="@drawable/arrow_back"
+                android:drawablePadding="10dp"
+                android:fontFamily="sans-serif-condensed-medium"
+                android:gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingEnd="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/black" />
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+</FrameLayout>

@@ -26,7 +26,8 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
-        android:text="Task Title"/>
+        android:text="Task Title"
+        android:textColor="@color/black"/>
 
     <TextView
         android:id="@+id/textView21"
@@ -40,7 +41,8 @@
         android:fontFamily="sans-serif-condensed-medium"
         android:paddingStart="5dp"
         android:text="DueDate"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="1.0"
+        android:textColor="@color/black"/>
 
     <CheckBox
         android:id="@+id/checkBox"

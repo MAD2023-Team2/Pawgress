@@ -7,113 +7,204 @@
     android:theme="@style/AppBackgroundColour"
     tools:context=".Fragments.Home.HomeFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline_vertical_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5" />
 
         <TextView
             android:id="@+id/emptyspace_home"
-            android:layout_width="340dp"
-            android:layout_height="354dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="30dp"
-            android:layout_marginTop="25dp"
+            android:layout_marginTop="10dp"
             android:layout_marginEnd="30dp"
-            android:layout_marginBottom="35dp"
+            android:layout_marginBottom="15dp"
             android:background="@drawable/rounded_corners"
             android:text=""
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/greeting"
-            app:layout_constraintVertical_bias="1.0" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_below="@id/prioritizedTaskTextView"
+            />
 
         <TextView
             android:id="@+id/greeting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
+            android:layout_marginStart="30dp"
             android:layout_marginTop="16dp"
             android:fontFamily="sans-serif-condensed-medium"
             android:text="@string/greeting"
             android:textSize="24sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:id="@+id/emptyTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="3dp"
+            android:layout_marginEnd="3dp"
+            android:layout_marginBottom="15dp"
+            android:clickable="true"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:gravity="center"
+            android:text="No more prioritised or urgent tasks :)"
+            android:visibility="visible"
+            android:textColor="@color/textColour"
+            android:background="@drawable/rounded_border_tasklist"
+            android:layout_alignTop="@id/emptyspace_home"
+            android:layout_alignStart="@id/emptyspace_home"
+            android:layout_alignEnd="@id/emptyspace_home"
+            android:layout_alignBottom="@id/emptyspace_home"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/taskcardlist"
-            android:layout_width="335dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="3dp"
             android:layout_marginTop="3dp"
             android:layout_marginEnd="3dp"
             android:background="@drawable/rounded_border_tasklist"
-            app:layout_constraintEnd_toEndOf="@+id/emptyspace_home"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="@+id/emptyspace_home"
-            app:layout_constraintTop_toTopOf="@+id/emptyspace_home" />
-
-        <TextView
-            android:id="@+id/emptyTextView"
-            android:layout_width="340dp"
-            android:layout_marginStart="30dp"
-            android:layout_marginEnd="30dp"
-            android:layout_marginBottom="35dp"
-            android:clickable="true"
-            android:fontFamily="sans-serif-condensed-medium"
-            android:gravity="center"
-            android:layout_height="0dp"
-            android:text="No tasks to work on for now :)"
-            android:visibility="visible"
-            android:background="@drawable/rounded_border_tasklist"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/taskcardlist"
-            app:layout_constraintVertical_bias="0.0"/>
+            android:layout_alignTop="@id/emptyspace_home"
+            android:layout_alignStart="@id/emptyspace_home"
+            android:layout_alignEnd="@id/emptyspace_home"/>
 
         <TextView
             android:id="@+id/quoteTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="28dp"
+            android:layout_marginTop="25dp"
+            android:gravity="center"
+            android:text="SENTENCE"
+            android:textSize="17dp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_below="@id/greeting"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:textAlignment="center"
+            />
+
+        <TextView
+            android:id="@+id/prioritizedTaskTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Prioritised/Urgent Task"
+            android:textSize="20sp"
+            android:fontFamily="sans-serif-condensed-medium"
+            android:layout_below="@id/linearLayout"
+            android:layout_centerHorizontal="true"/>
+
+        <RelativeLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginBottom="15dp"
+            android:layout_below="@id/quoteTextView"
             android:layout_marginTop="20dp"
-            android:text="TextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/greeting" />
+            android:background="@android:color/transparent"
+            android:gravity="center">
 
-        <TextView
-            android:id="@+id/authorTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="260dp"
-            android:layout_marginTop="40dp"
-            android:text="TextView"
-            app:layout_constraintStart_toStartOf="@id/quoteTextView"
-            app:layout_constraintTop_toBottomOf="@+id/quoteTextView" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/taskLeft"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="40dp"
-            android:text="TextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/authorTextView" />
+                <!-- CardView for taskLeft statistics -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/taskLeftCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    app:cardBackgroundColor="#F3DFCD"
+                    app:cardCornerRadius="0dp">
 
-        <TextView
-            android:id="@+id/productiveToday"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="44dp"
-            android:layout_marginTop="8dp"
-            android:text="TextView"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/taskLeft" />
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp">
+
+                        <TextView
+                            android:id="@+id/taskLeft"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed-medium"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textSize="25dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed-medium"
+                            android:gravity="center"
+                            android:text="Task Left"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/taskLeft" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+                <!-- CardView for timeSpent statistics -->
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/timeSpentCard"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:cardBackgroundColor="#F3DFCD"
+                    app:cardCornerRadius="0dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="15dp">
+
+                        <TextView
+                            android:id="@+id/productiveToday"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed-medium"
+                            android:gravity="center"
+                            android:text="0"
+                            android:textSize="25dp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="sans-serif-condensed-medium"
+                            android:gravity="center"
+                            android:text="Time Spent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/productiveToday" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </androidx.cardview.widget.CardView>
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </RelativeLayout>
 </FrameLayout>

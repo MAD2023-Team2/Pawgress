@@ -16,6 +16,7 @@ import java.util.List;
 
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.SaveSharedPreference;
 import sg.edu.np.mad.pawgress.UserData;
 
 public class ProfilePictureAdapter extends RecyclerView.Adapter<ProfilePictureAdapter.ProfileViewHolder> {
@@ -65,6 +66,8 @@ public class ProfilePictureAdapter extends RecyclerView.Adapter<ProfilePictureAd
                     MyDBHandler dbHandler = new MyDBHandler(context, null, null, 1);
                     dbHandler.saveProfilePicture(userData.getUsername(), String.valueOf(selectedProfilePicture));
                     listener.onProfilePictureSelected(selectedProfilePicture);
+                    SaveSharedPreference.setProfilePic(context, selectedProfilePicture);
+                    Log.i("SaveSharedPref", "----------------" + SaveSharedPreference.getProfilePic(context));
                     Toast.makeText(context, "Profile picture set!", Toast.LENGTH_SHORT).show();
                 }
             }

@@ -3,6 +3,7 @@ package sg.edu.np.mad.pawgress.Fragments.Home;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,6 +31,7 @@ import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
+import sg.edu.np.mad.pawgress.SaveSharedPreference;
 import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.Tasks.TaskCardAdapter;
 import sg.edu.np.mad.pawgress.UserData;
@@ -48,6 +51,7 @@ public class HomeFragment extends Fragment {
     private TextView emptySpaceTextView;
     private ArrayList<Task> taskList;
     String todaysDate;
+    String checkDate;
 
 
     // TODO: Rename and change types of parameters
@@ -105,10 +109,15 @@ public class HomeFragment extends Fragment {
         UserData user = receivingEnd.getParcelableExtra("User");
 
         TextView quoteTextView = view.findViewById(R.id.quoteTextView);
-        TextView authorTextView = view.findViewById(R.id.authorTextView);
-        Log.i(null, ""+ myDBHandler.getQuote(user) + myDBHandler.getAuthor(user));
-        quoteTextView.setText(myDBHandler.getQuote(user));
-        authorTextView.setText(myDBHandler.getAuthor(user));
+        // TextView authorTextView = view.findViewById(R.id.authorTextView);
+        Log.i(null, ""+ SaveSharedPreference.getQuote(getActivity()) + SaveSharedPreference.getAuthor(getActivity()));
+
+        // Getting quote and author from shared preferences
+        String quote = SaveSharedPreference.getQuote(getActivity());
+        String author = SaveSharedPreference.getAuthor(getActivity());
+
+        quoteTextView.setText("\t\t" +quote + "\t\t\n\n" + "-" + author + "-");
+        // authorTextView.setText(myDBHandler.getAuthor(user));
 
         TextView taskLeft = view.findViewById(R.id.taskLeft);
         TextView productiveTime = view.findViewById(R.id.productiveToday);
@@ -118,15 +127,34 @@ public class HomeFragment extends Fragment {
         int inProgress = 0;
         int totalTime = 0;
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+        SimpleDateFormat formatterTime = new SimpleDateFormat("dd/MM/yyyy, HH:mm");
 
         todaysDate = formatter.format(new Date());
 
         for (Task task:taskList){
+            checkDate = task.getDateComplete();
+            System.out.println(checkDate);
             if (task.getStatus().equals("In Progress")){
                 inProgress++;
             }
-            else if (task.getDateCreated().equals(todaysDate) && task.getStatus().equals("Completed")){
-                totalTime += task.getTimeSpent();
+            else if (checkDate != null){
+                try{
+                    Date completedDate;
+                    if (checkDate.contains(",")){
+                        completedDate = formatterTime.parse(checkDate);
+                    }
+                    else{
+                        completedDate = formatterTime.parse(checkDate);
+                    }
+
+                    String completedDateString = formatter.format(completedDate);
+                    if (completedDateString.equals(todaysDate)){
+                        totalTime += task.getTimeSpent();
+                    }
+                }
+                catch (ParseException e){
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -134,8 +162,8 @@ public class HomeFragment extends Fragment {
         int mins = (totalTime % 3600) / 60;
         int secs = totalTime % 60;
 
-        taskLeft.setText("Total task left In Progress: " + inProgress);
-        productiveTime.setText("Productive Time: " + String.format("%d hrs %d mins %d secs",hrs,mins,secs));;
+        taskLeft.setText(String.valueOf(inProgress));
+        productiveTime.setText(String.format("%d hrs %d mins %d secs",hrs,mins,secs));
 
 
         /*
@@ -181,29 +209,12 @@ public class HomeFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.taskcardlist);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
         emptySpaceTextView = view.findViewById(R.id.emptyspace_home);
-
-        try {
-            // Try retrieving the user from the intent with new task list
-            Intent receivingEnd_2 = getActivity().getIntent();
-            UserData user_2 = receivingEnd_2.getParcelableExtra("New Task List");
-            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity(),recyclerView);
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-            recyclerView.setLayoutManager(mLayoutManager);
-            mAdapter.emptyTasktext = emptyTaskText;
-            mAdapter.updateEmptyView();
-            recyclerView.setAdapter(mAdapter);
-
-        } catch (RuntimeException e) {
-            // if there is no new task list, get intent from user
-            Intent receivingEnd_2 = getActivity().getIntent();
-            UserData user_2 = receivingEnd_2.getParcelableExtra("User");
-            TaskCardAdapter mAdapter = new TaskCardAdapter(user_2,myDBHandler, getActivity(),recyclerView);
-            LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
-            recyclerView.setLayoutManager(mLayoutManager);
-            mAdapter.emptyTasktext = emptyTaskText;
-            mAdapter.updateEmptyView();
-            recyclerView.setAdapter(mAdapter);
-        }
+        TaskCardAdapter mAdapter = new TaskCardAdapter(user,myDBHandler, getActivity(),recyclerView);
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+        mAdapter.emptyTasktext = emptyTaskText;
+        mAdapter.updateEmptyView();
+        recyclerView.setAdapter(mAdapter);
 
         emptyTaskText.setOnClickListener(new View.OnClickListener() {
             @Override

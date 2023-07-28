@@ -3,6 +3,75 @@
     <style name="Base.Theme.Pawgress" parent="Theme.Material3.Light.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+        <item name="backgroundColor">#FF00FF</item>
+        <item name="android:statusBarColor">#11161C</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowActionBar">false</item>
+
+        <!-- Nav Bar -->
+        <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
+        <item name="colorPrimary">@color/darkModeBlack</item>
+        <item name="colorOnPrimary">@color/darkModeBlack</item>
+        <item name="itemIconPadding">100dp</item>
+
+        <!-- Alert Dialogs -->
+        <item name="alertDialogTheme">@style/AlertDialog</item>
+
+    </style>
+
+    <!-- Modal Bottom Sheet -->
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="android:textColorHint">#FFFFFF</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_half_dialog_dark</item>
+    </style>
+
+    <!-- Alert Dialog -->
+    <style name="AlertDialog" parent="Theme.Material3.Light.Dialog.Alert">
+        <item name="android:windowBackground">@drawable/rounded_dialog_dark</item>
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="buttonBarButtonStyle">@style/AlertDialogButton</item>
+    </style>
+    <style name="AlertDialogButton" parent = "@style/Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <!-- Rounded Dialog -->
+    <style name="CustomDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@drawable/rounded_dialog_dark</item>
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <!-- Create Task -->
+    <style name="TaskNameCreate">
+        <item name="android:editTextBackground">@drawable/rounded_dialog_dark</item>
+        <item name="hintTextColor">#FFFFFF</item>
+        <item name="android:editTextColor">#FFFFFF</item>
+    </style>
+
+    <!-- Number Picker -->
+    <style name="NumberPicker">
+        <item name="android:textColorPrimary">#FFFFFF</item>
+    </style>
+
+    <!-- Dropdown Arrow in Spinner -->
+    <style name="Dropdown" parent="Widget.AppCompat.Spinner">
+        <item name="android:backgroundTint">#FFFFFF</item>
+    </style>
+
+    <!-- Drawables -->
+    <style name="Calendar">
+        <item name="android:drawableStart">@drawable/outline_calendar_month_24_white</item>
+    </style>
+    <style name="Time">
+        <item name="android:drawableStart">@drawable/baseline_access_time_24_white</item>
     </style>
 
     <style name="AppBackgroundColour">
@@ -19,7 +88,6 @@
         <item name="android:textColor">#FFFFFF</item>
     </style>
 
-
     <style name="ReturnButtonStyle">
         <item name="android:tint">#FFFFFF</item>
     </style>
@@ -28,5 +96,51 @@
         <item name="android:background">#11161C</item>
         <item name="android:textColor">#FFFFFF</item>
     </style>
+
+    <style name="EditTextColor">
+        <item name="android:editTextColor">#FFFFFF</item>
+        <item name="android:textColorHint">#FFFFFF</item>
+    </style>
+
+    <style name="Theme.Pawgress" parent="Base.Theme.Pawgress" />
+    <style name="Theme.Pawgress.LightBeigeMode" parent="Theme.Pawgress">
+        // should contain colour hex
+        <item name="backgroundColor">#FF00FF</item>
+        <item name="android:statusBarColor">#11161C</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:windowActionBar">false</item>
+    </style>
+
+    <style name="Tint">
+        <item name="tint">#FFFFFF</item>
+    </style>
+
+    <style name="DrawableTint">
+        <item name="drawableTint">#FFFFFF</item>
+    </style>
+
+    <!-- Date Picker Dialog -->
+    <style name="DatePicker" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColorSecondary">#FFFFFF</item>
+        <item name="colorControlActivated">#11161C</item>
+        <item name="colorAccent">#11161C</item>
+        <item name="android:windowBackground">#1D2530</item>
+        <item name="android:buttonBarPositiveButtonStyle">@style/DialogButton</item>
+        <item name="android:buttonBarNegativeButtonStyle">@style/DialogButton</item>
+    </style>
+    <style name="DialogButton" parent = "Widget.MaterialComponents.Button.TextButton">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
+    <!-- Search View -->
+    <style name="Search" parent="Widget.AppCompat.SearchView">
+        <item name="android:textColorPrimary">#FFFFFF</item>
+        <item name="android:textColorHint">#FFFFFF</item>
+        <item name="tint">#FFFFFF</item>
+        <item name="fontFamily">sans-serif-condensed-medium</item>
+    </style>
+
 
 </resources>

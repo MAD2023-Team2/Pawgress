@@ -6,7 +6,9 @@ import androidx.core.view.WindowCompat;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Switch;
+import android.widget.TextView;
 
 import sg.edu.np.mad.pawgress.R;
 
@@ -36,6 +38,14 @@ public class NotificationSelection extends AppCompatActivity {
             // Set the result to indicate the user's preference has changed
             setResult(RESULT_OK);
             finish(); // Finish the activity and go back to MainMainMain activity
+        });
+
+        TextView backbutton = findViewById(R.id.backButton);
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
         });
     }
 }

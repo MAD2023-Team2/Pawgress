@@ -4,8 +4,6 @@ import static android.view.View.INVISIBLE;
 
 import static java.lang.Integer.parseInt;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,26 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
-import android.widget.AdapterView;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.NumberPicker;
-import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.bottomsheet.BottomSheetDialog;
-
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 import sg.edu.np.mad.pawgress.DailyLogIn;
@@ -48,17 +33,18 @@ import sg.edu.np.mad.pawgress.UserData;
 public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
     ArrayList<Task> taskList, recyclerTaskList;
     Context context;
-    String THIS = "Adapter";
     UserData user;
     MyDBHandler mDataBase;
     String category;
     TasksFragment fragment;
-    public ChildTaskAdapter(UserData userData, MyDBHandler mDatabase, Context context, String category, TasksFragment fragment){
+    ArrayList<String> categoryList;
+    public ChildTaskAdapter(UserData userData, MyDBHandler mDatabase, Context context, String category, ArrayList<String> categoryList, TasksFragment fragment){
         this.user = userData;
         this.mDataBase = mDatabase;
         this.context = context;
         this.taskList = mDataBase.findTaskList(user);
         this.category = category;
+        this.categoryList = categoryList;
         this.fragment = fragment;
     }
     @NonNull
@@ -76,6 +62,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
 
     // shows that there are currently no tasks to work on if there are no tasks in progress found in the database for this user
     public void updateList(){
+        Log.w("child", "category " + category);
         // list of the tasks that are to be shown for each category
         recyclerTaskList = new ArrayList<>();
         ArrayList<Task> removeList = new ArrayList<>();
@@ -83,7 +70,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
             // if task is in progress +
             // if task category is the same as the category passed from the parent recyclerview or
             // if the task is prioritised
-            // because prioritised tasks still have their own category
+            // adds into list to show in recyclerView
             if(task.getStatus().equals("In Progress") && (task.getCategory().equals(category) || task.getPriority() == 1)){
                 recyclerTaskList.add(task);
             }
@@ -98,6 +85,13 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
             if(!category.equals("Prioritised Tasks") && task.getPriority() == 1){
                 removeList.add(task);
             }
+            Log.v("remove", "task cat " + task.getCategory());
+        }
+        for (Task task : recyclerTaskList){
+            if(!categoryList.contains(task.getCategory())){
+                removeList.add(task);
+                Log.v("remove", "task cat " + task.getCategory());
+            }
         }
         // remove tasks that are not meant to be under the category (if it is prioritised but in another category)
         if (!removeList.isEmpty()){
@@ -108,7 +102,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
     @Override
     public ChildTaskViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
         if (viewType == 1){
-            return new ChildTaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.challenge,parent, false));
+            return new ChildTaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task_daily_challenge,parent, false));
         }
         else{
             return new ChildTaskViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task,parent, false));
@@ -128,6 +122,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
         if (getItemViewType(position) == 1) {
             holder.card.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(0))));
             holder.name.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(1))));
+            holder.duedate.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor(task.getColorCode().get(0))));
         }
         // if it is not daily challenge
         if (getItemViewType(position) == 0){
@@ -221,7 +216,6 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
             else if (currentMonth > month || currentYear > year){
                 holder.warn.setVisibility(View.VISIBLE);
             }
-            else Log.w(null, "TASK DATE ELSE IN CHILDADAPTER");
         }
         if (holder.warn != null){
             holder.warn.setOnClickListener(new View.OnClickListener() {

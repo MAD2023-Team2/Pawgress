@@ -55,7 +55,7 @@ public class LoginPage extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
+//        WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
         DatabaseReference myRef = database.getReference("Users");
 
@@ -161,12 +161,15 @@ public class LoginPage extends AppCompatActivity {
                                                     }
                                                     user.setTaskList(taskList);
                                                        */
+                                                    SaveSharedPreference.clearSeenFriendReq(LoginPage.this);
                                                     SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
+                                                    SaveSharedPreference.setProfilePic(LoginPage.this, Integer.parseInt(user.getProfilePicturePath()));
                                                     myDBHandler.clearDatabase("ACCOUNTS");
                                                     myDBHandler.clearDatabase("TASKS");
                                                     myDBHandler.clearDatabase("FRIENDS");
                                                     myDBHandler.clearDatabase("FRIENDREQUEST");
                                                     myDBHandler.clearDatabase("INVENTORY");
+                                                    Log.v(null, "ON LOGIN ---------------------" + SaveSharedPreference.getProfilePic(LoginPage.this) + user.getProfilePicturePath());
                                                     myDBHandler.addUser(user);
                                                     for (Task task: user.getTaskList()){
                                                         myDBHandler.addTask(task, user);

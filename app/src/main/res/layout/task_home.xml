@@ -20,15 +20,20 @@
     <TextView
         android:id="@+id/tasktitlecard"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="10dp"
-        android:layout_toRightOf="@id/checkBoxcard"
+        android:layout_alignTop="@id/checkBoxcard"
+        android:layout_toRightOf="@id/urgent"
+        android:layout_marginStart="3dp"
+        android:layout_alignBottom="@id/checkBoxcard"
         android:fontFamily="sans-serif-condensed-medium"
         android:gravity="center"
         android:text="Task Title"
-        app:layout_constraintEnd_toStartOf="@+id/checkBoxcard"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="#F2DECC"
+        android:textColor="@color/black"
+        android:ellipsize="end"
+        android:maxWidth="500dp"
+        android:maxLines="1"/>
 
     <CheckBox
         android:id="@+id/checkBoxcard"
@@ -45,6 +50,18 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/urgent"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/urgent_icon"
+        android:layout_toRightOf="@id/checkBoxcard"
+        android:layout_alignTop="@id/tasktitlecard"
+        android:layout_alignBottom="@id/tasktitlecard"
+        android:background="@null"
+        android:layout_marginStart="-20dp"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>
