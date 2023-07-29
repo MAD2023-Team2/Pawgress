@@ -139,7 +139,7 @@
             android:layout_marginTop="25dp"
             android:contentDescription="App Icon"
             android:layout_toEndOf="@id/centerpiece"
-            android:src="@drawable/pawgress_icon_final_png" />
+            android:theme="@style/Icon"/>
 
         <ImageView
             android:id="@+id/centerpiece"

@@ -5,7 +5,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -17,11 +16,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
-import android.widget.Button;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -30,21 +26,16 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 
 import sg.edu.np.mad.pawgress.Fragments.Game_Shop.GameFragment;
-import sg.edu.np.mad.pawgress.Fragments.Game_Shop.InventoryItem;
 import sg.edu.np.mad.pawgress.Fragments.Home.HomeFragment;
 import sg.edu.np.mad.pawgress.Fragments.Profile.NotificationSelection;
 import sg.edu.np.mad.pawgress.Fragments.Profile.ProfileFragment;
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
-import sg.edu.np.mad.pawgress.Tasks.Task;
 import sg.edu.np.mad.pawgress.databinding.ActivityMainMainMainBinding;
 
 public class MainMainMain extends AppCompatActivity {
@@ -466,7 +457,7 @@ public class MainMainMain extends AppCompatActivity {
 
         builder.setContentTitle(notificationTitle);
         builder.setContentText(content);
-        builder.setSmallIcon(R.drawable.app_icon);
+        builder.setSmallIcon(R.drawable.app_icon_light);
         builder.setAutoCancel(true);
         builder.setChannelId(NOTIFICATION_CHANNEL_ID);
 
