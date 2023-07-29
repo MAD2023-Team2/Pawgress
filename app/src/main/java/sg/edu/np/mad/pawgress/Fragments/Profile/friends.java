@@ -63,13 +63,16 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
         MyDBHandler myDBHandler = new MyDBHandler(friends.this, null, null, 1);
         WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
 
+        // Getting user info
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
 
+        // Instantiate firebase reference
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
         DatabaseReference myRef = database.getReference("Users");
         Query query = myRef.orderByChild("username").equalTo(user.getUsername());
 
+        // Setting friend recyclerview
         RecyclerView recyclerView = findViewById(R.id.friendsRecycler);
         friendsAdapter =
                 new FriendsAdapter(friends.this, user, myDBHandler);
@@ -79,6 +82,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(friendsAdapter);
 
+        // Back button
         returnButtonFriends = findViewById(R.id.backButton);
         returnButtonFriends.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,18 +90,24 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                 finish();
             }
         });
+
+        // Updating user friend info by pulling from firebase
         query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         UserData tempUser = snapshot.getValue(UserData.class);
+
+                        // Update user friends and request list
                         user.setFriendList(tempUser.getFriendList());
                         user.setFriendReqList(tempUser.getFriendReqList());
 
                         //ArrayList<FriendRequest> friendRequests = myDBHandler.findFriendReqList(user);
                         //user.setFriendReqList(friendRequests);
                         //setContentView(R.layout.activity_friends);
+
+                        // Creating list to be put into recyclerview
                         ArrayList<FriendData> friendList = tempUser.getFriendList();
                         ArrayList<FriendData> recyclerFriendList = new ArrayList<FriendData>();
                         for (FriendData friend: friendList){
@@ -105,7 +115,9 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                                 recyclerFriendList.add(friend);
                             }
                         }
+                        // Update friends recyclerview with new list
                         friendsAdapter.setData(recyclerFriendList);
+
                         // Count the number of friends in friend list
                         int numFriend = 0;
                         for (FriendData friend: user.getFriendList()){
@@ -126,6 +138,8 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
             }
         });
 
+
+        // Search for friend button
         addFriend = findViewById(R.id.addFriend);
         Dialog searchDialog = new Dialog(friends.this, R.style.CustomDialog);
         addFriend.setOnClickListener(new View.OnClickListener() {
@@ -134,21 +148,23 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                 getFirebaseList(new FirebaseDataListener() {
                     @Override
                     public void onDataLoaded(ArrayList<String> firebaseList) {
-                                        /*
-                                        for (String name: firebaseList){
-                                            FriendRequest req = new FriendRequest(name, "Outgoing Pending");
-                                            ArrayList<FriendRequest> reqList = myDBHandler.findFriendReqList(user);
-                                            if (reqList.contains(req)){
-                                                firebaseList.remove(req.getFriendReqName());
-                                            }
-                                        }
-                                         */
+                        /*
+                        for (String name: firebaseList){
+                            FriendRequest req = new FriendRequest(name, "Outgoing Pending");
+                            ArrayList<FriendRequest> reqList = myDBHandler.findFriendReqList(user);
+                            if (reqList.contains(req)){
+                                firebaseList.remove(req.getFriendReqName());
+                            }
+                        }*/
+
+                        // Setting search dialog
                         searchDialog.setContentView(R.layout.search_friend);
                         searchDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         searchDialog.setCancelable(true);
 
                         searchDialog.show();
 
+                        // Setting search recyclerview
                         RecyclerView searchRecyclerView = searchDialog.findViewById(R.id.searchRecyclerView);
                         searchAdapter =
                                 new SearchAdapter(friends.this, firebaseList, myDBHandler, user);
@@ -158,6 +174,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                         searchRecyclerView.setItemAnimator(new DefaultItemAnimator());
                         searchRecyclerView.setAdapter(searchAdapter);
 
+                        // Setting search bar
                         searchView = searchDialog.findViewById(R.id.searchView);
                         searchView.setQueryHint("Enter username");
                         searchView.clearFocus();
@@ -178,6 +195,8 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
 
             }
         });
+
+        // Friend requests button
         friendRequest = findViewById(R.id.friendRequest);
         Dialog requestDialog = new Dialog(friends.this, R.style.CustomDialog);
         friendRequest.setOnClickListener(new View.OnClickListener() {
@@ -187,21 +206,25 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                 getFirebaseRequestList(new FirebaseRequestDataListener() {
                     @Override
                     public void onRequestDataLoaded(ArrayList<String> firebaseRequestList) {
+                        // Setting request dialog
                         requestDialog.setContentView(R.layout.friend_requests);
                         requestDialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                         requestDialog.setCancelable(true);
                         requestDialog.show();
 
+                        // Setting no friend request text
                         noFriendReqText = requestDialog.findViewById(R.id.noFriendReqText);
                         if (firebaseRequestList.size() == 0){
                             noFriendReqText.setVisibility(View.VISIBLE);
                             noFriendReqText.setText("No incoming friend requests :(");
                         }
 
+                        // Saving the request as "seen" so request indicator does not keep showing
                         SaveSharedPreference.setSeenFriendReq(friends.this, "seen");
                         requestCountText = findViewById(R.id.requestCountText);
                         requestCountText.setVisibility(View.INVISIBLE);
 
+                        // Setting friend request recyclerview
                         RecyclerView friendRequestRecyclerView = requestDialog.findViewById(R.id.friendRequestRecyclerView);
                         friendRequestAdapter =
                                 new FriendRequestAdapter(friends.this, user, myDBHandler, firebaseRequestList, friends.this);
@@ -215,6 +238,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
             }
         });
 
+        // New incoming friend request indicator
         requestCountText = findViewById(R.id.requestCountText);
         DatabaseReference myRef1 = database.getReference("Users").child(user.getUsername()).child("friendReqList");
         myRef1.addValueEventListener(new ValueEventListener() {
@@ -226,18 +250,24 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                         String friendReqName = snapshot.child("friendReqName").getValue(String.class);
                         String friendReqStatus = snapshot.child("reqStatus").getValue(String.class);
 
+                        // Checking that the change in request list is an incoming friend request
                         if (friendReqStatus != null && friendReqStatus.equals("Incoming Pending")) {
                             firebaseReqList.add(friendReqName);
                             Log.v(null, friendReqName);
                         }
                     }
                 }
+
+                // Comparing previous request list size and current size, if current size is bigger, there is a new request
                 int oldReqListSize = SaveSharedPreference.getOldReqlistsize(friends.this);
                 Log.v("", "-------check-------" + oldReqListSize + firebaseReqList.size() + SaveSharedPreference.getSeenFriendReq(friends.this));
                 if (firebaseReqList.size() > oldReqListSize){
+                    // Shared preference saved as "unseen" to indicate new friend request
                     SaveSharedPreference.setSeenFriendReq(friends.this, "unseen");
                     SaveSharedPreference.setOldReqlistsize(friends.this, firebaseReqList.size());
                 }
+
+                // Setting the friend request indicator
                 reqCount = firebaseReqList.size();
                 if ((reqCount != 0) && (!SaveSharedPreference.getSeenFriendReq(friends.this).equals("seen"))){
                     requestCountText.setText(String.valueOf(reqCount));
@@ -253,6 +283,8 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
             public void onCancelled(DatabaseError error) {
             }
         });
+
+        // Refresh button for friends recyclerview
         refreshButton = findViewById(R.id.refreshButton);
         refreshButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -266,7 +298,10 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                         if (dataSnapshot2.exists()) {
                             try{
                                 for (DataSnapshot snapshot : dataSnapshot2.getChildren()) {
+                                    // Pull updated user info
                                     UserData tempUser = snapshot.getValue(UserData.class);
+
+                                    // Creating list to be put into recyclerview
                                     ArrayList<FriendData> friendList = tempUser.getFriendList();
                                     ArrayList<FriendData> recyclerFriendList = new ArrayList<FriendData>();
                                     for (FriendData friend: friendList){
@@ -274,10 +309,9 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                                             recyclerFriendList.add(friend);
                                         }
                                     }
+                                    // Update friends recyclerview with new list, reloading list, notifies data change
                                     friendsAdapter.setData(recyclerFriendList);
                                     Toast.makeText(friends.this, "Refreshed",Toast.LENGTH_LONG).show();
-                                    // This will reset recyclerView's data set and notify the change
-                                    // and reload the list
 
                                     // Count the number of friends in friend list
                                     int numFriend = 0;
@@ -293,12 +327,15 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                                     }*/
                                 }
                             }
+                            // Catch case if friends recyclerview is not instantiated yet when refresh button pressed
+                            // Update 30/7/2023: After changes, pretty sure catch case is redundant
                             catch (Exception e){
                                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                                         if (dataSnapshot.exists()) {
                                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                                // Pull updated user info
                                                 UserData tempUser = snapshot.getValue(UserData.class);
                                                 user.setFriendList(tempUser.getFriendList());
                                                 user.setFriendReqList(tempUser.getFriendReqList());
@@ -308,9 +345,9 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
 
                                                 //ArrayList<FriendRequest> friendRequests = myDBHandler.findFriendReqList(user);
                                                 //user.setFriendReqList(friendRequests);
-
                                                 //setContentView(R.layout.activity_friends);
 
+                                                // Setting friends recyclerview
                                                 RecyclerView recyclerView = findViewById(R.id.friendsRecycler);
                                                 friendsAdapter =
                                                         new FriendsAdapter(friends.this, user, myDBHandler);
@@ -353,6 +390,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
         });
     }
 
+    // Filter the list of user when text is entered into search bar for searching of friends
     public void filterList(String text, ArrayList<String> firebaseList){
         ArrayList<String> filteredList = new ArrayList<>();
         for (String name: firebaseList){
@@ -368,10 +406,12 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
         }
     }
 
+    // Interface to handle asynchronous behaviour of firebase data retrieval
     public interface FirebaseDataListener {
         void onDataLoaded(ArrayList<String> firebaseList);
     }
 
+    // Firebase list of users for searching of friends to add
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
     public void getFirebaseList(FirebaseDataListener listener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
@@ -418,7 +458,6 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
                 }
                 listener.onDataLoaded(firebaseList);
             }
-
             @Override
             public void onCancelled(DatabaseError error) {
                 listener.onDataLoaded(new ArrayList<>());
@@ -426,10 +465,12 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
         });
     }
 
+    // Interface to handle asynchronous behaviour of firebase data retrieval
     public interface FirebaseRequestDataListener {
         void onRequestDataLoaded(ArrayList<String> firebaseRequestList);
     }
 
+    // Firebase list of friend requests for current user
     public void getFirebaseRequestList(FirebaseRequestDataListener listener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
         DatabaseReference myRef = database.getReference("Users").child(user.getUsername()).child("friendReqList");
@@ -461,6 +502,7 @@ public class friends extends AppCompatActivity implements FriendRequestAdapter.F
         });
     }
 
+    // From friend request adapter, when accept request button is pressed, update friends list with new friend
     @Override
     public void onFriendRequestAccepted(String friendName) {
         friendsAdapter.updateFriendList(); // Call a method in the FriendsAdapter to update its data

@@ -362,6 +362,7 @@ public class ProfileFragment extends Fragment{
     public void onResume() {
         super.onResume();
 
+        // Setting profile picture
         switch (SaveSharedPreference.getProfilePic(getActivity())) {
             case 1: profilePictureImageView.setImageResource(R.drawable.corgi_sunglasses); break;
             case 2: profilePictureImageView.setImageResource(R.drawable.corgi); break;

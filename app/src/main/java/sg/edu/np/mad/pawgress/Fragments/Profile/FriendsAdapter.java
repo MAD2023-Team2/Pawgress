@@ -66,6 +66,11 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
 
     @Override
     public void onBindViewHolder(FriendsViewHolder holder, int position) {
+        // Commented code below was attempt to update friends info automatically whenever the user data changed in the firebase
+        // Update of friends info was successful past the first friend added via them accepting current user request
+        // Unsure as to why first friend added when other user accepted current user request would not trigger code below
+        // This code has effectively been replaced by refresh button
+
         /*Query updateFriendsList = myRef.child(user.getUsername()).child("friendList");
         updateFriendsList.addValueEventListener(new ValueEventListener() {
             @Override
@@ -150,6 +155,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
         FriendData friend = recyclerFriendList.get(position);
         holder.friendName.setText(friend.getFriendName());
 
+        // Getting profile pic of friend
         Query query3 = myRef.child(friend.getFriendName()).child("profilePicturePath");
         query3.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -158,6 +164,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
                     String profilePicturePath = dataSnapshot.getValue(String.class);
                     int profilePicturePathInt = Integer.parseInt(profilePicturePath);
 
+                    // Setting profile pic of friend
                     switch (profilePicturePathInt) {
                         case 1: holder.profilePic.setImageResource(R.drawable.corgi_sunglasses); break;
                         case 2: holder.profilePic.setImageResource(R.drawable.corgi); break;
@@ -184,19 +191,23 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
             }
         });
 
+        // Remove friend button
         holder.removeFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 friend.setStatus("Unfriend");
                 recyclerFriendList.remove(friend);
+                // Update friends recyclerview when friend is removed
                 notifyDataSetChanged();
+
+                // Updating friend's info of change in current user's status in firebase
                 DatabaseReference myRef = database.getReference("Users");
                 Query query = myRef.orderByChild("username").equalTo(friend.getFriendName());
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            // Friend already exists, update its status
+                            // Current user already exists, update its status to "Unfriended"
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 UserData receivingUser = snapshot.getValue(UserData.class);
                                 ArrayList<FriendData> friendList = receivingUser.getFriendList();
@@ -211,6 +222,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
                                 for (FriendData friend: user.getFriendList()){
                                     Log.i(null, "Remove---------------------------------" + friend.getFriendName()+ friend.getStatus());
                                 }
+                                // Update friend's info in firebase
                                 myRef.child(friend.getFriendName()).setValue(receivingUser);
                             }
                         }
@@ -221,6 +233,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
                     }
                 });
 
+                // Updating current user info of change in friend's status in firebase
                 Query query1 = myRef.orderByChild("username").equalTo(user.getUsername());
                 query1.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -241,8 +254,10 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
                                     myDBHandler.addFriendReq(req.getFriendReqName(), user, req.getReqStatus());
                                 }
 
+                                // Removing friend (change status to "Unfriended")
                                 myDBHandler.removeFriend(friend.getFriendName(), user);
 
+                                // Update user object
                                 user.setTaskList(myDBHandler.findTaskList(user));
                                 user.setFriendList(myDBHandler.findFriendList(user));
                                 user.setFriendReqList(myDBHandler.findFriendReqList(user));
@@ -252,6 +267,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
                                 }
                             }
                         }
+                        // Update user info in firebase
                         myRef.child(user.getUsername()).setValue(user);
                     }
                     @Override
@@ -262,18 +278,21 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
             }
         });
 
+        // View friend's game room button
         holder.viewFriend .setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Pulling friend info from firebase
                 DatabaseReference myRef = database.getReference("Users");
                 Query query = myRef.orderByChild("username").equalTo(friend.getFriendName());
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                         if (dataSnapshot.exists()) {
-                            // Friend already exists, update its status
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 UserData receivingUser = snapshot.getValue(UserData.class);
+
+                                // Start ViewFriendGame intent with most recent friend info
                                 Intent intent = new Intent(context, ViewFriendGame.class);
                                 intent.putExtra("User", receivingUser);
                                 context.startActivity(intent);
@@ -294,6 +313,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
         return recyclerFriendList.size();
     }
 
+    // Updating of friend list
     public void updateFriendList() {
         friendList = myDBHandler.findFriendList(user);
         recyclerFriendList.clear();
@@ -305,10 +325,9 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsViewHolder>{
         notifyDataSetChanged();
     }
 
+    // Update friend recycler, refresh
     public void setData(ArrayList<FriendData> firebaseList){
         this.recyclerFriendList = firebaseList;
         notifyDataSetChanged();
-        // where this.data is the recyclerView's dataset you are
-        // setting in adapter=new Adapter(this,db.getData());
     }
 }

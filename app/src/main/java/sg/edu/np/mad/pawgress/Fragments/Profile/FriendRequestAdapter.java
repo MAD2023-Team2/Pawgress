@@ -62,6 +62,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
         String name = friendRequestList.get(holder.getAdapterPosition());
         holder.friendRequestName.setText(name);
 
+        // Getting profile pic of incoming friend request
         Query query3 = myRef.child(name).child("profilePicturePath");
         query3.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -70,6 +71,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                     String profilePicturePath = dataSnapshot.getValue(String.class);
                     int profilePicturePathInt = Integer.parseInt(profilePicturePath);
 
+                    // Setting profile pic of request
                     switch (profilePicturePathInt) {
                         case 1: holder.profilePic.setImageResource(R.drawable.corgi_sunglasses); break;
                         case 2: holder.profilePic.setImageResource(R.drawable.corgi); break;
@@ -85,7 +87,6 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                         case 12: holder.profilePic.setImageResource(R.drawable.orange_fish_cat); break;
                         default: holder.profilePic.setImageResource(R.drawable.corgi_sunglasses); break;
                     }
-
                 }
                 else{
                     holder.profilePic.setImageResource(R.drawable.corgi_sunglasses);
@@ -97,9 +98,12 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
             }
         });
 
+
+        // Accept friend request button
         holder.acceptFriendRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Updating shared preference of request list size
                 SaveSharedPreference.setOldReqlistsize(context, SaveSharedPreference.getOldReqlistsize(context)-1);
 
                 //add friend
@@ -111,14 +115,15 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                 user.setFriendReqList(myDBHandler.findFriendReqList(user));
 
                 friendRequestList.remove(name);
-                // Notify the RecyclerView about the item removal (after database update)
+                // Notify the request recyclerview about the item removal
                 notifyDataSetChanged();
 
+                // Notify friends recyclerview of added friend
                 listener.onFriendRequestAccepted(name);
 
                 Toast.makeText(context, name+"'s friend request has been accepted", Toast.LENGTH_SHORT).show();
 
-
+                // Updating requester of addition of current user as friend
                 Query query = myRef.orderByChild("username").equalTo(name);
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -154,8 +159,10 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                     friendList.add(newFriend);
                                     receivingUser.setFriendList(friendList);
                                 }
+                                // Update requester info in firebase
                                 myRef.child(name).setValue(receivingUser);
 
+                                // Updating current user of addition of requester as friend
                                 Query query1 = myRef.orderByChild("username").equalTo(user.getUsername());
                                 query1.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
@@ -176,15 +183,19 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                                     myDBHandler.addFriendReq(req.getFriendReqName(), user, req.getReqStatus());
                                                 }
 
+                                                // If requester already exists in current user's friends list as "Unfriended"
                                                 ArrayList<FriendData> thisUserFriendList = myDBHandler.findFriendList(user);
                                                 for (FriendData friend: thisUserFriendList){
                                                     if (friend.getFriendName().equals(receivingUser.getUsername())){
+                                                        // Remove the requester from list
                                                         thisUserFriendList.remove(friend);
                                                         break;
                                                     }
                                                 }
+                                                // Add requester back with "Friend" status
                                                 thisUserFriendList.add(new FriendData(receivingUser.getUsername(), "Friend"));
 
+                                                // Removing requester from current user's request list
                                                 ArrayList<FriendRequest> thisUserFriendReqList = myDBHandler.findFriendReqList(user);
                                                 for (FriendRequest req: thisUserFriendReqList){
                                                     if (req.getFriendReqName().equals(receivingUser.getUsername())){
@@ -193,6 +204,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                                     }
                                                 }
 
+                                                // Updating user info
                                                 myDBHandler.addFriend(receivingUser.getUsername(), user, "Friend");
                                                 user.setTaskList(myDBHandler.findTaskList(user));
                                                 user.setFriendList(thisUserFriendList);
@@ -203,6 +215,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                                 }
                                             }
                                         }
+                                        // Update user info in firebase
                                         myRef.child(user.getUsername()).setValue(user);
                                     }
                                     @Override
@@ -221,21 +234,24 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
             }
         });
 
+        // Reject friend request button
         holder.rejectFriendRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Updating shared preference of request list size
                 SaveSharedPreference.setOldReqlistsize(context, SaveSharedPreference.getOldReqlistsize(context)-1);
-
 
                 //remove friend from friend request
                 myDBHandler.removeFriendReq(name, user);
                 user.setFriendReqList(myDBHandler.findFriendReqList(user));
 
                 friendRequestList.remove(name);
+                // Notify the request recyclerview about the item removal
                 notifyItemRemoved(holder.getAdapterPosition());
 
                 Toast.makeText(context, name+"'s friend request has been rejected", Toast.LENGTH_SHORT).show();
 
+                // Updating requester of rejection of request
                 FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
                 DatabaseReference myRef = database.getReference("Users");
                 Query query = myRef.orderByChild("username").equalTo(name);
@@ -246,6 +262,8 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                             // Friend request already exists, remove it from request list
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 UserData receivingUser = snapshot.getValue(UserData.class);
+
+                                // Removing current user from requester's request list
                                 ArrayList<FriendRequest> reqList = receivingUser.getFriendReqList();
                                 for (FriendRequest req: reqList){
                                     if (req.getFriendReqName().equals(user.getUsername())){
@@ -255,6 +273,8 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                         break;
                                     }
                                 }
+
+                                // Removing requester from current user's request list
                                 ArrayList<FriendRequest> thisUserReqList = user.getFriendReqList();
                                 for (FriendRequest req: thisUserReqList){
                                     if (req.getFriendReqName().equals(receivingUser.getUsername())){
@@ -263,6 +283,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                                         break;
                                     }
                                 }
+                                // Updating current user and requester info
                                 myRef.child(name).setValue(receivingUser);
                                 myRef.child(user.getUsername()).setValue(user);
                             }
@@ -283,6 +304,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
         return friendRequestList.size();
     }
 
+    // Send added friend to friends.class to update friends recycler
     public interface FriendRequestAdapterListener {
         void onFriendRequestAccepted(String friendName);
     }

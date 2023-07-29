@@ -153,17 +153,13 @@ public class LoginPage extends AppCompatActivity {
                                             if (dataSnapshot.exists()) {
                                                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                                     UserData user = snapshot.getValue(UserData.class);
-                                                    /*
-                                                    DataSnapshot ds=snapshot.child("taskList");
-                                                    for (DataSnapshot dsTaskList: ds.getChildren()){
-                                                        Task task = dsTaskList.getValue((Task.class));
-                                                        taskList.add(task);
-                                                    }
-                                                    user.setTaskList(taskList);
-                                                       */
+
+                                                    // Setting Shared preferences
                                                     SaveSharedPreference.clearSeenFriendReq(LoginPage.this);
                                                     SaveSharedPreference.setUserName(LoginPage.this ,etUsername.getText().toString());
                                                     SaveSharedPreference.setProfilePic(LoginPage.this, Integer.parseInt(user.getProfilePicturePath()));
+
+                                                    // Wiping sql database
                                                     myDBHandler.clearDatabase("ACCOUNTS");
                                                     myDBHandler.clearDatabase("TASKS");
                                                     myDBHandler.clearDatabase("FRIENDS");
@@ -171,6 +167,8 @@ public class LoginPage extends AppCompatActivity {
                                                     myDBHandler.clearDatabase("INVENTORY");
                                                     Log.v(null, "ON LOGIN ---------------------" + SaveSharedPreference.getProfilePic(LoginPage.this) + user.getProfilePicturePath());
                                                     myDBHandler.addUser(user);
+
+                                                    // Populate sql database with user data
                                                     for (Task task: user.getTaskList()){
                                                         myDBHandler.addTask(task, user);
                                                     }
@@ -185,11 +183,6 @@ public class LoginPage extends AppCompatActivity {
                                                     }
                                                     Log.v(null, "LOGIN PET DESIGN ----------------------"+ user.getPetDesign());
 
-                                                    /*if (user.getPetDesign() == 1){user.setPetDesign(R.drawable.grey_cat);}
-                                                    else if (user.getPetDesign() == 2){user.setPetDesign(R.drawable.orange_cat);}
-                                                    else if (user.getPetDesign() == 3){user.setPetDesign(R.drawable.corgi);}
-                                                    else if (user.getPetDesign() == 4){user.setPetDesign(R.drawable.capybara);}
-                                                    else{user.setPetDesign(R.drawable.golden_retriever);}*/
                                                     Log.v(null, "LOGIN PET DESIGN ----------------------"+ user.getPetDesign());
                                                     Intent intent = new Intent(LoginPage.this, DailyLogIn.class);
                                                     intent.putExtra("User", user);
@@ -247,16 +240,14 @@ public class LoginPage extends AppCompatActivity {
     }
 
     MyDBHandler myDBHandler = new MyDBHandler(this,null,null,1);
-
-    // Verifies username and password
-
     boolean valid = false;
 
-
+    // Interface for asynchronous behaviour of firebase data retrieval
     private interface CredentialsValidationListener {
         void onCredentialsValidated(boolean isValid);
     }
 
+    // Verifies username and password
     private void validateCredentials(String username, String password, CredentialsValidationListener listener) {
         if (!isNetworkAvailable()) {
             Toast.makeText(LoginPage.this, "No internet access. Unable to login.", Toast.LENGTH_SHORT).show();
@@ -278,6 +269,7 @@ public class LoginPage extends AppCompatActivity {
                         String userId = snapshot.getKey();
                         String getPass = dataSnapshot.child(userId).child("password").getValue(String.class);
 
+                        // Checking password
                         if (getPass.equals(password)) {
                             isValid = true;
                             break;
@@ -286,14 +278,15 @@ public class LoginPage extends AppCompatActivity {
                 }
                 listener.onCredentialsValidated(isValid);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                // User does not exist
                 listener.onCredentialsValidated(false);
             }
         });
     }
 
+    // Checking for network connection for access to firebase
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         if (connectivityManager != null) {

@@ -63,14 +63,17 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
         String name = firebaseList.get(position);
         holder.searchFriendName.setText(name);
 
+        // Setting profile pic of users in search friends dialog
         Query query3 = myRef.child(name).child("profilePicturePath");
         query3.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+                    // Getting profile pic of each user
                     String profilePicturePath = dataSnapshot.getValue(String.class);
                     int profilePicturePathInt = Integer.parseInt(profilePicturePath);
 
+                    // Setting of profile pic
                     switch (profilePicturePathInt) {
                         case 1: holder.searchProfilePic.setImageResource(R.drawable.corgi_sunglasses); break;
                         case 2: holder.searchProfilePic.setImageResource(R.drawable.corgi); break;
@@ -97,9 +100,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
 
             }
         });
+
+        // Send friend request button
         holder.searchAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // Checking if user already has a request from current user
                 if (friendRequestSent) {
                     Toast.makeText(context, "Friend request already sent", Toast.LENGTH_SHORT).show();
                     return; // Exit the method if request has already been sent
@@ -112,6 +118,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
                 friendRequestSent = true;
                 Toast.makeText(context, "Friend request sent to " + name, Toast.LENGTH_SHORT).show();
 
+                // Updating request list of request recipient
                 Query query = myRef.orderByChild("username").equalTo(name);
                 query.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -120,6 +127,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
                             // Friend request already exists, update its status
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 UserData receivingUser = snapshot.getValue(UserData.class);
+
+                                // Setting user request status as "Incoming Pending"
                                 ArrayList<FriendRequest> reqList = receivingUser.getFriendReqList();
                                 found:{
                                     for (FriendRequest req: reqList){
@@ -128,12 +137,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
                                             break found;
                                         }
                                     }
+                                    // Add request to recipient's request list
                                     FriendRequest req = new FriendRequest(user.getUsername(), "Incoming Pending");
                                     reqList.add(req);
                                     receivingUser.setFriendReqList(reqList);
                                 }
+
+                                // Setting recipient status as "Outgoing Pending" in current user's request list
                                 ArrayList<FriendRequest> thisUserReqList = user.getFriendReqList();
-                                // Checks if friend is already in friend list, if it is: change the status
                                 found:
                                 {
                                     for (FriendRequest req : thisUserReqList) {
@@ -146,11 +157,12 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
                                             break found;
                                         }
                                     }
-                                    // If friend not in friend list, add friend to friend list
+                                    // Add outgoing request to request list
                                     FriendRequest req = new FriendRequest(receivingUser.getUsername(), "Outgoing Pending");
                                     thisUserReqList.add(req);
                                     user.setFriendReqList(thisUserReqList);
                                 }
+                                // Update user and recipient info in firebase
                                 myRef.child(name).setValue(receivingUser);
                                 myRef.child(user.getUsername()).setValue(user);
                             }

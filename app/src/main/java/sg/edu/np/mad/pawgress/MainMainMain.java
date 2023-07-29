@@ -179,17 +179,14 @@ public class MainMainMain extends AppCompatActivity {
         FirebaseDatabase database = FirebaseDatabase.getInstance("https://pawgress-c1839-default-rtdb.asia-southeast1.firebasedatabase.app");
         DatabaseReference myRef = database.getReference("Users");
         try{
+            // Setting copy of user object
             UserData fbUser = myDBHandler.findUser(user.getUsername());
             fbUser.setTaskList(myDBHandler.findTaskList(user));
             fbUser.setFriendList(myDBHandler.findFriendList(user));
             fbUser.setFriendReqList(myDBHandler.findFriendReqList(user));
             fbUser.setInventoryList(myDBHandler.findInventoryList(user));
             fbUser.setProfilePicturePath(String.valueOf(SaveSharedPreference.getProfilePic(MainMainMain.this)));
-            /*if (fbUser.getPetDesign() == R.drawable.grey_cat){fbUser.setPetDesign(1);}
-            else if (fbUser.getPetDesign() == R.drawable.orange_cat){fbUser.setPetDesign(2);}
-            else if (fbUser.getPetDesign() == R.drawable.corgi){fbUser.setPetDesign(3);}
-            else if (fbUser.getPetDesign() == R.drawable.capybara){fbUser.setPetDesign(4);}
-            else {fbUser.setPetDesign(5);}*/
+
             // Set friends and friend request list based on Firebase, not SQLite
             Query query = myRef.orderByChild("username").equalTo(user.getUsername());
             query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -210,6 +207,8 @@ public class MainMainMain extends AppCompatActivity {
                             for (FriendRequest req : tempUser.getFriendReqList()) {
                                 myDBHandler.addFriendReq(req.getFriendReqName(), user, req.getReqStatus());
                             }
+
+                            // Update copy of user info with updated friends, requests, and inventory
                             fbUser.setFriendList(tempUser.getFriendList());
                             fbUser.setFriendReqList(tempUser.getFriendReqList());
                             fbUser.setInventoryList(user.getInventoryList());
@@ -218,6 +217,7 @@ public class MainMainMain extends AppCompatActivity {
                             }
                         }
                     }
+                    // Updating user info in firebase
                     myRef.child(user.getUsername()).setValue(fbUser);
                 }
                 @Override
