@@ -7,32 +7,34 @@
 
     <Spinner
         android:id="@+id/chooseCat"
+        style="@style/Dropdown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignStart="@id/taskCategory"
-        android:layout_marginStart="36dp"
+        android:fontFamily="sans-serif-condensed-medium"
+        android:layout_marginStart="31dp"
         android:layout_alignTop="@id/taskCategory"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="17dp"
         android:layout_alignBottom="@id/taskCategory"
-        android:layout_alignEnd="@id/taskCategory"
-        style="@style/Dropdown"/>
+        android:layout_alignEnd="@id/priority" />
 
     <Spinner
         android:id="@+id/priority"
+        style="@style/Dropdown"
         android:layout_width="149dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/taskCategory"
         android:layout_alignEnd="@id/taskCategory"
+        android:fontFamily="sans-serif-condensed-medium"
         android:layout_marginStart="13dp"
         android:layout_marginLeft="11dp"
         android:layout_marginTop="20dp"
-        android:layout_marginEnd="0dp"
+        android:layout_marginEnd="-10dp"
         android:layout_toRightOf="@id/dueDate"
         android:paddingStart="10dp"
-        android:paddingTop="12dp"
+        android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:spinnerMode="dropdown"
-        style="@style/Dropdown"/>
+        android:spinnerMode="dropdown" />
 
     <EditText
         android:id="@+id/taskName"
@@ -42,9 +44,9 @@
         android:layout_alignParentStart="true"
         android:layout_marginStart="55dp"
         android:layout_marginTop="33dp"
+        android:layout_marginEnd="10dp"
         android:layout_toLeftOf="@id/edit"
         android:elevation="1dp"
-        android:layout_marginEnd="10dp"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
         android:hint="Task Name"
@@ -77,12 +79,13 @@
         android:layout_marginTop="32dp"
         android:background="@drawable/rounded_border_green"
         android:drawableStart="@drawable/outline_category_24"
-        android:drawablePadding="10dp"
+        android:drawablePadding="5dp"
         android:fontFamily="sans-serif-condensed-medium"
         android:hint="Add Category"
         android:paddingStart="10dp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp" />
+        android:paddingBottom="12dp"
+        android:includeFontPadding="false"/>
 
     <TextView
         android:id="@+id/dueDate"
@@ -125,15 +128,16 @@
         android:layout_marginTop="14dp"
         android:layout_toRightOf="@id/dueDate"
         android:background="@drawable/rounded_border_green"
-        android:drawableStart="@android:drawable/presence_invisible"
+        android:drawableStart="@drawable/baseline_circle_24"
         android:drawablePadding="5dp"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
         android:hint="Priority"
         android:paddingStart="10dp"
-        android:paddingTop="11dp"
+        android:paddingTop="10dp"
         android:paddingBottom="10dp"
-        android:textSize="13sp" />
+        android:textSize="13sp"
+        android:includeFontPadding="false"/>
 
 
     <TextView
@@ -160,10 +164,9 @@
         android:id="@+id/hourPicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@id/dueDate"
+        android:layout_toStartOf="@id/minPicker"
         android:layout_alignBottom="@id/selectTime"
         android:layout_marginBottom="10dp"
-        android:layout_marginStart="23dp"
         android:layout_alignTop="@id/selectTime"
         android:layout_marginTop="50dp"
         android:theme="@style/NumberPicker"/>
@@ -184,10 +187,10 @@
         android:id="@+id/minPicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/hourPicker"
         android:layout_alignBottom="@id/selectTime"
         android:layout_marginBottom="10dp"
         android:layout_marginStart="23dp"
+        android:layout_centerHorizontal="true"
         android:layout_alignTop="@id/selectTime"
         android:layout_marginTop="50dp"
         android:theme="@style/NumberPicker"/>
@@ -208,7 +211,7 @@
         android:id="@+id/secPicker"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_toRightOf="@id/minPicker"
+        android:layout_toEndOf="@id/minPicker"
         android:layout_alignBottom="@id/selectTime"
         android:layout_marginBottom="10dp"
         android:layout_marginStart="23dp"

@@ -298,8 +298,11 @@ public class TasksFragment extends Fragment{
                             String priority = (String) parent.getItemAtPosition(position);
                             if (priority.equals("Prioritised")) {
                                 taskPriority = 1;
-                                priorityText.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.baseline_circle_24_priority,0);
-                            } else taskPriority = 0;
+                                priorityText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_circle_24_priority,0,0,0);
+                            } else {
+                                taskPriority = 0;
+                                priorityText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_circle_24,0,0,0);
+                            }
                         }
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {
