@@ -70,7 +70,7 @@ public class CompanionSelectionActivity extends AppCompatActivity {
             user.setPetDesignInitial(selectedDesign);
             user.setCapyMode("OFF");
             dbHandler.updateCapyMode(user.getUsername(), "OFF");
-
+            dbHandler.updatePetInitial(user.getUsername(), selectedDesign);
 
         } else {
             // same logic here but for dogs
@@ -82,6 +82,7 @@ public class CompanionSelectionActivity extends AppCompatActivity {
             user.setPetDesignInitial(selectedDesign);
             user.setCapyMode("OFF");
             dbHandler.updateCapyMode(user.getUsername(), "OFF");
+            dbHandler.updatePetInitial(user.getUsername(), selectedDesign);
         }
 
         // Create an Intent to launch the "MainMainMain" activity

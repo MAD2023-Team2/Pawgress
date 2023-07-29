@@ -99,7 +99,7 @@ public class CreateAccount extends AppCompatActivity {
                                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                                     // Checking that account does not already exists
-                                    if (dataSnapshot.exists()) {
+                                    if (dataSnapshot.exists() || dbUsername.equals("abc")) {
                                         Toast.makeText(CreateAccount.this, "Username Already Exist!", Toast.LENGTH_SHORT).show();
                                     }
                                     else{
