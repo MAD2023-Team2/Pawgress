@@ -31,6 +31,7 @@ public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder
     UserData user;
     MyDBHandler mDataBase;
     TasksFragment fragment;
+    int filter = 0;
     public ParentTaskAdapter(UserData userData, MyDBHandler mDatabase, Context context, TasksFragment fragment, ArrayList<String> categories){
         this.user = userData;
         this.mDataBase = mDatabase;
@@ -53,6 +54,7 @@ public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder
 
     // shows that there are currently no tasks to work on if there are no tasks in progress found in the database for this user
     public void updateEmptyView(){
+        filter = 0;
         // add the categories to a list for display
         categoryList = new ArrayList<>();
         int count = 0;
@@ -91,6 +93,7 @@ public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder
     }
 
     public void updateFilteredView(){
+        filter = 1;
         categoryList = new ArrayList<>();
         int count = 0;
         if (taskList.size() == 0){
@@ -125,7 +128,7 @@ public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder
         String category = categoryList.get(position);
         holder.category.setText(category);
         // creates the child adapter that will show the tasks that belong to each category
-        ChildTaskAdapter mAdapter = new ChildTaskAdapter(user, mDataBase, context, category, categoryList, fragment);
+        ChildTaskAdapter mAdapter = new ChildTaskAdapter(user, mDataBase, context, category, categoryList, filter, fragment);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         mAdapter.updateList();
         holder.childList.setLayoutManager(mLayoutManager);

@@ -38,13 +38,15 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
     String category;
     TasksFragment fragment;
     ArrayList<String> categoryList;
-    public ChildTaskAdapter(UserData userData, MyDBHandler mDatabase, Context context, String category, ArrayList<String> categoryList, TasksFragment fragment){
+    int filter;
+    public ChildTaskAdapter(UserData userData, MyDBHandler mDatabase, Context context, String category, ArrayList<String> categoryList, int filter, TasksFragment fragment){
         this.user = userData;
         this.mDataBase = mDatabase;
         this.context = context;
         this.taskList = mDataBase.findTaskList(user);
         this.category = category;
         this.categoryList = categoryList;
+        this.filter = filter;
         this.fragment = fragment;
     }
     @NonNull
@@ -62,7 +64,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
 
     // shows that there are currently no tasks to work on if there are no tasks in progress found in the database for this user
     public void updateList(){
-        Log.w("child", "category " + category);
+        Log.w("child1", "category " + category + categoryList);
         // list of the tasks that are to be shown for each category
         recyclerTaskList = new ArrayList<>();
         ArrayList<Task> removeList = new ArrayList<>();
@@ -84,13 +86,13 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
         for (Task task : recyclerTaskList){
             if(!category.equals("Prioritised Tasks") && task.getPriority() == 1){
                 removeList.add(task);
+                Log.v("remove", "cat" + task.getCategory());
             }
-            Log.v("remove", "task cat " + task.getCategory());
         }
         for (Task task : recyclerTaskList){
-            if(!categoryList.contains(task.getCategory())){
+            if(filter == 1 && !categoryList.contains(task.getCategory())){
                 removeList.add(task);
-                Log.v("remove", "task cat " + task.getCategory());
+                Log.v("remove", "cat1" + task.getTaskName());
             }
         }
         // remove tasks that are not meant to be under the category (if it is prioritised but in another category)
@@ -113,6 +115,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
     public void onBindViewHolder(ChildTaskViewHolder holder, int position){
         Task task = recyclerTaskList.get(position);
         holder.name.setText(task.getTaskName());
+        Log.v("child", "Task: " + task.getTaskName() + " " + task.getPriority());
         if (task.getDueDate() != null){
             holder.duedate.setText("Due on: " + task.getDueDate());
         }
