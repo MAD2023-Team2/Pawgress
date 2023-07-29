@@ -93,14 +93,15 @@ public class TaskView extends AppCompatActivity {
                 editTask.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 editTask.setCancelable(true);
                 editTask.setDismissWithAnimation(true);
+
                 ImageButton edit = editTask.findViewById(R.id.edit);
                 EditText taskName = editTask.findViewById(R.id.taskName);
-                TextView taskCat = editTask.findViewById(R.id.taskCategory);
                 taskName.setText(task.getTaskName());
                 TextView chooseDate = editTask.findViewById(R.id.dueDate);
                 TextView date = editTask.findViewById(R.id.date);
                 date.setText(task.getDueDate());
                 dueDate = date.getText().toString();
+                TextView priorityText = editTask.findViewById(R.id.spinner);
                 Spinner spinner = editTask.findViewById(R.id.priority);
                 Spinner chooseCat = editTask.findViewById(R.id.chooseCat);
 
@@ -194,8 +195,12 @@ public class TaskView extends AppCompatActivity {
                         String priority = (String)parent.getItemAtPosition(position);
                         if (priority.equals("Prioritised")){
                             finalTaskPriority = 1;
+                            priorityText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_circle_24_priority,0,0,0);
                         }
-                        else finalTaskPriority = 0;
+                        else {
+                            finalTaskPriority = 0;
+                            priorityText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_circle_24,0,0,0);
+                        }
                     }
 
                     @Override

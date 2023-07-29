@@ -142,5 +142,10 @@
         <item name="fontFamily">sans-serif-condensed-medium</item>
     </style>
 
+    <!-- App Icon -->
+    <style name="Icon">
+        <item name="android:src">@drawable/app_icon_dark</item>
+    </style>
+
 
 </resources>

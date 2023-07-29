@@ -206,6 +206,7 @@ public class TasksFragment extends Fragment{
                     EditText taskName = createTask.findViewById(R.id.taskName); // task name
                     TextView chooseDate = createTask.findViewById(R.id.dueDate); // for users to select due date using DateDialogPicker(below)
                     TextView date = createTask.findViewById(R.id.date); // text to set chosen due date
+                    TextView priorityText = createTask.findViewById(R.id.spinner); // for the Priority text and drawable indication
                     Spinner spinner = createTask.findViewById(R.id.priority); // spinner to select priority type of the task (Normal/Prioritised)
                     Spinner chooseCat = createTask.findViewById(R.id.chooseCat); // spinner to select category of task (Others by default)
 
@@ -297,7 +298,11 @@ public class TasksFragment extends Fragment{
                             String priority = (String) parent.getItemAtPosition(position);
                             if (priority.equals("Prioritised")) {
                                 taskPriority = 1;
-                            } else taskPriority = 0;
+                                priorityText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_circle_24_priority,0,0,0);
+                            } else {
+                                taskPriority = 0;
+                                priorityText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.baseline_circle_24,0,0,0);
+                            }
                         }
                         @Override
                         public void onNothingSelected(AdapterView<?> parent) {

@@ -68,6 +68,31 @@ public class DailyLogIn extends AppCompatActivity {
         else if (user.getPetDesign() == R.drawable.corgi){pet_picture.setImageResource(R.drawable.daily_corgi_v2);}
         else{pet_picture.setImageResource(R.drawable.daily_corgi_v2);}
 
+        // clear cache
+        Log.e("DailyLogIn","Start Deleting Previous App Cache if exist");
+        File cacheDir = this.getCacheDir();
+        File[] files = cacheDir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                Log.e("DailyLogIn", "File name: " + file.getAbsolutePath());
+                if (file.canWrite()) {
+                    try {
+                        if (file.delete()) {
+                            Log.e("DailyLogIn", "File deleted successfully");
+                        } else {
+                            Log.e("DailyLogIn", "Failed to delete the file");
+                        }
+                    } catch (SecurityException e) {
+                        Log.e("DailyLogIn", "SecurityException while deleting the file: " + e.getMessage());
+                    } catch (Exception e) {
+                        Log.e("DailyLogIn", "IOException while deleting the file: " + e.getMessage());
+                    }
+                } else {
+                    Log.e("DailyLogIn", "File is not writable: " + file.getAbsolutePath());
+                }
+            }
+        }
+
         myDBHandler.clearDatabase("IMAGE_URL");
         // Initialize Firebase Storage
         FirebaseStorage storage = FirebaseStorage.getInstance();

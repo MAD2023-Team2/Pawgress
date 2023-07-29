@@ -37,22 +37,21 @@ public class TaskCompletion extends AppCompatActivity {
         Intent receivingEnd = getIntent();
         Task task = receivingEnd.getParcelableExtra("Task");
         UserData user = receivingEnd.getParcelableExtra("User");
-        Task finalTask = myDBHandler.findTask(task.getTaskID(), myDBHandler.findTaskList(user));
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy, h:mm");
         String newDayDate = formatter.format(new Date().getTime());
-        finalTask.setDateComplete(newDayDate);
-        finalTask.setStatus("Completed");
-        myDBHandler.updateTask(finalTask, user.getUsername());
+        task.setDateComplete(newDayDate);
+        task.setStatus("Completed");
+        myDBHandler.updateTask(task, user.getUsername());
 
         // after completing any task, gain 5 currency
         // for every 30 minutes spent on the task, an additional 1 currency is added
         // if timespent > target time, an additional 1 currency is added
         int additonal_currency;
-        int task_seconds = finalTask.getTimeSpent();
+        int task_seconds = task.getTimeSpent();
         int task_minutes = task_seconds / 60;
         int task_minutes_30 = task_minutes / 30;
         int current_currency = user.getCurrency();
-        int target_sec = finalTask.getTargetSec();
+        int target_sec = task.getTargetSec();
         if (task_seconds >= target_sec){
             additonal_currency = 1;
         }
@@ -80,11 +79,11 @@ public class TaskCompletion extends AppCompatActivity {
             }
         });
 
-        category.setText(finalTask.getCategory());
-        name.setText(finalTask.getTaskName());
-        dates.setText(finalTask.getDateCreated()+ " ~ " + finalTask.getDateComplete().substring(0,9));
+        category.setText(task.getCategory());
+        name.setText(task.getTaskName());
+        dates.setText(task.getDateCreated()+ " ~ " + task.getDateComplete().substring(0,9));
 
-        int seconds = finalTask.getTimeSpent();
+        int seconds = task.getTimeSpent();
         int hours = seconds / 3600;
         int minutes = (seconds % 3600) / 60;
         int secs = seconds % 60;
