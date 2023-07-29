@@ -36,5 +36,13 @@ public class ThemeSelectionActivity extends AppCompatActivity {
                 + "- Reduces eye strain in well-lit surroundings<br/>"
                 + "- Suitable for daytime use";
         secondFormattedTextView.setText(Html.fromHtml(secondFormattedText));
+
+        TextView backbutton = findViewById(R.id.backButton);
+        backbutton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                finish();
+            }
+        });
     }
 }
