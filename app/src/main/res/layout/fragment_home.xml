@@ -123,7 +123,6 @@
                 android:layout_gravity="center"
                 android:orientation="horizontal">
 
-                <!-- CardView for taskLeft statistics -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/taskLeftCard"
                     android:layout_width="wrap_content"
@@ -163,7 +162,6 @@
                     </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
-                <!-- CardView for timeSpent statistics -->
                 <androidx.cardview.widget.CardView
                     android:id="@+id/timeSpentCard"
                     android:layout_width="wrap_content"

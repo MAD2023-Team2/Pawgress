@@ -199,13 +199,13 @@ public class DailyLogIn extends AppCompatActivity {
 
                 createDeleteChallenge();
 
-                // text will change to "streak:1, current rewarded:0[for now], let's start streaking and stay productive!"
+                // text will change to "streak:1, account creation reward 5 paws, let's start streaking and stay productive!"
                 statusText.setText("Let's start streaking and stay productive!");
                 streakText.setText("Streak: " + streak);
-                rewardText.setText("Reward: 1");
-                myDBHandler.updateData(user.getUsername(), newDayDate, streak, currency, "Yes");
+                rewardText.setText("Reward: 5");
+                myDBHandler.updateData(user.getUsername(), newDayDate, streak, 5, "Yes");
                 user.setStreak(streak);
-                user.setCurrency(currency);
+                user.setCurrency(5);
                 closeButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

@@ -57,9 +57,10 @@ public class ViewFriendGame extends AppCompatActivity {
         });
 
         ImageView pet_picture = findViewById(R.id.corgi_1_friend);
-        if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.grey_cat);}
-        else if (user.getPetDesign() == R.drawable.orange_cat){pet_picture.setImageResource(R.drawable.orange_cat);}
-        else if (user.getPetDesign() == R.drawable.grey_cat){pet_picture.setImageResource(R.drawable.corgi);}
+        if (user.getPetDesign() == 1){pet_picture.setImageResource(R.drawable.grey_cat);}
+        else if (user.getPetDesign() == 2){pet_picture.setImageResource(R.drawable.orange_cat);}
+        else if (user.getPetDesign() == 3){pet_picture.setImageResource(R.drawable.corgi);}
+        else if (user.getPetDesign() == 4){pet_picture.setImageResource(R.drawable.capybara);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
 
         topLeftPic = findViewById(R.id.replaceImage_topLeft_Friend);
