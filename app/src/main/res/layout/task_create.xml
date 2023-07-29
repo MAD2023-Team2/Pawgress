@@ -127,7 +127,7 @@
         android:layout_marginTop="14dp"
         android:layout_toRightOf="@id/dueDate"
         android:background="@drawable/rounded_border_green"
-        android:drawableStart="@android:drawable/presence_invisible"
+        android:drawableStart="@drawable/baseline_circle_24"
         android:drawablePadding="5dp"
         android:ems="10"
         android:fontFamily="sans-serif-condensed-medium"
