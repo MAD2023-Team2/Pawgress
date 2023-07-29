@@ -15,7 +15,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="275dp"
         android:layout_above="@id/textView9"
-        android:src="@drawable/pawgress_icon_final_png" />
+        android:src="@drawable/app_icon_landing_page"
+        android:layout_centerHorizontal="true"/>
 
 
     <TextSwitcher
