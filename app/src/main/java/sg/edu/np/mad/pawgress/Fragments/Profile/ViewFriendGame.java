@@ -45,9 +45,11 @@ public class ViewFriendGame extends AppCompatActivity {
         Intent receivingEnd = getIntent();
         user = receivingEnd.getParcelableExtra("User");
 
+        // Setting friend name text
         viewFriendName = findViewById(R.id.viewFriendName);
         viewFriendName.setText(user.getUsername() + "'s room");
 
+        // Return button
         viewFriendReturn = findViewById(R.id.viewFriendReturn);
         viewFriendReturn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +58,7 @@ public class ViewFriendGame extends AppCompatActivity {
             }
         });
 
+        // Setting pet design of friend
         ImageView pet_picture = findViewById(R.id.corgi_1_friend);
         if (user.getPetDesign() == 1){pet_picture.setImageResource(R.drawable.grey_cat);}
         else if (user.getPetDesign() == 2){pet_picture.setImageResource(R.drawable.orange_cat);}
@@ -63,16 +66,23 @@ public class ViewFriendGame extends AppCompatActivity {
         else if (user.getPetDesign() == 4){pet_picture.setImageResource(R.drawable.capybara);}
         else{pet_picture.setImageResource(R.drawable.golden_retriever);}
 
+        // Setting accessories that friend has in game room
         topLeftPic = findViewById(R.id.replaceImage_topLeft_Friend);
         topRightPic = findViewById(R.id.replaceImage_topRight_Friend);
         topMiddlePic = findViewById(R.id.replaceImage_topMiddle_Friend);
         updateImage();
     }
+
+    // Update friend's game room
     private void updateImage(){
         Log.v("GameFragment","Updating the game view");
+
+        // Get the paths of the top-left, top-right, and top-middle images from user info
         String topLeft = user.getTopLeft();
         String topRight = user.getTopRight();
         String topMiddle = user.getTopMiddle();
+
+        // Update the ImageViews for the top-left, top-right, and top-middle images if they exist
         if (!topLeft.equals(" ")){
             topLeftPic.setVisibility(View.VISIBLE);
             String pathName = myDBHandler.getImageURL(topLeft);
