@@ -41,7 +41,7 @@ public class TaskCompletion extends AppCompatActivity {
         String newDayDate = formatter.format(new Date().getTime());
         task.setDateComplete(newDayDate);
         task.setStatus("Completed");
-        myDBHandler.updateTask(task, user.getUsername());
+        myDBHandler.updateTask(task, user.getUsername()); // updates task status to completed in database
 
         // after completing any task, gain 5 currency
         // for every 30 minutes spent on the task, an additional 1 currency is added

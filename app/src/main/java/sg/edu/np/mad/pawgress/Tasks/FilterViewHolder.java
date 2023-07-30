@@ -13,6 +13,6 @@ public class FilterViewHolder extends RecyclerView.ViewHolder{
 
     public FilterViewHolder(View itemView){
         super(itemView);
-        name = itemView.findViewById(R.id.filterName);
+        name = itemView.findViewById(R.id.filterName); // name of category
     }
 }

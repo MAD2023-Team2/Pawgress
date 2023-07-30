@@ -3,7 +3,6 @@ package sg.edu.np.mad.pawgress.Fragments.Home;
 import android.content.Intent;
 import android.os.Bundle;
 
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -14,8 +13,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -26,14 +23,13 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import sg.edu.np.mad.pawgress.DailyLogIn;
-import sg.edu.np.mad.pawgress.Fragments.Profile.ProfileFragment;
 import sg.edu.np.mad.pawgress.Fragments.Tasks.TasksFragment;
 import sg.edu.np.mad.pawgress.MainMainMain;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.SaveSharedPreference;
 import sg.edu.np.mad.pawgress.Tasks.Task;
-import sg.edu.np.mad.pawgress.Tasks.TaskCardAdapter;
+import sg.edu.np.mad.pawgress.Tasks.TaskHomeAdapter;
 import sg.edu.np.mad.pawgress.UserData;
 
 /**
@@ -209,7 +205,7 @@ public class HomeFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.taskcardlist);
         emptyTaskText = view.findViewById(R.id.emptyTextView);
         emptySpaceTextView = view.findViewById(R.id.emptyspace_home);
-        TaskCardAdapter mAdapter = new TaskCardAdapter(user,myDBHandler, getActivity(),recyclerView);
+        TaskHomeAdapter mAdapter = new TaskHomeAdapter(user,myDBHandler, getActivity(),recyclerView);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
         mAdapter.emptyTasktext = emptyTaskText;

@@ -44,7 +44,6 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder>{
         return categoryList.size();
     }
 
-    // shows that there are currently no tasks to work on if there are no tasks in progress found in the database for this user
     public void updateEmptyView(){
         // add the categories to a list for display
         categoryList = new ArrayList<>();
@@ -65,6 +64,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder>{
                 }
             }
         }
+        // shows that there are currently no categories if there are no tasks created in the database for this user
         if (count > 0){ emptyCatText.setVisibility(INVISIBLE); clear.setVisibility(VISIBLE); }
         else {emptyCatText.setVisibility(VISIBLE); clear.setVisibility(INVISIBLE);}
     }
@@ -80,6 +80,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder>{
         select = false;
         holder.name.setText(category);
         Drawable background = context.getDrawable(R.drawable.field_background);
+        // set tags according to where users left it previously
         for (int i : positions){
             if (i == holder.getAdapterPosition()){
                 background.setTint(Color.parseColor("#B9C498"));
@@ -91,12 +92,13 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder>{
                 }
             }
         }
+        // clicking on the filter tags
         holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // beginning of filter where none selected
                 if (select == false && positions.isEmpty()){
-                    background.setTint(Color.parseColor("#B9C498"));
+                    background.setTint(Color.parseColor("#B9C498")); // changes it to green to indicate selected
                     holder.name.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.baseline_clear_24,0);
                     holder.name.setBackground(background);
                     fragment.categories.add(category);
@@ -106,7 +108,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder>{
                 }
                 // if this category is selected, so unselects it now
                 else if(positions.contains(holder.getAdapterPosition())){
-                    background.setTint(Color.parseColor("#EFDFCE"));
+                    background.setTint(Color.parseColor("#EFDFCE")); // changes it back to beige to indicate unselected
                     holder.name.setCompoundDrawablesWithIntrinsicBounds(0,0,0,0);
                     holder.name.setBackground(background);
                     fragment.categories.remove(category);
@@ -115,8 +117,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder>{
                 }
                 // if this category has not been selected
                 else if(!positions.contains(holder.getAdapterPosition())){
-                    background.setTint(Color.parseColor("#B9C498"));
-                    // not showing
+                    background.setTint(Color.parseColor("#B9C498")); // changes it to green to indicate selected
                     holder.name.setCompoundDrawablesWithIntrinsicBounds(0,0,R.drawable.baseline_clear_24,0);
                     holder.name.setBackground(background);
                     fragment.categories.add(category);
@@ -124,7 +125,7 @@ public class FilterAdapter extends RecyclerView.Adapter<FilterViewHolder>{
                     positions.add(holder.getAdapterPosition());
                     fragment.refreshTaskRecyclerView();
                 }
-                else Log.w("this", "Else");
+                else Log.w("Filter Adapter On Bind", "Else");
             }
         });
     }

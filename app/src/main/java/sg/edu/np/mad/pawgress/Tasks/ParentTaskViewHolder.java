@@ -23,6 +23,6 @@ public class ParentTaskViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
         category = itemView.findViewById(R.id.taskCat);
         card = itemView.findViewById(R.id.CategoryCard); // individual task
-        childList = itemView.findViewById(R.id.childList);
+        childList = itemView.findViewById(R.id.childList); // child recyclerview to display tasks under the specified category
     }
 }

@@ -396,6 +396,7 @@ public class TasksFragment extends Fragment{
     }
 
     public void refreshTaskRecyclerView(){
+        Log.v("refreshRecyclerView", "cats = " + categories);
         ParentTaskAdapter mAdapter = new ParentTaskAdapter(user,myDBHandler, getActivity(), TasksFragment.this, categories);
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);

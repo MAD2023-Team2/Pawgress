@@ -23,15 +23,15 @@ public class Task implements Parcelable {
         this.taskName = taskName;
         this.status = status;
         this.category = category;
-        this.timeSpent = timeSpent;
-        this.targetSec = targetSec;
-        this.dueDate = dueDate;
-        this.dateCreated = dateCreated;
-        this.dateStart = dateStart;
-        this.dateComplete = dateComplete;
-        this.dailyChallenge = dailyChallenge;
-        this.priority = priority;
-        this.description = description;
+        this.timeSpent = timeSpent; // time spent on this task
+        this.targetSec = targetSec; // target time to be spent on this task in seconds
+        this.dueDate = dueDate; // user set due date for the task (null accepted)
+        this.dateCreated = dateCreated; // date of creation of task
+        this.dateStart = dateStart; // date when users press start timer
+        this.dateComplete = dateComplete; // date when users complete the task from anywhere (home, task page, timer view)
+        this.dailyChallenge = dailyChallenge; // indication if task is a daily challenge, 0 for normal task, 1 for daily challenge
+        this.priority = priority; // indication if task is prioritised, 0 for normal, 1 for prioritised
+        this.description = description; // user set notes for task (null accepted)
     }
 
     protected Task(Parcel in) {
@@ -124,6 +124,7 @@ public class Task implements Parcelable {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
+    // color codes for the different daily challenges
     public List<String> getColorCode() {
         List<String> colorCodes = new ArrayList<>();
 

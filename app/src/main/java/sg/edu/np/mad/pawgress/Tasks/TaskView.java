@@ -47,11 +47,10 @@ public class TaskView extends AppCompatActivity {
     String View = "Task View";
     String dueDate, category;
     Task task;
-    TextView spend, spendHr, spendMin, spendSec, dateText, timeText;
+    TextView spendHr, spendMin, spendSec, dateText, timeText;
     EditText description;
     UserData user;
-    int hr,min,sec;
-    int taskPriority, finalTaskPriority;
+    int hr,min,sec, finalTaskPriority;
     RelativeLayout bottom;
     BottomSheetBehavior behavior;
     SpinnerAdapter adapter, adapter1;
@@ -214,7 +213,7 @@ public class TaskView extends AppCompatActivity {
                 cats.add("School");
                 cats.add("Work");
                 cats.add("Lifestyle");
-                cats.add("TBC");//CHANGE
+                cats.add("Chores");
                 adapter1 = new SpinnerAdapter(TaskView.this, cats);
                 chooseCat.setSelection(adapter1.getPosition("Others"));
                 chooseCat.setAdapter(adapter1);
@@ -316,8 +315,6 @@ public class TaskView extends AppCompatActivity {
                 alert.show();
             }
         });
-
-        Log.v(null , " Description " + description.getText().toString());
     }
 
     @Override

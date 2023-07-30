@@ -26,7 +26,9 @@ import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
 
-public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
+
+// adapter for task recycler view shown in home page, only shows daily challenge, prioritised and urgent tasks (due today)
+public class TaskHomeAdapter extends RecyclerView.Adapter<TaskHomeViewHolder>{
     public TextView emptyTasktext;
     ArrayList<Task> recyclerTaskList;
     UserData user;
@@ -39,7 +41,7 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
     SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
     String today = formatter.format(new Date());
 
-    public TaskCardAdapter(UserData userData, MyDBHandler mDatabase, Context context, RecyclerView recyclerView){
+    public TaskHomeAdapter(UserData userData, MyDBHandler mDatabase, Context context, RecyclerView recyclerView){
         this.user = userData;
         this.mDataBase = mDatabase;
         this.context = context;
@@ -85,13 +87,14 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
     }
 
     @Override
-    public TaskCardViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        return new TaskCardViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task_home,parent, false));
+    public TaskHomeViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+        return new TaskHomeViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.task_home,parent, false));
     }
 
     @Override
-    public void onBindViewHolder(TaskCardViewHolder holder, int position){
+    public void onBindViewHolder(TaskHomeViewHolder holder, int position){
         Task task = recyclerTaskList.get(position);
+        // time icon to indicate urgent task, default visibility is GONE
         if (task.getDueDate()!=null && task.getDueDate().equals(today)){
             holder.name.setText(task.getTaskName() );
             holder.urgent.setVisibility(View.VISIBLE);
@@ -232,7 +235,7 @@ public class TaskCardAdapter extends RecyclerView.Adapter<TaskCardViewHolder>{
         String newDayDate = formatter.format(new Date());
         String lastInDate = user.getLastLogInDate();
         if (!lastInDate.equals(newDayDate)) {
-            Log.i("TaskCardAdapter","new day, send to dalylogin");
+            Log.i("TaskHomeAdapter","new day, send to dalylogin");
             Intent intent = new Intent(context, DailyLogIn.class);
             intent.putExtra("User", user);
             intent.putExtra("tab", "home_tab");

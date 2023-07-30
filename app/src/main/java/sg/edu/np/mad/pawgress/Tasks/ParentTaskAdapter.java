@@ -24,10 +24,9 @@ import sg.edu.np.mad.pawgress.UserData;
 // Parent reyclerview - shows the categories of the tasks there are (daily challenges + prioritised tasks included)
 public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder>{
     public TextView emptyTasktext;
-    ArrayList<Task> taskList, recyclerTaskList;
+    ArrayList<Task> taskList;
     ArrayList<String> categoryList, categories;
     Context context;
-    String THIS = "Adapter";
     UserData user;
     MyDBHandler mDataBase;
     TasksFragment fragment;
@@ -44,7 +43,6 @@ public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder
     @NonNull
     @Override
     public int getItemViewType(int position){
-        String category = categoryList.get(position);
         return 1;
     }
     @Override
@@ -52,9 +50,8 @@ public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder
         return categoryList.size();
     }
 
-    // shows that there are currently no tasks to work on if there are no tasks in progress found in the database for this user
     public void updateEmptyView(){
-        filter = 0;
+        filter = 0; // indicates not filtered
         // add the categories to a list for display
         categoryList = new ArrayList<>();
         int count = 0;
@@ -93,27 +90,33 @@ public class ParentTaskAdapter extends RecyclerView.Adapter<ParentTaskViewHolder
     }
 
     public void updateFilteredView(){
-        filter = 1;
+        filter = 1; // indicates filtered
         categoryList = new ArrayList<>();
-        int count = 0;
-        if (taskList.size() == 0){
-            count = -1;
-        }
-        else{
+        if (taskList.size() != 0){
             for (Task task:taskList){
                 if (!categoryList.contains(task.getCategory()) && task.getStatus().equals("In Progress") && task.getDailyChallenge()==1){
                     categoryList.add("Daily Challenge");
-                    count += 1;
                 }
             }
+            // Checks for prioritised tasks and adds in that as a category to be shown
             for (Task task:taskList){
-                if (task.getPriority()==1 && categories.contains(task.getCategory()) && !categoryList.contains("Prioritised Tasks")){
-                    categoryList.add(1,"Prioritised Tasks");
+                if (task.getStatus().equals("In Progress") && task.getPriority()==1 && !categoryList.contains("Prioritised Tasks") && categories.contains(task.getCategory())){
+                    categoryList.add(1, "Prioritised Tasks"); // Prioritised tasks will always be after daily challenge (2nd position)
                 }
             }
+            // Add in categories from filter
             for (String s:categories){
-                categoryList.add(s);
-                count+=1;
+                for (Task task : taskList){
+                    if (task.getStatus().equals("In Progress") && task.getCategory().equals(s)){
+                        categoryList.add(s);
+                    }
+                }
+            }
+            // Removes any excess (duplicate) categories
+            for (Task task:taskList) {
+                if (categoryList.contains(task.getCategory()) && task.getStatus().equals("In Progress") && task.getPriority()==1) {
+                    categoryList.remove(task.getCategory());
+                }
             }
         }
     }

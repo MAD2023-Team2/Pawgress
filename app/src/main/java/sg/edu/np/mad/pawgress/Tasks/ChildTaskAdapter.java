@@ -64,7 +64,6 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
 
     // shows that there are currently no tasks to work on if there are no tasks in progress found in the database for this user
     public void updateList(){
-        Log.w("child1", "category " + category + categoryList);
         // list of the tasks that are to be shown for each category
         recyclerTaskList = new ArrayList<>();
         ArrayList<Task> removeList = new ArrayList<>();
@@ -76,26 +75,25 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
             if(task.getStatus().equals("In Progress") && (task.getCategory().equals(category) || task.getPriority() == 1)){
                 recyclerTaskList.add(task);
             }
-            // if the category is not prioritised tasks but the task is prioritised, and if the task is not under the category, remove task
+            // removes task if task is prioritised but not under the "Prioritised Task" card from parent adapter
             if(!category.equals("Prioritised Tasks") && recyclerTaskList.size()!= 0 && !task.getCategory().equals(category) && task.getPriority()==1){
                 recyclerTaskList.remove(task);
             }
         }
-        // if the list has a task that is supposed to be prioritised but it is inside a list with category that is not prioritised tasks
+        // if the list has a task that is supposed to be prioritised but it is also shown under its original category
         // task added to separate list: removeList
         for (Task task : recyclerTaskList){
             if(!category.equals("Prioritised Tasks") && task.getPriority() == 1){
                 removeList.add(task);
-                Log.v("remove", "cat" + task.getCategory());
             }
         }
+        // for filtered view, remove tasks that are not in the current category
         for (Task task : recyclerTaskList){
             if(filter == 1 && !categoryList.contains(task.getCategory())){
                 removeList.add(task);
-                Log.v("remove", "cat1" + task.getTaskName());
             }
         }
-        // remove tasks that are not meant to be under the category (if it is prioritised but in another category)
+        // remove all tasks previously mentioned
         if (!removeList.isEmpty()){
             recyclerTaskList.removeAll(removeList);
         }
@@ -115,7 +113,6 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
     public void onBindViewHolder(ChildTaskViewHolder holder, int position){
         Task task = recyclerTaskList.get(position);
         holder.name.setText(task.getTaskName());
-        Log.v("child", "Task: " + task.getTaskName() + " " + task.getPriority());
         if (task.getDueDate() != null){
             holder.duedate.setText("Due on: " + task.getDueDate());
         }
@@ -199,6 +196,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
         SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         String newDayDate = formatter.format(new Date());
         String lastInDate = user.getLastLogInDate();
+        // sends user back to daily login when new day starts while app is running
         if (!lastInDate.equals(newDayDate)) {
             Log.i("ChildTaskAdapter","new day, send to dalylogin");
             Intent intent = new Intent(context, DailyLogIn.class);
@@ -206,6 +204,8 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
             intent.putExtra("tab", "home_tab");
             context.startActivity(intent);
         }
+
+        // to check for overdue tasks
         int currentDay = Integer.parseInt(newDayDate.substring(0,2));
         int currentMonth = Integer.parseInt(newDayDate.substring(3,5));
         int currentYear = Integer.parseInt(newDayDate.substring(6));
@@ -220,6 +220,7 @@ public class ChildTaskAdapter extends RecyclerView.Adapter<ChildTaskViewHolder>{
                 holder.warn.setVisibility(View.VISIBLE);
             }
         }
+        // warning icon for tasks that are overdue, default visibility is GONE
         if (holder.warn != null){
             holder.warn.setOnClickListener(new View.OnClickListener() {
                 @Override
