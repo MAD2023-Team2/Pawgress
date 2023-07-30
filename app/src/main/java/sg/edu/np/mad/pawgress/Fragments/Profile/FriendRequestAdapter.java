@@ -89,6 +89,7 @@ public class FriendRequestAdapter extends RecyclerView.Adapter<FriendRequestView
                     }
                 }
                 else{
+                    Log.v("LoadingFriendProfilePic", "ELSE-----------");
                     holder.profilePic.setImageResource(R.drawable.corgi_sunglasses);
                 }
             }
