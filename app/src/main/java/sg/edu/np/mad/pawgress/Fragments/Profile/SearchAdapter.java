@@ -105,17 +105,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchViewHolder>{
         holder.searchAddFriend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Checking if user already has a request from current user
-                if (friendRequestSent) {
-                    Toast.makeText(context, "Friend request already sent", Toast.LENGTH_SHORT).show();
-                    return; // Exit the method if request has already been sent
-                }
                 myDBHandler.addFriendReq(name, user, "Outgoing Pending");
                 firebaseList.remove(name);
                 notifyDataSetChanged();
 
-                // Flag to indicate that the friend request has been sent
-                friendRequestSent = true;
+                // Toast to indicate successful request sent
                 Toast.makeText(context, "Friend request sent to " + name, Toast.LENGTH_SHORT).show();
 
                 // Updating request list of request recipient

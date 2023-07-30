@@ -236,6 +236,7 @@ public class ProfileFragment extends Fragment{
                                                 Log.i(null, "Clear and Update---------------------------------" + friend.getFriendName());
                                             }
 
+                                            // Looping through friend list to edit friends list of each friend
                                             for (FriendData friend: dbData.getFriendList()){
                                                 Log.v("22345678345678", String.valueOf(friend.getFriendName()));
                                                 Query query = myRef.orderByChild("username").equalTo(friend.getFriendName());
@@ -245,18 +246,20 @@ public class ProfileFragment extends Fragment{
                                                         Log.v("22345678345678", String.valueOf(dataSnapshot.getValue()));
 
                                                         if (dataSnapshot.exists()) {
-                                                            // Friend exists, update as deleted
                                                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                                                 UserData receivingUser = snapshot.getValue(UserData.class);
                                                                 ArrayList<FriendData> friendList = receivingUser.getFriendList();
-                                                                found:{
-                                                                    for (FriendData friend: friendList){
-                                                                        if (friend.getFriendName().equals(dbData.getUsername())){
-                                                                            friend.setStatus("Deleted");
-                                                                            break found;
-                                                                        }
+
+                                                                // Look through friend's friend list and remove current user
+                                                                for (FriendData friend: friendList){
+                                                                    if (friend.getFriendName().equals(dbData.getUsername())){
+                                                                        friendList.remove(friend);
+                                                                        break;
                                                                     }
                                                                 }
+
+                                                                // Set updated list
+                                                                receivingUser.setFriendList(friendList);
                                                                 for (FriendData friend: dbData.getFriendList()){
                                                                     Log.i(null, "Remove---------------------------------" + friend.getFriendName()+ friend.getStatus());
                                                                 }
@@ -270,6 +273,7 @@ public class ProfileFragment extends Fragment{
                                                 });
                                             }
 
+                                            // Looping through friend request list to edit friend request list of each friend
                                             for (FriendRequest friendRequest: dbData.getFriendReqList()){
                                                 Query query = myRef.orderByChild("username").equalTo(friendRequest.getFriendReqName());
                                                 query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -279,9 +283,12 @@ public class ProfileFragment extends Fragment{
                                                             for (DataSnapshot snapshot : dataSnapshot.getChildren()){
                                                                 UserData friend = snapshot.getValue(UserData.class);
                                                                 ArrayList<FriendRequest> friendFriendReqList = friend.getFriendReqList();
+
+                                                                // Look through friend's friend request list and remove current user
                                                                 for (FriendRequest friendRequest: friendFriendReqList){
                                                                     if (friendRequest.getFriendReqName().equals(dbData.getUsername())){
-                                                                        friendRequest.setFriendReqName("Deleted");
+                                                                        friendFriendReqList.remove(friendRequest);
+                                                                        break;
                                                                     }
                                                                 }
                                                                 myRef.child(friend.getUsername()).child("friendReqList").setValue(friendFriendReqList);
