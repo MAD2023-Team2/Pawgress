@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -72,6 +73,35 @@ public class MainMainMain extends AppCompatActivity {
                 })
                 .setNegativeButton("No", null)
                 .show();
+    }
+
+    @Override
+    protected void onDestroy(){
+        super.onDestroy();
+        // clear cache
+        Log.e("DailyLogIn","Start Deleting App Cache");
+        File cacheDir = this.getCacheDir();
+        File[] files = cacheDir.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                Log.e("DailyLogIn", "File name: " + file.getAbsolutePath());
+                if (file.canWrite()) {
+                    try {
+                        if (file.delete()) {
+                            Log.e("DailyLogIn", "File deleted successfully");
+                        } else {
+                            Log.e("DailyLogIn", "Failed to delete the file");
+                        }
+                    } catch (SecurityException e) {
+                        Log.e("DailyLogIn", "SecurityException while deleting the file: " + e.getMessage());
+                    } catch (Exception e) {
+                        Log.e("DailyLogIn", "IOException while deleting the file: " + e.getMessage());
+                    }
+                } else {
+                    Log.e("DailyLogIn", "File is not writable: " + file.getAbsolutePath());
+                }
+            }
+        }
     }
 
     @Override
