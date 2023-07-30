@@ -15,17 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-import sg.edu.np.mad.pawgress.Fragments.Profile.editProfilePassword;
 import sg.edu.np.mad.pawgress.MyDBHandler;
 import sg.edu.np.mad.pawgress.R;
-import sg.edu.np.mad.pawgress.SaveSharedPreference;
-import sg.edu.np.mad.pawgress.Tasks.Task;
-import sg.edu.np.mad.pawgress.Tasks.TaskCardViewHolder;
 import sg.edu.np.mad.pawgress.UserData;
 
 public class ShopAdapter extends RecyclerView.Adapter<ShopViewHolder> {

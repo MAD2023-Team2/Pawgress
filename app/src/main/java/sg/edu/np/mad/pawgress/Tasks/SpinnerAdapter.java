@@ -14,6 +14,8 @@ import java.util.ArrayList;
 
 import sg.edu.np.mad.pawgress.R;
 
+
+// Adapter for spinner selections (Create/Edit task --> Choosing category/Choosing Priority)
 public class SpinnerAdapter extends ArrayAdapter<String> {
     public SpinnerAdapter(Context context, ArrayList<String> priorities){
         super(context,0,priorities);
