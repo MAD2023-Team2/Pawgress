@@ -33,17 +33,31 @@ Choosing to start the timer button will bring the user to the game page where th
 ### 8. Editing User credentials [Hannah]
 Username and password can be changed in this page
 
+## Stage 2 Features
+### 1. Shop, Inventory, Placing/Removing Furnitures, Spending/Gaining currency, Daily Challenges [Walter]
+Users gain currency through multiple ways, completing tasks, logging in daily etc. The shop system allows them to spend their currency (Paws) on items like room furnitures or food and toys for the pet. Items bought will be in the user's inventory and they can choose an area to place the furniture or toy, and food will be consumed. Removing a furniture is essentially deleting the furniture, this way users will have to spend more currency to get a new one.
+
+There will be one daily challenge given to each user everyday, and these challenges aim to get users to have a healthy lifestyle, like taking short breaks, having a walk, or reading something.
+
+### 2. Task Analytics, Landing Page, Capybara mode [Chun Fai]
+Anayltics on user tasks are shown in a bar chart and pie chart. This is to inform the users on how much time they spend on these task, how many challenges missed/completed, their task completion rate and number of tasks created under each category.
+
+Capybara mode serves as an fun and extra option for users to change their current pet to a capybara, with a unique sound when interacted with. It can be switched on and off anytime, as long as users find the the setting for it.
+
+### 3. Task Prioritising, Task Filtering [Fionn]
+Tasks can be set to prioritised to show it at the top of the screen, apart from daily challenges. The tasklist can also be filtered by category, and the list will only display tasks that are under the chosen categories.
+
+### 4. Notifications, Editing Profile Picture, Dark Theme [Hannah]
+There are a few notifications sent out in 1 day to remind users to complete their tasks and be productive.
+
+Users can choose to change their profile pictures to present options of our animals.
+
+Dark Theme mode is implemented since most android users uses dark mode on their phone.
+
+### 5. Friends system, Random motivational messages [Zachary]
+Users can search for other users, and send them a friend request to add them. Upon accepting, the users who are friends with one another can view each other's room. 
+
+Random motivational messages are displayed on the home page everytime the user opens the app, this serves to encourage and motivate the users so that they would feel inspired to be more productive.
+
 ### Additional Contributions
-Designs - Game Design (Room, Pet Design etc) [Hannah], App UI Marvel Prototype (https://marvelapp.com/prototype/89ji25g) [Hannah], Final App UI [Everyone]
-
-
- 
-## Planned Stage 2 Features
-1. Task Analytics [Chun Fai]
-2. Task Priority / Ranking [Fionn]
-3. Daily Challenges [Walter]
-4. Spending Currency [Walter]
-5. App Personalisation [Hannah]
-6. Random Messages [Zachary]
-7. Adding friends [Zachary]
-8. Presets [Potential idea, TBC]
+Designs - Game Design (Room, Pet Design, App icon) [Hannah], App UI Marvel Prototype (https://marvelapp.com/prototype/89ji25g) [Hannah], Final App UI [Everyone]
