@@ -19,15 +19,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
-    <ImageView
-        android:id="@+id/corgi_1"
-        android:layout_width="109dp"
-        android:layout_height="136dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginBottom="184dp"
-        android:src="@drawable/corgi"
-        android:layout_alignBottom="@+id/picBackground" />
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -155,6 +146,12 @@
 
     </RelativeLayout>
 
-
-
+    <ImageView
+        android:id="@+id/corgi_1"
+        android:layout_width="109dp"
+        android:layout_height="136dp"
+        android:layout_marginStart="72dp"
+        android:layout_marginBottom="184dp"
+        android:src="@drawable/corgi"
+        android:layout_alignBottom="@+id/picBackground" />
 </RelativeLayout>
