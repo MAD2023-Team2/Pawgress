@@ -178,9 +178,19 @@ public class LoginPage extends AppCompatActivity {
                                                     for (FriendRequest friendRequest: user.getFriendReqList()){
                                                         myDBHandler.addFriendReq(friendRequest.getFriendReqName(), user, friendRequest.getReqStatus());
                                                     }
-                                                    for (InventoryItem inventoryItem : user.getInventoryList()) {
-                                                        myDBHandler.addInventoryItem(inventoryItem, user);
+                                                    try{
+                                                        for (InventoryItem inventoryItem : user.getInventoryList()) {
+                                                            myDBHandler.addInventoryItem(inventoryItem, user);
+                                                        }
                                                     }
+                                                    catch (Exception e){
+                                                        ArrayList<InventoryItem> inventoryItems = new ArrayList<>();
+                                                        InventoryItem inventoryItem1 = new InventoryItem("Banana", 1, "Food");
+                                                        inventoryItems.add(inventoryItem1);
+                                                        user.setInventoryList(inventoryItems);
+                                                        myDBHandler.addInventoryItem(inventoryItem1, user);
+                                                    }
+
                                                     Log.v(null, "LOGIN PET DESIGN ----------------------"+ user.getPetDesign());
 
                                                     Log.v(null, "LOGIN PET DESIGN ----------------------"+ user.getPetDesign());

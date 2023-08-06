@@ -33,11 +33,13 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     @Override
     public int getCount() {
+        // Return the number of slides in the tutorial
         return  images.length;
     }
 
     @Override
     public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+        // Check if the view and object represent the same page
         return view == (LinearLayout) object;
     }
 
@@ -45,13 +47,14 @@ public class ViewPagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
 
+        // Inflate the layout for each slide
         LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(context.LAYOUT_INFLATER_SERVICE);
         View view = layoutInflater.inflate(R.layout.slider_layout,container,false);
-
         ImageView slidetitleimage = (ImageView) view.findViewById(R.id.titleImage);
 
+        // change the pictures on viewpager base on slide position
+        // Add the view to the ViewPager container
         slidetitleimage.setImageResource(images[position]);
-
         container.addView(view);
 
         return view;
@@ -60,7 +63,7 @@ public class ViewPagerAdapter extends PagerAdapter {
 
     @Override
     public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
-
+        // Remove the view from the container when it's no longer needed (destroyed)
         container.removeView((LinearLayout)object);
 
     }

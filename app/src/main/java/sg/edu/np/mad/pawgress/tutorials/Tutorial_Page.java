@@ -24,25 +24,27 @@ import sg.edu.np.mad.pawgress.R;
 import sg.edu.np.mad.pawgress.UserData;
 
 public class Tutorial_Page extends AppCompatActivity {
-
+    // Declare Variables
     ViewPager mSLideViewPager;
     CircleIndicator indicator;
     Button backbtn, nextbtn, skipbtn;
-
     TextView[] dots;
     ViewPagerAdapter viewPagerAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        // Set the layout and make app fullscreen
         WindowCompat.setDecorFitsSystemWindows(getWindow(),false);
         setContentView(R.layout.tutorial_page);
 
+        // Initialize TextViews and buttons
         backbtn = findViewById(R.id.backbtn);
         nextbtn = findViewById(R.id.nextbtn);
         skipbtn = findViewById(R.id.skipButton);
 
-        // circle indicator
+        // Initialize circle indicator
         indicator = findViewById(R.id.indicator);
         int indicatorWidth = (int) (TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 10,
                 getResources().getDisplayMetrics()) + 0.5f);
@@ -63,7 +65,7 @@ public class Tutorial_Page extends AppCompatActivity {
         backbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Go to the previous slide as long as it is not on the first slide
                 if (getitem(0) > 0){
 
                     mSLideViewPager.setCurrentItem(getitem(-1),true);
@@ -76,7 +78,8 @@ public class Tutorial_Page extends AppCompatActivity {
         nextbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Go to the next slide as long as it is not on the last slide
+                // if on last slide, proceed to the next activity ( pet selection )
                 if (getitem(0) < 2)
                     mSLideViewPager.setCurrentItem(getitem(1),true);
                 else {
@@ -99,7 +102,7 @@ public class Tutorial_Page extends AppCompatActivity {
         skipbtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                // Proceed to the next activity without swiping through all slides
                 // Receive user data through intent
                 Intent receivingEnd = getIntent();
                 UserData user = receivingEnd.getParcelableExtra("User");
@@ -113,12 +116,12 @@ public class Tutorial_Page extends AppCompatActivity {
             }
         });
 
+        // Initialize ViewPager and its adapter
         mSLideViewPager = (ViewPager) findViewById(R.id.slideViewPager);
-
         viewPagerAdapter = new ViewPagerAdapter(this);
-
         mSLideViewPager.setAdapter(viewPagerAdapter);
 
+        // Set up the indicator and add a listener to handle changes in the ViewPager position
         setUpindicator(0);
         mSLideViewPager.addOnPageChangeListener(viewListener);
         indicator.setViewPager(mSLideViewPager);
@@ -127,7 +130,7 @@ public class Tutorial_Page extends AppCompatActivity {
 
     @SuppressLint("NewApi")
     public void setUpindicator(int position){
-
+        // Set up indicators and change dot colors
         dots = new TextView[3];
 
         for (int i = 0 ; i < dots.length ; i++){
@@ -152,6 +155,10 @@ public class Tutorial_Page extends AppCompatActivity {
         @Override
         public void onPageSelected(int position) {
 
+            // Update the indicators based on the selected ViewPager position
+            // skip button invible on last page, and change next to skip
+            // change text color base on page number
+            // no back button on the first page
             setUpindicator(position);
             if (position == 2){
                 skipbtn.setVisibility(View.INVISIBLE);

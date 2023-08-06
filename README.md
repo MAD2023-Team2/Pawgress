@@ -33,17 +33,40 @@ Choosing to start the timer button will bring the user to the game page where th
 ### 8. Editing User credentials [Hannah]
 Username and password can be changed in this page
 
+## Stage 2 Features
+### 1. Shop, Inventory, Placing/Removing Furnitures, Spending/Gaining currency, Daily Challenges [Walter]
+Users gain currency through multiple ways, completing tasks, logging in daily etc. The shop system allows them to spend their currency (Paws) on items like room furnitures or food and toys for the pet. Items bought will be in the user's inventory and they can choose an area to place the furniture or toy, and food will be consumed. Removing a furniture is essentially deleting the furniture, this way users will have to spend more currency to get a new one.
+
+There will be one daily challenge given to each user everyday, and these challenges aim to get users to have a healthy lifestyle, like taking short breaks, having a walk, or reading something.
+
+### 2. Task Analytics, Splash Page, Capybara mode, Dim screen brightness [Chun Fai]
+There are 3 parts to Task Analytics:
+Main Stats - Displays a list of general statistics such as total task completed, time spent being productive etc...
+Bar Chart - X axis being the days in a week and y axis being the frequency of minutes. This bar chart displays the number of minute the user's been productive for each respective days. 
+            Users can cycle the weeks as well to view previous weeks.
+Pie Chart - Displays the number of task completed within each category. Below the pie chart there is a table showing the count of task, time spent, average time spent for each category.
+
+Splash Page: Simple splash page with app logo and app name shown. App name is animated, text is shown from left to right. The splash page should stay on the user's screen for 2-3 seconds once app is opened.
+
+Capybara mode: Somewhat a secret feature where users can turn on and off, the pet will turn into a capybara. This feature's target audience is teenagers. It serves as a fun and extra option for users to
+               change their current pet to a capybara, with a unique sound when interacted with. It can be switched on and off anytime
+
+Dim screen brightness: Portrays the idea of power saving when doing task. Since the timer only runs when the app is on the screen, a dim screen option was made in hoping it'll help with power saving.
+
+### 3. Task Prioritising, Task Filtering [Fionn]
+Tasks can be set to prioritised to show it at the top of the screen, apart from daily challenges. The tasklist can also be filtered by category, and the list will only display tasks that are under the chosen categories.
+
+### 4. Notifications, Editing Profile Picture, Dark Theme [Hannah]
+There are a few notifications sent out in 1 day to remind users to complete their tasks and be productive.
+
+Users can choose to change their profile pictures to present options of our animals.
+
+Dark Theme mode is implemented since most android users uses dark mode on their phone.
+
+### 5. Friends system, Random motivational messages [Zachary]
+Users can search for other users, and send them a friend request to add them. Upon accepting, the users who are friends with one another can view each other's room. 
+
+Random motivational messages are displayed on the home page everytime the user opens the app, this serves to encourage and motivate the users so that they would feel inspired to be more productive.
+
 ### Additional Contributions
-Designs - Game Design (Room, Pet Design etc) [Hannah], App UI Marvel Prototype (https://marvelapp.com/prototype/89ji25g) [Hannah], Final App UI [Everyone]
-
-
- 
-## Planned Stage 2 Features
-1. Task Analytics [Chun Fai]
-2. Task Priority / Ranking [Fionn]
-3. Daily Challenges [Walter]
-4. Spending Currency [Walter]
-5. App Personalisation [Hannah]
-6. Random Messages [Zachary]
-7. Adding friends [Zachary]
-8. Presets [Potential idea, TBC]
+Designs - Game Design (Room, Pet Design, App icon) [Hannah], App UI Marvel Prototype (https://marvelapp.com/prototype/89ji25g) [Hannah], Final App UI [Everyone]

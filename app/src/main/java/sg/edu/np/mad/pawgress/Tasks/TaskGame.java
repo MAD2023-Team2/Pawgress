@@ -25,6 +25,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.WindowCompat;
 
+import com.daimajia.androidanimations.library.Techniques;
+import com.daimajia.androidanimations.library.YoYo;
+
 import java.util.Locale;
 import java.util.Random;
 
@@ -102,6 +105,10 @@ public class TaskGame extends AppCompatActivity {
         pet_picture.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+                YoYo.with(Techniques.Bounce)
+                        .duration(1000)
+                        .repeat(0)
+                        .playOn(pet_picture);
                 switch (event.getAction()) {
 
                     case MotionEvent.ACTION_DOWN:
