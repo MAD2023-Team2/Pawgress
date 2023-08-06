@@ -39,10 +39,19 @@ Users gain currency through multiple ways, completing tasks, logging in daily et
 
 There will be one daily challenge given to each user everyday, and these challenges aim to get users to have a healthy lifestyle, like taking short breaks, having a walk, or reading something.
 
-### 2. Task Analytics, Landing Page, Capybara mode [Chun Fai]
-Anayltics on user tasks are shown in a bar chart and pie chart. This is to inform the users on how much time they spend on these task, how many challenges missed/completed, their task completion rate and number of tasks created under each category.
+### 2. Task Analytics, Splash Page, Capybara mode, Dim screen brightness [Chun Fai]
+There are 3 parts to Task Analytics:
+Main Stats - Displays a list of general statistics such as total task completed, time spent being productive etc...
+Bar Chart - X axis being the days in a week and y axis being the frequency of minutes. This bar chart displays the number of minute the user's been productive for each respective days. 
+            Users can cycle the weeks as well to view previous weeks.
+Pie Chart - Displays the number of task completed within each category. Below the pie chart there is a table showing the count of task, time spent, average time spent for each category.
 
-Capybara mode serves as an fun and extra option for users to change their current pet to a capybara, with a unique sound when interacted with. It can be switched on and off anytime, as long as users find the the setting for it.
+Splash Page: Simple splash page with app logo and app name shown. App name is animated, text is shown from left to right. The splash page should stay on the user's screen for 2-3 seconds once app is opened.
+
+Capybara mode: Somewhat a secret feature where users can turn on and off, the pet will turn into a capybara. This feature's target audience is teenagers. It serves as a fun and extra option for users to
+               change their current pet to a capybara, with a unique sound when interacted with. It can be switched on and off anytime
+
+Dim screen brightness: Portrays the idea of power saving when doing task. Since the timer only runs when the app is on the screen, a dim screen option was made in hoping it'll help with power saving.
 
 ### 3. Task Prioritising, Task Filtering [Fionn]
 Tasks can be set to prioritised to show it at the top of the screen, apart from daily challenges. The tasklist can also be filtered by category, and the list will only display tasks that are under the chosen categories.
