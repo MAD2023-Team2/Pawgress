@@ -55,6 +55,7 @@
         android:layout_marginEnd="5dp"
         android:layout_toRightOf="@id/textView4"
         app:srcCompat="@drawable/baseline_priority_high_24"
+        android:backgroundTint="#EEDECD"
         android:visibility="gone"/>
 
     <CheckBox
