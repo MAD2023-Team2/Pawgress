@@ -213,16 +213,19 @@ public class BarFragment extends Fragment {
         for (int i = 0; i < 7; i++) {
             Calendar dayCalendar = (Calendar) calendar.clone();
             dayCalendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY + i);
-
+            dayCalendar.set(Calendar.HOUR_OF_DAY, 0);
+            dayCalendar.set(Calendar.MINUTE, 0);
+            dayCalendar.set(Calendar.SECOND, 0);
+            dayCalendar.set(Calendar.MILLISECOND, 0);
+            int dayOfWeekIndex = (dayCalendar.get(Calendar.DAY_OF_WEEK) - Calendar.MONDAY + 7)%7;
             Date startOfDay = dayCalendar.getTime();
             dayCalendar.add(Calendar.HOUR_OF_DAY, 23);
             dayCalendar.add(Calendar.MINUTE, 59);
             dayCalendar.add(Calendar.SECOND, 59);
             Date endOfDay = dayCalendar.getTime();
             int totalTime = calculateTotalProductiveTime(startOfDay, endOfDay);
-            // index wrap around from Sunday back to Monday
-            // Sunday is represented by 1 in 'Calendar' library and Monday is 2
-            int dayOfWeekIndex = (dayCalendar.get(Calendar.DAY_OF_WEEK) - Calendar.MONDAY + 7)%7;
+
+            Log.d("BarChart", "Day index: " + dayOfWeekIndex + ", Total time: " + totalTime);
             barEntries.add(new BarEntry(dayOfWeekIndex, totalTime / 60));
         }
 

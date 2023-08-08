@@ -380,6 +380,7 @@ public class TaskGame extends AppCompatActivity {
         builder.setPositiveButton("YES", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                task.setTimeSpent(seconds);
                 Intent activityName = new Intent(TaskGame.this, TaskCompletion.class);
                 activityName.putExtra("User", user);
                 activityName.putExtra("seconds", seconds);
