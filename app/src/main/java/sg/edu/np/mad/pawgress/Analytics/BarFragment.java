@@ -148,15 +148,22 @@ public class BarFragment extends Fragment {
 
     private void updateWeekInformation(Date date) {
         Calendar calendar = Calendar.getInstance();
-
         calendar.setTime(date);
         calendar.setFirstDayOfWeek(Calendar.MONDAY);
         int year = calendar.get(Calendar.YEAR);
 
         calendar.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY);
+        calendar.set(Calendar.HOUR_OF_DAY, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
         Date mondayOfWeek = calendar.getTime();
 
         calendar.add(Calendar.DATE, 6);
+        calendar.set(Calendar.HOUR_OF_DAY, 23);
+        calendar.set(Calendar.MINUTE, 59);
+        calendar.set(Calendar.SECOND, 59);
+        calendar.set(Calendar.MILLISECOND, 999);
         Date sundayOfWeek = calendar.getTime();
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMMM");
